@@ -1,78 +1,54 @@
 # 🚀 Unitree Go2 SLAM & Navigation Execution Guide (Branch: `summer`)
 
-본 가이드는 `summer` 브랜치에서 업데이트된 **비주얼-관성 융합 SLAM 및 Nav2 자율주행**의 구동 절차를 설명합니다. 원본 코드는 `master` 브랜치에 그대로 보존되어 있으며, 모든 개선 및 디버깅 사항은 `summer` 브랜치에만 반영되었습니다.
+본 가이드는 `summer` 브랜치에서 분할/정비된 **실내 및 실외 전용 자율주행 실행 스크립트**의 구동 절차를 설명합니다. 원본 코드는 `master` 브랜치에 그대로 보존되어 있으며, 모든 개선 및 디버깅 사항은 `summer` 브랜치에만 반영되었습니다.
 
 ---
 
-## 1. 주요 변경 및 개선 사항 (Summary)
-* **오도메트리 치명적 버그 수정**: `go2_driver`에서 최초 1회만 `/odom` 토픽을 보낸 후 침묵하는 버그를 해결하여 고주파로 오도메트리 토픽이 발행되도록 수정했습니다.
-* **매핑 모드 듀얼 설정 제공 (라이다-IMU 오도메트리 지원)**: `run_map.sh`에서 리얼센서 카메라의 Visual Odometry 뿐만 아니라, Go2 본체의 **4D LiDAR L1 + IMU 결합 오도메트리**(`/odom`)를 기반으로 매핑할 수 있도록 선택식 스위치(`USE_LIDAR_ODOM`)를 적용했습니다.
-* **토픽 정렬**: 카메라 깊이 맵이 깨지거나 어긋나는 문제를 방지하기 위해 정렬된 깊이 이미지 토픽(`/camera/aligned_depth_to_color/image_raw`)으로 일치화했습니다.
-* **TF 트리 구조 안정화**: 매핑과 주행 모드 간의 좌표계 기준점을 `base_link`로 통일하고 다중 부모 오류를 예방했습니다.
+## 1. 스크립트 분류 체계 (Script Structure)
+
+사용하기 복잡했던 설정 스위치를 배제하고, 목적에 맞게 즉시 실행할 수 있도록 **실내용(Indoor)**과 **실외용(Outdoor)** 스크립트 세트로 완전히 분할했습니다.
+
+### 🏠 1. 실내용 (Indoor Set) - VIO + Leg + IMU 3원 융합
+* **특징**: 실내에서는 태양광 노이즈가 없으므로 리얼센서 카메라를 활용한 정밀한 **비주얼 오도메트리(VIO)**를 주축으로 삼습니다. 단, 카메라 유실을 방지하기 위해 다리 엔코더 값(`/odom`)을 예측값(Guess)으로 넣고 D435i IMU 데이터로 흔들림을 필터링합니다. (OMO R1 방식 완벽 재현)
+* **매핑**:
+  ```bash
+  ./run_map_indoor.sh
+  ```
+* **자율주행 (Nav2)**:
+  ```bash
+  ./run_localization_indoor.sh
+  ```
+
+### 🌲 2. 실외용 (Outdoor Set) - LiDAR-Inertial Odometry
+* **특징**: 야외 직사광선 조건에서는 삼각측량식 D435i 카메라가 무력화(IR 워시아웃 및 롤링 셔터 왜곡)되므로, 카메라 오도메트리를 강제로 차단(`visual_odometry:=false`)하고 로봇 본체의 고강인성 **4D LiDAR L1 및 온보드 IMU 오도메트리**(`/odom`)를 기반으로 매핑과 주행을 실행합니다.
+* **매핑**:
+  ```bash
+  ./run_map_outdoor.sh
+  ```
+* **자율주행 (Nav2)**:
+  ```bash
+  ./run_localization_outdoor.sh
+  ```
 
 ---
 
-## 2. 매핑 모드 실행 (Mapping / SLAM)
+## 2. ROS 2 `/cmd_vel` ➔ Sport API 제어 가교 (`go2_driver`)
 
-실외 또는 실내 3D 지도를 새롭게 빌드할 때 실행합니다.
+자율주행 패키지(Nav2)가 경로 계획의 결과로 조향 속도 명령 토픽인 **`/cmd_vel`**(Twist 메시지)을 퍼블리시하면, 로봇 본체의 관절 모터를 제어해 주는 Unitree의 **Sport API**로의 변환이 필요합니다.
 
-### 📌 오도메트리 모드 스위칭 설정 (매우 중요)
-[run_map.sh](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/run_map.sh) 파일 상단에서 매핑 시 오도메트리 소스를 선택할 수 있습니다.
-```bash
-# 기본값은 true (리얼센서 대역폭이 USB 2.0으로 낮을 때 오도메트리 유실을 완전히 극복함)
-USE_LIDAR_ODOM=true
-```
-* **`USE_LIDAR_ODOM=true` (권장)**: Go2의 온보드 **LiDAR + IMU 결합 오도메트리**를 SLAM의 기준축으로 사용하여 D435i 카메라의 대역폭 저하/프레임 드랍 환경에서도 안정적으로 맵을 작성합니다.
-* **`USE_LIDAR_ODOM=false`**: 카메라의 순수 Visual Odometry(VIO)만을 사용하여 매핑합니다. (로봇 통신 없이 오프라인 구동 시 유용)
-
-### 실행 순서
-
-1. 터미널을 열고 `go2_ws` 워크스페이스로 이동하여 `summer` 브랜치 상태인지 확인합니다.
-   ```bash
-   cd ~/go2_ws
-   git checkout summer
-   ```
-2. 매핑 스크립트를 구동합니다.
-   ```bash
-   ./run_map.sh
-   ```
+* **동작 확인**: 사용자가 추가적인 패키지를 다운로드하거나 연동할 필요 없이, 클로닝된 워크스페이스 내의 **`go2_driver`** 패키지가 이 가교 역할을 완전히 수행합니다.
+* **연동 소스**: [go2_driver.cpp](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/src/go2_robot/go2_driver/src/go2_driver/go2_driver.cpp) 노드가 기동되어 `/cmd_vel` 속도값을 실시간으로 수신한 뒤, Unitree Sport API 포맷에 맞춰 JSON 문자열로 직렬화하여 본체 보드로 전송합니다.
+  ```cpp
+  nlohmann::json js;
+  js["x"] = msg->linear.x; // 직진 속도
+  js["y"] = msg->linear.y; // 횡방향 속도
+  js["z"] = msg->angular.z; // 회전 속도
+  ```
+* **구동**: `run_localization_indoor.sh` 또는 `run_localization_outdoor.sh` 실행 시 백그라운드 첫 번째 탭에서 `ros2 launch go2_bringup go2.launch.py`가 실행되면서 이 가교 노드가 자동 기동되므로 사용자는 단순히 스크립트를 한 번 구동하는 것만으로 자율주행 조향이 가능합니다.
 
 ---
 
-## 3. 로컬라이제이션 & 자율주행 모드 실행 (Localization & Nav2)
-
-저장된 지도를 바탕으로 현재 위치를 추정하고 Nav2를 통해 자율주행을 수행합니다.
-
-### 실행 전 체크리스트
-* 생성된 rtabmap DB 파일(`rtabmap.db`)과 지도 메타데이터가 `~/.ros/` 경로에 존재하는지 확인합니다.
-  - DB 경로: `/home/unitree/.ros/rtabmap.db`
-  - 지도 경로: `/home/unitree/.ros/rtabmap.yaml` 및 `rtabmap.pgm`
-* 만약 다른 경로에 생성했다면, `run_localization.sh` 내부의 `RTABMAP_DB_PATH` 환경 변수 값을 해당 경로로 수정해야 합니다.
-
-### 실행 순서
-
-1. 로아스 수입 Go2의 모터 제어 및 하드웨어 통신 노드를 구동합니다. (반드시 최초 1회 실행)
-   ```bash
-   ros2 launch go2_bringup go2.launch.py
-   ```
-2. 새 터미널에서 로컬라이제이션 및 내비게이션 스크립트를 실행합니다.
-   ```bash
-   cd ~/go2_ws
-   ./run_localization.sh
-   ```
-
-### 구동 노드 구성
-* **[1] Go2 Bringup**: 로봇 드라이버 및 로봇 상태 퍼블리셔 기동
-* **[2] RealSense & LaserScan**: 카메라 드라이버 기동 및 깊이 이미지를 2D 레이저 스캔(`/scan`)으로 변환 기동
-* **[3] IMU Filter**: 카메라 관성 필터 기동
-* **[4] RTAB-Map Localization**: 위치 추정 모드로 기동 (Incremental Memory Off)
-* **[5] Map Server**: 2D 지도 서버 기동 및 수명주기(Lifecycle) 활성화
-* **[6] Navigation2**: Nav2 내비게이션 스택 기동 (MPPI/DWB 제어 알고리즘 활성화)
-* **[7] RViz**: Nav2 관제 화면 기동 (RViz 상단의 `2D Nav Goal`로 목적지 지정 가능)
-
----
-
-## 4. 트러블슈팅 가이드 (Troubleshooting)
+## 3. 트러블슈팅 가이드 (Troubleshooting)
 
 ### ⚠️ CycloneDDS 통신 불통 문제
 * **증상**: 다른 PC나 노트북에서 로봇의 ROS 토픽이 조회되지 않거나 스크립트 실행 시 노드 검색이 안 되는 경우.
