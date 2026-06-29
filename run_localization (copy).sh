@@ -31,6 +31,11 @@ ros2 launch go2_bringup go2.launch.py; exec bash"
 
 sleep 5
 
+# RealSense Resolution & FPS Configuration (USB 2.0 Fallback Optimization)
+# For USB 3.0/3.2: Use "640x480x30"
+# For USB 2.0 fallback: Use "640x480x15" or "424x240x15" (prevents bandwidth starvation)
+CAMERA_PROFILE="640x480x15"
+
 echo "🟡 [2/7] Resetting RealSense & Launching Camera + DepthToLaserScan..."
 $ROS_BASE/bin/rs-enumerate-devices -r > /dev/null 2>&1
 sleep 2
@@ -39,10 +44,11 @@ gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
     align_depth:=true \
     enable_sync:=true \
-    depth_module.profile:=640x480x30 \
-    rgb_camera.profile:=640x480x30 \
-    enable_accel:=false \
-    enable_gyro:=false & \
+    depth_module.profile:=$CAMERA_PROFILE \
+    rgb_camera.profile:=$CAMERA_PROFILE \
+    enable_accel:=true \
+    enable_gyro:=true \
+    unite_imu_method:=1 & \
 sleep 5 && \
 ros2 run depthimage_to_laserscan depthimage_to_laserscan_node \
     --ros-args \
@@ -56,6 +62,19 @@ ros2 run depthimage_to_laserscan depthimage_to_laserscan_node \
 
 sleep 5
 
+echo "🟢 [2.5/7] Launching IMU Filter (Madgwick)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+ros2 run imu_filter_madgwick imu_filter_madgwick_node \
+    --ros-args \
+    -p use_mag:=false \
+    -p publish_tf:=false \
+    -p world_frame:=enu \
+    -p remove_gravity_vector:=true \
+    -r /imu/data_raw:=/camera/imu \
+    -r /imu/data:=/imu/data; exec bash"
+
+sleep 3
+
 echo "🟢 [3/7] Launching RTAB-Map in Localization Mode..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 launch rtabmap_launch rtabmap.launch.py \
@@ -64,10 +83,12 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     frame_id:=base_link \
     odom_frame_id:=odom \
     rgb_topic:=/camera/color/image_raw \
-    depth_topic:=/camera/depth/image_rect_raw \
+    depth_topic:=/camera/aligned_depth_to_color/image_raw \
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=true \
     wait_for_transform:=1.5 \
+    subscribe_imu:=true \
+    imu_topic:=/imu/data \
     database_path:=${RTABMAP_DB_PATH} \
     qos:=2 \
     rviz:=false; exec bash"
