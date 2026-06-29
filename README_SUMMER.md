@@ -5,7 +5,8 @@
 ---
 
 ## 1. 주요 변경 및 개선 사항 (Summary)
-* **센서 퓨전 (VI-SLAM)**: RealSense D435i 내장 IMU(가속도/자이로)와 `imu_filter_madgwick`를 결합하여 RTAB-Map에 입력되도록 구성했습니다.
+* **오도메트리 치명적 버그 수정**: `go2_driver`에서 최초 1회만 `/odom` 토픽을 보낸 후 침묵하는 버그를 해결하여 고주파로 오도메트리 토픽이 발행되도록 수정했습니다.
+* **매핑 모드 듀얼 설정 제공 (라이다-IMU 오도메트리 지원)**: `run_map.sh`에서 리얼센서 카메라의 Visual Odometry 뿐만 아니라, Go2 본체의 **4D LiDAR L1 + IMU 결합 오도메트리**(`/odom`)를 기반으로 매핑할 수 있도록 선택식 스위치(`USE_LIDAR_ODOM`)를 적용했습니다.
 * **토픽 정렬**: 카메라 깊이 맵이 깨지거나 어긋나는 문제를 방지하기 위해 정렬된 깊이 이미지 토픽(`/camera/aligned_depth_to_color/image_raw`)으로 일치화했습니다.
 * **TF 트리 구조 안정화**: 매핑과 주행 모드 간의 좌표계 기준점을 `base_link`로 통일하고 다중 부모 오류를 예방했습니다.
 
@@ -13,7 +14,16 @@
 
 ## 2. 매핑 모드 실행 (Mapping / SLAM)
 
-실외 또는 실내 3D 지도를 새롭게 빌드할 때 실행합니다. (기본 비주얼-관성 오도메트리 + 3D LiDAR 점군 매칭 사용)
+실외 또는 실내 3D 지도를 새롭게 빌드할 때 실행합니다.
+
+### 📌 오도메트리 모드 스위칭 설정 (매우 중요)
+[run_map.sh](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/run_map.sh) 파일 상단에서 매핑 시 오도메트리 소스를 선택할 수 있습니다.
+```bash
+# 기본값은 true (리얼센서 대역폭이 USB 2.0으로 낮을 때 오도메트리 유실을 완전히 극복함)
+USE_LIDAR_ODOM=true
+```
+* **`USE_LIDAR_ODOM=true` (권장)**: Go2의 온보드 **LiDAR + IMU 결합 오도메트리**를 SLAM의 기준축으로 사용하여 D435i 카메라의 대역폭 저하/프레임 드랍 환경에서도 안정적으로 맵을 작성합니다.
+* **`USE_LIDAR_ODOM=false`**: 카메라의 순수 Visual Odometry(VIO)만을 사용하여 매핑합니다. (로봇 통신 없이 오프라인 구동 시 유용)
 
 ### 실행 순서
 
@@ -26,12 +36,6 @@
    ```bash
    ./run_map.sh
    ```
-
-### 구동 노드 구성
-* **탭 1**: RealSense D435i 카메라 기동 (`align_depth:=true`, IMU 활성화)
-* **탭 2**: Madgwick IMU 필터 기동 (`/camera/imu` 수신 ➔ `/imu/data` 자세 쿼터니언 변환)
-* **탭 3**: RTAB-Map SLAM 기동 (`frame_id:=base_link`, IMU 수신 활성화)
-* **탭 4**: 정적 TF 브로드캐스터 기동 (`base_link` ➔ `camera_link`)
 
 ---
 
@@ -78,6 +82,3 @@
   # cyclonedds.xml 설정 일시 해제
   unset CYCLONEDDS_URI
   ```
-
-### ⚠️ ROS 2 Foxy 경로 관련
-* 본 프로젝트는 Ubuntu 20.04 환경 및 ROS 2 Foxy 배포판 경로(`/opt/ros/foxy`)에 최적화되어 있습니다. 타겟 보드 사양 변경 시 각 스크립트 상단의 `ROS_BASE` 환경 변수를 직접 편집하여 조정할 수 있습니다.
