@@ -72,3 +72,18 @@ $$\text{Recovered Trajectory} = \text{Normalized Trajectory} \times \Delta t \ti
 ## 🏃 4. 실행 및 배포 스크립트 (Workspace Root)
 *   **`run_localization_outdoor.sh`**: 실외 및 광역 환경에서 가장 안정적인 L1 라이다 주도의 자율주행 및 위치 추정(Nav2 연동)용 쉘 스크립트.
 *   **`run_map_outdoor.sh`**: D435i 카메라 대역폭 유실을 회피하고 로봇 내장 L1 LiDAR SLAM 오도메트리(`/odom`)를 매핑의 뼈대로 사용하여 안정적으로 3D 환경 맵을 그릴 때 사용하는 스크립트.
+
+---
+
+## 🔬 5. 학술적 차별성 및 오픈소스 레포지토리 (References)
+
+### 5.1 학술적 차별성 (Novelty)
+*   **기존 ViNT/NoMAD의 한계**: 원본 연구들은 평탄한 실내외 바닥에서 주로 바퀴형 로봇과 단순 휠 오도메트리를 기반으로 경로를 추적했습니다. 이 방식은 미끄러짐이 심한 실외 흙길이나 남극의 눈밭 환경에서 오도메트리가 급격히 발산하는 치명적인 한계가 있습니다.
+*   **본 시스템의 차별성 (LIO 결합)**: 미끄러짐이 심한 극한 지형에서 경로 추종 성능을 보장하기 위해, 기존의 단순 다리/휠 오도메트리를 배제하고 **FAST-LIO2(라이다-관성 오도메트리)** 기반의 초고정밀 3D Pose 피드백을 PD 제어 루프에 직접 결합합니다. 이를 통해 지면 슬립과 흔들림이 심한 사족보행 로봇에서도 오차 없는 강인한 궤적 추종 주행을 실현합니다.
+
+### 5.2 관련 주요 오픈소스 레포지토리
+*   [visualnav-transformer (ViNT/NoMAD/GNM)](https://github.com/robodhruv/visualnav-transformer): 이미지 기반 시각 네비게이션 모델 및 PD 제어기 공식 저장소
+*   [FAST_LIO (FAST-LIO2)](https://github.com/hku-mars/FAST_LIO): 초고속 고정밀 라이다-관성 오도메트리(LIO) 솔루션
+*   [go2_robot (IntelligentRoboticsLabs)](https://github.com/IntelligentRoboticsLabs/go2_robot): ROS 2 Humble 기반 Unitree Go2 제어 및 통신 드라이버
+*   [rtabmap_ros](https://github.com/introlab/rtabmap_ros): 3D 맵핑 및 비주얼/라이다 루프 클로저 결합 패키지
+
