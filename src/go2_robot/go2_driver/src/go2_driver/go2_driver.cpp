@@ -151,21 +151,18 @@ void Go2Driver::publish_pose_stamped(const geometry_msgs::msg::PoseStamped::Shar
   transform.transform.rotation.w = msg->pose.orientation.w;
   tf_broadcaster_.sendTransform(transform);
 
-  if (!odom_published_) {
-    nav_msgs::msg::Odometry odom;
-    odom.header.stamp = now();
-    odom.header.frame_id = "odom";
-    odom.child_frame_id = "base_link";
-    odom.pose.pose.position.x = msg->pose.position.x;
-    odom.pose.pose.position.y = msg->pose.position.y;
-    odom.pose.pose.position.z = msg->pose.position.z + 0.07;
-    odom.pose.pose.orientation.x = msg->pose.orientation.x;
-    odom.pose.pose.orientation.y = msg->pose.orientation.y;
-    odom.pose.pose.orientation.z = msg->pose.orientation.z;
-    odom.pose.pose.orientation.w = msg->pose.orientation.w;
-    odom_pub_->publish(odom);
-    odom_published_ = true;
-  }
+  nav_msgs::msg::Odometry odom;
+  odom.header.stamp = now();
+  odom.header.frame_id = "odom";
+  odom.child_frame_id = "base_link";
+  odom.pose.pose.position.x = msg->pose.position.x;
+  odom.pose.pose.position.y = msg->pose.position.y;
+  odom.pose.pose.position.z = msg->pose.position.z + 0.07;
+  odom.pose.pose.orientation.x = msg->pose.orientation.x;
+  odom.pose.pose.orientation.y = msg->pose.orientation.y;
+  odom.pose.pose.orientation.z = msg->pose.orientation.z;
+  odom.pose.pose.orientation.w = msg->pose.orientation.w;
+  odom_pub_->publish(odom);
 }
 
 void Go2Driver::joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
