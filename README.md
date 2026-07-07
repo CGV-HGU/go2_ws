@@ -1,6 +1,8 @@
 # ❄️ Unitree Go2 Antarctic Navigation Project
 
-본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 워크스페이스(`go2_ws`)입니다.
+본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 워크스페이스(`go2_ws`)임.
+
+모방 학습(IL) 모델의 **Trajectory 정규화 및 물리 복원 공식**과 실제 하드웨어 구동을 위한 3대 핵심 모듈 연동 정보 수록.
 
 ---
 
@@ -48,23 +50,23 @@ graph TD
 ## ⚙️ 2. 3대 핵심 모듈 정의
 
 ### 1) odometry module
-*   **VIO**: 추가 장착된 [Intel RealSense D435i](https://www.intelrealsense.com/depth-camera-d435i/) 카메라를 통한 오도메트리
+*   **VIO**: 추가 장착된 [Intel RealSense D435i](https://www.intelrealsense.com/depth-camera-d435i/) 카메라 기반 오도메트리
 *   **LIO**: 로봇 내장 4D LiDAR L1 + 내부 IMU 데이터를 통한 오도메트리 계산
 *   **Leg & Internal Odometry (Bridge 연동)**:
-    *   `go2_driver` : 로봇 자체 LiDAR 기반 오도메트리(`/utlidar/robot_pose`) ➔ `/odom` 토픽으로 변환하여 발행
+    *   `go2_driver` : 로봇 자체 LiDAR 기반 오도메트리(`/utlidar/robot_pose`) ➔ `/odom` 토픽으로 변환 및 발행
     *   `go2_odom_bridge` : `lf/sportmodestate` (다리 기구학 상태) ➔ `/go2_odom` 및 TF 변환 발행
 *   *제안 전략*: 남극/실외 지형 극복을 위해 오도메트리 추정은 **[FAST-LIO](https://github.com/hku-mars/FAST_LIO)** 사용 제안
 
 ### 2) pid controller (경로 추종기)
-*   **Go2 자체 내장 기능**: Unitree SDK2 "Sport API"의 `TrajectoryFollow` 함수
+*   **Go2 자체 내장 기능**: Unitree SDK2 "Sport API"의 `TrajectoryFollow` 함수 (로컬 데드레커닝 기반 경로 추종)
 *   **현재 사용 방식**: Go2의 Sport API를 ROS 2 Nav2로 주행하기 위한 오픈소스 연동 방식 사용 중 (Nav2의 Controller Server 플러그인 이용)
 *   **ViNT / NoMAD 관련**: 
-    *   [visualnav-transformer](https://github.com/robodhruv/visualnav-transformer) 공식 저장소의 `deployment/src/pd_controller.py` 내에 비례-미분(PD) 제어 모듈 확인 완료.
-    *   입력된 $10 \times 2$ trajectory와 pose 데이터를 가공해 로봇 구동 명령으로 변환하는 조향 제어기로 활용 검토.
+    *   [visualnav-transformer](https://github.com/robodhruv/visualnav-transformer) 공식 저장소의 `deployment/src/pd_controller.py` 내에 비례-미분(PD) 제어 모듈 확인 완료
+    *   입력된 $10 \times 2$ trajectory와 pose 데이터를 가공해 로봇 구동 명령으로 변환하는 조향 제어기로 활용 검토
 
 ### 3) unitree go2 action command API
-*   **실제 구동 API**: Unitree SDK2의 Sport API인 **`SportClient.Move(vx, vy, vyaw)`**
-*   **연동 오픈소스**: 아래 깃허브 오픈소스를 통해 ROS 2 `cmd_vel` 명령을 Sport API로 변환하여 주행을 가능하게 하고 있음.
+*   **실제 구동 API**: Unitree SDK2의 Sport API인 **`SportClient.Move(vx, vy, vyaw)`** (속도를 입력받아 물리 모터 제어 및 보행)
+*   **연동 오픈소스**: 아래 깃허브 오픈소스를 통해 ROS 2 `cmd_vel` 명령을 Sport API로 변환하여 주행 구현.
     *   [go2_robot (by IntelligentRoboticsLabs)](https://github.com/IntelligentRoboticsLabs/go2_robot)
     *   [go2_robot (Unitree-Go2-Robot Fork)](https://github.com/Unitree-Go2-Robot/go2_robot)
 
