@@ -59,7 +59,28 @@ graph LR
 
 ---
 
-## 📈 3. Trajectory 정규화 및 복원 프로세스 (모방 학습 연동)
+## 🔗 3. 소스코드 레벨 핵심 인터페이스 및 결합점 (Code-Level Bindings)
+
+### 3.1 ViNT 제어 연산 결합점 (visualnav-transformer)
+*   **관련 파일**: [pd_controller.py](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/visualnav-transformer/deployment/src/pd_controller.py)
+*   **핵심 코드 라인 및 인터페이스**:
+    *   **구독(Subscribe)**: `waypoint_sub = rospy.Subscriber(WAYPOINT_TOPIC, Float32MultiArray, callback_drive)` (Line 81)
+        ➔ 모델 추론 패키지(`navigate.py`)가 연산하여 발행하는 로컬 좌표계 궤적 메시지(방향성 포함)를 수신함.
+    *   **PD 제어 계산**: `v, w = pd_controller(waypoint.get())` (Line 93)
+        ➔ 수신한 로컬 좌표 오차($dx, dy$)를 가공하여 모터 목표 선속도(`v`) 및 각속도(`w`)를 실시간 역산함.
+    *   **발행(Publish)**: `vel_out.publish(vel_msg)` (Line 99)
+        ➔ 계산된 속도를 하위 ROS 2 `/cmd_vel` 브릿지로 발행함.
+
+### 3.2 Go2 SDK 구동 API 결합점 (go2_ws/src/go2_robot)
+*   **관련 파일**: `go2_ws/src/go2_robot/go2_driver/src/go2_driver/go2_driver.cpp`
+*   **핵심 코드 라인 및 인터페이스**:
+    *   **구독(Subscribe)**: `cmd_vel_sub_`에서 ROS 2 표준 `/cmd_vel` 속도 토픽 구독 및 콜백(`cmd_vel_callback`) 실행.
+    *   **명령 파싱**: 수신된 `geometry_msgs::msg::Twist` 메시지에서 X축 선속도(`linear.x`), Y축 선속도(`linear.y`), Z축 각속도(`angular.z`) 값을 각각 파싱함.
+    *   **DDS API 전송 (Move)**: 파싱된 값들을 JSON 양식 데이터 파라미터(`x = vx`, `y = vy`, `z = vyaw`)로 직렬화하여 `/api/sport/request` 토픽(API ID: `Move`)으로 Unitree 모션 보드에 발행함.
+
+---
+
+## 📈 4. Trajectory 정규화 및 복원 프로세스 (모방 학습 연동)
 
 모델이 일정한 속도 스케일에 종속되지 않고 순수 **기하학적 궤적 형태(Geometric Path)**를 효과적으로 학습할 수 있도록 속도 성분을 분리하여 정규화함.
 
@@ -69,19 +90,19 @@ graph LR
     style VLM fill:#e1f5fe,stroke:#01579b,stroke-width:1px
 ```
 
-### 3.1 학습 단계: 정규화 (Normalization)
+### 4.1 학습 단계: 정규화 (Normalization)
 로봇이 이동한 실제 물리 궤적에서 속도 스케일을 소거함. ($\Delta t$는 기록 주기로, 5Hz 데이터셋의 경우 $0.2\text{ s}$ 반영)
 
 $$\text{Normalized Trajectory} = \frac{\text{GT Trajectory}}{\Delta t \times v_{GT}}$$
 
-### 3.2 제어 단계: 물리 궤적 복원 (Recovery)
+### 4.2 제어 단계: 물리 궤적 복원 (Recovery)
 추론 시 모델이 기하학적 궤적(Normalized Trajectory)과 속도 스케일($v_{pred}$)을 예측하면, 제어기에 인가하기 전 실제 물리적 좌표계로 복원함.
 
 $$\text{Recovered Trajectory} = \text{Normalized Trajectory} \times \Delta t \times v_{pred}$$
 
 ---
 
-## 📂 4. antarctica 브랜치 디렉토리 구조 (Clean Workspace)
+## 📂 5. antarctica 브랜치 디렉토리 구조 (Clean Workspace)
 
 ```text
 go2_ws/
