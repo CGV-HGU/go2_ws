@@ -1,6 +1,7 @@
 # ❄️ Unitree Go2 Antarctic Navigation Project
 
-본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 워크스페이스(`go2_ws`)임.
+본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 전용 워크스페이스(`go2_ws`)임. 
+이 브랜치(`antarctica`)는 불필요한 기존 Nav2 템플릿 파일들을 제거하고, **LIO(라이다), ViNT(모방학습), Go2 SDK(구동)** 핵심 시스템으로만 구성된 클린 샌드박스 환경임.
 
 ---
 
@@ -19,51 +20,42 @@ graph LR
 
 ---
 
-## ⚙️ 2. 3대 핵심 모듈 및 프로세스 정의
+## 📊 2. 3대 핵심 모듈 정의
 
-### 1) Odometry Module (위치 및 상태 추정)
-남극 환경(눈밭 반사광, 가시거리 결여, 빙판 슬립)을 고려하여 LIO 주축 및 Leg 보조 연동 구조 채택.
+| 모듈명 | 분류 / 역할 | 주요 데이터 흐름 | 대상 소스코드 및 패키지 |
+| :--- | :--- | :--- | :--- |
+| **1) Odometry** | 위치 및 상태 추정 | LiDAR L1 + IMU ➔ 3D Pose | [FAST-LIO](https://github.com/hku-mars/FAST_LIO) (제안) / `go2_driver` |
+| **2) Controller** | 경로 추종기 | 궤적 & Pose ➔ `cmd_vel` | [visualnav-transformer](https://github.com/robodhruv/visualnav-transformer) (`pd_controller.py`) |
+| **3) Action API** | 로봇 구동 인터페이스 | `cmd_vel` ➔ Sport API | [go2_robot](https://github.com/IntelligentRoboticsLabs/go2_robot) (`go2_driver.cpp`) |
 
+### 상세 정의 및 기술 전략
+
+#### 1. Odometry Module (위치 추정)
 *   **VIO (Visual-Inertial)**: 추가 장착된 [Intel RealSense D435i](https://www.intelrealsense.com/depth-camera-d435i/) 카메라 기반 오도메트리.
 *   **LIO (LiDAR-Inertial)**: 로봇 내장 4D LiDAR L1 + 내부 IMU 데이터를 통한 오도메트리 계산.
-*   **Leg & Internal Odometry (Bridge 연동)**:
-    *   `go2_driver` : 로봇 자체 LiDAR 기반 오도메트리(`/utlidar/robot_pose`) ➔ `/odom` 토픽으로 변환 및 발행.
-    *   `go2_odom_bridge` : `lf/sportmodestate` (다리 기구학 상태) ➔ `/go2_odom` 및 TF 변환 발행.
-*   *제안 전략*: 남극 지형 극복을 위해 오도메트리 추정은 **[FAST-LIO](https://github.com/hku-mars/FAST_LIO)** 사용 제안.
+*   **Leg & Internal Odometry**: `lf/sportmodestate` (다리 기구학 상태) ➔ `go2_odom_bridge`를 통해 `/go2_odom` 및 TF 변환 발행.
+*   **제안 전략**: 남극 지형 극복을 위해 오도메트리 추정은 **FAST-LIO** 사용 제안.
 
----
-
-### 2) PID Controller (경로 추종기)
-물리 복원된 궤적과 Pose 피드백 정보를 연산하여 속도 지령(`cmd_vel`)을 도출하는 모듈.
-
+#### 2. PID Controller (경로 추종기)
 ```mermaid
 graph LR
     Traj["Recovered Trajectory"] & Pose["LIO Pose Feedback"] --> PD["PD Controller"] --> Cmd["cmd_vel"]
     style PD fill:#e8f5e9,stroke:#1b5e20,stroke-width:1px
 ```
-
-*   **Go2 자체 내장 기능**: Unitree SDK2 "Sport API"의 `TrajectoryFollow` 함수 (로컬 데드레커닝 기반 경로 추종).
-*   **현재 사용 방식**: Go2의 Sport API를 ROS 2 Nav2로 주행하기 위한 오픈소스 연동 방식 사용 중 (Nav2의 Controller Server 플러그인 이용).
 *   **ViNT / NoMAD 관련**: 
-    *   [visualnav-transformer](https://github.com/robodhruv/visualnav-transformer) 공식 저장소의 `deployment/src/pd_controller.py` 내에 비례-미분(PD) 제어 모듈 확인 완료.
+    *   `visualnav-transformer/deployment/src/pd_controller.py` 내의 비례-미분(PD) 제어 모듈 확인 완료.
     *   입력된 $10 \times 2$ trajectory와 pose 데이터를 가공해 로봇 구동 명령으로 변환하는 조향 제어기로 활용 검토.
+*   **기타 제어 방식**: Go2 자체 내장 기능(`TrajectoryFollow`) 또는 ROS 2 Nav2 주행 환경.
 
----
-
-### 3) Unitree Go2 Action Command API (구동 인터페이스)
-상위 제어 속도 지령을 로봇 모터 제어 명령으로 매핑 및 전송하는 드라이버 구조.
-
+#### 3. Unitree Go2 Action Command API (구동 인터페이스)
 ```mermaid
 graph LR
     Cmd["cmd_vel (vx, vy, yaw)"] --> Bridge["go2_driver (DDS Bridge)"] --> Sport["Sport API (Move)"] --> Go2["Go2 Actuation"]
     style Bridge fill:#ffe0b2,stroke:#e65100,stroke-width:1px
     style Go2 fill:#f3e5f5,stroke:#4a148c,stroke-width:1px
 ```
-
 *   **실제 구동 API**: Unitree SDK2의 Sport API인 **`SportClient.Move(vx, vy, vyaw)`** (물리 모터 제어 및 보행).
-*   **연동 오픈소스**: 아래 깃허브 오픈소스를 통해 ROS 2 `cmd_vel` 명령을 Sport API로 변환하여 주행 구현.
-    *   [go2_robot (by IntelligentRoboticsLabs)](https://github.com/IntelligentRoboticsLabs/go2_robot)
-    *   [go2_robot (Unitree-Go2-Robot Fork)](https://github.com/Unitree-Go2-Robot/go2_robot)
+*   **연동 오픈소스**: `go2_robot` 드라이버 패키지를 통해 ROS 2 `cmd_vel` 명령을 Sport API로 변환하여 주행 구현.
 
 ---
 
@@ -86,3 +78,23 @@ $$\text{Normalized Trajectory} = \frac{\text{GT Trajectory}}{\Delta t \times v_{
 추론 시 모델이 기하학적 궤적(Normalized Trajectory)과 속도 스케일($v_{pred}$)을 예측하면, 제어기에 인가하기 전 실제 물리적 좌표계로 복원함.
 
 $$\text{Recovered Trajectory} = \text{Normalized Trajectory} \times \Delta t \times v_{pred}$$
+
+---
+
+## 📂 4. antarctica 브랜치 디렉토리 구조 (Clean Workspace)
+
+```text
+go2_ws/
+├── README.md                  <- 본 가이드라인 문서
+├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
+├── visualnav-transformer/     <- ViNT / NoMAD 모델 구현 및 pd_controller.py 코드
+└── src/
+    ├── HesaiLidar_ROS_2.0/    <- Hesai 라이다 연동 ROS 2 드라이버
+    ├── rtabmap_ros/           <- rtabmap SLAM 패키지
+    └── go2_robot/             <- Unitree Go2 ROS 2 통신 패키지
+        ├── go2_bringup/       <- 실행용 런칭 파일 폴더
+        ├── go2_description/   <- 로봇 URDF 및 3D 메시 폴더
+        ├── go2_driver/        <- cmd_vel to DDS Sport API 변환 노드 소스코드
+        ├── go2_hardware/      <- 하드웨어 인터페이스 정의
+        └── go2_interfaces/    <- 사용자 정의 토픽 및 서비스 정의
+```
