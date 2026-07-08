@@ -1,11 +1,21 @@
-# ❄️ Unitree Go2 Antarctic Navigation Project
+# ❄️ Unitree Go2 Antarctic Navigation & Visual SLAM Project
 
-본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 전용 워크스페이스(`go2_ws`)임. 
-이 브랜치(`antarctica`)는 불필요한 기존 Nav2 템플릿 파일들을 제거하고, **LIO(라이다), ViNT(모방학습), Go2 SDK(구동)** 핵심 시스템으로만 구성된 클린 샌드박스 환경임.
+본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 통합 워크스페이스(`go2_ws`)임. 
+
+이 브랜치(`antarctica`)는 불필요한 기존 Nav2 템플릿 파일들을 제거하고, **공동 연구(LIO/S2E/VLM)**와 **개인 연구(VIO/RTAB-Map)**를 효율적으로 병행할 수 있도록 구조화된 클린 통합 환경임.
 
 ---
 
-## 📌 1. 전체 프로세스 개요 (Process Overview)
+## 📌 1. 워크스페이스 운영 목적 (Dual-Track Research)
+
+1.  **남극 연구 트랙 (공동 프로젝트)**: 
+    *   LiDAR L1 기반 LIO 오도메트리 수신 ➔ 비동기 통합 프레임워크 ➔ E2E ONNX 모델 경로 제어 ➔ Sport API 로봇 구동.
+2.  **개인 연구 트랙 (이민석 개인 프로젝트)**: 
+    *   Intel RealSense D435i RGB-D 카메라 기반 비주얼 SLAM 및 위치 추정 (**RTAB-Map** 패키지 활용).
+
+---
+
+## 📌 2. 전체 프로세스 개요 (Process Overview)
 
 모방 학습(IL) 모델의 경로 추론부터 실물 로봇의 최종 보행 구동까지의 핵심 4단계 흐름도.
 
@@ -20,7 +30,7 @@ graph LR
 
 ---
 
-## 📊 2. 3대 핵심 모듈 정의
+## 📊 3. 3대 핵심 모듈 정의
 
 | 모듈명 | 분류 / 역할 | 주요 데이터 흐름 | 대상 소스코드 및 패키지 |
 | :--- | :--- | :--- | :--- |
@@ -39,7 +49,7 @@ graph LR
 #### 2. PID Controller (경로 추종기)
 ```mermaid
 graph LR
-    Traj["Recovered Trajectory"] & Pose["LIO Pose Feedback"] --> PD["PD Controller"] --> Cmd["cmd_vel"]
+    Traj["Recovered Trajectory"] --> PD["PD Controller"] --> Cmd["cmd_vel"]
     style PD fill:#e8f5e9,stroke:#1b5e20,stroke-width:1px
 ```
 *   **ViNT / NoMAD 관련**: 
@@ -59,9 +69,9 @@ graph LR
 
 ---
 
-## 🔗 3. 소스코드 레벨 핵심 인터페이스 및 결합점 (Code-Level Bindings)
+## 🔗 4. 소스코드 레벨 핵심 인터페이스 및 결합점 (Code-Level Bindings)
 
-### 3.1 ViNT 제어 연산 결합점 (visualnav-transformer)
+### 4.1 ViNT 제어 연산 결합점 (visualnav-transformer)
 *   **관련 파일**: [pd_controller.py](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/visualnav-transformer/deployment/src/pd_controller.py)
 *   **핵심 코드 라인 및 인터페이스**:
     *   **구독(Subscribe)**: `waypoint_sub = rospy.Subscriber(WAYPOINT_TOPIC, Float32MultiArray, callback_drive)` (Line 81)
@@ -71,7 +81,7 @@ graph LR
     *   **발행(Publish)**: `vel_out.publish(vel_msg)` (Line 99)
         ➔ 계산된 속도를 하위 ROS 2 `/cmd_vel` 브릿지로 발행함.
 
-### 3.2 Go2 SDK 구동 API 결합점 (go2_ws/src/go2_robot)
+### 4.2 Go2 SDK 구동 API 결합점 (go2_ws/src/go2_robot)
 *   **관련 파일**: `go2_ws/src/go2_robot/go2_driver/src/go2_driver/go2_driver.cpp`
 *   **핵심 코드 라인 및 인터페이스**:
     *   **구독(Subscribe)**: `cmd_vel_sub_`에서 ROS 2 표준 `/cmd_vel` 속도 토픽 구독 및 콜백(`cmd_vel_callback`) 실행.
@@ -80,29 +90,33 @@ graph LR
 
 ---
 
-## 📈 4. Trajectory 정규화 및 복원 프로세스 (모방 학습 연동)
+## 📈 5. Trajectory 정규화 및 복원 프로세스 (모방 학습 연동)
 
 모델이 일정한 속도 스케일에 종속되지 않고 순수 **기하학적 궤적 형태(Geometric Path)**를 효과적으로 학습할 수 있도록 속도 성분을 분리하여 정규화함.
 
 ```mermaid
 graph LR
-    VLM["VLM (ViNT / NoMAD)"] -->|Inference| Raw["Normalized Traj & Velocity"] -->|Recovery Formula| Phys["Recovered Trajectory"]
+    VLM["VLM / E2E Node (GPU)"] -->|물리 복원 완료| Traj["/s2e/e2e/trajectory"] -->|추종 제어| Controller["Controller Node (Go2 CPU)"]
     style VLM fill:#e1f5fe,stroke:#01579b,stroke-width:1px
+    style Traj fill:#ffe0b2,stroke:#e65100,stroke-width:1px
+    style Controller fill:#f3e5f5,stroke:#4a148c,stroke-width:1px
 ```
 
-### 4.1 학습 단계: 정규화 (Normalization)
+### 5.1 학습 단계: 정규화 (Normalization)
 로봇이 이동한 실제 물리 궤적에서 속도 스케일을 소거함. ($\Delta t$는 기록 주기로, 5Hz 데이터셋의 경우 $0.2\text{ s}$ 반영)
 
 $$\text{Normalized Trajectory} = \frac{\text{GT Trajectory}}{\Delta t \times v_{GT}}$$
 
-### 4.2 제어 단계: 물리 궤적 복원 (Recovery)
-추론 시 모델이 기하학적 궤적(Normalized Trajectory)과 속도 스케일($v_{pred}$)을 예측하면, 제어기에 인가하기 전 실제 물리적 좌표계로 복원함.
+### 5.2 제어 단계: 물리 궤적 복원 (Recovery) - 주체 명확화
+*   **연산 주체**: **E2E 모델 노드(외장 GPU/컨테이너 단)**가 추론 시 기하학적 궤적(Normalized Trajectory)과 속도 스케일($v_{pred}$)을 예측하여 물리 궤적으로 복원한 뒤 토픽을 발행함.
 
 $$\text{Recovered Trajectory} = \text{Normalized Trajectory} \times \Delta t \times v_{pred}$$
 
+*   **로봇 수신 데이터**: 실물 Go2 로봇 측 `controller_node`는 이미 물리 복원이 완료된 미터 단위의 실제 궤적 좌표(`Trajectory2D`)를 수신하므로, 추가적인 복원 연산 없이 즉시 PD/PID 주행 추종을 수행함.
+
 ---
 
-## 📂 5. antarctica 브랜치 디렉토리 구조 (Clean Workspace)
+## 📂 6. antarctica 브랜치 디렉토리 구조 (Clean Workspace)
 
 ```text
 go2_ws/
@@ -110,10 +124,10 @@ go2_ws/
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
 ├── visualnav-transformer/     <- ViNT / NoMAD 모델 구현 및 pd_controller.py 코드
 ├── qwen_nav_memory_framework_v3/ <- 상위 VLM 기반 에피소딕 메모리 프레임워크 패키지
-├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (신규)
+├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (LIO/PID 실물 연동 노드 탑재)
 └── src/
     ├── HesaiLidar_ROS_2.0/    <- Hesai 라이다 연동 ROS 2 드라이버
-    ├── rtabmap_ros/           <- rtabmap SLAM 패키지
+    ├── rtabmap_ros/           <- rtabmap SLAM 패키지 (이민석 개인 VIO 연구용)
     └── go2_robot/             <- Unitree Go2 ROS 2 통신 패키지
         ├── go2_bringup/       <- 실행용 런칭 파일 폴더
         ├── go2_description/   <- 로봇 URDF 및 3D 메시 폴더
@@ -124,7 +138,7 @@ go2_ws/
 
 ---
 
-## ❓ 6. 질문: 과연 통신이 잘될까? (Network & DDS Issues)
+## ❓ 7. 질문: 과연 통신이 잘될까? (Network & DDS Issues)
 
 실하드웨어(Jetson Orin NX)와 외부 서버를 학교망 및 Netbird VPN으로 연동하여 구동 시 발생할 구조적인 문제 시나리오 및 조치 방안.
 
@@ -142,7 +156,7 @@ go2_ws/
 
 ---
 
-## 🏃 7. 월요일 연동 검증 시나리오 및 우회 전략 (Monday Test Plan)
+## 🏃 8. 화요일 연동 검증 시나리오 및 우회 전략 (Tuesday Test Plan)
 
 화요일 실제 로봇(Foxy, 20.04) 접속 시, 도커 컨테이너(Jazzy, 24.04) 환경과의 통신 호환성을 검증하는 1순위 시나리오 및 통신 두절 시 우회 방안.
 
@@ -168,7 +182,7 @@ go2_ws/
         ```bash
         ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1}}" -r 10
         ```
-    *   호스트(Foxy) 터미널:
+    *   호스트(Foxy) terminal:
         ```bash
         ros2 topic echo /cmd_vel
         ```
@@ -181,19 +195,19 @@ go2_ws/
 
 ---
 
-## 🧠 8. 비동기 프레임워크(s2e-vlm-async-framework) 설계 분석 및 의문 해소
+## 🧠 9. 비동기 프레임워크(s2e-vlm-async-framework) 설계 분석 및 의문 해소
 
 클론한 비동기 주행 백엔드 프레임워크 저장소 분석을 통해, 기존 하드웨어 연동 시 가졌던 설계상 의문점을 해결한 매핑 내용 정리.
 
 ### 1) [의문 해결] Foxy(호스트) ↔ Jazzy(도커) 간 DDS 역직렬화 오류 우려 입증
-*   **상황**: 서로 다른 ROS 2 배포판 간 다이렉트 DDS 통신 연결 시 역직렬화 깨짐 문제 의심.
+*   **상황**: 서로 다른 ROS 2 배포판 간 다이렉트 DDS 통신 연결 시 데이터 깨짐 문제 의심.
 *   **해결**: 프레임워크의 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/README.md#L7-L8)에서 Humble GPU 컨테이너와 Jazzy CPU 컨테이너 간의 DDS 통신에서도 실제 역직렬화(Deserialization) 오류를 목격했음을 보고함.
 *   **결론**: 이에 따라 화요일 실물 테스트 시 Foxy-Jazzy 간 통신 불일치가 일어날 확률이 기정사실화되었으므로, **2순위 우회 전략인 Zenoh Bridge 활용**의 우선순위와 필요성이 한층 강화됨.
 
-### 2) [의문 해결] 전역 지도(Global SLAM) 구축 필수성 여부
-*   **상황**: 주행을 가동하기 위해 글로벌 Costmap 등 전역 공간 지도 프레임이 고정 구축되어야 하는가?
+### 2) [의문 해결] 전역 지도(Global SLAM) 구축 필수성 여부 및 뷰 정합성
+*   **상황**: 주행을 가동하기 위해 글로벌 Costmap 등 전역 공간 지도 프레임이 구축되어야 하거나, 항공뷰(드론)와 로봇 지상뷰의 정교한 정렬(Alignment)이 필요한가?
 *   **해결**: 프레임워크 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/README.md#L45-L47)에 명시된 바와 같이, 모션 및 제어 인터페이스는 오직 로봇 몸체 기준의 **로컬 에고센트릭(Ego-centric) `base_link` 2D 좌표**만 사용함. E2E 노드가 이미지 상의 목표 좌표(`goal_uv`)를 `base_link`로 변환하여 궤적을 쏘면 제어기가 즉시 추종함.
-*   **결론**: 주행 루프는 전역 지도 및 글로벌 TF 없이 **상대 좌표계상에서 완전히 독립적인 클로즈드 루프**로 가동 가능함.
+*   **결론**: 본 주행계는 항공뷰와의 다이렉트 정렬을 필요로 하지 않으며, 전역 지도 없이 **로컬 상대 좌표계상에서 완전히 독립적인 클로즈드 루프**로 가동 가능함.
 
 ### 3) [의문 해결] 좌/우/후방(비정면 뷰) 타겟 탐색 시 로봇 구동 시나리오
 *   **상황**: VLM이 전방이 아닌 좌/우/후방 공간으로 갈 것을 명령할 때, 다리 각도 조향(게걸음) 또는 몸체 회전 여부.
