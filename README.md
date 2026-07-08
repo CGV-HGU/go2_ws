@@ -1,21 +1,11 @@
-# ❄️ Unitree Go2 Antarctic Navigation & Visual SLAM Project
+# ❄️ Unitree Go2 Antarctic Navigation Project
 
-본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 통합 워크스페이스(`go2_ws`)임. 
-
-이 브랜치(`antarctica`)는 불필요한 기존 Nav2 템플릿 파일들을 제거하고, **공동 연구(LIO/S2E/VLM)**와 **개인 연구(VIO/RTAB-Map)**를 효율적으로 병행할 수 있도록 구조화된 클린 통합 환경임.
-
----
-
-## 📌 1. 워크스페이스 운영 목적 (Dual-Track Research)
-
-1.  **남극 연구 트랙 (공동 프로젝트)**: 
-    *   LiDAR L1 기반 LIO 오도메트리 수신 ➔ 비동기 통합 프레임워크 ➔ E2E ONNX 모델 경로 제어 ➔ Sport API 로봇 구동.
-2.  **개인 연구 트랙 (이민석 개인 프로젝트)**: 
-    *   Intel RealSense D435i RGB-D 카메라 기반 비주얼 SLAM 및 위치 추정 (**RTAB-Map** 패키지 활용).
+본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2**의 자율주행을 제어하기 위한 ROS 2 Humble/Foxy 기반의 전용 워크스페이스(`go2_ws`)임. 
+이 브랜치(`antarctica`)는 불필요한 기존 Nav2 템플릿 파일들을 제거하고, **LIO(라이다), ViNT(모방학습), Go2 SDK(구동)** 핵심 시스템으로만 구성된 클린 샌드박스 환경임.
 
 ---
 
-## 📌 2. 전체 프로세스 개요 (Process Overview)
+## 📌 1. 전체 프로세스 개요 (Process Overview)
 
 모방 학습(IL) 모델의 경로 추론부터 실물 로봇의 최종 보행 구동까지의 핵심 4단계 흐름도.
 
@@ -30,11 +20,11 @@ graph LR
 
 ---
 
-## 📊 3. 3대 핵심 모듈 정의
+## 📊 2. 3대 핵심 모듈 정의
 
 | 모듈명 | 분류 / 역할 | 주요 데이터 흐름 | 대상 소스코드 및 패키지 |
 | :--- | :--- | :--- | :--- |
-| **1) Odometry** | 위치 및 상태 추정 | LiDAR L1 + IMU ➔ 3D Pose | [FAST-LIO](https://github.com/hku-mars/FAST_LIO) (제안) / `go2_driver` |
+| **1) Odometry** | 위치 및 상태 추정 | LiDAR L2 + IMU ➔ 3D Pose | [FAST-LIO](https://github.com/hku-mars/FAST_LIO) (제안) / `go2_driver` |
 | **2) Controller** | 경로 추종기 | 궤적 & Pose ➔ `cmd_vel` | [visualnav-transformer](https://github.com/robodhruv/visualnav-transformer) (`pd_controller.py`) |
 | **3) Action API** | 로봇 구동 인터페이스 | `cmd_vel` ➔ Sport API | [go2_robot](https://github.com/IntelligentRoboticsLabs/go2_robot) (`go2_driver.cpp`) |
 
@@ -42,7 +32,7 @@ graph LR
 
 #### 1. Odometry Module (위치 추정)
 *   **VIO (Visual-Inertial)**: 추가 장착된 [Intel RealSense D435i](https://www.intelrealsense.com/depth-camera-d435i/) 카메라 기반 오도메트리.
-*   **LIO (LiDAR-Inertial)**: 로봇 내장 4D LiDAR L1 + 내부 IMU 데이터를 통한 오도메트리 계산.
+*   **LIO (LiDAR-Inertial)**: 로봇 내장 4D LiDAR L2 + 내부 IMU 데이터를 통한 오도메트리 계산.
 *   **Leg & Internal Odometry**: `lf/sportmodestate` (다리 기구학 상태) ➔ `go2_odom_bridge`를 통해 `/go2_odom` 및 TF 변환 발행.
 *   **제안 전략**: 남극 지형 극복을 위해 오도메트리 추정은 **FAST-LIO** 사용 제안.
 
@@ -127,7 +117,7 @@ go2_ws/
 ├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (LIO/PID 실물 연동 노드 탑재)
 └── src/
     ├── HesaiLidar_ROS_2.0/    <- Hesai 라이다 연동 ROS 2 드라이버
-    ├── rtabmap_ros/           <- rtabmap SLAM 패키지 (이민석 개인 VIO 연구용)
+    ├── rtabmap_ros/           <- rtabmap SLAM 패키지
     └── go2_robot/             <- Unitree Go2 ROS 2 통신 패키지
         ├── go2_bringup/       <- 실행용 런칭 파일 폴더
         ├── go2_description/   <- 로봇 URDF 및 3D 메시 폴더
@@ -182,7 +172,7 @@ go2_ws/
         ```bash
         ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1}}" -r 10
         ```
-    *   호스트(Foxy) terminal:
+    *   호스트(Foxy) 터미널:
         ```bash
         ros2 topic echo /cmd_vel
         ```
@@ -215,5 +205,37 @@ go2_ws/
 
 ### 4) [의문 해결] LIO / VIO 오도메트리 결과 포즈의 기준 좌표 프레임
 *   **상황**: 우리가 획득한 센서 기반 Pose 데이터 값을 어떤 프레임 좌표 기준으로 설계해서 가공해야 하는가?
-*   **해결**: 프레임워크 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/README.md#L45-L47) 및 [interfaces.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/docs/interfaces.md#L112-L114)에 표기된 것처럼, 내부 오도메트리 연산은 IMU나 라이다 센서 축 좌표계로 이루어질지라도, 퍼블리시될 때는 반드시 **`base_link` 기준의 Pose** 형태로 변환되어 발행되어야 함.
+*   **해결**: 프레임워크 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/README.md#L45-L47) 및 [interfaces.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/docs/interfaces.md#L112-L114)에 표기된 것처럼, 내부 오도메트리 연산은 IMU나 라이다 센서 축 좌표계로 이루어질지라도, 퍼블리시될 때는 반드시 **`base_link` 기준의 Pose** 형태로 변환되어 발행되어야 함.
 *   **결론**: LIO/VIO 최종 퍼블리셔 작성 시 TF의 `child_frame_id`를 센서 렌즈가 아닌 `base_link`로 고정 매핑해야 함.
+
+---
+
+## 📋 10. 센서 하드웨어 세부 제원 (Sensor Specifications)
+
+본 프로젝트 주행 및 오도메트리 연산에 실물로 결합되는 센서들의 상세 하드웨어 세부 제원표.
+
+### 1) Unitree 4D LiDAR L1 vs L2 스펙 비교
+
+Unitree Go2에 기본 장착되는 탑재용 반구형 초광각 솔리드 스테이트 라이다 제원.
+
+| 구분 사양 | 4D LiDAR L1 (기존) | 4D LiDAR L2 (현 구동형) | 개선 효과 및 특징 |
+| :--- | :--- | :--- | :--- |
+| **수평 × 수직 화각 (FOV)** | $360^\circ \times 90^\circ$ | **$360^\circ \times 96^\circ$** | **수직 화각 $6^\circ$ 확장**: 지면 및 상부 사각지대 확보 우수 |
+| **포인트 샘플링 레이트** | 21,600 pts/s (유효) | **64,000 pts/s (유효)** | **데이터 조밀도 3배 향상**: 정밀 맵핑 및 SLAM 강도 개선 |
+| **거리 측정 정밀도** | ~8mm | **4.5mm** | **정밀성 2배 향상**: 포인트 오차 및 고정 노이즈 대폭 억제 |
+| **물리적 무게 / 크기** | $230\text{ g}$ / $75\times75\times65\text{ mm}$ | **$230\text{ g}$ / $75\times75\times65\text{ mm}$** | 물리적인 무게와 외부 브래킷 하우징 크기 동일 (호환 장착 가능) |
+| **최소 측정 사각지대** | $0.05\text{ m}$ (5cm) | **$0.05\text{ m}$ (5cm)** | 발끝 근방의 장애물 식별 가능 거리 동일 |
+
+*   **시장 포지셔닝**: 동급 대비 초경량($230\text{ g}$)을 달성하고, 수직 화각을 $96^\circ$까지 대폭 넓혀 사족보행 로봇 발밑의 사각지대를 원천 해소함. 측정 거리가 30m 급으로 제한되나 **로봇 자율보행 및 중단거리 공간 인지용으로는 최적의 특화 센서**로 포지셔닝함.
+
+### 2) Intel RealSense D435i 깊이 카메라 스펙
+
+시각 주행 유도 및 비주얼 SLAM 입력을 위해 융합된 센서 제원.
+
+*   **센서 방식**: Active IR Stereo Depth Camera + RGB Camera + IMU 융합
+*   **RGB 카메라 화각 (FOV)**: 수평 $69^\circ$ × 수직 $42^\circ$ (오차 $\pm 3^\circ$)
+*   **Depth 카메라 화각 (FOV)**: 수평 $86^\circ$ × 수직 $57^\circ$
+*   **유효 스캔 측정 범위**: $0.11\text{ m} \sim 10\text{ m}+$ (이상적인 Depth 권장 피치: $0.5\text{ m} \sim 3\text{ m}$)
+*   **최대 프레임 해상도**: 1280×720 @ 90fps
+*   **내장 IMU 장치**: Bosch BMI055 (6축 자이로스코프 및 가속도계 통합 보정 기능 탑재)
+*   **인터페이스**: USB 3.0 Type-C 연결
