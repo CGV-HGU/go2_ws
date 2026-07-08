@@ -28,6 +28,7 @@ def make_launch_description(node_names: list[str], *, enable_debug_visualizer_de
 
     namespace = LaunchConfiguration("namespace")
     actions = [DeclareLaunchArgument(name, default_value=value) for name, value in arguments.items()]
+    node_parameters = [{name: LaunchConfiguration(name) for name in arguments}]
     actions.extend(
         Node(
             package="s2e_vlm_nodes",
@@ -35,6 +36,7 @@ def make_launch_description(node_names: list[str], *, enable_debug_visualizer_de
             name=node_name,
             namespace=namespace,
             output="screen",
+            parameters=node_parameters,
         )
         for node_name in node_names
     )

@@ -27,6 +27,7 @@ from s2e_vlm_core.pose_buffer import Pose2D
 from s2e_vlm_core.s2e_backend import S2EFrameContext, S2EPlanner, ros_rgb8_to_chw_float
 from s2e_vlm_core.sensor_config import SensorConfig, SensorConfigError, load_all_sensor_configs, load_sensor_config
 from s2e_vlm_core.vlm_schema import VlmAction, parse_vlm_reasoning
+from nav_msgs.msg import Odometry
 from s2e_vlm_msgs.action import Rotate
 from s2e_vlm_msgs.msg import NodeStatus, StampedPose, SystemHealth, Trajectory2D
 from sensor_msgs.msg import CameraInfo, Image, Imu, PointCloud2, PointField
@@ -107,6 +108,10 @@ class BaseMockNode(Node):
         self.healthy = True
         self.error_code = ""
         self.status_message = "mock node starting"
+        
+        self.declare_parameter("use_mock_hardware", True)
+        self.use_mock_hardware = self.get_parameter("use_mock_hardware").value
+        
         self.status_publisher = self.create_publisher(NodeStatus, f"/s2e/status/{contract.node_name}", STATUS_QOS)
         self.create_timer(1.0, self.publish_heartbeat)
 
@@ -281,11 +286,49 @@ class OdometryMockNode(BaseMockNode):
         self.last_lidar = None
         self.last_camera = None
         self.last_imu = None
-        self.create_subscription(PointCloud2, "/s2e/sensors/lidar/points", lambda msg: setattr(self, "last_lidar", msg), SENSOR_QOS)
-        self.create_subscription(Image, "/s2e/sensors/camera/image", lambda msg: setattr(self, "last_camera", msg), SENSOR_QOS)
-        self.create_subscription(Imu, "/s2e/sensors/imu", lambda msg: setattr(self, "last_imu", msg), SENSOR_QOS)
-        self.create_timer(_env_float("S2E_MOCK_ODOMETRY_PERIOD_S", 0.02), self.publish_pose)
-        self.set_status("WAITING_INPUTS", "WAITING_INPUTS", message="waiting for sensor streams")
+        
+        if self.use_mock_hardware:
+            self.create_subscription(PointCloud2, "/s2e/sensors/lidar/points", lambda msg: setattr(self, "last_lidar", msg), SENSOR_QOS)
+            self.create_subscription(Image, "/s2e/sensors/camera/image", lambda msg: setattr(self, "last_camera", msg), SENSOR_QOS)
+            self.create_subscription(Imu, "/s2e/sensors/imu", lambda msg: setattr(self, "last_imu", msg), SENSOR_QOS)
+            self.create_timer(_env_float("S2E_MOCK_ODOMETRY_PERIOD_S", 0.02), self.publish_pose)
+            self.set_status("WAITING_INPUTS", "WAITING_INPUTS", message="waiting for sensor streams")
+        else:
+            # Real hardware mode: subscribe to actual LIO outputs
+            self.declare_parameter("lio_pose_topic", "/utlidar/robot_pose")
+            self.declare_parameter("lio_odom_topic", "/odom")
+            lio_pose_topic = self.get_parameter("lio_pose_topic").value
+            lio_odom_topic = self.get_parameter("lio_odom_topic").value
+
+            self.create_subscription(PoseStamped, lio_pose_topic, self._on_real_pose, RELIABLE_QOS)
+            self.create_subscription(Odometry, lio_odom_topic, self._on_real_odom, RELIABLE_QOS)
+            self.set_status("ACTIVE", "ACTIVE", message="monitoring real LIO topics")
+
+    def _on_real_pose(self, msg: PoseStamped) -> None:
+        stamped_pose = StampedPose()
+        stamped_pose.header = msg.header
+        stamped_pose.header.frame_id = "odom"
+        stamped_pose.child_frame_id = "base_link"
+        stamped_pose.source_stamp = msg.header.stamp
+        stamped_pose.processed_stamp = self.get_clock().now().to_msg()
+        stamped_pose.pose = msg.pose
+        stamped_pose.confidence = 1.0
+        stamped_pose.status = "ACTIVE"
+        self.publisher.publish(stamped_pose)
+        self.set_status("ACTIVE", "ACTIVE", message="publishing base_link pose from real PoseStamped")
+
+    def _on_real_odom(self, msg: Odometry) -> None:
+        stamped_pose = StampedPose()
+        stamped_pose.header = msg.header
+        stamped_pose.header.frame_id = "odom"
+        stamped_pose.child_frame_id = "base_link"
+        stamped_pose.source_stamp = msg.header.stamp
+        stamped_pose.processed_stamp = self.get_clock().now().to_msg()
+        stamped_pose.pose = msg.pose.pose
+        stamped_pose.confidence = 1.0
+        stamped_pose.status = "ACTIVE"
+        self.publisher.publish(stamped_pose)
+        self.set_status("ACTIVE", "ACTIVE", message="publishing base_link pose from real Odometry")
 
     def publish_pose(self) -> None:
         if self.last_lidar is None or self.last_camera is None or self.last_imu is None:
@@ -618,12 +661,36 @@ class ControllerMockNode(BaseMockNode):
         self.trajectory_received_monotonic: float | None = None
         self.health = SystemHealth(ok_to_move=True, overall_state="OK", unhealthy_nodes=[], missing_critical_nodes=[], reason="")
         self.motion_blocked = False
+        
+        # Real controller parameters
+        self.declare_parameter("kp_linear", 0.5)
+        self.declare_parameter("kp_angular", 1.2)
+        self.declare_parameter("kd_angular", 0.05)
+        self.declare_parameter("max_linear_speed", 0.4)
+        self.declare_parameter("max_angular_speed", 0.8)
+        self.declare_parameter("lookahead_index", 3)
+        self.declare_parameter("kp_rotate", 0.8)
+        self.declare_parameter("tolerance_deg", 3.0)
+        
+        self.kp_linear = self.get_parameter("kp_linear").value
+        self.kp_angular = self.get_parameter("kp_angular").value
+        self.kd_angular = self.get_parameter("kd_angular").value
+        self.max_linear_speed = self.get_parameter("max_linear_speed").value
+        self.max_angular_speed = self.get_parameter("max_angular_speed").value
+        self.lookahead_index = self.get_parameter("lookahead_index").value
+        self.kp_rotate = self.get_parameter("kp_rotate").value
+        self.tolerance_deg = self.get_parameter("tolerance_deg").value
+        
+        self.last_yaw_error = 0.0
+
         self.create_subscription(Trajectory2D, "/s2e/e2e/trajectory", self._on_trajectory, RELIABLE_QOS)
         self.create_subscription(StampedPose, "/s2e/odometry/pose", self._on_pose, RELIABLE_QOS)
         self.create_subscription(NodeStatus, "/s2e/e2e/status", self._on_e2e_status, STATUS_QOS)
         self.create_subscription(SystemHealth, "/s2e/supervisor/health", self._on_health, RELIABLE_QOS)
         self.rotate_server = ActionServer(self, Rotate, "/s2e/controller/rotate", execute_callback=self._execute_rotate)
-        self.create_timer(_env_float("S2E_MOCK_CONTROLLER_PERIOD_S", 0.05), self.control_cycle)
+        
+        period = 0.05 if self.use_mock_hardware else 0.02 # 50Hz for real control
+        self.create_timer(period, self.control_cycle)
         self.set_status("ACTIVE", "WAITING_TRAJECTORY", message="waiting for trajectory")
 
     def publish_controller_status(self) -> None:
@@ -665,16 +732,53 @@ class ControllerMockNode(BaseMockNode):
     def control_cycle(self) -> None:
         command = Twist()
         now = time.monotonic()
-        if self.last_pose_monotonic is not None and now - self.last_pose_monotonic > 0.10:
+        
+        # In real hardware, we allow up to 0.2s of odom age bound to avoid sudden stops on network jitter
+        odom_timeout = 0.10 if self.use_mock_hardware else 0.20
+        if self.last_pose_monotonic is not None and now - self.last_pose_monotonic > odom_timeout:
             self.current_trajectory = None
             self.set_status("FAULT", "FAULT", healthy=False, error_code="ODOM_STALE", message="odometry exceeded controller age bound")
         elif self.motion_blocked or not self.health.ok_to_move:
             self.set_status(self.state if self.state in {"DEGRADED", "FAULT"} else "ACTIVE", "STOPPING", healthy=self.health.ok_to_move, error_code="" if self.health.ok_to_move else "SUPERVISOR_BLOCKED", message="holding zero command")
         elif self.current_trajectory is not None and self.trajectory_received_monotonic is not None:
-            if now - self.trajectory_received_monotonic <= _env_float("S2E_MOCK_TRAJECTORY_TTL_S", 0.50):
-                command.linear.x = 0.2
-                command.angular.z = max(-0.5, min(0.5, float(self.current_trajectory.goal_point_base_link.y) * 0.25))
-                self.set_status("ACTIVE", "FOLLOWING", message="following mock trajectory")
+            # Trajectory TTL check
+            ttl = _env_float("S2E_MOCK_TRAJECTORY_TTL_S", 0.50) if self.use_mock_hardware else 1.0 # 1.0s limit for real execution
+            if now - self.trajectory_received_monotonic <= ttl:
+                if self.use_mock_hardware:
+                    # Mock trajectory tracking
+                    command.linear.x = 0.2
+                    command.angular.z = max(-0.5, min(0.5, float(self.current_trajectory.goal_point_base_link.y) * 0.25))
+                    self.set_status("ACTIVE", "FOLLOWING", message="following mock trajectory")
+                else:
+                    # Real trajectory tracking using PD/PID control
+                    points = self.current_trajectory.points
+                    idx = min(self.lookahead_index, len(points) - 1)
+                    if idx >= 0:
+                        # Extract lookahead point in base_link (robot local frame)
+                        pt = points[idx]
+                        dx = float(pt.x)
+                        dy = float(pt.y)
+                        
+                        # Heading and distance errors
+                        heading_error = math.atan2(dy, dx)
+                        distance_error = math.hypot(dx, dy)
+                        
+                        # PD angular control
+                        d_heading = heading_error - self.last_yaw_error
+                        self.last_yaw_error = heading_error
+                        
+                        w_cmd = self.kp_angular * heading_error + self.kd_angular * d_heading
+                        
+                        # Proportional linear control
+                        v_cmd = self.kp_linear * distance_error
+                        
+                        # Saturate velocities
+                        command.linear.x = max(0.0, min(self.max_linear_speed, v_cmd))
+                        command.angular.z = max(-self.max_angular_speed, min(self.max_angular_speed, w_cmd))
+                        
+                        self.set_status("ACTIVE", "FOLLOWING", message=f"following real trajectory: v={command.linear.x:.2f}, w={command.angular.z:.2f}")
+                    else:
+                        self.set_status("ACTIVE", "WAITING_TRAJECTORY", error_code="TRAJECTORY_INVALID", message="trajectory points empty")
             else:
                 self.current_trajectory = None
                 self.trajectory_received_monotonic = None
@@ -686,37 +790,103 @@ class ControllerMockNode(BaseMockNode):
 
     def _execute_rotate(self, goal_handle):
         result = Rotate.Result()
-        if self.last_pose_monotonic is None or time.monotonic() - self.last_pose_monotonic > 0.10:
+        
+        odom_timeout = 0.10 if self.use_mock_hardware else 0.20
+        if self.last_pose_monotonic is None or time.monotonic() - self.last_pose_monotonic > odom_timeout:
             goal_handle.abort()
             result.success = False
             result.result_code = "ODOM_STALE"
             result.final_yaw_delta_deg = 0.0
             result.message = "odometry stale"
             return result
+            
         self.current_trajectory = None
         self.trajectory_received_monotonic = None
         self.motion_blocked = False
-        target = float(goal_handle.request.target_yaw_delta_deg)
-        sign = 1.0 if target >= 0.0 else -1.0
-        steps = 5
+        target_deg = float(goal_handle.request.target_yaw_delta_deg)
+        sign = 1.0 if target_deg >= 0.0 else -1.0
+        
         self.set_status("ACTIVE", "ROTATING", message="rotate action active")
-        for index in range(steps):
-            current = target * float(index + 1) / float(steps)
-            feedback = Rotate.Feedback()
-            feedback.current_yaw_delta_deg = current
-            feedback.remaining_deg = target - current
-            feedback.controller_state = "ROTATING"
-            goal_handle.publish_feedback(feedback)
-            command = Twist()
-            command.angular.z = sign * math.radians(max(1.0, float(goal_handle.request.max_yaw_rate_deg_s)))
-            self.command_publisher.publish(command)
-            self.publish_controller_status()
-            time.sleep(0.05)
+        
+        if self.use_mock_hardware:
+            # Mock rotate logic
+            steps = 5
+            for index in range(steps):
+                current = target_deg * float(index + 1) / float(steps)
+                feedback = Rotate.Feedback()
+                feedback.current_yaw_delta_deg = current
+                feedback.remaining_deg = target_deg - current
+                feedback.controller_state = "ROTATING"
+                goal_handle.publish_feedback(feedback)
+                command = Twist()
+                command.angular.z = sign * math.radians(max(1.0, float(goal_handle.request.max_yaw_rate_deg_s)))
+                self.command_publisher.publish(command)
+                self.publish_controller_status()
+                time.sleep(0.05)
+            final_deg = target_deg
+        else:
+            # Real closed-loop rotate logic using odometry pose feedback
+            start_pose = _pose2d_from_stamped_pose(self.last_pose)
+            start_yaw = start_pose.yaw
+            target_yaw = start_yaw + math.radians(target_deg)
+            target_yaw = (target_yaw + math.pi) % (2.0 * math.pi) - math.pi
+            
+            timeout = float(goal_handle.request.timeout_s)
+            tolerance = float(goal_handle.request.tolerance_deg)
+            w_limit = math.radians(float(goal_handle.request.max_yaw_rate_deg_s))
+            
+            start_time = time.monotonic()
+            
+            while time.monotonic() - start_time < timeout:
+                if time.monotonic() - self.last_pose_monotonic > 0.20:
+                    goal_handle.abort()
+                    result.success = False
+                    result.result_code = "ODOM_STALE"
+                    result.final_yaw_delta_deg = 0.0
+                    result.message = "odometry lost during rotation"
+                    return result
+                
+                current_pose = _pose2d_from_stamped_pose(self.last_pose)
+                current_yaw = current_pose.yaw
+                
+                # Remaining angle
+                yaw_error = target_yaw - current_yaw
+                yaw_error = (yaw_error + math.pi) % (2.0 * math.pi) - math.pi
+                yaw_error_deg = math.degrees(yaw_error)
+                
+                if abs(yaw_error_deg) < tolerance:
+                    break
+                
+                # P-control on yaw velocity
+                w_cmd = self.kp_rotate * yaw_error
+                w_cmd = max(-w_limit, min(w_limit, w_cmd))
+                
+                command = Twist()
+                command.angular.z = w_cmd
+                self.command_publisher.publish(command)
+                
+                # Publish action feedback
+                feedback = Rotate.Feedback()
+                delta_yaw = current_yaw - start_yaw
+                delta_yaw = (delta_yaw + math.pi) % (2.0 * math.pi) - math.pi
+                feedback.current_yaw_delta_deg = math.degrees(delta_yaw)
+                feedback.remaining_deg = yaw_error_deg
+                feedback.controller_state = "ROTATING"
+                goal_handle.publish_feedback(feedback)
+                
+                self.publish_controller_status()
+                time.sleep(0.02)
+                
+            final_pose = _pose2d_from_stamped_pose(self.last_pose)
+            final_delta = final_pose.yaw - start_yaw
+            final_delta = (final_delta + math.pi) % (2.0 * math.pi) - math.pi
+            final_deg = math.degrees(final_delta)
+            
         self.command_publisher.publish(Twist())
         result.success = True
         result.result_code = "SUCCESS"
-        result.final_yaw_delta_deg = target
-        result.message = "mock rotate complete"
+        result.final_yaw_delta_deg = final_deg
+        result.message = "rotate complete"
         goal_handle.succeed()
         self.set_status("ACTIVE", "WAITING_TRAJECTORY", message="rotate complete")
         self.publish_controller_status()
