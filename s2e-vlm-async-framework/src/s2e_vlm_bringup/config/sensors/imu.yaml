@@ -1,0 +1,5 @@
+sensor_name: imu
+parent_frame: base_link
+child_frame: imu
+translation_m: [0.0, 0.0, 0.12]
+rotation_quaternion_xyzw: [0.0, 0.0, 0.0, 1.0]

@@ -109,6 +109,8 @@ go2_ws/
 ├── README.md                  <- 본 가이드라인 문서
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
 ├── visualnav-transformer/     <- ViNT / NoMAD 모델 구현 및 pd_controller.py 코드
+├── qwen_nav_memory_framework_v3/ <- 상위 VLM 기반 에피소딕 메모리 프레임워크 패키지
+├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (신규)
 └── src/
     ├── HesaiLidar_ROS_2.0/    <- Hesai 라이다 연동 ROS 2 드라이버
     ├── rtabmap_ros/           <- rtabmap SLAM 패키지
@@ -142,7 +144,7 @@ go2_ws/
 
 ## 🏃 7. 월요일 연동 검증 시나리오 및 우회 전략 (Monday Test Plan)
 
-월요일 실제 로봇(Foxy, 20.04) 접속 시, 도커 컨테이너(Jazzy, 24.04) 환경과의 통신 호환성을 검증하는 1순위 시나리오 및 통신 두절 시 우회 방안.
+화요일 실제 로봇(Foxy, 20.04) 접속 시, 도커 컨테이너(Jazzy, 24.04) 환경과의 통신 호환성을 검증하는 1순위 시나리오 및 통신 두절 시 우회 방안.
 
 ### 1) [1순위] CycloneDDS 루프백 다이렉트 검증 (가장 단순함)
 *   **환경 설정 (호스트 및 도커 양측 선언)**:
@@ -176,3 +178,28 @@ go2_ws/
 위 다이렉트 통신이 미들웨어 버전 불일치로 실패할 경우 시도할 우회로:
 *   **Zenoh Bridge 연동**: 호스트와 도커 양측에 `zenoh-bridge-dds`를 켜서 버전 독립적인 고속 통신 터널 개설.
 *   **파이썬 소켓 브릿지**: 양측에 ROS 2 통신망 영향이 없는 일반 Python 소켓 스크립트를 띄워 로우 바이트 데이터를 강제 전송 및 바이패스.
+
+---
+
+## 🧠 8. 비동기 프레임워크(s2e-vlm-async-framework) 설계 분석 및 의문 해소
+
+클론한 비동기 주행 백엔드 프레임워크 저장소 분석을 통해, 기존 하드웨어 연동 시 가졌던 설계상 의문점을 해결한 매핑 내용 정리.
+
+### 1) [의문 해결] Foxy(호스트) ↔ Jazzy(도커) 간 DDS 역직렬화 오류 우려 입증
+*   **상황**: 서로 다른 ROS 2 배포판 간 다이렉트 DDS 통신 연결 시 역직렬화 깨짐 문제 의심.
+*   **해결**: 프레임워크의 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/README.md#L7-L8)에서 Humble GPU 컨테이너와 Jazzy CPU 컨테이너 간의 DDS 통신에서도 실제 역직렬화(Deserialization) 오류를 목격했음을 보고함.
+*   **결론**: 이에 따라 화요일 실물 테스트 시 Foxy-Jazzy 간 통신 불일치가 일어날 확률이 기정사실화되었으므로, **2순위 우회 전략인 Zenoh Bridge 활용**의 우선순위와 필요성이 한층 강화됨.
+
+### 2) [의문 해결] 전역 지도(Global SLAM) 구축 필수성 여부
+*   **상황**: 주행을 가동하기 위해 글로벌 Costmap 등 전역 공간 지도 프레임이 고정 구축되어야 하는가?
+*   **해결**: 프레임워크 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/README.md#L45-L47)에 명시된 바와 같이, 모션 및 제어 인터페이스는 오직 로봇 몸체 기준의 **로컬 에고센트릭(Ego-centric) `base_link` 2D 좌표**만 사용함. E2E 노드가 이미지 상의 목표 좌표(`goal_uv`)를 `base_link`로 변환하여 궤적을 쏘면 제어기가 즉시 추종함.
+*   **결론**: 주행 루프는 전역 지도 및 글로벌 TF 없이 **상대 좌표계상에서 완전히 독립적인 클로즈드 루프**로 가동 가능함.
+
+### 3) [의문 해결] 좌/우/후방(비정면 뷰) 타겟 탐색 시 로봇 구동 시나리오
+*   **상황**: VLM이 전방이 아닌 좌/우/후방 공간으로 갈 것을 명령할 때, 다리 각도 조향(게걸음) 또는 몸체 회전 여부.
+*   **해결**: 프레임워크 [interfaces.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/docs/interfaces.md#L171-L172) 및 [Rotate Action](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/docs/interfaces.md#L339-L357) 정의에 따라, VLM이 몸체를 틀도록 지시하면 `/s2e/controller/rotate` 액션을 쏘아 제자리에 돌려놓은 뒤, 정면 카메라에서 다시 깨끗한 전방 이미지를 획득하여 주행을 계속하는 **Rotate-to-Front** 가이드라인 정책을 적용함.
+
+### 4) [의문 해결] LIO / VIO 오도메트리 결과 포즈의 기준 좌표 프레임
+*   **상황**: 우리가 획득한 센서 기반 Pose 데이터 값을 어떤 프레임 좌표 기준으로 설계해서 가공해야 하는가?
+*   **해결**: 프레임워크 [README.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/README.md#L45-L47) 및 [interfaces.md](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/s2e-vlm-async-framework/docs/interfaces.md#L112-L114)에 표기된 것처럼, 내부 오도메트리 연산은 IMU나 라이다 센서 축 좌표계로 이루어질지라도, 퍼블리시될 때는 반드시 **`base_link` 기준의 Pose** 형태로 변환되어 발행되어야 함.
+*   **결론**: LIO/VIO 최종 퍼블리셔 작성 시 TF의 `child_frame_id`를 센서 렌즈가 아닌 `base_link`로 고정 매핑해야 함.

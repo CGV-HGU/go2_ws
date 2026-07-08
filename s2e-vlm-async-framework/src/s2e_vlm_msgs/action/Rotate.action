@@ -1,0 +1,13 @@
+float32 target_yaw_delta_deg
+float32 max_yaw_rate_deg_s
+float32 tolerance_deg
+float32 timeout_s
+---
+bool success
+string result_code
+float32 final_yaw_delta_deg
+string message
+---
+float32 current_yaw_delta_deg
+float32 remaining_deg
+string controller_state

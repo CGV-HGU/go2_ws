@@ -1,0 +1,7 @@
+std_msgs/Header header
+builtin_interfaces/Time source_stamp
+builtin_interfaces/Time processed_stamp
+string child_frame_id
+geometry_msgs/Pose pose
+float32 confidence
+string status
