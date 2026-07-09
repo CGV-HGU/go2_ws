@@ -255,10 +255,10 @@ graph TD
     end
 
     %% Data Exchanges
-    AI -->|10x2 Trajectory| BridgeHost
-    Driver <-->|Pose & cmd_vel| BridgeHost
-    BridgeHost <==>|Local Loopback (127.0.0.1) < 1ms| BridgeDocker
-    BridgeDocker <-->|Target / Odom Pose| AsyncNodes
+    AI -->|"10x2 Trajectory"| BridgeHost
+    Driver <-->|"Pose & cmd_vel"| BridgeHost
+    BridgeHost <-->|"Local Loopback (127.0.0.1) < 1ms"| BridgeDocker
+    BridgeDocker <-->|"Target / Odom Pose"| AsyncNodes
     
     style Host fill:#f5f5f5,stroke:#333,stroke-width:1px
     style Docker fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
