@@ -15,6 +15,7 @@
 | **폐루프 제자리 회전 제어 (Action)** | 🟢 **코드 완료 (실물 미검증)** | 로컬 단위 테스트 통과. 화요일 실물 오도메트리 회전 피드백 기반 목표 각도 수렴 정밀도 측정 예정. |
 | **Foxy-Jazzy 통신 바이패스 브릿지** | 🟢 **코드 완료 (실물 미검증)** | 양단 스크립트 개발 완료 (`scratch/`). 화요일 호스트-컨테이너 간 UDP 패킷 누수 여부 및 전송 레이턴시(목표: <1ms) 검증 예정. |
 | **파이썬 Direct 구동 드라이버** | 🟢 **코드 완료 (실물 미검증)** | 스크립트 개발 완료 (`scratch/`). 화요일 C++ ROS 2 드라이버 빌드 실패 시 비상 긴급 주행용 백업 수단으로 대기. |
+| **Qwen ROS 2 실물 연동 백엔드** | 🟢 **코드 완료 (실물 미검증)** | 백엔드 모듈 및 구동 스크립트 완료 (`ros2_backend.py`). 화요일 실물 D435i 이미지 취득 및 궤적 변환 추종 상태 검증 예정. |
 | **화요일 DDS / 소켓 연동 테스트** | 🟡 **실물 검증 대기 (Ready)** | Foxy(호스트)-Jazzy(도커) 간 실물 CycloneDDS 루프백 및 네트워크 포트 바인딩 테스트 예정. |
 | **센서 드라이버 토픽 리매핑** | 🟡 **실물 검증 대기 (Ready)** | D435i 카메라 RGB 이미지 및 LiDAR 점군 토픽의 실하드웨어 수신 상태 최종 매핑 예정. |
 
@@ -147,6 +148,28 @@ ros2 launch s2e_vlm_bringup robot_side.launch.py use_mock_hardware:=false
 *   **Python SDK High-Level 모션 제어**: `ChannelFactoryInitialize` 채널 초기화 및 `SportClient` 모션 API(`StandUp`, `Move`, `Damp`) 사용 가이드.
 *   **Python SDK 센서 상태 수신 (`SportStateClient`)**: IMU 자세 쿼터니언, 로컬 추정 속도, 포즈 위치 데이터 실시간 콜백 수신 코드.
 *   **C++ cmd_vel ROS 2 핸들러 구조**: cmd_vel 수신 시 횡속도 격리 및 JSON 직렬화 후 Request 패킷 전송 구조 아카이빙.
+</details>
+
+<details>
+<summary><b>📖 3.8 Qwen 에피소딕 메모리 실물 로봇 실행 가이드 (Qwen ROS 2 Deployment)</b></summary>
+
+실제 젯슨 호스트 환경에서 수동 빌드 과정 없이 Qwen VLA 에이전트와 실하드웨어를 100% 파이썬으로 엮어 주행시키는 방법.
+
+1. **VLM API 엔드포인트 환경 변수 설정**:
+   ```bash
+   # 로컬 또는 클라우드의 OpenAI 호환 API 서버 정보 등록
+   export QWEN_BASE_URL="https://your-qwen-endpoint/v1"
+   export QWEN_API_KEY="your-api-key"
+   export QWEN_MODEL="qwen3-vl-32b-thinking"
+   ```
+
+2. **실물 ROS 2 연동 주행 노드 실행**:
+   ```bash
+   # examples 디렉토리의 run_qwen_ros2.py 스크립트 실행 (목표 좌표 지정)
+   cd ~/go2_ws/qwen_nav_memory_framework_v3/qwen_nav_memory_framework
+   python3 examples/run_qwen_ros2.py --goal-x 5.0 --goal-y 0.0
+   ```
+   * *동작 메커니즘*: 백그라운드 스레드에서 `/s2e/odometry/pose` 및 `/s2e/sensors/camera/image`를 디코딩하고, 메인 스레드에서 Qwen의 에피소딕 노드 그래프를 빌드하며, 주행 결정 시 실시간으로 바닥 평면에 타겟을 투영하여 `/s2e/e2e/trajectory`를 발행하고 PD 조향을 돌림.
 </details>
 
 ---
