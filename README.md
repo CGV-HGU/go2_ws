@@ -389,15 +389,25 @@ graph TD
 *   **[unitree_sdk2_python (Core Python SDK)](https://github.com/unitreerobotics/unitree_sdk2_python)**: 파이썬 기반 로봇 다이렉트 DDS 제어 인터페이스.
 *   **[unitree_ros2 (Official ROS 2 Wrapper)](https://github.com/unitreerobotics/unitree_ros2)**: 조인트 상태, 센서 상태 및 보행 노드 통합 공식 패키지.
 
-### 2) 🚨 비상 롤백 시나리오 (ROS 2 빌드 두절 시)
-만약 화요일 현장에서 C++ ROS 2 드라이버 종속성 문제로 `go2_robot` 컴파일이 불가능할 경우, ROS 2를 우회하여 공식 파이썬 SDK로 다이렉트 구동을 테스트하는 우회 명령어:
+### 2) 🚨 비상 롤백 시나리오 (C++ 드라이버 빌드 실패 시)
+만약 화요일 현장에서 C++ ROS 2 드라이버 종속성 문제로 `go2_robot` 컴파일이 불가능할 경우, ROS 2 Foxy 파이썬 노드와 공식 SDK 파이썬 모듈을 다이렉트로 결합해 구동하는 우회 명령어:
 
-```bash
-# 1. 공식 파이썬 SDK 설치
-git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
-cd unitree_sdk2_python
-pip3 install .
+1.  **공식 파이썬 SDK 의존성 설치**:
+    ```bash
+    git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
+    cd unitree_sdk2_python
+    pip3 install .
+    ```
+2.  **비상용 파이썬 다이렉트 드라이버 기동 (C++ 빌드 생략)**:
+    호스트 OS 터미널에서 C++ 컴파일 빌드 없이 바로 파이썬 노드를 켜서 로봇 통신망을 개통함.
+    ```bash
+    # 로봇 유선 연결된 네트워크 카드 명칭(예: eth0)을 인자로 주어 실행
+    python3 ~/go2_ws/scratch/python_direct_driver.py eth0
+    ```
+    *(수동 컴파일이 전혀 필요 없는 구조로, 기동 즉시 호스트의 `/cmd_vel`을 수신해 실물 로봇을 보행 제어함)*
 
-# 2. 로봇 내부 LAN망 바인딩 인터페이스(예: eth0)를 지정하여 눕기/서기 기본 모션 다이렉트 테스트
-python3 example/stands/stand_up_down.py eth0
-```
+3.  **기본 모션 개별 작동 여부 테스트**:
+    ```bash
+    # 로봇 기본 눕기/서기 모션이 DDS 상에서 개별 동작하는지 기저 점검
+    python3 example/stands/stand_up_down.py eth0
+    ```
