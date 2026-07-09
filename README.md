@@ -232,3 +232,47 @@ go2_ws/
 *   **거리(Depth) 스캔 범위**: 0.11m ~ 10m+ (권장 거리: 0.5m ~ 3m)
 *   **내장 IMU**: Bosch BMI055 (가속도 및 자이로스코프 내장)
 *   **역할**: S2E(모방학습)용 11프레임 RGB 입력 공급 및 개인 비주얼 SLAM 연구(RTAB-Map Depth) 데이터 제공
+
+---
+
+## 🛠️ 11. 젯슨 온보드 하이브리드 분리 아키텍처 전략 (Jetson Hybrid Split Architecture)
+
+JetPack 5 호스트 환경(Ubuntu 20.04 / CUDA 11.4)과 통합 패키지 요구 환경(Ubuntu 24.04 / ROS 2 Jazzy) 간의 **Tegra 드라이버 백포트 에러(Driver/Library Mismatch)**를 영리하게 회피하고 로봇 한 대에서 모든 연산을 종결하는 최적의 배포 전략.
+
+### 1) 시스템 구조도 (Data Flow Diagram)
+
+```mermaid
+graph TD
+    subgraph Host ["Host OS: Ubuntu 20.04 (JetPack 5.1.1 / CUDA 11.4)"]
+        AI["AI Inference Model (S2E ONNX) <br> GPU Accelerated (Native)"]
+        Driver["go2_robot Driver <br> (ROS 2 Foxy Native)"]
+        BridgeHost["Python Socket / Zenoh <br> (Host Side Bridge)"]
+    end
+
+    subgraph Docker ["Docker Container: Ubuntu 24.04 (CPU Only)"]
+        AsyncNodes["Async Framework Nodes <br> (ROS 2 Jazzy)"]
+        BridgeDocker["Python Socket / Zenoh <br> (Container Side Bridge)"]
+    end
+
+    %% Data Exchanges
+    AI -->|10x2 Trajectory| BridgeHost
+    Driver <-->|Pose & cmd_vel| BridgeHost
+    BridgeHost <==>|Local Loopback (127.0.0.1) < 1ms| BridgeDocker
+    BridgeDocker <-->|Target / Odom Pose| AsyncNodes
+    
+    style Host fill:#f5f5f5,stroke:#333,stroke-width:1px
+    style Docker fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style AI fill:#ffe0b2,stroke:#f57c00,stroke-width:1px
+```
+
+### 2) 세부 구동 전략
+
+*   **GPU 트랙 (호스트 네이티브 구동)**:
+    *   무거운 AI 모델(ViNT/NoMAD 및 S2E ONNX) 추론 루프는 호스트 OS 단에서 구동함.
+    *   호스트에 탑재된 CUDA 11.4 및 TensorRT 8.5.2 드라이버를 직접 호출하므로 라이브러리 충돌 없이 하드웨어 가속 성능을 최대치로 뿜어냄.
+*   **CPU 트랙 (Jazzy 도커 컨테이너 구동)**:
+    *   상준님/현서님의 비동기 로직 및 메모리 그래프 연산(ROS 2 Jazzy)은 도커 안에서 실행함.
+    *   도커 런칭 시 `--runtime=nvidia` 옵션을 주지 않는 **순수 CPU 모드**로 기동하여, Tegra GPU 드라이버 마운트로 인한 라이브러리 크래시 가능성을 원천 차단함.
+*   **루프백 브릿징 (통신)**:
+    *   두 환경 간의 실시간 제어 명령(Twist) 및 오도메트리 위치 정보(Pose)는 로컬 루프백(`127.0.0.1`) 네트워크 상에서 **Python Socket Bridge** 또는 **Zenoh Bridge**를 통해 실시간 바이패스함.
+    *   이를 통해 외부 GPU 연산 PC 없이 **사족보행 로봇 내부 젯슨 단 단 한 대에서 안정적인 저지연(1ms 내외) AI 실물 주행 제어가 실현**됨.
