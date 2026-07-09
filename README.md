@@ -377,3 +377,27 @@ graph TD
         ```
 2.  **지상 최종 자율주행 (Ground Test)**:
     *   공중 테스트 완료 후 로봇을 평지에 두고 주행을 트리거하여 최종 Closed-loop 주행을 완료함.
+
+---
+
+## 🔗 13. Unitree Go2 공식 개발자 리소스 (Official Developer Resources)
+
+화요일 현장 연동 및 비상 롤백 상황 시 즉시 코드 레퍼런스를 조회할 수 있는 공식 깃허브 일람.
+
+### 1) 공식 레포지토리 링크
+*   **[unitree_sdk2 (Core C++ SDK)](https://github.com/unitreerobotics/unitree_sdk2)**: 로봇 코어 DDS 통신 및 SportClient API 기저 정의서.
+*   **[unitree_sdk2_python (Core Python SDK)](https://github.com/unitreerobotics/unitree_sdk2_python)**: 파이썬 기반 로봇 다이렉트 DDS 제어 인터페이스.
+*   **[unitree_ros2 (Official ROS 2 Wrapper)](https://github.com/unitreerobotics/unitree_ros2)**: 조인트 상태, 센서 상태 및 보행 노드 통합 공식 패키지.
+
+### 2) 🚨 비상 롤백 시나리오 (ROS 2 빌드 두절 시)
+만약 화요일 현장에서 C++ ROS 2 드라이버 종속성 문제로 `go2_robot` 컴파일이 불가능할 경우, ROS 2를 우회하여 공식 파이썬 SDK로 다이렉트 구동을 테스트하는 우회 명령어:
+
+```bash
+# 1. 공식 파이썬 SDK 설치
+git clone https://github.com/unitreerobotics/unitree_sdk2_python.git
+cd unitree_sdk2_python
+pip3 install .
+
+# 2. 로봇 내부 LAN망 바인딩 인터페이스(예: eth0)를 지정하여 눕기/서기 기본 모션 다이렉트 테스트
+python3 example/stands/stand_up_down.py eth0
+```
