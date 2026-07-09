@@ -242,7 +242,7 @@ JetPack 5 호스트 환경(Ubuntu 20.04 / CUDA 11.4)과 통합 패키지 요구 
 ### 1) 시스템 구조도 (Data Flow Diagram)
 
 ```mermaid
-graph TD
+graph LR
     subgraph Host ["Host OS: Ubuntu 20.04 (JetPack 5.1.1 / CUDA 11.4)"]
         AI["AI Inference Model (S2E ONNX) <br> GPU Accelerated (Native)"]
         Driver["go2_robot Driver <br> (ROS 2 Foxy Native)"]
