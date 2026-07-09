@@ -276,3 +276,51 @@ graph TD
 *   **루프백 브릿징 (통신)**:
     *   두 환경 간의 실시간 제어 명령(Twist) 및 오도메트리 위치 정보(Pose)는 로컬 루프백(`127.0.0.1`) 네트워크 상에서 **Python Socket Bridge** 또는 **Zenoh Bridge**를 통해 실시간 바이패스함.
     *   이를 통해 외부 GPU 연산 PC 없이 **사족보행 로봇 내부 젯슨 단 단 한 대에서 안정적인 저지연(1ms 내외) AI 실물 주행 제어가 실현**됨.
+
+---
+
+## 🏃 12. 하이브리드 연동 및 배포 워크플로우 (Integration & Deployment Workflow)
+
+화요일 실하드웨어 배포 시 각 단계별로 점검하며 실행할 연동 체크리스트.
+
+```mermaid
+graph TD
+    P1["Phase 1: Host OS Setup"] --> P2["Phase 2: Docker Setup"]
+    P2 --> P3["Phase 3: Bridge Test"]
+    P3 --> P4["Phase 4: Air & Ground Test"]
+    style P1 fill:#ffe0b2,stroke:#f57c00,stroke-width:1px
+    style P2 fill:#e1f5fe,stroke:#0288d1,stroke-width:1px
+    style P3 fill:#e8f5e9,stroke:#1b5e20,stroke-width:1px
+    style P4 fill:#f3e5f5,stroke:#4a148c,stroke-width:1px
+```
+
+### 1단계: 호스트 OS 준비 (Host Setup - Foxy 네이티브)
+1.  **CUDA/TensorRT 동작 점검**:
+    *   `nvcc --version` 및 `dpkg -l | grep nvinfer` 명령어를 입력해 **CUDA 11.4** 및 **TensorRT 8.5.2** 작동 여부 체크.
+2.  **GPU 가속 PyTorch/ONNX 빌드 파일 주입**:
+    *   JetPack 5.1.1 환경에 대응하는 NVIDIA 공식 `onnxruntime-gpu` 파이썬 wheel 파일 설치 확인.
+3.  **로봇 구동 드라이버 확인**:
+    *   호스트 단에서 `go2_robot` 드라이버를 띄워 실물 로봇과 DDS 통신이 정상적으로 뚫려 보행 명령을 인가할 수 있는지 모니터링.
+
+### 2단계: 도커 컨테이너 준비 (Docker Setup - Jazzy CPU 전용)
+1.  **CPU-only 컨테이너 기동**:
+    *   젯슨 보드용 `arm64v8/ros:jazzy` 베이스 이미지를 기반으로 하되, `--runtime=nvidia` 옵션 없이 표준 도커 명령어로만 기동.
+2.  **비동기 프레임워크 빌드**:
+    *   컨테이너 내부에 `go2_ws` 저장소를 받고, `s2e-vlm-async-framework` 패키지를 컴파일함.
+3.  **동작 유닛 테스트**:
+    *   `python -m unittest discover` 명령을 때려 컨테이너 안에서 비동기 제어 알고리즘 노드가 오류 없이 동작하는지 테스트 완료.
+
+### 3단계: 통신 브릿지 사전 테스트 (Bridge Integration Test)
+1.  **브릿지 노드 런칭**:
+    *   선택된 통신 방식(Zenoh Bridge 또는 Python Socket 스크립트)을 호스트와 도커 양단에 동시에 기동.
+2.  **오도메트리 전송 루프 확인 (Foxy ➔ Jazzy)**:
+    *   호스트가 수신 중인 `/utlidar/robot_pose` 데이터를 도커 내부의 `/s2e/odometry/pose` 토픽으로 포워딩하는지 모니터링.
+3.  **제어 명령 전송 루프 확인 (Jazzy ➔ Foxy)**:
+    *   도커 내부에서 `/s2e/controller/command` 데이터를 쏠 때 호스트의 `/cmd_vel`로 유실 없이 번역 전달되는지 검증.
+
+### 4단계: 실물 자율주행 제어 루프 검증 (Air & Ground Test)
+1.  **공중 대기 제어 테스트 (Air-Run)**:
+    *   사고 방지를 위해 로봇을 거치대(Lifter) 위에 띄워 다리를 허공에 둔 상태로 런칭 시작.
+    *   모든 노드를 켜서 AI 모델이 궤적을 쏘면 도커의 PID 제어 노드가 작동해 허공에서 다리가 움직이는지 동작 상태 검증.
+2.  **실지상 테스트 (Ground-Run)**:
+    *   공중 테스트를 무사히 통과하면 로봇을 바닥에 내리고 최종 VLM-S2E 폐루프 자율주행을 시작하여 남극 현장 파이프라인과 동일하게 작동하는지 완벽하게 검증함.
