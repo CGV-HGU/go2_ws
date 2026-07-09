@@ -307,6 +307,10 @@ graph TD
     dpkg -l | grep nvinfer
     ```
 2.  **GPU 가속 PyTorch/ONNX Runtime 수동 설치**:
+    > [!NOTE]
+    > **수동 설치가 필요한 기술적 사유 (우회 배포 전략)**
+    > *   **공식 PyPI 패키지 부재**: 파이썬 공식 패키지 매니저(`pip`)는 ARM64(`aarch64`) 아키텍처용 CUDA 가속 PyTorch/ONNX 라이브러리를 배포하지 않습니다. 그냥 설치 시 그래픽카드 가속이 비활성화된 CPU 전용으로 깔려 주행 모델 추론 속도가 나오지 않습니다.
+    > *   **컴파일 시간 최소화**: 소스코드 컴파일 시 10시간 이상 걸리므로, 엔비디아가 JetPack 5.1.1 사양에 맞춰 사전에 빌드해 배포하는 공식 가속 휠 파일(`.whl`)을 수동 설치하는 것이 정석 우회로입니다.
     ```bash
     # JetPack 5.1.1 전용 PyTorch ARM64 빌드 다운로드 및 설치
     wget https://developer.download.nvidia.com/compute/redist/jp/v511/pytorch/torch-2.0.0+nv23.05-cp38-cp38-linux_aarch64.whl
