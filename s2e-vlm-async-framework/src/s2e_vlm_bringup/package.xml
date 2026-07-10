@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>s2e_vlm_bringup</name>
+  <version>0.1.0</version>
+  <description>Launch and configuration assets for the S2E VLM async framework.</description>
+  <maintainer email="dev@example.com">S2E VLM Team</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>s2e_vlm_nodes</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

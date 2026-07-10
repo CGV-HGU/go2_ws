@@ -1,0 +1,10 @@
+std_msgs/Header header
+string node_name
+string state
+string active_mode
+bool is_healthy
+bool is_motion_critical
+float32 last_input_age_s
+float32 last_output_age_s
+string error_code
+string message

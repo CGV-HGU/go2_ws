@@ -1,0 +1,5 @@
+sensor_name: lidar
+parent_frame: base_link
+child_frame: lidar
+translation_m: [0.15, 0.0, 0.22]
+rotation_quaternion_xyzw: [0.0, 0.0, 0.0, 1.0]

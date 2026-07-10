@@ -1,0 +1,11 @@
+.opencode/
+reference/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+install/
+log/
+artifacts/
+nav_model_zoo/
+*.egg-info/

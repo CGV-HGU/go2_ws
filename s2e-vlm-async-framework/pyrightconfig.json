@@ -1,0 +1,10 @@
+{
+  "include": ["src", "tests"],
+  "extraPaths": [
+    "src/s2e_vlm_core",
+    "src/s2e_vlm_nodes",
+    "src/s2e_vlm_bringup"
+  ],
+  "reportMissingImports": false,
+  "reportMissingModuleSource": false
+}

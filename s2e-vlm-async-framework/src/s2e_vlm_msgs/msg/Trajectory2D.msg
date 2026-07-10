@@ -1,0 +1,9 @@
+std_msgs/Header header
+builtin_interfaces/Time source_stamp
+builtin_interfaces/Time processed_stamp
+geometry_msgs/PoseStamped pose_at_trajectory
+geometry_msgs/Point32[10] points
+geometry_msgs/Point32 goal_point_base_link
+bool has_goal_point
+string source_vlm_json
+string status

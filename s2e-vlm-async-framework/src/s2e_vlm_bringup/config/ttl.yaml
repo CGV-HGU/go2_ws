@@ -1,0 +1,7 @@
+pose_sync_max_age_s: 0.20
+controller_odometry_max_age_s: 0.10
+vlm_reasoning_ttl_s: 8.0
+e2e_trajectory_ttl_s: 0.50
+missed_heartbeat_threshold: 3
+cached_vlm_max_translation_m: 1.5
+cached_vlm_max_yaw_deg: 30.0
