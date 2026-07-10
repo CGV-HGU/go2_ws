@@ -1,86 +1,52 @@
 # 🎮 Unitree Go2 Antarctic Navigation Project (Simulation Branch)
 
-본 브랜치(`antarctica-simul`)는 **Bolei Zhou 교수 연구진의 URBAN-SIM 기반 강화학습(PPO/RAM)** 시뮬레이션 환경에서 사족보행 로봇 Unitree Go2의 주행 강건성을 키우기 위한 **난이도별 커리큘럼 시나리오 개발 및 검증** 전용 워크스페이스 공간임.
+본 브랜치(`antarctica-simul`)는 **Bolei Zhou 교수 연구진의 URBAN-SIM 기반 강화학습(PPO/RAM)** 시뮬레이션 환경에서 사족보행 로봇 Unitree Go2의 주행 강건성을 키우기 위한 **난이도별 커리큘럼 시나리오 환경 개발 및 검증** 전용 워크스페이스 공간임.
 
 ---
 
-## 🛠️ 1. 시뮬레이션 환경 준비 (Isaac Sim 5.1 & Conda Setup)
+## 🎯 1. 사용자(이민석)의 핵심 역할 및 미션
 
-서버 또는 고성능 개발 PC 환경에서 Isaac Sim 5.1 및 패키지들을 빌드하기 위해 복사-붙여넣기하여 실행할 명령어 세트.
+사용자님의 본업은 학습 보상 코드를 직접 구현하는 것이 아니라, **"로봇이 안전 주행(Normal) 및 위기 극복(Recovery) 능력을 배울 수 있도록 가상 세계의 물리적 환경(훈련 세트장)을 설계하고 코딩하는 것"**임.
 
-### 1단계: 콘다 가상환경 구성
-```bash
-# 콘다 가상환경 생성 및 활성화
-conda create -n env_s2e_rl python=3.11 -y
-conda activate env_s2e_rl
-python -m pip install --upgrade pip
-
-# 필수 컴파일 도구 설치 (Ubuntu 기준)
-sudo apt-get update && sudo apt-get install -y build-essential cmake make gcc g++
-```
-
-### 2단계: pip Isaac Sim 5.1 설치 및 검증
-```bash
-# NVIDIA PyPi 레포지토리를 통한 설치
-python -m pip install "isaacsim[all,extscache]==5.1.0.0" --extra-index-url https://pypi.nvidia.com
-
-# 설치 상태 정상 인식 여부 검증
-python -c "import isaacsim; print(isaacsim.__file__)"
-```
-
-### 3단계: URBAN-SIM 의존성 패키지 빌드
-```bash
-# s2e-urban-rl 폴더 진입 후 셋업 스크립트 실행
-cd ~/go2_ws/scratch/s2e-urban-rl
-bash urbansim.sh -i
-bash urbansim.sh -a
-
-# 런타임 주요 라이브러리 버전 고정
-python -m pip install numpy==1.26.0 gymnasium==1.2.1 click==8.1.7 psutil==5.9.8 Pillow==11.3.0 packaging==23.0
-
-# 3D 에셋 데이터 다운로드
-python scripts/tools/collectors/collect_asset.py
-python scripts/tools/converters/convert_asset.py
-```
+1.  **정상 주행 훈련장**: 보도(Sidewalk)의 곡선과 교차로가 매끄럽게 흐르는 도시 도로 구조 설계.
+2.  **회복 주행(Recovery) 훈련장**: 보도 폭의 중앙을 장애물로 차단하여, 로봇개가 어쩔 수 없이 도로(Lane)로 비켜갔다가 다시 보도로 안전하게 복귀하는 행동을 배울 수밖에 없도록 장애물을 배치하는 물리적 계기 제공.
+3.  **스테이지별 훈련 패키징**: 난이도에 대응하는 4개의 환경 YAML 설정 파일(`go2_s2e_stage1.yaml` ~ `stage4.yaml`) 작성 및 검증.
 
 ---
 
-## 🏃‍♂️ 2. 절차적 생성(PG) 시나리오 검증 워크플로우
+## 🏃‍♂️ 2. 절차적 생성(PG) 환경 테스트 및 검증법
 
-개발 중인 절차적 생성(Procedural Generation) 환경이 에러 없이 렌더링되고 로봇이 정상 스폰하는지 확인하기 위한 검증 스크립트 실행법.
+작성한 시나리오 및 장애물 배치 코드가 Isaac Sim 5.1 상에 에러 없이 렌더링되고 로봇이 정상 스폰되는지 확인하는 명령어.
 
 ```bash
-# 가상 카메라 뷰를 켜고 16개 환경을 비동기 스태핑 모드로 모의 실행
+# 16개 병렬 환경에 가상 카메라를 켜고 비동기 스태핑 모드로 시나리오 렌더링 확인
 cd ~/go2_ws/scratch/s2e-urban-rl
 python urbansim/envs/separate_envs/pg_env.py --enable_cameras --num_envs 16 --use_async
 ```
 
-*   `--enable_cameras`: 시각 기반 관측(Observation) 공간을 로드합니다.
-*   `--use_async`: 각 병렬 환경이 독립적인 물리 주기로 동기화 없이 진행되게 끔 설정합니다.
+---
+
+## 🔬 3. 4단계 커리큘럼 시나리오 설정 가이드 (Target Parameters)
+
+`scratch/sim_curriculum/pg_env_cfg.py` 파일 내의 `pg_config` 및 난이도별 YAML 파일에 주입해야 할 물리 설정 스펙.
+
+| 훈련 단계 (Stage) | 환경 타입 (`type`) | 보도 레이아웃 (`map`) | 장애물 밀도 (`object_density`) | 보행자 수 (`spawn_human_num`) | 훈련장 구축 의도 (이민석 설계 목적) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1단계: 직선 보행로** | `'clean'` | `'S'` (직선형) | `0.0` (없음) | `0` | 보도 중심을 인지하고 목적지까지 탈선 없이 일직선으로 걷는 훈련. |
+| **2단계: 곡선 및 회피** | `'static'` | `'SCS'` (곡선형) | `0.3` (낮음) | `0` | 곡선로를 따라 조향하고, 간헐적 장애물을 부드럽게 피해 걷는 훈련. |
+| **3단계: 교차로 및 정체** | `'static'` | `'XSX'` (교차로) | `0.5` (보통) | `0` | 교차로 정션 모퉁이 선회 및 보도를 벤치 등으로 인위 막아 우회-복귀(Recovery) 유도. |
+| **4단계: 보행자 정체** | `'dynamic'` | `'XSX'` (복합로) | `0.7` (높음) | `10` (보행 지능) | 좁은 길목에 마주 오는 보행자를 요동 없이 피하는 최종 실전 테스트 환경. |
 
 ---
 
-## 📂 3. 우리 브랜치의 역할 및 코드 관리 방식
+## 📂 4. 코드 관리 및 랩실 공유 방식
 
 *   **독립적 이력 관리**: 우리는 건민 님의 원격 저장소를 오염시키지 않기 위해 우리 브랜치 상에서만 안전하게 개발을 수행함.
 *   **시나리오 설정 트래킹**: `scratch/s2e-urban-rl` 내부에서 실시간으로 수정한 튜닝 코드들은 우리 레포 아래인 [scratch/sim_curriculum/](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/sim_curriculum/)에 카피해 두어 깃 버전 관리를 유지함.
 
 ### 🗂️ 핵심 파일 경로
-*   [pg_env_cfg.py (시나리오 설정 베이스라인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/sim_curriculum/pg_env_cfg.py): 직선/교차로 구조, 장애물 밀도, 보행자 조건 조율
+*   [pg_env_cfg.py (시나리오 설정 베이스라인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/sim_curriculum/pg_env_cfg.py): 보행로 모양, 장애물 분포 파라미터 조율
 *   [check_repo_updates.py (원격 업데이트 확인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/check_repo_updates.py): 외부 연동 리포지토리의 변동 사항 상시 추적 도구
-
----
-
-## 🔬 4. 시나리오 커리큘럼 설계 방향 (Draft)
-
-강건한 주행 신경망 학습을 위해 우리가 단계별로 튜닝해나갈 4단계 시나리오 설정값 명세서.
-
-| 커리큘럼 단계 | 환경 타입 (`type`) | 보행로 형태 (`map`) | 장애물 밀도 (`object_density`) | 보행자 수 (`spawn_human_num`) |
-| :--- | :--- | :--- | :--- | :--- |
-| **1단계 (입문 직선)** | `'clean'` | `'S'` (직선) | `0.0` (없음) | `0` |
-| **2단계 (기초 회피)** | `'static'` | `'SCS'` (곡선 정션) | `0.3` (낮음) | `0` |
-| **3단계 (심화 정션)** | `'static'` | `'XSX'` (교차로) | `0.5` (보통) | `0` |
-| **4단계 (동적 보행)** | `'dynamic'` | `'XSX'` (복합 보행로) | `0.7` (높음) | `10` (보행 지능 활성화) |
 
 ---
 
