@@ -1,5 +1,5 @@
 # S2E 4-Stage Curriculum Learning Performance Scorecard
-# 각 스테이지 학습을 마칠 때마다 아래 항목의 수치와 경로를 업데이트하여 최종 리포트로 활용합니다.
+# 각 스테이지가 다루는 주행 임무의 특성에 최적화된 독립 평가지표(KPI)로 기록합니다.
 
 stage_1:
   name: "Stage 1: Clean Straight Sidewalk"
@@ -7,13 +7,12 @@ stage_1:
   status: "pending" # [pending, training, completed, failed]
   training_duration_epochs: 100
   results:
-    best_success_rate_percent: null # 예: 97.5 (직선 도달 성공률)
-    average_collision_rate_percent: 0.0 # 장애물 없음
-    average_episode_steps: null
-    final_policy_loss: null
+    best_success_rate_percent: null       # 목적지 도달 성공률 (Target: >95%)
+    heading_smoothness_rad: null          # 조향 오실레이션(Yaw 변동 폭) 평균 (Target: 작을수록 우수)
+    average_tracking_error_meters: null   # 보도 중심선 기준 평균 추종 오차 (Target: <0.2m)
   checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage1/nn/latest.pt"
   failure_mode_encountered: "none" # [none, unstable_gait, drifting, target_miss, others]
-  notes: "기초 직선 주행성능 피드백 기록란"
+  notes: "기초 보행로 중심 추종 및 조향 안정성 평가"
 
 stage_2:
   name: "Stage 2: Curved Sidewalk with Low Static Obstacles"
@@ -21,13 +20,12 @@ stage_2:
   status: "pending"
   training_duration_epochs: 100
   results:
-    best_success_rate_percent: null # 예: 92.1 (곡선로 장애물 우회 성공률)
-    average_collision_rate_percent: null # 예: 3.4
-    average_episode_steps: null
-    final_policy_loss: null
+    best_success_rate_percent: null       # 목적지 도달 성공률
+    static_collision_rate_percent: null   # 고정 장애물과의 충돌률 (Target: <5%)
+    average_clearance_distance_meters: null # 장애물 통과 시 평균 안전 이격 거리
   checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage2/nn/latest.pt"
   failure_mode_encountered: "none" # [none, side_scraping, fishtailing, target_miss, others]
-  notes: "저밀도 정적 장애물 회피 훈련 피드백 기록란"
+  notes: "저밀도 정적 장애물 회피 및 코너링 이격 성능 평가"
 
 stage_3:
   name: "Stage 3: Intersection with Blocked Sidewalk"
@@ -35,13 +33,13 @@ stage_3:
   status: "pending"
   training_duration_epochs: 150
   results:
-    best_success_rate_percent: null # 예: 82.0 (차도 우회 후 보도 복귀 성공률)
-    average_collision_rate_percent: null # 예: 8.5
-    average_episode_steps: null
-    final_policy_loss: null
+    best_success_rate_percent: null       # 최종 목적지 도달 성공률
+    sidewalk_recovery_rate_percent: null  # 차도 우회 후 인도 복귀 성공 확률 (Target: >90%)
+    time_spent_in_road_seconds: null      # 차도 영역에 머무른 임시 우회 시간 (Target: 최소화)
+    deadlock_frequency_per_run: null     # 전진을 포기하고 멈춰 선 교착 감지 횟수 (Target: 0회)
   checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage3/nn/latest.pt"
   failure_mode_encountered: "none" # [none, deadlock_stuck, permanent_deviation, side_scraping, others]
-  notes: "보도 완전 차단 시 차도 탈출 및 보도 복귀 훈련 피드백 기록란"
+  notes: "인도 완전 차단 시 차도 회피 후 복귀 회복력(Recovery) 평가"
 
 stage_4:
   name: "Stage 4: Cluttered Sidewalk with Dynamic Pedestrians"
@@ -49,10 +47,10 @@ stage_4:
   status: "pending"
   training_duration_epochs: 200
   results:
-    best_success_rate_percent: null # 예: 76.5 (보행자 혼재 도로 주행 성공률)
-    average_collision_rate_percent: null # 예: 9.8
-    average_episode_steps: null
-    final_policy_loss: null
+    best_success_rate_percent: null       # 최종 목적지 도달 성공률
+    static_collision_rate_percent: null   # 고정 물체 충돌률
+    dynamic_collision_rate_percent: null  # 움직이는 보행자와의 충돌률 (Target: <5%)
+    minimum_social_distance_meters: null  # 보행자 회피 통과 시 최소 안전 마진 (Target: >0.8m)
   checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage4/nn/latest.pt"
   failure_mode_encountered: "none" # [none, pedestrian_collision, latency_lag, deadlock_stuck, others]
-  notes: "동적 보행자 회피 및 최종 벤치마크 평가 피드백 기록란"
+  notes: "동적 보행자 상호작용 및 실전 종합 자율주행 회피 능력 검증"
