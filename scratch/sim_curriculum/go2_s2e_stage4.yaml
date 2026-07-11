@@ -1,0 +1,27 @@
+Task: Navigation
+Env:
+  name: dynamic
+  map_region: 30
+  num_objects: 30
+  num_peds: 8
+Robot:
+  type: unitree_go2
+  controller: s2e
+  sensor: default
+  tiled_sensor: True
+  init_position: [0., 10., 0.4]
+Omniverse:
+  headless: True
+  simulation_dt: 0.005
+  rendering_interval: 4
+  decimation: 40
+  episode_length_s: 30.0
+  env_spacing: 31.0
+  scenario_generation_method: limited async procedural generation
+Training:
+  framework: rl_games
+  training_config_entry: s2e
+  use_gpu: True
+  num_envs: 64
+  num_gpu: 1
+  use_ddp: False
