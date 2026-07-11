@@ -1,0 +1,58 @@
+# S2E 4-Stage Curriculum Learning Performance Scorecard
+# 각 스테이지 학습을 마칠 때마다 아래 항목의 수치와 경로를 업데이트하여 최종 리포트로 활용합니다.
+
+stage_1:
+  name: "Stage 1: Clean Straight Sidewalk"
+  config_file: "configs/env_configs/navigation/go2_s2e_stage1.yaml"
+  status: "pending" # [pending, training, completed, failed]
+  training_duration_epochs: 100
+  results:
+    best_success_rate_percent: null # 예: 97.5 (직선 도달 성공률)
+    average_collision_rate_percent: 0.0 # 장애물 없음
+    average_episode_steps: null
+    final_policy_loss: null
+  checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage1/nn/latest.pt"
+  failure_mode_encountered: "none" # [none, unstable_gait, drifting, target_miss, others]
+  notes: "기초 직선 주행성능 피드백 기록란"
+
+stage_2:
+  name: "Stage 2: Curved Sidewalk with Low Static Obstacles"
+  config_file: "configs/env_configs/navigation/go2_s2e_stage2.yaml"
+  status: "pending"
+  training_duration_epochs: 100
+  results:
+    best_success_rate_percent: null # 예: 92.1 (곡선로 장애물 우회 성공률)
+    average_collision_rate_percent: null # 예: 3.4
+    average_episode_steps: null
+    final_policy_loss: null
+  checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage2/nn/latest.pt"
+  failure_mode_encountered: "none" # [none, side_scraping, fishtailing, target_miss, others]
+  notes: "저밀도 정적 장애물 회피 훈련 피드백 기록란"
+
+stage_3:
+  name: "Stage 3: Intersection with Blocked Sidewalk"
+  config_file: "configs/env_configs/navigation/go2_s2e_stage3.yaml"
+  status: "pending"
+  training_duration_epochs: 150
+  results:
+    best_success_rate_percent: null # 예: 82.0 (차도 우회 후 보도 복귀 성공률)
+    average_collision_rate_percent: null # 예: 8.5
+    average_episode_steps: null
+    final_policy_loss: null
+  checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage3/nn/latest.pt"
+  failure_mode_encountered: "none" # [none, deadlock_stuck, permanent_deviation, side_scraping, others]
+  notes: "보도 완전 차단 시 차도 탈출 및 보도 복귀 훈련 피드백 기록란"
+
+stage_4:
+  name: "Stage 4: Cluttered Sidewalk with Dynamic Pedestrians"
+  config_file: "configs/env_configs/navigation/go2_s2e_stage4.yaml"
+  status: "pending"
+  training_duration_epochs: 200
+  results:
+    best_success_rate_percent: null # 예: 76.5 (보행자 혼재 도로 주행 성공률)
+    average_collision_rate_percent: null # 예: 9.8
+    average_episode_steps: null
+    final_policy_loss: null
+  checkpoint_saved_path: "scratch/s2e-urban-rl/runs/go2_s2e_stage4/nn/latest.pt"
+  failure_mode_encountered: "none" # [none, pedestrian_collision, latency_lag, deadlock_stuck, others]
+  notes: "동적 보행자 회피 및 최종 벤치마크 평가 피드백 기록란"
