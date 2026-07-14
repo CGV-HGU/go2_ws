@@ -85,3 +85,69 @@ python scratch/check_repo_updates.py
   1. 외부 와이파이망(DHCP) 공유기에 초고주기 라이다 및 제어 DDS 패킷이 무작위로 방출되어 대역폭이 뻗어버리는 현상 완벽 방지.
   2. 로봇 제어 명령(`cmd_vel`)이 VPN 인터페이스(`wt0`)로 누수되어 로봇이 뇌정지에 빠지는 통신 장애를 원천 차단하고 자율주행의 안정성 확보.
 
+---
+
+## 🚀 7. 실물 로봇(Go2 Jetson Orin) 실하드웨어 배포 및 구동 가이드 (Step-by-Step)
+
+로봇개 본체(Jetson Orin)에 접속하여 본 지능형 자율주행 시스템(S2E + VOCA)을 띄우는 순차적 과정입니다. 모든 노드는 로컬 소스 변경을 즉각 반영하는 핫 마운팅(Hot-Mount) 형태로 배포됩니다.
+
+### 7.1 사전 검증 단계 (Jetson 호스트 터미널)
+컨테이너에서 GPU 가속이 가능하도록 NVIDIA 컨테이너 런타임 활성화 상태를 테스트합니다.
+```bash
+# 런타임 테스트 실행 (성공 시 CUDA 가속 정보가 출력됨)
+docker run --rm --runtime nvidia --gpus all xavier-l4t-base:latest nvidia-smi
+```
+
+### 7.2 [Step 1] 최신 워크스페이스 동기화
+로봇개 Jetson에 SSH로 원격 접속하여, 깃 브랜치의 실하드웨어 배포용 최신 코드를 당겨옵니다.
+```bash
+# 로봇개 내부 작업 디렉토리로 이동
+cd ~/go2_ws
+
+# 배포 브랜치 전환 및 업데이트
+git checkout antarctica-simul
+git pull origin antarctica-simul
+```
+
+### 7.3 [Step 2] Docker Compose 가동 (컨테이너 백그라운드 구동)
+컨테이너 가상 네트워크 공간에서 UDP 브릿지, PD 제어기, 데드락 감지기 및 S2E 추론기 4대 핵심 프로세스를 일제히 가동합니다.
+```bash
+# 컴포즈 데몬(배경) 실행
+docker compose up -d
+
+# 실행 상태 확인 (4개 컨테이너가 Up 상태인지 검증)
+docker compose ps
+```
+
+### 7.4 [Step 3] 호스트 단 UDP 브릿지 실행 (호스트 터미널)
+로봇개 메인 시스템(ROS 2 Foxy)에서 나오는 오도메트리를 도커로 밀어 넣어주고, 도커에서 뱉은 제어 명령을 실물 로봇 다리 모터로 이어주는 호스트 브릿지를 기동합니다.
+```bash
+# 호스트 터미널에서 백그라운드가 아닌 포그라운드로 실행하여 실시간 연결 패킷 확인
+python3 ~/go2_ws/scratch/host_bridge.py
+```
+
+### 7.5 [Step 4] 통신 및 제어 루프 정상 작동 검증
+정상적으로 데이터가 매끄럽게 흐르는지 확인하려면 새 터미널을 열어 아래 토픽들을 에코(echo)해 봅니다.
+
+```bash
+# 1. 컨테이너 내부로 호스트의 실시간 위치(Odometry)가 흐르는지 검증 (50Hz)
+docker exec -it go2_docker_bridge ros2 topic echo /s2e/odometry/pose
+
+# 2. PD 제어기가 S2E 웨이포인트를 받아 로봇개 속도 지령으로 잘 번역하는지 검증
+docker exec -it go2_pd_controller ros2 topic echo /s2e/controller/command
+
+# 3. 데드락 감지 노드가 정상 스캔 중인지 검증 (stuck 시 True 방출)
+docker exec -it go2_deadlock_detector ros2 topic echo /robot/status/deadlock
+```
+
+### 7.6 시스템 종료 방법
+안전하게 모든 자율주행 프로세스를 종료하고 컨테이너를 내리는 방법입니다.
+```bash
+# 1. 호스트 터미널의 host_bridge.py 프로세스를 Ctrl+C로 종료
+
+# 2. 도커 컨테이너 서비스들을 완전 중지 및 해제
+cd ~/go2_ws
+docker compose down
+```
+
+
