@@ -17,6 +17,7 @@ Omniverse:
   decimation: 40
   episode_length_s: 30.0
   env_spacing: 31.0
+  viewer_eye: [-10., -10., 10.]
   scenario_generation_method: limited async procedural generation
 Training:
   framework: rl_games
