@@ -29,6 +29,8 @@ Env:
 
     curriculum_steps_per_level: 20000
     max_curriculum_level: 3
+    walkable_margin: -1.0
+    walkable_penalty_weight: -2.0
 
     policy_hz: 5.0
     history_sample_hz: 5.0

@@ -1,9 +1,13 @@
 Task: Navigation
 Env:
   name: static
+  generator: s2e_auto
   map_region: 30
   num_objects: 30
   num_peds: 0
+  generator_config:
+    walkable_margin: -1.0
+    walkable_penalty_weight: -2.0
 Robot:
   type: unitree_go2
   controller: s2e
