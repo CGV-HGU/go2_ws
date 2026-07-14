@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # 1. Docker-Host 간의 UDP 브릿지 노드 서비스
+  docker-bridge:
+    image: ros:jazzy-ros-core # 로봇 사이드 ROS 2 Jazzy 베이스 이미지 지정
+    container_name: go2_docker_bridge
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      # 로컬 cyclonedds.xml 설정을 컨테이너 안으로 주입
+      - ./cyclonedds.xml:/etc/cyclonedds/config.xml:ro
+      # 작성된 파이썬 스크립트 노드들 마운트
+      - ./scratch:/app/scratch
+    environment:
+      - CYCLONEDDS_URI=file:///etc/cyclonedds/config.xml
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    command: python3 scratch/docker_bridge.py
+
+  # 2. S2E 궤적 수신 및 Go2 모터 속도 변환 PD 컨트롤러 서비스
+  pd-controller:
+    image: ros:jazzy-ros-core
+    container_name: go2_pd_controller
+    network_mode: host
+    restart: unless-stopped
+    depends_on:
+      - docker-bridge
+    volumes:
+      - ./cyclonedds.xml:/etc/cyclonedds/config.xml:ro
+      - ./scratch:/app/scratch
+    environment:
+      - CYCLONEDDS_URI=file:///etc/cyclonedds/config.xml
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    command: python3 scratch/go2_pd_controller_node.py
+
+  # 3. 로봇의 거동 불능 감지 및 VOCA 헤드 셰이킹 복구 유도 서비스
+  deadlock-detector:
+    image: ros:jazzy-ros-core
+    container_name: go2_deadlock_detector
+    network_mode: host
+    restart: unless-stopped
+    depends_on:
+      - docker-bridge
+    volumes:
+      - ./cyclonedds.xml:/etc/cyclonedds/config.xml:ro
+      - ./scratch:/app/scratch
+    environment:
+      - CYCLONEDDS_URI=file:///etc/cyclonedds/config.xml
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    command: python3 scratch/voca_deadlock_detector.py
