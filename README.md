@@ -56,3 +56,32 @@ python urbansim/envs/separate_envs/pg_env.py --enable_cameras --num_envs 16 --us
 ```bash
 python scratch/check_repo_updates.py
 ```
+
+---
+
+## 🔌 6. 실물 로봇(Go2) 듀얼 네트워크 통신 및 DDS 격리 설계
+
+실하드웨어 배포 시, Go2 로봇개의 Jetson 온보드 컴퓨터와 로봇 제어 보드 간의 DDS 연동이 외부 인터넷 통신과 혼선되는 것을 방지하기 위해 다음과 같은 네트워크 격리 설계를 반영하였음.
+
+### 6.1 물리적 네트워크 이중화 스펙
+1. **로봇 내부망 (Static IP)**: 
+   * **인터페이스**: 유선 이더넷 (`eth0`)
+   * **대역**: `192.168.123.XX` 고정 대역
+   * **용도**: 로봇개의 모터 속도 제어(`Sport API`) 및 센서(LiDAR) raw 데이터 송수신. 실시간성 보장을 위해 외부 인터넷 트래픽 유입이 완전히 차단되어야 함.
+2. **외부 인터넷망 (DHCP & VPN)**:
+   * **인터페이스**: 무선 와이파이 (`wlan0`) 및 Netbird VPN 가상 카드 (`wt0`)
+   * **대역**: 연구실 공유기 유동 대역 및 가상 VPN 대역
+   * **용도**: 원격지에 있는 대형 비전 언어 모델(VLM Qwen-32B) API 서버(`http://server-02.cgv:8000`)와의 비동기 HTTP 추론 통신 수행.
+
+### 6.2 DDS 바인딩 격리 설정 (`cyclonedds.xml`)
+이 두 망의 ROS 2 DDS 패킷이 꼬이는 현상을 방지하기 위해, 로봇 단에서 실행되는 CycloneDDS가 오직 로봇 내부 고정 IP 유선망(`eth0`)으로만 통신하도록 제한함.
+
+* **설정 방식**: 로봇 사이드 Docker 및 호스트 실행 환경에서 `CYCLONEDDS_URI` 환경변수가 루트의 [cyclonedds.xml](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/cyclonedds.xml)을 바라보게 설정.
+* **XML 핵심 정의**:
+  ```xml
+  <NetworkInterfaceAddress>eth0</NetworkInterfaceAddress>
+  ```
+* **기대 효과**: 
+  1. 외부 와이파이망(DHCP) 공유기에 초고주기 라이다 및 제어 DDS 패킷이 무작위로 방출되어 대역폭이 뻗어버리는 현상 완벽 방지.
+  2. 로봇 제어 명령(`cmd_vel`)이 VPN 인터페이스(`wt0`)로 누수되어 로봇이 뇌정지에 빠지는 통신 장애를 원천 차단하고 자율주행의 안정성 확보.
+
