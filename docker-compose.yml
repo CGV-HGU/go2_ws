@@ -51,3 +51,31 @@ services:
       - PYTHONUNBUFFERED=1
     working_dir: /app
     command: python3 scratch/voca_deadlock_detector.py
+
+  # 4. S2E AI 정책 모델 실시간 추론 서비스 (Jetson Orin GPU 가속 사용)
+  s2e-policy:
+    image: nvcr.io/nvidia/l4t-pytorch:r35.3.1-pth2.0-py3 # JetPack 5.1.1 전용 PyTorch 이미지
+    container_name: s2e_policy_inference
+    network_mode: host
+    restart: unless-stopped
+    runtime: nvidia # NVIDIA 컨테이너 런타임 활성화 (GPU 바인딩)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    depends_on:
+      - docker-bridge
+    volumes:
+      - ./cyclonedds.xml:/etc/cyclonedds/config.xml:ro
+      - ./scratch:/app/scratch
+      - /usr/lib/aarch64-linux-gnu/tegra:/usr/lib/aarch64-linux-gnu/tegra:ro # Jetson 드라이버 마운트
+    environment:
+      - CYCLONEDDS_URI=file:///etc/cyclonedds/config.xml
+      - LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/tegra:$LD_LIBRARY_PATH
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    command: python3 scratch/s2e_vla_inference_node.py # 추후 연동할 S2E ONNX 실행 스크립트
+
