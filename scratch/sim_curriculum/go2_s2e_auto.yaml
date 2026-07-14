@@ -1,0 +1,71 @@
+Task: Navigation
+Env:
+  name: static
+  generator: s2e_auto
+  map_region: 30
+  num_objects: 24
+  num_peds: 0
+  generator_config:
+    use_grid: true
+    sidewalk_min_width: 4.0
+    sidewalk_max_width: 6.0
+    straight_probability: 0.30
+    c_curve_probability: 0.35
+    s_curve_probability: 0.35
+    curve_amplitude_ratio: 0.18
+
+    min_goal_distance: 6.0
+    max_goal_distance: 14.0
+    goal_distance_increment: 2.5
+    path_end_margin: 1.5
+    start_lateral_jitter: 0.35
+
+    object_edge_margin: 0.55
+    object_min_spacing: 1.35
+    endpoint_object_clearance: 2.5
+    object_surface_z_offset: 0.02
+    object_longitudinal_jitter: 0.20
+    object_candidate_attempts: 8
+
+    curriculum_steps_per_level: 20000
+    max_curriculum_level: 3
+
+    policy_hz: 5.0
+    history_sample_hz: 5.0
+    policy_hz_tolerance: 0.01
+    past_frame_count: 10
+    prediction_horizon: 10
+
+    rerender_on_reset: true
+    wait_for_textures: true
+
+    randomize_light: true
+    light_intensity_min: 650.0
+    light_intensity_max: 1200.0
+    light_exposure_min: -0.5
+    light_exposure_max: 0.5
+
+Robot:
+  type: unitree_go2
+  controller: s2e
+  sensor: default
+  tiled_sensor: true
+  init_position: [0., 10., 0.4]
+
+Omniverse:
+  headless: true
+  simulation_dt: 0.005        # 200 Hz physics
+  rendering_interval: 40      # overridden/validated to one render per policy step
+  decimation: 40              # 200 Hz / 40 = 5 Hz high-level policy
+  episode_length_s: 30.0
+  env_spacing: 31.0
+  viewer_eye: [-10., -10., 10.]
+  scenario_generation_method: limited async procedural generation
+
+Training:
+  framework: rl_games
+  training_config_entry: s2e
+  use_gpu: true
+  num_envs: 64
+  num_gpu: 1
+  use_ddp: false
