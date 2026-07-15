@@ -3,7 +3,7 @@
             xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
     <Domain Id="any">
         <General>
-            <NetworkInterfaceAddress>eth0</NetworkInterfaceAddress>
+            <NetworkInterfaceAddress>192.168.123.99</NetworkInterfaceAddress>
             <AllowMulticast>default</AllowMulticast>
         </General>
         <Internal>
