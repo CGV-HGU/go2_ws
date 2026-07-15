@@ -33,8 +33,7 @@ ros2 launch realsense2_camera rs_launch.py \
     rgb_camera.profile:=640x480x30 \
     enable_accel:=true \
     enable_gyro:=true \
-    unite_imu_method:=2; exec bash"
-
+    unite_imu_method:=1; exec bash"
 sleep 5
 
 echo "🟡 [2/4] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
@@ -60,7 +59,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     rtabmap_args:='--delete_db_on_start --Vis/MinInliers 5 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
     frame_id:=camera_link \
     rgb_topic:=/camera/color/image_raw \
-    depth_topic:=/camera/depth/image_rect_raw \
+    depth_topic:=/camera/aligned_depth_to_color/image_raw \
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=true \
     odom_approx_sync:=true \
