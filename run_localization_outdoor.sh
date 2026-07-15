@@ -49,8 +49,8 @@ ros2 launch realsense2_camera rs_launch.py \
     enable_sync:=true \
     depth_module.profile:=$CAMERA_PROFILE \
     rgb_camera.profile:=$CAMERA_PROFILE \
-    enable_accel:=true \
-    enable_gyro:=true \
+    enable_accel:=false \
+    enable_gyro:=false \
     unite_imu_method:=1 & \
 sleep 5 && \
 ros2 run depthimage_to_laserscan depthimage_to_laserscan_node \

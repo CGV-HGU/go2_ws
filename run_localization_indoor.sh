@@ -65,15 +65,20 @@ ros2 run depthimage_to_laserscan depthimage_to_laserscan_node \
     -p range_max:=5.0; exec bash"
 sleep 5
 
-echo "🟡 [2.5/7] Launching IMU Filter (Madgwick)..."
+echo "🟡 [2.5/7] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH; \
+python3 $WS_ROOT/imu_relay.py; exec bash"
+
+sleep 3
+
+echo "🟡 [2.7/7] Launching IMU Filter (Madgwick)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     --ros-args \
     -p use_mag:=false \
     -p publish_tf:=false \
     -p world_frame:=enu \
-    -p remove_gravity_vector:=true \
-    -r /imu/data_raw:=/camera/imu \
     -r /imu/data:=/imu/data; exec bash"
 sleep 3
 
