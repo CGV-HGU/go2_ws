@@ -26,20 +26,27 @@ sleep 15
 
 gnome-terminal --tab -- bash -c "export LD_PRELOAD=/usr/local/lib/librealsense2.so; $INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
+    initial_reset:=true \
     align_depth:=true \
     enable_sync:=true \
     depth_module.profile:=640x480x30 \
     rgb_camera.profile:=640x480x30 \
     enable_accel:=true \
     enable_gyro:=true \
-    unite_imu_method:=2 \
+    unite_imu_method:=1 \
     accel_qos:=SYSTEM_DEFAULT \
-    gyro_qos:=SYSTEM_DEFAULT \
-    --ros-args -r /camera/imu:=/imu/data_raw; exec bash"
+    gyro_qos:=SYSTEM_DEFAULT; exec bash"
 
 sleep 5
 
-echo "🟡 [2/4] Launching IMU Filter (Madgwick)..."
+echo "🟡 [2/4] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH; \
+python3 $WS_ROOT/imu_relay.py; exec bash"
+
+sleep 3
+
+echo "🟡 [2.2/4] Launching IMU Filter (Madgwick)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     --ros-args \
@@ -57,7 +64,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     rtabmap_args:='--delete_db_on_start --Vis/MinInliers 5 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
     frame_id:=camera_link \
     rgb_topic:=/camera/color/image_raw \
-    depth_topic:=/camera/depth/image_rect_raw \
+    depth_topic:=/camera/aligned_depth_to_color/image_raw \
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=true \
     odom_approx_sync:=true \
