@@ -26,6 +26,7 @@ sleep 15
 
 gnome-terminal --tab -- bash -c "export LD_PRELOAD=/usr/local/lib/librealsense2.so; $INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
+    initial_reset:=true \
     align_depth:=true \
     enable_sync:=true \
     depth_module.profile:=640x480x30 \
@@ -36,22 +37,14 @@ ros2 launch realsense2_camera rs_launch.py \
 
 sleep 5
 
-echo "🟡 [2/4] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
-gnome-terminal --tab -- bash -c "$INIT_ENV \
-export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH; \
-python3 $WS_ROOT/imu_relay.py; exec bash"
-
-sleep 3
-
-echo "🟡 [3/5] Launching IMU Filter (Madgwick)..."
+echo "🟡 [2/4] Launching IMU Filter (Madgwick)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     --ros-args \
     -p use_mag:=false \
     -p publish_tf:=false \
-    -p world_frame:=enu \
-    -r /imu/data:=/rtabmap/imu \
-    -r imu/data:=/rtabmap/imu; exec bash"
+    -r /imu/data_raw:=/camera/imu \
+    -r /imu/data:=/imu/data; exec bash"
 
 sleep 3
 
@@ -69,7 +62,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     wait_for_transform:=1.5 \
     qos:=1 \
     wait_imu_to_init:=true \
-    imu_topic:=/imu/data_raw \
+    imu_topic:=/imu/data \
     rviz:=true; exec bash"
 
 echo "🟡 [4/4] Publishing Static TF (base_link -> camera_link, camera_gyro_optical_frame -> camera_imu_optical_frame)..."

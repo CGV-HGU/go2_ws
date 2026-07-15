@@ -62,6 +62,7 @@ sleep 15
 
 gnome-terminal --tab -- bash -c "export LD_PRELOAD=/usr/local/lib/librealsense2.so; $INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
+    initial_reset:=true \
     align_depth:=true \
     enable_sync:=true \
     depth_module.profile:=640x480x30 \
