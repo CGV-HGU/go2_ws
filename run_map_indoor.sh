@@ -37,6 +37,7 @@ sleep 2
 
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
+    initial_reset:=true \
     align_depth:=true \
     enable_sync:=true \
     depth_module.profile:=$CAMERA_PROFILE \
