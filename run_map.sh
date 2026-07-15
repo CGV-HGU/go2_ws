@@ -69,7 +69,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     wait_for_transform:=1.5 \
     qos:=1 \
     wait_imu_to_init:=true \
-    imu_topic:=/rtabmap/imu \
+    imu_topic:=/imu/data_raw \
     rviz:=true; exec bash"
 
 echo "🟡 [4/4] Publishing Static TF (base_link -> camera_link, camera_gyro_optical_frame -> camera_imu_optical_frame)..."
