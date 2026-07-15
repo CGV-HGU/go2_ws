@@ -37,13 +37,19 @@ ros2 launch realsense2_camera rs_launch.py \
 
 sleep 5
 
-echo "🟡 [2/4] Launching IMU Filter (Madgwick)..."
+echo "🟡 [2/4] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH; \
+python3 $WS_ROOT/imu_relay.py; exec bash"
+
+sleep 3
+
+echo "🟡 [2.2/4] Launching IMU Filter (Madgwick)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     --ros-args \
     -p use_mag:=false \
     -p publish_tf:=false \
-    -r /imu/data_raw:=/camera/imu \
     -r /imu/data:=/imu/data; exec bash"
 
 sleep 3
