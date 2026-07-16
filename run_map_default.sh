@@ -10,12 +10,21 @@ DDS_WS="/home/unitree/cyclonedds_ws"
 
 # Strict Isolation Environment: Sourcing Base -> CycloneDDS -> New Workspace
 # This prevents pollution from other workspaces and ensures binary compatibility
+# Dynamic DDS Interface Selection
+if ip addr | grep -q '192.168.123.'; then
+    DDS_CONFIG="export CYCLONEDDS_URI=file://$WS_ROOT/cyclonedds.xml;"
+    echo "🔗 Robot network (192.168.123.xx) detected. Applying CycloneDDS profile."
+else
+    DDS_CONFIG=""
+    echo "🔌 Robot network NOT detected. Running CycloneDDS in local default mode."
+fi
+
 INIT_ENV="unset AMENT_PREFIX_PATH ROS_PREFIX_PATH ROS_DISTRO PYTHONPATH LD_LIBRARY_PATH; \
 source $ROS_BASE/setup.bash; \
 source $DDS_WS/install/setup.bash; \
 source $WS_ROOT/install/setup.bash; \
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; \
-export CYCLONEDDS_URI=file://$WS_ROOT/cyclonedds.xml; \
+$DDS_CONFIG \
 export ROS_DOMAIN_ID=0; \
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH;"
 
