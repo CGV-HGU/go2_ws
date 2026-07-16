@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ====================================================================================
-# [D435i + RTAB-Map SLAM - Final Optimized & Isolated Version]
+# [D435i + RTAB-Map SLAM - Final Optimized Version]
 # ====================================================================================
 
 WS_ROOT="/home/unitree/go2_ws"
@@ -18,7 +18,6 @@ else
     DDS_CONFIG=""
     echo "🔌 Robot network NOT detected. Running CycloneDDS in local default mode."
 fi
-
 INIT_ENV="unset AMENT_PREFIX_PATH ROS_PREFIX_PATH ROS_DISTRO PYTHONPATH LD_LIBRARY_PATH; \
 source $ROS_BASE/setup.bash; \
 source $DDS_WS/install/setup.bash; \
@@ -29,35 +28,35 @@ export ROS_DOMAIN_ID=0; \
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH;"
 
 echo "🟡 [1/4] Resetting RealSense & Launching Camera..."
-$ROS_BASE/bin/rs-enumerate-devices -r > /dev/null 2>&1
-echo "⏳ Waiting 15 seconds for Jetson USB controller to stabilize..."
-sleep 15
+/usr/local/bin/rs-enumerate-devices -r > /dev/null 2>&1
+echo "⏳ Waiting 25 seconds for Jetson USB controller to stabilize..."
+sleep 25
 
 gnome-terminal --tab -- bash -c "export LD_PRELOAD=/usr/local/lib/librealsense2.so; $INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
-    initial_reset:=true \
-    align_depth:=true \
-    enable_sync:=true \
-    depth_module.profile:=640x480x30 \
-    rgb_camera.profile:=640x480x30 \
+    initial_reset:=false \
+    align_depth.enable:=true \
+    enable_color:=true \
+    enable_sync:=false \
+    enable_sync.enable:=false \
+    depth_module.profile:=424x240x30 \
+    rgb_camera.profile:=424x240x30 \
     enable_accel:=true \
     enable_gyro:=true \
-    unite_imu_method:=1; exec bash"
-sleep 5
+    unite_imu_method:=2 \
+    publish_tf:=true \
+    global_time_enabled:=false \
+    hold_back_imu_for_frames:=true; exec bash"
 
-echo "🟡 [2/4] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
-gnome-terminal --tab -- bash -c "$INIT_ENV \
-export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH; \
-python3 $WS_ROOT/imu_relay.py; exec bash"
+sleep 10
 
-sleep 3
-
-echo "🟡 [2.2/4] Launching IMU Filter (Madgwick)..."
+echo "🟡 [2/4] Launching IMU Filter (Madgwick)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     --ros-args \
     -p use_mag:=false \
     -p publish_tf:=false \
+    -r /imu/data_raw:=/camera/imu \
     -r /imu/data:=/imu/data; exec bash"
 
 sleep 3
@@ -67,19 +66,22 @@ gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 launch rtabmap_launch rtabmap.launch.py \
     rtabmap_args:='--delete_db_on_start --Vis/MinInliers 5 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
     frame_id:=camera_link \
+    visual_odometry:=true \
+    odom_topic:=/odom \
+    odom_info_topic:=/odom_info \
     rgb_topic:=/camera/color/image_raw \
     depth_topic:=/camera/aligned_depth_to_color/image_raw \
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=true \
     odom_approx_sync:=true \
-    approx_sync_max_interval:=0.1 \
+    approx_sync_max_interval:=1.0 \
     wait_for_transform:=1.5 \
     qos:=1 \
     wait_imu_to_init:=true \
     imu_topic:=/imu/data \
     rviz:=true; exec bash"
 
-echo "🟡 [4/4] Publishing Static TF (base_link -> camera_link, camera_gyro_optical_frame -> camera_imu_optical_frame)..."
+echo "🟡 [4/4] Publishing Static TF..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link camera_link & \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_gyro_optical_frame camera_imu_optical_frame; exec bash"
