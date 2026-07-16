@@ -2,7 +2,7 @@
 
 Intel RealSense D435i 카메라와 RTAB-Map을 활용한 Unitree Go2 로봇의 Visual-Inertial SLAM (VIO) 작업 환경 설정 및 이슈 해결 가이드입니다.
 
-![RTAB-Map 구동](./rtabmap구동.png)
+![RTAB-Map 구동](./images/rtabmap구동.png)
 
 ---
 
