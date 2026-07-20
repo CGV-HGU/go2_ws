@@ -58,6 +58,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     frame_id:=camera_link \
     rgb_topic:=/camera/color/image_raw \
     depth_topic:=/camera/depth/image_rect_raw \
+||||||| 05b815c
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=true \
     odom_approx_sync:=true \

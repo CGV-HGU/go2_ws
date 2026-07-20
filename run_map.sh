@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ====================================================================================
-# [D435i + RTAB-Map SLAM - Final Optimized & Isolated Version]
+# [D435i + RTAB-Map SLAM - Final Optimized Version]
 # ====================================================================================
 
 WS_ROOT="/home/unitree/go2_ws"
@@ -22,12 +22,14 @@ USE_LIDAR_ODOM=true
 CAMERA_PROFILE="640x480x15"
 
 # Strict Isolation Environment: Sourcing Base -> CycloneDDS -> New Workspace
+||||||| 05b815c
+# This prevents pollution from other workspaces and ensures binary compatibility
 INIT_ENV="unset AMENT_PREFIX_PATH ROS_PREFIX_PATH ROS_DISTRO PYTHONPATH LD_LIBRARY_PATH; \
 source $ROS_BASE/setup.bash; \
 source $DDS_WS/install/setup.bash; \
 source $WS_ROOT/install/setup.bash; \
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp; \
-export CYCLONEDDS_URI=file://$WS_ROOT/cyclonedds.xml; \
+$DDS_CONFIG \
 export ROS_DOMAIN_ID=0; \
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH;"
 
@@ -36,10 +38,23 @@ if [ "$USE_LIDAR_ODOM" = true ]; then
     gnome-terminal --tab -- bash -c "$INIT_ENV \
     ros2 launch go2_bringup go2.launch.py; exec bash"
     sleep 5
+||||||| 05b815c
+echo "🟡 [1/3] Resetting RealSense & Launching Camera..."
+$ROS_BASE/bin/rs-enumerate-devices -r > /dev/null 2>&1
+sleep 2
 
     echo "🟡 [2/4] Resetting RealSense & Launching Camera..."
     $ROS_BASE/bin/rs-enumerate-devices -r > /dev/null 2>&1
     sleep 2
+||||||| 05b815c
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+ros2 launch realsense2_camera rs_launch.py \
+    align_depth:=true \
+    enable_sync:=true \
+    depth_module.profile:=640x480x30 \
+    rgb_camera.profile:=640x480x30 \
+    enable_accel:=false \
+    enable_gyro:=false; exec bash"
 
     gnome-terminal --tab -- bash -c "$INIT_ENV \
     ros2 launch realsense2_camera rs_launch.py \
@@ -52,12 +67,29 @@ if [ "$USE_LIDAR_ODOM" = true ]; then
         enable_gyro:=true \
         unite_imu_method:=1; exec bash"
     sleep 5
+||||||| 05b815c
+sleep 5
 
     echo "🟡 [2.5/4] Launching IMU Relay (/camera/imu -> /imu/data_raw)..."
     gnome-terminal --tab -- bash -c "$INIT_ENV \
     export LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH; \
     python3 $WS_ROOT/imu_relay.py; exec bash"
     sleep 3
+||||||| 05b815c
+echo "🟢 [2/3] Launching RTAB-Map (Optimized Sync)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+ros2 launch rtabmap_launch rtabmap.launch.py \
+    rtabmap_args:='--delete_db_on_start --Vis/MinInliers 5 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true' \
+    frame_id:=camera_link \
+    rgb_topic:=/camera/color/image_raw \
+    depth_topic:=/camera/depth/image_rect_raw \
+    camera_info_topic:=/camera/color/camera_info \
+    approx_sync:=true \
+    odom_approx_sync:=true \
+    approx_sync_max_interval:=0.1 \
+    wait_for_transform:=1.5 \
+    qos:=2 \
+    rviz:=true; exec bash"
 
     echo "🟡 [2.7/4] Launching IMU Filter (Madgwick)..."
     gnome-terminal --tab -- bash -c "$INIT_ENV \
@@ -68,6 +100,10 @@ if [ "$USE_LIDAR_ODOM" = true ]; then
         -p world_frame:=enu \
         -r /imu/data:=/imu/data; exec bash"
     sleep 3
+||||||| 05b815c
+echo "🟡 [3/3] Publishing Static TF (base_link -> camera_link)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link camera_link; exec bash"
 
     echo "🟢 [3/4] Launching RTAB-Map in LiDAR-Odom Mapping Mode..."
     gnome-terminal --tab -- bash -c "$INIT_ENV \
@@ -142,3 +178,5 @@ else
 
     echo "✅ [SUCCESS] SLAM Booted in Visual Odometry Mode. (Static TF enabled)"
 fi
+||||||| 05b815c
+echo "✅ [SUCCESS] SLAM Booted with full environment shielding."

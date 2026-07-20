@@ -1,0 +1,103 @@
+===================================================================
+  SLAM 디버깅 체크리스트 (LAN 끊은 상태에서 실행)
+  카메라: Intel RealSense D435i (FW 5.17.0.10)
+  환경: Jetson + ROS 2 Foxy + CycloneDDS
+===================================================================
+
+[사전 준비]
+- 학교 유선랜 케이블 분리
+- 로봇 통신망(192.168.123.99)만 연결된 상태 확인
+- 이전에 실행 중이던 ROS 노드 모두 종료
+
+-------------------------------------------------------------------
+STEP 0: 이전 노드 완전 종료
+-------------------------------------------------------------------
+pkill -9 -f "realsense2_camera|rtabmap|imu_filter|rviz2|static_transform" 2>/dev/null
+sleep 3
+
+-------------------------------------------------------------------
+STEP 1: 카메라 USB 상태 확인
+-------------------------------------------------------------------
+# 카메라가 USB에 잡히는지 확인
+lsusb | grep Intel
+
+# USB 자동절전 비활성화 확인 (on + -1 이어야 함)
+cat /sys/bus/usb/devices/2-2/power/control
+cat /sys/bus/usb/devices/2-2/power/autosuspend
+
+-------------------------------------------------------------------
+STEP 2: usbhid 드라이버 바인딩 확인
+-------------------------------------------------------------------
+# 2-2:1.5 인터페이스에 usbhid가 연결되어 있어야 함
+ls -la /sys/bus/usb/devices/2-2:1.5/driver
+
+-------------------------------------------------------------------
+STEP 3: 카메라 장치 인식 확인
+-------------------------------------------------------------------
+/usr/local/bin/rs-enumerate-devices | grep -E "Name|Firmware|IMU"
+
+-------------------------------------------------------------------
+STEP 4: run_map.sh 실행
+-------------------------------------------------------------------
+cd /home/unitree/go2_ws
+./run_map.sh
+
+-------------------------------------------------------------------
+STEP 5: 토픽 발행 여부 확인 (카메라 노드 뜬 뒤 새 터미널에서)
+-------------------------------------------------------------------
+source /opt/ros/foxy/setup.bash
+source /home/unitree/go2_ws/install/setup.bash
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export CYCLONEDDS_URI=file:///home/unitree/go2_ws/cyclonedds.xml
+
+# 전체 토픽 목록 확인
+ros2 topic list
+
+# 카메라 IMU 발행 속도 확인 (200Hz 정도면 정상)
+ros2 topic hz /camera/imu
+
+# Madgwick 출력 확인 (데이터 오면 정상)
+ros2 topic hz /imu/data
+
+# Depth Aligned 토픽 확인 (RTAB-Map이 필요로 하는 토픽)
+ros2 topic hz /camera/aligned_depth_to_color/image_raw
+
+# RGB 카메라 확인
+ros2 topic hz /camera/color/image_raw
+
+-------------------------------------------------------------------
+STEP 6: RTAB-Map 입력 토픽 동기화 확인
+-------------------------------------------------------------------
+# rgbd_odometry가 구독하는 토픽들의 발행 속도를 한 번에 확인
+ros2 topic hz /camera/color/image_raw &
+ros2 topic hz /camera/aligned_depth_to_color/image_raw &
+ros2 topic hz /camera/color/camera_info &
+wait
+
+-------------------------------------------------------------------
+STEP 7: QoS 설정 확인 (토픽이 있는데도 데이터가 안 올 때)
+-------------------------------------------------------------------
+ros2 topic info /camera/aligned_depth_to_color/image_raw -v
+ros2 topic info /camera/imu -v
+ros2 topic info /imu/data -v
+
+-------------------------------------------------------------------
+STEP 8: TF 프레임 확인
+-------------------------------------------------------------------
+ros2 run tf2_ros tf2_echo camera_link camera_imu_optical_frame
+
+-------------------------------------------------------------------
+[로그 저장 방법]
+-------------------------------------------------------------------
+# 각 터미널의 출력을 파일로 저장하려면 명령어 앞에 아래와 같이 추가:
+# 예) ros2 topic hz /camera/imu 2>&1 | tee /home/unitree/go2_ws/hz_log.txt
+
+-------------------------------------------------------------------
+[정상 동작 기준]
+-------------------------------------------------------------------
+/camera/imu                          → 약 200 Hz
+/imu/data                            → 약 200 Hz (Madgwick 출력)
+/camera/color/image_raw              → 약 15 Hz
+/camera/aligned_depth_to_color/image_raw → 약 15 Hz
+/camera/color/camera_info            → 약 15 Hz
+===================================================================
