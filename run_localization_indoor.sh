@@ -15,7 +15,7 @@ DDS_WS="/home/unitree/cyclonedds_ws"
 RTABMAP_DB_PATH="/home/unitree/.ros/rtabmap.db"
 if [ ! -f "$RTABMAP_DB_PATH" ]; then
     echo "❌ [ERROR] RTABMAP DB file not found at $RTABMAP_DB_PATH!"
-    echo "Please build the map first using run_map_fusion.sh before running localization."
+    echo "Please build the map first using run_map_indoor.sh before running localization."
     exit 1
 fi
 
