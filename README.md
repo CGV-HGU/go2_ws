@@ -26,26 +26,29 @@ python urbansim/envs/separate_envs/pg_env.py --enable_cameras --num_envs 16 --us
 
 ---
 
-## 🔬 3. 4단계 커리큘럼 시나리오 설정 가이드 (Target Parameters)
+## 🔬 3. 4단계 커리큘럼 시나리오 공동 연구 제안 (S2E V2 가이드라인)
 
-`maps/curriculum/pg_env_cfg.py` 파일 내의 `pg_config` 및 난이도별 YAML 파일에 주입해야 할 물리 설정 스펙.
+본 워크스페이스에서 제공하는 4단계 커리큘럼은 학습 수렴 안정성과 Sim-to-Real 효율을 극대화하기 위해 설계된 **제안용 초기 베이스라인(Proposal)**입니다. 건민 님의 PPO 학습 진척도 및 실험 결과에 맞춰 피드백을 주고받으며 자유롭게 각 스테이지의 매개변수를 함께 수정하고 튜닝해 나갈 것을 제안합니다.
 
-| 훈련 단계 (Stage) | 환경 타입 (`type`) | 보도 레이아웃 (`map`) | 장애물 밀도 (`object_density`) | 보행자 수 (`spawn_human_num`) | 훈련장 구축 의도 (이민석 설계 목적) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1단계: 직선 보행로** | `'clean'` | `'S'` (직선형) | `0.0` (없음) | `0` | 보도 중심을 인지하고 목적지까지 탈선 없이 일직선으로 걷는 훈련. |
-| **2단계: 곡선 및 회피** | `'static'` | `'SCS'` (곡선형) | `0.3` (낮음) | `0` | 곡선로를 따라 조향하고, 간헐적 장애물을 부드럽게 피해 걷는 훈련. |
-| **3단계: 교차로 및 정체** | `'static'` | `'XSX'` (교차로) | `0.5` (보통) | `0` | 교차로 정션 모퉁이 선회 및 보도를 벤치 등으로 인위 막아 우회-복귀(Recovery) 유도. |
-| **4단계: 보행자 정체** | `'dynamic'` | `'XSX'` (복합로) | `0.7` (높음) | `10` (보행 지능) | 좁은 길목에 마주 오는 보행자를 요동 없이 피하는 최종 실전 테스트 환경. |
+*   **장애물 기하학 및 스폰 구조 상세 정보**: [URBAN-SIM V2 장애물 세부 튜닝 가이드](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/guides/urbansim_obstacle_tuning_guide.md) 참조.
+
+| 훈련 단계 (Stage) | 보도 형태 (`vary_sidewalk_width`) | 경로 유형 (직선/곡선 확률) | 주력 장애물 시나리오 (`obstacle_scenarios`) | 훈련 구성 및 협의 제안 사항 |
+| :--- | :---: | :--- | :--- | :--- |
+| **1단계: 직선 보행 기초** | `False` (3.5m 고정) | 직선 100% | `clean` 100% (장애물 없음) | 보도 중심을 파악하고 목적지까지 탈선 없이 일직선 보행을 완전히 마스터하기 위한 기초 훈련 세트장. |
+| **2단계: 곡선 및 기본 회피** | `True` (2.5~4.0m) | 직선 34% / 곡선 66% | `clean` 20% / `sparse` 80% (랜덤 2~5개) | 인도 폭이 수시로 변하는 가변형 곡선로에서 완만하게 조향하며 드문드문 위치한 고정 장애물을 피해 걷는 단계. |
+| **3단계: 정체로 및 위기 우회** | `True` (2.5~4.0m) | 직선 34% / 곡선 66% | `dense` 40% / `bottleneck` 30% / `slalom` 30% | 인도 전체를 벤치나 쓰레기통 등으로 막아, 로봇개가 **인도 이탈 Done 없이 차도로 우회 복귀(Recovery)**하는 기동 능력을 유도하는 훈련. |
+| **4단계: 종합 난관 주행** | `True` (2.5~4.0m) | 직선 34% / 곡선 66% | `clean`, `sparse`, `dense`, `bottleneck`, `slalom`, `curve_clutter` 전체 믹싱 | V2 공식 벤치마크 환경의 스폰 확률을 100% 모사하여 최종 자율주행 회피 성능을 종합 평가하는 벤치마크 세트장. |
 
 ---
 
 ## 📂 4. 코드 관리 및 랩실 공유 방식
 
-*   **독립적 이력 관리**: 우리는 건민 님의 원격 저장소를 오염시키지 않기 위해 우리 브랜치 상에서만 안전하게 개발을 수행함.
-*   **시나리오 설정 트래킹**: `scratch/s2e-urban-rl` 내부에서 실시간으로 수정한 튜닝 코드들은 우리 레포 아래인 [maps/curriculum/](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/curriculum/)에 카피해 두어 깃 버전 관리를 유지함.
+*   **독립적 이력 관리**: 건민 님의 원격 메인 저장소(`s2e-urban-rl`)를 오염시키지 않기 위해, 우리의 개발 및 변경 사항은 사용자 전용 브랜치(`antarctica-simul`) 상에서만 격리하여 개발함.
+*   **시나리오 설정 자동 주입**: `maps/curriculum/` 아래의 각 YAML 파일들을 우리가 수정해 두면, [run_curriculum.py](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/curriculum/run_curriculum.py) 기동 시 훈련 직전에 건민 님의 공식 설정 폴더로 **최신본이 실시간 자동 배포(Copy)** 처리됩니다.
 
 ### 🗂️ 핵심 파일 경로
-*   [pg_env_cfg.py (시나리오 설정 베이스라인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/curriculum/pg_env_cfg.py): 보행로 모양, 장애물 분포 파라미터 조율
+*   [maps/curriculum/ (4단계 커리큘럼 YAML 폴더)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/curriculum/): 난이도별 가변 보도 폭, 조도 무작위화, 장애물 시나리오 가중치 조율
+*   [maps/guides/ (공동 연구 및 튜닝 가이드 폴더)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/guides/): 맵 생성 파라미터 조견표 및 장애물 배치 기하 가이드북 수납
 *   [check_repo_updates.py (원격 업데이트 확인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/check_repo_updates.py): 외부 연동 리포지토리의 변동 사항 상시 추적 도구
 
 ---
