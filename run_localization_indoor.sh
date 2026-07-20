@@ -103,6 +103,8 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     frame_id:=base_link \
     visual_odometry:=true \
     odom_guess_frame_id:=odom \
+    odom_topic:=/visual_odom \
+    publish_tf_odom:=false \
     rgb_topic:=/camera/color/image_raw \
     depth_topic:=/camera/aligned_depth_to_color/image_raw \
     camera_info_topic:=/camera/color/camera_info \
