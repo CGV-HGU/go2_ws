@@ -28,7 +28,7 @@ python urbansim/envs/separate_envs/pg_env.py --enable_cameras --num_envs 16 --us
 
 ## 🔬 3. 4단계 커리큘럼 시나리오 설정 가이드 (Target Parameters)
 
-`scratch/sim_curriculum/pg_env_cfg.py` 파일 내의 `pg_config` 및 난이도별 YAML 파일에 주입해야 할 물리 설정 스펙.
+`maps/curriculum/pg_env_cfg.py` 파일 내의 `pg_config` 및 난이도별 YAML 파일에 주입해야 할 물리 설정 스펙.
 
 | 훈련 단계 (Stage) | 환경 타입 (`type`) | 보도 레이아웃 (`map`) | 장애물 밀도 (`object_density`) | 보행자 수 (`spawn_human_num`) | 훈련장 구축 의도 (이민석 설계 목적) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -42,10 +42,10 @@ python urbansim/envs/separate_envs/pg_env.py --enable_cameras --num_envs 16 --us
 ## 📂 4. 코드 관리 및 랩실 공유 방식
 
 *   **독립적 이력 관리**: 우리는 건민 님의 원격 저장소를 오염시키지 않기 위해 우리 브랜치 상에서만 안전하게 개발을 수행함.
-*   **시나리오 설정 트래킹**: `scratch/s2e-urban-rl` 내부에서 실시간으로 수정한 튜닝 코드들은 우리 레포 아래인 [scratch/sim_curriculum/](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/sim_curriculum/)에 카피해 두어 깃 버전 관리를 유지함.
+*   **시나리오 설정 트래킹**: `scratch/s2e-urban-rl` 내부에서 실시간으로 수정한 튜닝 코드들은 우리 레포 아래인 [maps/curriculum/](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/curriculum/)에 카피해 두어 깃 버전 관리를 유지함.
 
 ### 🗂️ 핵심 파일 경로
-*   [pg_env_cfg.py (시나리오 설정 베이스라인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/sim_curriculum/pg_env_cfg.py): 보행로 모양, 장애물 분포 파라미터 조율
+*   [pg_env_cfg.py (시나리오 설정 베이스라인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/maps/curriculum/pg_env_cfg.py): 보행로 모양, 장애물 분포 파라미터 조율
 *   [check_repo_updates.py (원격 업데이트 확인)](file:///C:/Users/USER/Desktop/캡스톤/캡2-논문/go2_ws/scratch/check_repo_updates.py): 외부 연동 리포지토리의 변동 사항 상시 추적 도구
 
 ---
