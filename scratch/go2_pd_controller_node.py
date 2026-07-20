@@ -11,14 +11,15 @@ class Go2PDControllerNode(Node):
         super().__init__('go2_pd_controller_node')
 
         # ROS 2 파라미터 선언 (런타임에서 동적 변경 가능)
-        self.declare_parameter('waypoint_dt', 0.2)          # 각 웨이포인트 사이의 시간 간격 (5Hz = 0.2s)
-        self.declare_parameter('lookahead_idx', 4)         # 몇 번째 웨이포인트를 목표로 바라볼지 (4 = 5번째 점, 1.0초 뒤)
+        self.declare_parameter('waypoint_dt', 0.4)          # S2E V2의 dt=2.0s 와 매핑하기 위해 0.4s 로 기본값 수정 (5 * 0.4 = 2.0)
+        self.declare_parameter('lookahead_idx', 4)         # 몇 번째 웨이포인트를 목표로 바라볼지 (4 = 5번째 점, 2.0초 뒤)
         self.declare_parameter('kx', 1.0)                  # X축 (선속도) 제어 게인
         self.declare_parameter('ky', 1.0)                  # Y축 (횡속도) 제어 게인
         self.declare_parameter('k_heading', 1.0)           # 회전 각속도 제어 게인
         self.declare_parameter('max_vx', 1.0)              # 최대 전진 속도 (m/s)
         self.declare_parameter('max_vy', 0.6)              # 최대 횡 이동 속도 (m/s)
         self.declare_parameter('max_wz', 0.8)              # 최대 회전 속도 (rad/s)
+        self.declare_parameter('min_walk_speed', 0.05)     # 실물 Go2의 최저 기동 속도 Deadband (0.05 m/s)
 
         # 퍼블리셔 선언: DockerBridge로 속도 전달 (/s2e/controller/command)
         self.cmd_pub = self.create_publisher(Twist, '/s2e/controller/command', 10)
@@ -72,6 +73,7 @@ class Go2PDControllerNode(Node):
         max_vx = self.get_parameter('max_vx').get_parameter_value().double_value
         max_vy = self.get_parameter('max_vy').get_parameter_value().double_value
         max_wz = self.get_parameter('max_wz').get_parameter_value().double_value
+        min_walk_speed = self.get_parameter('min_walk_speed').get_parameter_value().double_value
 
         # lookahead 인덱스 바운더리 보호
         idx = min(max(int(lookahead_idx), 0), len(waypoints) - 1)
@@ -88,12 +90,24 @@ class Go2PDControllerNode(Node):
         heading_error = math.atan2(target_y, target_x)
         wz = k_heading * heading_error / lookahead_time
 
-        # 3. 물리적 안전 속도 제한 클램핑
+        # 3. 실물 로봇개 최저 기동 속도 보정 (Deadband Clamping)
+        # 속도가 계산되었으나 최저 속도(min_walk_speed)보다 낮으면 로봇이 굳어버리므로 최저 속도로 밀어 올림.
+        # 단, 아주 정지 상태에 근접한 속도(0.01 m/s 미만)는 안전을 위해 완전 정지(0.0)로 보냄.
+        speed_magnitude = math.sqrt(vx**2 + vy**2)
+        if 0.01 < speed_magnitude < min_walk_speed:
+            scale_factor = min_walk_speed / speed_magnitude
+            vx *= scale_factor
+            vy *= scale_factor
+        elif speed_magnitude <= 0.01:
+            vx = 0.0
+            vy = 0.0
+
+        # 4. 물리적 안전 속도 제한 클램핑
         vx = max(min(vx, max_vx), -max_vx)
         vy = max(min(vy, max_vy), -max_vy)
         wz = max(min(wz, max_wz), -max_wz)
 
-        # 4. Twist 메시지 포장 및 발행
+        # 5. Twist 메시지 포장 및 발행
         cmd_msg = Twist()
         cmd_msg.linear.x = float(vx)
         cmd_msg.linear.y = float(vy)
