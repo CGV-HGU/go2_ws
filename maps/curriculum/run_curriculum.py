@@ -13,6 +13,7 @@ import os
 import sys
 import subprocess
 import argparse
+import shutil
 from pathlib import Path
 
 # 프로젝트 루트 및 설정 파일 경로 지정
@@ -80,6 +81,17 @@ def main():
         stage_cfg = CURRICULUM_STAGES[stage_id]
         print(f"\n[🚀 STARTING STAGE {stage_id}] {stage_cfg['description']}")
         
+        # [★민석 자동 배포 패치] maps/curriculum/의 최신 YAML 설정을 s2e-urban-rl 공식 디렉토리로 동적 주입
+        src_yaml = REPO_ROOT / "maps" / "curriculum" / f"go2_s2e_stage{stage_id}.yaml"
+        dst_yaml = URBAN_RL_ROOT / stage_cfg["env_yaml"]
+        
+        if src_yaml.exists():
+            print(f"[*] Copying latest curriculum config: {src_yaml.name} -> {dst_yaml}")
+            dst_yaml.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src_yaml, dst_yaml)
+        else:
+            print(f"[⚠️ WARNING] Source YAML {src_yaml} not found. Skipping auto-copy.")
+            
         # 훈련 커맨드 빌드
         cmd = [
             "python", "urbansim/learning/RL/train.py",
