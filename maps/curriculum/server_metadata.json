@@ -1,0 +1,34 @@
+{
+  "project_name": "S2E-VOCA-Antarctica",
+  "gpu_servers": {
+    "server_01": {
+      "specs": "4x RTX A6000 (Parallel PPO Training & Preprocessing)",
+      "base_url": "http://server-01.cgv:8000/",
+      "completions_url": "http://server-01.cgv:8000/v1/chat/completions"
+    },
+    "server_02": {
+      "specs": "2x RTX Pro 6000 (High-speed VLM Serving & IsaacSim)",
+      "base_url": "http://server-02.cgv:8000/",
+      "completions_url": "http://server-02.cgv:8000/v1/chat/completions"
+    }
+  },
+  "vlm_model_list": [
+    "Qwen/Qwen3-VL-32B-Thinking",
+    "Qwen/Qwen3-VL-32B-Instruct",
+    "Qwen/Qwen3-VL-8B-Thinking",
+    "Qwen/Qwen3-VL-8B-Instruct",
+    "QuantTrio/Qwen3-VL-32B-Thinking-AWQ",
+    "QuantTrio/Qwen3-VL-32B-Instruct-AWQ",
+    "cyankiwi/Qwen3-VL-8B-Thinking-AWQ",
+    "cyankiwi/Qwen3-VL-8B-Instruct-AWQ"
+  ],
+  "jetson_orin_nx": {
+    "specs": "16GB VRAM (On-device Target)",
+    "vram_budget_allocation": {
+      "os_and_ros": "1.0 GB",
+      "s2e_control": "0.3 GB",
+      "vlm_weight_8b_awq": "7.5 GB",
+      "remaining_for_kv_cache": "7.2 GB (Context window capped below 96K)"
+    }
+  }
+}
