@@ -80,8 +80,9 @@ ros2 run depthimage_to_laserscan depthimage_to_laserscan_node \
     -p range_min:=0.3 \
     -p range_max:=5.0; exec bash"
 
-echo "🟡 [2.2/7] Publishing Static TF (camera_gyro_optical_frame -> camera_imu_optical_frame)..."
+echo "🟡 [6/7] Publishing Static TFs..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link camera_link & \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_gyro_optical_frame camera_imu_optical_frame; exec bash"
 
 sleep 5
