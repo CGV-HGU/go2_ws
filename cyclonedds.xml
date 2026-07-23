@@ -4,8 +4,14 @@
     <Domain Id="any">
         <General>
             <NetworkInterfaceAddress>eth0</NetworkInterfaceAddress>
-            <AllowMulticast>default</AllowMulticast>
+            <AllowMulticast>true</AllowMulticast>
         </General>
+        <Discovery>
+            <Peers>
+                <Peer Address="192.168.123.99"/>
+                <Peer Address="192.168.123.161"/>
+            </Peers>
+        </Discovery>
         <Internal>
             <SocketReceiveBufferSize min="10MB"/>
         </Internal>

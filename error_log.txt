@@ -1,0 +1,33 @@
+INFO] [point_cloud_xyzrgb-5]: process has finished cleanly [pid 22393]
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.304) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=1) between -1 and 6736" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.015009,0.001784,0.117732)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.345) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=41) between -1 and 6737" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.010700,0.005838,0.174778)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.345) OdometryF2M.cpp:309::computeTransform() Failed to find a transformation with the provided guess (xyz=0.000000,0.000000,0.000000 rpy=0.010700,0.005838,0.174778), trying again without a guess.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.404) OdometryF2M.cpp:551::computeTransform() Trial with no guess still fail.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.404) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=13) between -1 and 6737" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.010700,0.005838,0.174778)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.451) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=46) between -1 and 6738" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.000602,0.010175,0.263385)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.451) OdometryF2M.cpp:309::computeTransform() Failed to find a transformation with the provided guess (xyz=0.000000,0.000000,0.000000 rpy=0.000602,0.010175,0.263385), trying again without a guess.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.515) OdometryF2M.cpp:551::computeTransform() Trial with no guess still fail.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.515) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=42) between -1 and 6738" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.000602,0.010175,0.263385)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.558) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=38) between -1 and 6739" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.007570,0.000881,0.390161)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.558) OdometryF2M.cpp:309::computeTransform() Failed to find a transformation with the provided guess (xyz=0.000000,0.000000,0.000000 rpy=0.007570,0.000881,0.390161), trying again without a guess.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.617) OdometryF2M.cpp:551::computeTransform() Trial with no guess still fail.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.617) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=40) between -1 and 6739" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.007570,0.000881,0.390161)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.659) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 4/6 (matches=46) between -1 and 6740" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.023080,0.010906,0.531488)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.660) OdometryF2M.cpp:309::computeTransform() Failed to find a transformation with the provided guess (xyz=0.000000,0.000000,0.000000 rpy=0.023080,0.010906,0.531488), trying again without a guess.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.722) OdometryF2M.cpp:551::computeTransform() Trial with no guess still fail.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.722) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 0/6 (matches=67) between -1 and 6740" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.023080,0.010906,0.531488)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.769) OdometryF2M.cpp:561::computeTransform() Registration failed: "Not enough inliers 3/6 (matches=87) between -1 and 6741" (guess=xyz=0.000000,0.000000,0.000000 rpy=0.046084,0.003775,0.650136)
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.769) OdometryF2M.cpp:309::computeTransform() Failed to find a transformation with the provided guess (xyz=0.000000,0.000000,0.000000 rpy=0.046084,0.003775,0.650136), trying again without a guess.
+[rgbd_odometry-1] [ WARN] (2026-07-21 16:24:03.874) OdometryF2M.cpp:571::computeTransform() Trial with no guess succeeded!
+[INFO] [rgbd_odometry-1]: process has finished cleanly [pid 22385]
+[INFO] [rviz2-4]: process has finished cleanly [pid 22391]
+[rtabmap_viz-3] [ WARN] (2026-07-21 16:25:13.649) MsgConversion.cpp:1758::getTransform() (can transform /odom -> camera_link?) Invalid frame ID "/odom" passed to canTransform argument target_frame - in tf2 frame_ids cannot start with a '/'. canTransform returned after 1.08696 timeout was 1.5. (wait_for_transform=1.500000)
+[ERROR] [rtabmap_viz-3]: process has died [pid 22389, exit code 255, cmd '/home/unitree/go2_ws/install/rtabmap_viz/lib/rtabmap_viz/rtabmap_viz ~/.ros/rtabmap_gui.ini --ros-args -r __ns:=/rtabmap --params-file /tmp/launch_params_up2wnwfp --params-file /tmp/launch_params_d02xhmz0 -r rgb/image:=/camera/color/image_raw -r depth/image:=/camera/aligned_depth_to_color/image_raw -r rgb/camera_info:=/camera/color/camera_info -r rgbd_image:=rgbd_image_relay -r left/image_rect:=/stereo_camera/left/image_rect_color -r right/image_rect:=/stereo_camera/right/image_rect -r left/camera_info:=/stereo_camera/left/camera_info -r right/camera_info:=/stereo_camera/right/camera_info -r scan:=/scan -r scan_cloud:=/scan_cloud -r odom:=/odom'].
+[rtabmap-2] [ WARN] (2026-07-21 16:25:13.652) MsgConversion.cpp:1758::getTransform() (can transform /odom -> camera_link?) Invalid frame ID "/odom" passed to canTransform argument target_frame - in tf2 frame_ids cannot start with a '/'. canTransform returned after 0.7659 timeout was 1.5. (wait_for_transform=1.500000)
+[rtabmap-2] rtabmap: Saving database/long-term memory... (located at /home/unitree/.ros/rtabmap.db)
+[rtabmap-2] rtabmap: 2D occupancy grid map saved.
+[rtabmap-2] rtabmap: Saving database/long-term memory...done! (located at /home/unitree/.ros/rtabmap.db, 39 MB)
+[INFO] [rtabmap-2]: process has finished cleanly [pid 22387]
+unitree@ubuntu:~/go2_ws$ 
+
+

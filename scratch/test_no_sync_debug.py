@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import subprocess
+import time
+import os
+
+def main():
+    ros_base = "/opt/ros/foxy"
+    dds_ws = "/home/unitree/cyclonedds_ws"
+    ws_root = "/home/unitree/go2_ws"
+
+    processes = []
+    bash_prefix = f"source {ros_base}/setup.bash && source {dds_ws}/install/setup.bash && source {ws_root}/install/setup.bash && export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp && export CYCLONEDDS_URI=file://{ws_root}/cyclonedds.xml && export ROS_DOMAIN_ID=0 && export LD_PRELOAD=/usr/local/lib/librealsense2.so && export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH && "
+
+    print("1. Launching camera node...")
+    cam_cmd = bash_prefix + (
+        f"ros2 launch realsense2_camera rs_launch.py "
+        f"initial_reset:=true "
+        f"align_depth:=false "
+        f"enable_sync:=false "
+        f"depth_module.profile:=640x480x15 "
+        f"rgb_camera.profile:=640x480x15 "
+        f"enable_accel:=true "
+        f"enable_gyro:=true "
+        f"unite_imu_method:=1"
+    )
+    cam_proc = subprocess.Popen(["bash", "-c", cam_cmd], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    processes.append(("camera", cam_proc))
+
+    print("Waiting 15 seconds for camera to run...")
+    time.sleep(15)
+
+    print("Terminating camera node...")
+    for name, p in processes:
+        p.terminate()
+        try:
+            p.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            p.kill()
+
+    print("\n--- CAMERA NODE LOGS ---")
+    for line in cam_proc.stdout:
+        print(line, end="")
+    print("-------------------------\n")
+
+if __name__ == '__main__':
+    main()
