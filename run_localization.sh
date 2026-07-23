@@ -115,7 +115,7 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     frame_id:=base_link \
     odom_frame_id:=odom \
     rgb_topic:=/camera/color/image_raw \
-    depth_topic:=/camera/depth/image_rect_raw \
+    depth_topic:=/camera/aligned_depth_to_color/image_raw \
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=true \
     wait_for_transform:=1.5 \
