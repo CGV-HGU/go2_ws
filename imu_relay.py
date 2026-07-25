@@ -43,8 +43,10 @@ class ImuRelay(Node):
     def callback(self, msg: Imu):
         self.pub.publish(msg)
         self.count += 1
-        if self.count % 200 == 0:
-            self.get_logger().info(f'Relayed {self.count} IMU messages')
+        if self.count == 1:
+            self.get_logger().info('🚀 [FIRST IMU RECEIVED] Successfully received and relayed 1st IMU message!')
+        elif self.count % 100 == 0:
+            self.get_logger().info(f'🔄 [RELAYING] Total IMU messages relayed: {self.count}')
 
 
 def main():
