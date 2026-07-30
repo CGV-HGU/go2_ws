@@ -28,7 +28,13 @@ export ROS_DOMAIN_ID=0; \
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH; \
 export PYTHONUNBUFFERED=1;"
 
-echo "🟡 [1/5] Launching Camera Node..."
+echo "⚪️ [1/6] Launching Go2 Bringup (URDF + Driver)..."
+gnome-terminal --tab -- bash -c "$INIT_ENV \
+ros2 launch go2_bringup go2.launch.py; exec bash"
+
+sleep 3
+
+echo "🟡 [2/6] Launching Camera Node..."
 gnome-terminal --tab -- bash -c "export LD_PRELOAD=/usr/local/lib/librealsense2.so; $INIT_ENV \
 ros2 launch realsense2_camera rs_launch.py \
     initial_reset:=false \
@@ -50,26 +56,30 @@ ros2 launch realsense2_camera rs_launch.py \
 
 sleep 10
 
-echo "🟡 [2/5] Launching IMU Relay..."
+echo "🟡 [3/6] Launching IMU Relay..."
 gnome-terminal --tab -- bash -c "$INIT_ENV python3 $WS_ROOT/imu_relay.py; exec bash"
 
 sleep 2
 
-echo "🟡 [3/5] Launching IMU Filter (Madgwick)..."
+echo "🟡 [4/6] Launching IMU Filter (Madgwick)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     --ros-args \
+    -p gain:=0.02 \
+    -p zeta:=0.0 \
     -p use_mag:=false \
     -p publish_tf:=false \
+    -p world_frame:=\"enu\" \
+    -p orientation_stddev:=0.01 \
     -r /imu/data:=/imu/data; exec bash"
 
 sleep 3
 
-echo "🟢 [4/5] Launching RTAB-Map (Optimized Sync + VIO)..."
+echo "🟢 [5/6] Launching RTAB-Map (Optimized Sync + VIO)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 launch rtabmap_launch rtabmap.launch.py \
-    rtabmap_args:='--delete_db_on_start --Vis/MinInliers 5 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
-    frame_id:=camera_link \
+    rtabmap_args:='--delete_db_on_start --Vis/MinInliers 15 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
+    frame_id:=base_link \
     visual_odometry:=true \
     odom_topic:=/odom \
     odom_frame_id:=odom \
@@ -91,9 +101,9 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
     rtabmap_viz:=true \
     rviz:=true; exec bash"
 
-echo "🟡 [5/5] Publishing Static TF..."
+echo "🟡 [6/6] Publishing Static TF..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
-ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link camera_link & \
+ros2 run tf2_ros static_transform_publisher 0.30 0 0.11 0 0 0 base_link camera_link & \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_link camera_imu_optical_frame & \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_gyro_optical_frame camera_imu_optical_frame; exec bash"
 
