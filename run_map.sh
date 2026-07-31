@@ -78,7 +78,8 @@ sleep 6
 echo "🟢 [5/6] Launching RTAB-Map (Optimized Sync + VIO)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
 ros2 launch rtabmap_launch rtabmap.launch.py \
-    rtabmap_args:='--delete_db_on_start --Vis/MinInliers 15 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
+    rtabmap_args:='--delete_db_on_start --Vis/MinInliers 10 --Rtabmap/MinVisInliers 10 --Rtabmap/DetectionRate 2.0 --Grid/RangeMin 0.3 --Grid/RangeMax 3.0 --Grid/MaxGroundHeight 0.1 --Grid/MaxObstacleHeight 1.5 --Grid/CellSize 0.1 --Grid/RayTracing true --Optimizer/GravitySigma 0.3' \
+    odom_args:='--ros-args -p Odom/Strategy:=0' \
     frame_id:=base_link \
     visual_odometry:=true \
     odom_topic:=/odom \
