@@ -1,7 +1,7 @@
 # 📝 Go2 SLAM & VIO 파라미터 튜닝 및 히스토리 리포트 (2026-07-31)
 
 ## 📌 개요
-본 문서는 Go2 4족보행 로봇과 Intel RealSense D435i 카메라 환경에서 RTAB-Map 기반 Visual-Inertial Odometry (VIO) 매핑의 안정성과 루프 클로저(Loop Closure) 성능을 극대화하기 위해 진행한 파라미터 튜닝, 부팅 시퀀스 최적화, 그리고 시도 후 원복된 사항들을 종합 정리는 보고서입니다.
+본 문서는 Go2 4족보행 로봇과 Intel RealSense D435i 카메라 환경에서 RTAB-Map 기반 Visual-Inertial Odometry (VIO) 매핑의 안정성과 루프 클로저(Loop Closure) 성능을 극대화하기 위해 진행한 파라미터 튜닝, 부팅 시퀀스 최적화, 시도 후 원복된 사항들, 그리고 향후 연구/개선과제들을 종합 정리는 보고서입니다.
 
 ---
 
@@ -73,3 +73,18 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 3. **[3/5] IMU Relay 구동** ➔ `sleep 2`
 4. **[4/5] IMU Filter (Madgwick) 구동** ➔ `sleep 8`
 5. **[5/5] RTAB-Map 구동** ➔ 완료!
+
+---
+
+## 🔮 4. 향후 시도해 볼 만한 연구/개선 과제 (Future Work & Experiments)
+
+### ① Go2 로봇 본체 내장 IMU 센서 퓨전
+* 현재 D435i 카메라 내장 IMU만 사용 중이나, **Go2 본체 관절 드라이버에서 제공하는 high-rate 본체 IMU(또는 4발 접지 상태 정보)**를 `robot_localization` (EKF Filter)이나 RTAB-Map의 추가 센서 입력으로 퓨전하여, 보행 시 카메라 수평 정밀도를 추가로 보정하는 실험 진행.
+
+### ② Visual Odometry (비주얼 오도메트리) 성능 업그레이드
+* **특징점 디스크립터 변경**: 기본 FAST/GFTT 대신 `--Vis/FeatureType 8` (ORB) 또는 `--Vis/FeatureType 6` (GFTT/BRIEF) 등으로 변경 실험하여 텍스처가 부족한 흰색 벽면에서의 특징점 매칭력 보강.
+* **Optical Flow 및 Bundle Adjustment 매칭 강화**: `--Vis/CorType 0` (Features Matching) vs `--Vis/CorType 1` (Optical Flow) 매칭 알고리즘 비교 테스트.
+* **Frame-to-Map C++ 노드 파라미터 경량화**: `Odom/KeyFrameThr` 및 `OdomF2M/MaxSize` 캡 파라미터를 ROS 2 정식 구조로 구성하여 대형 실내 맵에서의 연산 가속화.
+
+### ③ D435i Depth 탐지 범위 (`Grid/RangeMin`, `Grid/RangeMax`) 정밀 재조율
+* 현재 지정된 `0.3m` ~ `3.0m` 범위를 실내 조명, 벽면 텍스처 상태, 넓은 강당/복도 환경에 따라 `0.28m` ~ `3.5m` 또는 `4.0m`로 미세 변경하며 2D 맵 그리드 생성 밀도 및 실시간 복도 렌더링 품질 비교 테스트.
