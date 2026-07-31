@@ -73,7 +73,7 @@ ros2 run imu_filter_madgwick imu_filter_madgwick_node \
     -p orientation_stddev:=0.01 \
     -r /imu/data:=/imu/data; exec bash"
 
-sleep 3
+sleep 6
 
 echo "🟢 [5/6] Launching RTAB-Map (Optimized Sync + VIO)..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
@@ -103,7 +103,6 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 
 echo "🟡 [6/6] Publishing Static TF..."
 gnome-terminal --tab -- bash -c "$INIT_ENV \
-ros2 run tf2_ros static_transform_publisher 0.30 0 0.11 0 0 0 base_link camera_link & \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_link camera_imu_optical_frame & \
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 camera_gyro_optical_frame camera_imu_optical_frame; exec bash"
 

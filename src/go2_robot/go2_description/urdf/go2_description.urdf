@@ -1224,7 +1224,7 @@ Stephen Brawner (brawner@gmail.com)
         izz="0.003879" />
     </inertial>
     <visual>
-      <origin xyz="0.02 0 0.04" rpy="1.57 0 1.57" />
+      <origin xyz="0.02 0 0.04" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://go2_description/dae/d435.dae" />
       </geometry>
