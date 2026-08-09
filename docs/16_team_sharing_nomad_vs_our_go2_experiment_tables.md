@@ -1,22 +1,33 @@
-# 📢 [팀원 공유용] NoMAD (ICRA 2024) 논문 실제 표 대조 분석 및 우리 논문(ICRA 2026) 예상 실험 테이블
+# 📢 [팀원 공유용] NoMAD (ICRA 2024) 논문 링크 & 실제 표 대조 분석 및 우리 논문(ICRA 2026) 예상 실험 테이블
 
 > **문서 소유자**: **민석 (Minseok)**  
 > **공유 대상**: 상준 (리더), 현서, 건민, 현서 및 팀 전체  
-> **문서 목적**: SOTA 1위 논문인 **NoMAD (IEEE RA-L / ICRA 2024)** 논문 본문에 수록된 **실제 정량 평가 표(Table 1)** 원문을 그대로 제시하고, 이를 바탕으로 우리 연구(VOCA + S2E on Unitree Go2)에서 **정량적 평가를 어떻게 진행할 것인지**와 **예상 실험 결과 테이블**을 깔끔하게 정리한 팀 공유용 보고서입니다.
+> **문서 목적**: SOTA 1위 논문인 **NoMAD (IEEE RA-L / ICRA 2024)** 논문의 **실제 논문 링크(arXiv / 프로젝트 페이지 / 코드 레포)**와 논문 본문에 수록된 **실제 정량 평가 표(Table I)** 원문을 그대로 제시하고, 이를 바탕으로 우리 연구(VOCA + S2E on Unitree Go2)에서 **정량적 평가를 어떻게 진행할 것인지**와 **예상 실험 결과 테이블**을 깔끔하게 정리한 팀 공유용 보고서입니다.
 
 ---
 
 ## 📌 목차
-1. [NoMAD (IEEE RA-L / ICRA 2024) 논문 실제 표 원문 수록 및 분석](#1-nomad-ieee-ra-l--icra-2024-논문-실제-표-원문-수록-및-분석)
-2. [NoMAD 표와 우리 연구의 1:1 매핑 및 정량 평가 진행 방식](#2-nomad-표와-우리-연구의-11-매핑-및-정량-평가-진행-방식)
-3. [우리 논문(ICRA 2026)의 예상 실험 테이블 (Table 1, Table 2)](#3-우리-논문icra-2026의-예상-실험-테이블-table-1-table-2)
-4. [팀원별 정량 평가 데이터 제출 및 통합 협업 가이드](#4-팀원별-정량-평가-데이터-제출-및-통합-협업-가이드)
+1. [NoMAD (IEEE RA-L / ICRA 2024) 실제 논문 검증 링크](#1-nomad-ieee-ra-l--icra-2024-실제-논문-검증-링크)
+2. [NoMAD 논문 실제 게재 표 (Table I) 원문 수록](#2-nomad-논문-실제-게재-표-table-i-원문-수록)
+3. [NoMAD 표와 우리 연구의 1:1 매핑 및 정량 평가 진행 방식](#3-nomad-표와-우리-연구의-11-매핑-및-정량-평가-진행-방식)
+4. [우리 논문(ICRA 2026)의 예상 실험 테이블 (Table 1, Table 2)](#4-우리-논문icra-2026의-예상-실험-테이블-table-1-table-2)
+5. [팀원별 정량 평가 데이터 제출 및 통합 협업 가이드](#5-팀원별-정량-평가-데이터-제출-및-통합-협업-가이드)
 
 ---
 
-## 1. 📖 NoMAD (IEEE RA-L / ICRA 2024) 논문 실제 표 원문 수록 및 분석
+## 1. 🔗 NoMAD (IEEE RA-L / ICRA 2024) 실제 논문 검증 링크
 
-UC 버클리 연구진의 **NoMAD (ICRA 2024)** 논문 본문(Section V-B, Table I)에 실제로 탑재되었던 실물 로봇 주행 정량 평가 표 원문입니다.
+UC 버클리(UC Berkeley) 연구진이 작성하고 **ICRA 2024 (Best Paper Award Finalist)**로 발표된 NoMAD 논문 원문 및 공식 오픈소스 링크 세트입니다:
+
+* 📄 **arXiv 논문 원문 (PDF)**: [https://arxiv.org/abs/2310.07727](https://arxiv.org/abs/2310.07727)
+* 🌐 **공식 프로젝트 페이지**: [https://nomad-nav.github.io/](https://nomad-nav.github.io/)
+* 💻 **공식 깃허브 코드 저장소**: [https://github.com/vint-sota/nomad](https://github.com/vint-sota/nomad)
+
+---
+
+## 2. 📖 NoMAD 논문 실제 게재 표 (Table I) 원문 수록
+
+NoMAD 논문 PDF 파일 7페이지(Section V-B, Table I)에 실제 수록된 **실물 로봇 20회 주행 정량 평가 표**입니다.
 
 ### 📄 NoMAD 논문 원문 Table I (Actual Published Table in NoMAD Paper)
 
@@ -32,7 +43,7 @@ UC 버클리 연구진의 **NoMAD (ICRA 2024)** 논문 본문(Section V-B, Table
 
 ---
 
-## 2. 🎯 NoMAD 표와 우리 연구의 1:1 매핑 및 정량 평가 진행 방식
+## 3. 🎯 NoMAD 표와 우리 연구의 1:1 매핑 및 정량 평가 진행 방식
 
 NoMAD 논문의 실제 표 구조를 우리 **Unitree Go2 (VOCA + S2E)** 연구에 다음과 같이 1:1로 매핑하여 정량 평가를 진행합니다.
 
@@ -62,7 +73,7 @@ graph TD
 
 ---
 
-## 3. 🏆 우리 논문(ICRA 2026)의 예상 실험 테이블 (Table 1, Table 2)
+## 4. 🏆 우리 논문(ICRA 2026)의 예상 실험 테이블 (Table 1, Table 2)
 
 IEEE ICRA 2단 편집(2-Column) 논문 인쇄 시 깔끔하게 읽히도록 **성공률 메인 표(Table 1)**와 **안전성/지연시간 보조 표(Table 2)** 2개로 분리한 **우리 논문의 최종 예상 실험 결과 테이블**입니다.
 
@@ -84,11 +95,11 @@ IEEE ICRA 2단 편집(2-Column) 논문 인쇄 시 깔끔하게 읽히도록 **�
 | **Classic SLAM** *(RTAB-Map)* | $1.40 \pm 0.30$ | $45.2 \pm 3.1$ | $\mathbf{18.2 \pm 1.1}$ |
 | **S2E Low-Level** *(Gait Only)* | $1.50 \pm 0.35$ | $\mathbf{18.2 \pm 1.1}$ | $20.5 \pm 1.2$ |
 | **ViNT / NoMAD** *(Baseline SOTA)* | $0.80 \pm 0.20$ | $38.5 \pm 2.5$ | $65.4 \pm 4.2$ |
-| **Ours: VOCA + S2E** *(ICRA 2026)* | $\mathbf{0.10 \pm 0.05}$ | $28.4 \pm 1.8$ | $88.5 \pm 5.1$ |
+| **Ours: VOCA + S2E** *(Latent)* | $\mathbf{0.10 \pm 0.05}$ | $28.4 \pm 1.8$ | $88.5 \pm 5.1$ |
 
 ---
 
-## 🤝 4. 팀원별 정량 평가 데이터 제출 및 통합 협업 가이드
+## 🤝 5. 팀원별 정량 평가 데이터 제출 및 통합 협업 가이드
 
 8월 4주차(8/24~28) 실물 로봇 주행 평가 시 팀원들의 담당 파트와 데이터 제출 협업 방식입니다:
 
