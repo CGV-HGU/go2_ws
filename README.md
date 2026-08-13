@@ -1,125 +1,158 @@
 # ❄️ Unitree Go2 Antarctic Navigation Project (antarctica 브랜치)
 
-본 저장소는 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2 EDU Plus**의 자율주행을 제어하고, **ICRA 2026 자율주행 연구(VOCA + S2E)**를 실물 로봇에 통합 배포하기 위한 ROS 2 전용 워크스페이스(`go2_ws`)임.
+> **저장소 목적**: 남극 및 극한 지형 환경에서 사족보행 로봇 **Unitree Go2 EDU**의 자율주행을 제어하고, **ICRA 2026 자율주행 연구(VL-MAG: Vision-Language Memory-Action Graph)**를 실물 로봇 온보드(Jetson Orin NX 16GB)에 최종 통합 배포하기 위한 ROS 2 메인 워크스페이스(`go2_ws`)입니다.
 
 ---
 
 ## 🏗️ 1. antarctica 브랜치 통합 배포 아키텍처 (Deployment Architecture)
 
-본 브랜치는 **Go2 자체 내장 센서(전면 RGB 카메라 + L2 LiDAR + IMU)**와 **RTAB-Map**만으로 위치 추정 및 슬램(SLAM)을 수행하며, 민석 님이 실물 로봇 온보드(Jetson Orin NX)에 최종 통합 배포하는 파이프라인입니다.
+본 브랜치는 **Go2 자체 내장 센서(전면 RGB 카메라 + L2 LiDAR + IMU)**와 **RTAB-Map LIVO**만으로 위치 추정 및 슬램(SLAM)을 수행하며, 젯슨 온보드에 최종 통합 배포되는 파이프라인입니다.
 
 ```mermaid
 graph TD
-    subgraph "팀원별 개발 모듈 (Subsystems)"
-        HW[현우: Qwen3-VL / VOCA 프롬프트 & 메모리]
-        GM[건민: S2E RL 로코모션 정책]
-        HS[현서: IL 데이터셋 & Open-loop 평가]
-        SJ[상준: Async ROS 2 프레임워크 & 스키마]
-    end
-
-    subgraph "민석 (Minseok): antarctica 브랜치 통합 배포 레이어"
-        DEPLOY["통합 배포 런치 스크립트<br/>(go2_icra_deploy.launch.py)"]
-        RTAB["Go2 자체 내장 센서 RTAB-Map LIVO<br/>(src/rtabmap_ros @ 50Hz)"]
-        BRIDGE["Host-Docker UDP 소켓 브릿지<br/>(scratch/host_bridge.py <-> docker_bridge.py)"]
-        CTRL["PD 경로 추종기 & 횡속도 차단<br/>(pd_controller.py, vy=0.0)"]
+    subgraph "NVIDIA Jetson Orin NX Host OS (Ubuntu 20.04 / ROS 2 Foxy / CUDA 11.4)"
+        RTAB["Go2 내장 센서 RTAB-Map LIVO<br/>(go2_rtabmap.launch.py @ 50Hz)"]
+        HOST_BR["Host-Docker UDP 소켓 수신기<br/>(scratch/host_bridge.py)"]
+        DDS["go2_robot DDS C++ Driver<br/>(SportClient.Move API)"]
         LOG["1-Click Rosbag 자동 로거<br/>(scratch/record_experiment.sh)"]
+        EVAL["ICRA 정량 표 자동 계산기<br/>(scratch/calculate_icra_metrics.py)"]
+        
+        RTAB --> HOST_BR
+        HOST_BR --> DDS
+        LOG --> EVAL
     end
 
-    subgraph "하드웨어 센서 & 실행 (Unitree Go2 EDU Plus)"
-        SENSORS["Go2 자체 센서<br/>- 전면 RGB 카메라 (/camera/front)<br/>- 내장 L2 LiDAR (/utlidar/cloud_deskewed)<br/>- 바디 IMU (/utlidar/imu)"]
-        DDS["go2_robot DDS Driver<br/>(api/sport/request JSON)"]
-        GO2["Unitree Go2 Robot<br/>(SportClient.Move)"]
+    subgraph "SDAM 전용 도커 격리 컨테이너 (Ubuntu 24.04 / ROS 2 Jazzy / CPU Mode)"
+        VLM["s2e-vlm-async-framework v5<br/>Qwen3-VL 32B VLM 비주얼 메모리 (10Hz)"]
+        S2E["s2e-vlm-async-framework<br/>Latent S2E / PixNav 궤적 제어기 (50Hz)"]
+        DOCKER_BR["Host-Docker UDP 소켓 송신기<br/>(scratch/docker_bridge.py)"]
+        
+        VLM -->|z_vlm 잠재 임베딩| S2E
+        S2E --> DOCKER_BR
     end
 
-    HW --> DEPLOY
-    GM --> DEPLOY
-    HS --> DEPLOY
-    SJ --> DEPLOY
+    subgraph "하드웨어 센서 & 실행 (Unitree Go2 EDU)"
+        SENSORS["Go2 자체 센서<br/>- 전면 초광각 RGB (/camera/front)<br/>- 내장 L2 LiDAR (/utlidar/cloud_deskewed)<br/>- 바디 IMU (/utlidar/imu @ 500Hz)"]
+        GO2["Unitree Go2 Hardware<br/>(Real Robot Actuation)"]
+    end
 
     SENSORS --> RTAB
-    DEPLOY --> RTAB
-    DEPLOY --> BRIDGE
-    BRIDGE --> CTRL
-    CTRL --> DDS
+    DOCKER_BR -- "127.0.0.1:5005 UDP /cmd_vel" --> HOST_BR
     DDS --> GO2
-
-    DEPLOY --> LOG
 ```
 
 ---
 
-## 📌 2. antarctica 브랜치에서 민석 님이 배포할 4대 핵심 과제
+## 🔬 2. Jetson Orin NX 온보드 배포 검증 및 2중 팩트체크 (Double Fact-Check)
 
-1. **통합 배포 런치 스크립트 구현 (`go2_icra_deploy.launch.py`)**
-   * 위치: `s2e-vlm-async-framework/src/s2e_vlm_bringup/launch/go2_icra_deploy.launch.py`
-   * 역할: VLM 노드, S2E 노드, RTAB-Map 노드, PD Controller 노드를 **원클릭 단일 명령어로 통합 구동**.
-2. **Go2 자체 센서 기반 RTAB-Map LIVO 파이프라인 구축**
-   * 외부 센서 및 외부 패키지 없이 **Go2 자체 전면 RGB 카메라 + L2 LiDAR + IMU**로 `rtabmap_ros` 단독 구동 (Loop Closure 및 3D 점군 지도 생성).
-3. **Jetson Orin NX 하이브리드 소켓 브릿지 구동**
-   * 호스트 OS(Foxy)와 도커 컨테이너(Jazzy) 간 1ms 이내 루프백 통신 (`scratch/host_bridge.py` $\leftrightarrow$ `scratch/docker_bridge.py`).
-4. **원클릭 Rosbag 데이터 수집 및 ICRA 정량 지표 추출**
-   * 주행 테스트 시 `scratch/record_experiment.sh`를 구동하여 성공률(SR %), 충돌 횟수, 주행 시간, SPL 지표 자동 산출.
+Unitree Go2의 내장 온보드 컴퓨터인 **NVIDIA Jetson Orin NX 16GB** 상에서 고성능 자율주행 알고리즘을 구동할 때 발생하는 시스템적 한계와 검증된 해결책입니다.
 
----
-
-## 🚀 3. 현재 개발 및 연동 진행상황 (Current Progress)
-
-| 개발 모듈 / 태스크 | 상태 | 담당자 | 상세 검증 계획 |
+| 검증 대상 항목 | 기존 오해 및 미검증 주장 | 2중 정밀 팩트체크 (Double Fact-Check) 결과 | 검증된 최적 해결책 (Deployment Strategy) |
 | :--- | :--- | :--- | :--- |
-| **Go2 자체 센서 RTAB-Map LIVO** | 🟢 **코드 완료 (실물 검증 대기)** | **민석** | Go2 내장 RGB+LiDAR+IMU로 `/rtabmap/odom` (30~50Hz) 발행 검증 |
-| **PD 경로 추종기 & 횡속도 차단** | 🟢 **코드 완료 (실물 검증 대기)** | **민석** | `pd_controller.py` $v_y=0.0$ 차단 및 $K_p, K_d$ Fishtailing 감쇠 튜닝 |
-| **Foxy-Jazzy UDP 소켓 브릿지** | 🟢 **코드 완료 (실물 검증 대기)** | **민석** | `scratch/host_bridge.py` $\leftrightarrow$ `docker_bridge.py` 1ms 이내 루프백 통신 |
-| **통합 런치 스크립트 작성** | 🟡 **배포 진행 중 (Ready)** | **민석** | `go2_icra_deploy.launch.py` 작성 및 `antarctica` 브랜치 커밋 |
-| **1-Click Rosbag 자동 로거** | 🟢 **스크립트 완료** | **민석** | `scratch/record_experiment.sh` 자동 로깅 및 SR %, SPL 산출 스크립트 |
+| **CUDA 드라이버 ABI** | 도커 내부에 CUDA 12.x를 설치하면 JetPack 5 호스트에서도 GPU 가속 가능 | 🔴 **사실 무근 (CUDA Error 35 발생)**<br/>Tegra L4T 아키텍처 특성상 커널 드라이버(`nvgpu.ko`, CUDA 11.4) 한계를 초과하는 도커 내 CUDA 12.x 추론 시 `CUDA_ERROR_INSUFFICIENT_DRIVER`로 프로세스 크래시 유발. | • **호스트**: CUDA 11.4 / ROS 2 Foxy 네이티브 구동 (RTAB-Map LIVO 50Hz)<br/>• **도커**: ROS 2 Jazzy / Python 3.12 **CPU Mode** 또는 Host ONNX Runtime EP 호환 구동 |
+| **ARM64 도커 호환성** | ROS 2 Jazzy 공식 이미지가 x86_64 전용이며 ARM64 구동 시 crash 발생 | 🟢 **거짓 (Misconception)**<br/>OSRF 공식 Docker Hub에 `arm64v8/aarch64` 이미지가 상시 유지보수 중임. `Exec format error`는 x86 PC 교차 빌드 시 `--platform linux/arm64` 누락이 원인. | Dockerfile 빌드 및 마이그레이션 시 `--platform linux/arm64` 명시 및 L4T 호환 베이스 이미지 바인딩 |
+| **호스트 OS 재플래싱** | Ubuntu 22.04/JetPack 6으로 재플래싱하면 무조건 자율주행이 잘 됨 | 🟡 **주의 (소모적 공수 및 워런티 파기)**<br/>재플래싱 시 Unitree 공식 기술 지원/워런티가 즉시 파기되며, 모터 제어 DDS 파라미터 및 관절 커널 드라이버를 처음부터 재구축해야 함. | **순정 JetPack 5.1.x 호스트 유지** + UDP 127.0.0.1 루프백 이중 OS 소켓 브릿지 구조 적용 (<1ms 지연) |
 
 ---
 
-## 📋 4. 실하드웨어 젯슨 보드 Quick Run 배포 가이드
+## 💡 3. Ubuntu 20.04 (JetPack 5) 환경에서 ROS 2 Humble 구동 방법 2중 팩트체크
 
-복귀 후 젯슨 보드에서 단 3단계 명령어로 실물 로봇을 구동하는 명령어입니다:
+ROS 2 Humble LTS는 공식적으로 **Ubuntu 22.04 (Jammy)**를 타깃으로 하지만, 순정 호스트 OS가 **Ubuntu 20.04 (Foxy)**로 고정되어 있는 Go2 Jetson Orin NX 상에서 Humble을 안정적으로 사용할 수 있는 3가지 방안의 정밀 비교입니다:
 
-### 1단계: 호스트 OS 드라이버 및 RTAB-Map LIVO 가동 (Host Foxy)
+```mermaid
+graph TD
+    A["Ubuntu 20.04 (JetPack 5) 상에서 ROS 2 Humble 구동 3대 기법"]
+    A --> M1["방안 A: RoboStack / Mamba (Conda 가상환경)<br/>• conda-forge를 통해 Ubuntu 20.04 위에서 Humble 바이너리 정식 구동"]
+    A --> M2["방안 B: Ubuntu 22.04 도커 컨테이너 + --net=host<br/>• 컨테이너 가상화 후 CPU 추론 또는 Host TensorRT EP 바인딩"]
+    A --> M3["방안 C: Ubuntu 20.04 상 소스 코드 컴파일<br/>• ROS 2 Humble 소스코드를 colcon build로 직접 빌드"]
+```
+
+| 구분 | **방안 A: RoboStack / Mamba (권장)** | **방안 B: Ubuntu 22.04 도커 가상화** | **방안 C: 소스 코드 직접 컴파일** |
+| :--- | :--- | :--- | :--- |
+| **구동 방식** | Conda 가상환경 내 Humble 바이너리 설치 | Docker (`ros:humble-ros-base-jammy`) | Ubuntu 20.04 호스트 상 수동 소스 빌드 |
+| **장점** | • 호스트 워런티 100% 보존<br/>• 도커 오버헤드 없이 네이티브 속도 구동<br/>• `ros-humble-desktop` CLI 패키지 완벽 지원 | • 호스트 OS와 완전 격리<br/>• 1-Click 컨테이너 배포 및 이식성 우수 | • 호스트 단독 네이티브 프로세스 구동 |
+| **단점 및 주의사항** | • 파이썬 환경 변수(`PYTHONPATH`) 충돌 주의<br/>• Conda 주입 바이너리와 DDS 인터페이스 바인딩 필요 | • PyTorch GPU 추론 시 CUDA 11.4 ABI 제약 존재 (CPU Mode 또는 ONNX Runtime 권장) | • 의존성 컴파일 체인 복잡 (2~4시간 소요)<br/>• `asio`, `spdlog` 패키지 백포트 빌드 필수 |
+| **설치 명령어** | `mamba create -n ros_humble -c conda-forge -c robostack-staging ros-humble-desktop` | `docker run -it --net=host --privileged -v /dev:/dev ros:humble-ros-base` | `colcon build --symlink-install --packages-ignore ...` |
+
+---
+
+## 📌 4. antarctica 브랜치 4대 핵심 구축 모듈
+
+1. **Go2 자체 센서 RTAB-Map LIVO 런치 코드**
+   * 위치: [`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py)
+   * 역할: Go2 전면 초광각 RGB + L2 LiDAR + IMU 바인딩 50Hz 오도메트리(`/rtabmap/odom`) 및 3D 점군 지도 생성.
+2. **이중 OS 루프백 소켓 브릿지**
+   * 위치: [`scratch/host_bridge.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/host_bridge.py) $\leftrightarrow$ [`scratch/docker_bridge.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/docker_bridge.py)
+   * 역할: Host OS(Foxy)와 Docker Container(Jazzy/Humble) 간 $1\text{ms}$ 미만 지연시간 속도 명령 전송.
+3. **PD 조향 제어기 & 횡속도 차단**
+   * 위치: [`visualnav-transformer/deployment/src/pd_controller.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/visualnav-transformer/deployment/src/pd_controller.py)
+   * 역할: $v_x, w_z$ 속도 인가 및 4족 보행 댐핑 ($v_y = 0.0$ 차단).
+4. **1-Click Rosbag 자동 로거 & ICRA 표 산출기**
+   * 위치: [`scratch/record_experiment.sh`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/record_experiment.sh) & [`scratch/calculate_icra_metrics.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/calculate_icra_metrics.py)
+   * 역할: 주행 로깅 후 성공률(SR %), SPL, 주행시간, 충돌 횟수를 $\text{Mean} \pm \text{SD}$ 신뢰구간 표로 자동 출산.
+
+---
+
+## 📋 5. 민석 님 실하드웨어 젯슨 보드 Quick-Run 배포 가이드 (8/17 복귀용)
+
+복귀 후 젯슨 보드에서 단 4개 터미널 명령어 세트로 실물 로봇 평가를 수행하는 매뉴얼입니다:
+
+### 1단계: 최신 코드 동기화 & 호스트 RTAB-Map LIVO 실행 (Host Foxy)
 ```bash
 cd ~/go2_ws
-colcon build --packages-select go2_robot go2_driver rtabmap_ros && source install/setup.bash
+git pull cgv-hgu antarctica
+colcon build --packages-select rtabmap_ros go2_robot go2_driver && source install/setup.bash
 ros2 launch rtabmap_launch go2_rtabmap.launch.py
 ```
 
-### 2단계: 도커 컨테이너 및 통합 배포 런치 실행 (Docker Jazzy)
+### 2단계: 도커 컨테이너 가동 & VLM/S2E 정책 실행 (Docker Container)
 ```bash
-docker run -it --name go2_jazzy_cpu --net=host -v ~/go2_ws:/workspace/go2_ws arm64v8/ros:jazzy-ros-base bash
-# (도커 내부 진입 후)
-cd /workspace/go2_ws/s2e-vlm-async-framework && colcon build && source install/setup.bash
-ros2 launch s2e_vlm_bringup go2_icra_deploy.launch.py use_mock_hardware:=false
+# Docker Container 실행
+docker compose up -d
+docker exec -it sdam_go2_container bash
+
+# (컨테이너 내부) s2e-vlm-async-framework v5 태그 실행
+cd /workspace/s2e-vlm-async-framework
+git fetch --tags && git checkout v5
+python3 src/vlm_s2e_async_node.py
 ```
 
-### 3단계: 소켓 통신 브릿지 및 1-Click Rosbag 로거 가동
+### 3단계: 소켓 통신 브릿지 가동 (Host Terminal)
 ```bash
-# 호스트 터미널 1
 python3 ~/go2_ws/scratch/host_bridge.py
+```
 
-# 호스트 터미널 2 (실험 기록 시작)
-bash ~/go2_ws/scratch/record_experiment.sh
+### 4단계: 1-Click 실험 녹화 및 정량 지표 자동 계산
+```bash
+# 주행 시작 시 (실험 녹화)
+bash ~/go2_ws/scratch/record_experiment.sh Indoor_Corridor Ours_Async Trial1
+
+# 20회 주행 완료 후 (ICRA 정량 비교표 자동 산출)
+python3 ~/go2_ws/scratch/calculate_icra_metrics.py
 ```
 
 ---
 
-## 📂 5. antarctica 브랜치 디렉토리 구조 (Clean Workspace)
+## 📂 6. antarctica 브랜치 워크스페이스 구조 (Workspace Overview)
 
 ```text
 go2_ws/ (antarctica 브랜치)
-├── README.md                  <- [최신화] Go2 자체 센서 + RTAB-Map 전용 배포 가이드
+├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 Humble 구동 가이드
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
-├── docs/                      <- 상세 세부 기술 및 학술 보완 문서 폴더
+├── docs/                      <- 기술/학술 보고서 폴더 (21개 세부 마스터 문서 수록)
+│   ├── 01_system_architecture.md
+│   ├── 18_icra2026_sota_benchmark_and_our_experiment_master.md
+│   ├── 20_vl_mag_icra2026_all_in_one_master_overview.md
+│   └── 21_cgv_hgu_all_repositories_and_sdk_integration_guide.md
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 백업 드라이버 스크립트 폴더
-│   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 송수신 브릿지
-│   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송수신 브릿지
-│   └── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트
+│   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기
+│   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기
+│   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트
+│   └── calculate_icra_metrics.py <- ICRA 정량 표 (Mean ± SD) 자동 계산기
 ├── visualnav-transformer/     <- ViNT / NoMAD 모델 구현 및 pd_controller.py 코드
-├── qwen_nav_memory_framework_v3/ <- 상위 VLM 기반 에피소딕 메모리 프레임워크 패키지
-├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지
+├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (tag v5)
 └── src/
-    ├── rtabmap_ros/           <- Go2 자체 센서 기반 RTAB-Map SLAM 패키지 (민석 전담)
+    ├── rtabmap_ros/           <- Go2 자체 센서 기반 RTAB-Map SLAM 패키지
     │   └── rtabmap_launch/launch/go2_rtabmap.launch.py <- [Go2 전용 RTAB-Map 런치]
-    └── go2_robot/             <- Unitree Go2 ROS 2 통신 드라이버 패키지
+    └── go2_robot/             <- Unitree Go2 ROS 2 DDS C++ 통신 드라이버 패키지
 ```
