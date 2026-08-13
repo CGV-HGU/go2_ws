@@ -22,7 +22,7 @@ class NavigationEpisode:
     scenario_type: str        # "Indoor_Corridor", "Dynamic_Obstacle", "Deadlock_Corner", "Outdoor_Terrain"
     success: bool             # Reached goal within 1.0m
     shortest_path_m: float    # Optimal geodesic distance (l_i)
-    actual_positions: List[Tuple[float, float]] # List of (x, y) from /FAST_LIO2/odom
+    actual_positions: List[Tuple[float, float]] # List of (x, y) from /rtabmap/odom
     timestamps_s: List[float] # Timestamps
     cmd_yaws: List[float]     # Angular velocity commands (\omega_z)
     collisions: int           # Manual E-stop or physical contact count
