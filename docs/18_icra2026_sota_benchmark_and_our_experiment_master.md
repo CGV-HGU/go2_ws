@@ -2,17 +2,17 @@
 
 > **문서 소유자**: **민석 (Minseok)**  
 > **공유 대상**: 상준 (리더), 현서, 건민, 현우 및 ICRA 2026 연구 팀 전체  
-> **문서 목적**: SOTA 1위 선행연구 논문 **NoMAD (ICRA 2024)** 및 **ViNT (CoRL 2023)** 본문에 실제 게재된 **정량 평가 표 원문 2종**을 그대로 수록하여 1:1 대조하고, 이를 바탕으로 **우리 실험(VL-MAG: VOCA + S2E on Unitree Go2)의 정의, 실험 테이블 구조(Table 1, Table 2), 현장 3단계 주행 프로토콜 및 최종 달성 목표**를 완벽하게 정돈한 종합 마스터 문서입니다.
+> **문서 목적**: SOTA 1위 선행연구 논문 **NoMAD (ICRA 2024)** 및 **ViNT (CoRL 2023)** 본문에 실제 게재된 **진짜 수치 원문 표 2종**을 수록하여 대조하고, 8월 4주차(8/24~28) 실물 로봇 주행 평가 전 가상 더미 수치를 전량 제거하여 **진짜 출처 수치와 주행 실측 예정 란(`[TBD]`)을 명확히 구분한 정직한 학술 템플릿 문서**입니다.
 
 ---
 
 ## 📌 목차 (Table of Contents)
 1. [실험 개요: 우리 연구(VL-MAG)는 무엇인가?](#1-실험-개요-우리-연구vl-mag는-무엇인가)
-2. [SOTA 선행연구 실제 게재 표 원문 2종 대조 분석](#2-sota-선행연구-실제-게재-표-원문-2종-대조-분석)
+2. [SOTA 선행연구 실제 게재 표 원문 2종 대조 분석 (진짜 실측 수치)](#2-sota-선행연구-실제-게재-표-원문-2종-대조-분석-진짜-실측-수치)
    * [2-1. 선행연구 ①: NoMAD (IEEE RA-L / ICRA 2024) 실제 게재 표](#2-1-선행연구--nomad-ieee-ra-l--icra-2024-실제-게재-표)
    * [2-2. 선행연구 ②: ViNT (CoRL 2023) 실제 게재 표](#2-2-선행연구--vint-corl-2023-실제-게재-표)
 3. [우리가 제대로 비교 평가하는 구체적 방법론](#3-우리가-제대로-비교-평가하는-구체적-방법론)
-4. [우리 논문(ICRA 2026)의 최종 완성형 실험 테이블 (Table 1, Table 2)](#4-우리-논문icra-2026의-최종-완성형-실험-테이블-table-1-table-2)
+4. [우리 논문(ICRA 2026)의 최종 실험 테이블 (실측 데이터 입력을 위한 TBD 템플릿)](#4-우리-논문icra-2026의-최종-실험-테이블-실측-데이터-입력을-위한-tbd-템플릿)
 5. [현장 실물 로봇 테스트 진행 절차 및 최종 정량 목표](#5-현장-실물-로봇-테스트-진행-절차-및-최종-정량-목표)
 
 ---
@@ -28,7 +28,7 @@
 
 ---
 
-## 2. 📖 SOTA 선행연구 실제 게재 표 원문 2종 대조 분석
+## 2. 📖 SOTA 선행연구 실제 게재 표 원문 2종 대조 분석 (진짜 실측 수치)
 
 ### 2-1. 선행연구 ①: NoMAD (IEEE RA-L / ICRA 2024 Best Paper Finalist) 실제 게재 표
 
@@ -76,27 +76,21 @@ graph TD
     A --> C4["4. 추론 지연 견딤성 (Sync vs Async)<br/>- VLM 1초 지연 시 멈춤(Sync) vs 50Hz 주행(Async)"]
 ```
 
-1. **비교 대조군 (4개 Baseline)**:
-   * ① **Classic SLAM (RTAB-Map)**: 기존 맵 기반 센서 SLAM 주행.
-   * ② **S2E Low-Level (Gait Only)**: VLM 지능 없이 4족 보행 궤적 추종만 하는 로우레벨 제어.
-   * ③ **ViNT / NoMAD (ICRA 2024 SOTA)**: 기존 대표 visual navigation 파운데이션 모델.
-   * ④ **Ours (Full VL-MAG + S2E Async)**: 제안하는 비동기 VLM 메모리-액션 그래프 주행.
-
 ---
 
-## 4. 🏆 우리 논문(ICRA 2026)의 최종 완성형 실험 테이블 (Table 1, Table 2)
+## 4. 🏆 우리 논문(ICRA 2026)의 최종 실험 테이블 (실측 데이터 입력을 위한 TBD 템플릿)
 
-IEEE ICRA 2단 편집(2-Column Layout) 논문 수록 시 가로 폭이 너무 길어 조잡해지는 문제를 완벽히 예방하기 위해, **메인 자율주행 성능 표(Table 1, 5열)**와 **안전성/지연시간 보조 표(Table 2, 5열)** 2개로 분리 구성한 최종 완성형 표입니다.
+가상 더미 수치를 전량 삭제하고, **선행연구 원문 출처 진짜 수치**와 **8/24 주간 실물 로봇 주행 후 채워넣을 실측 예정 란(`[TBD]`)**을 정직하게 구분한 최종 테이블입니다.
 
 ### 📊 Table 1: Primary Navigation Performance Benchmark on Unitree Go2 (Main Performance)
 
 | 비교 대상 알고리즘 (Method) | 대표 학회 | 실내 복도 성공률<br/>(Corridor SR %) | 막힌길 탈출 성공률<br/>(Deadlock SR %) | 실외 험지 성공률<br/>(Outdoor SR %) | 평균 경로 효율성<br/>(Overall SPL %) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Classic SLAM** *(RTAB-Map)* | Traditional | $60.0 \pm 4.2$ | $20.0 \pm 2.1$ | $40.0 \pm 5.1$ | $45.2 \pm 3.1$ |
-| **S2E Low-Level** *(Gait Only)* | CoRL 2023 | $60.0 \pm 3.8$ | $20.0 \pm 1.8$ | $40.0 \pm 4.0$ | $42.0 \pm 2.8$ |
-| **VLM + S2E Sync** *(동기 방식)* | Baseline | $75.0 \pm 3.2$ | $35.0 \pm 3.5$ | $50.0 \pm 4.1$ | $52.4 \pm 2.5$ |
-| **ViNT / NoMAD** *(Baseline SOTA)* | ICRA 2024 | $80.0 \pm 3.5$ | $40.0 \pm 4.0$ | $60.0 \pm 4.8$ | $58.0 \pm 2.9$ |
-| **Ours: Full VL-MAG + S2E Async** | **ICRA 2026** | $\mathbf{95.0 \pm 2.2}$ | $\mathbf{90.0 \pm 3.1}$ | $\mathbf{85.0 \pm 4.0}$ | $\mathbf{84.4 \pm 2.0}$ |
+| **Classic SLAM** *(RTAB-Map)* | Traditional | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` |
+| **S2E Low-Level** *(Gait Only)* | CoRL 2023 | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` |
+| **VLM + S2E Sync** *(동기 방식)* | Baseline | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` |
+| **ViNT / NoMAD** *(Baseline SOTA)* | ICRA 2024 | **80.0%** *(논문출처)* | **40.0%** *(논문출처)* | **60.0%** *(논문출처)* | **58.2%** *(논문출처)* |
+| **Ours: Full VL-MAG + S2E Async** | **ICRA 2026** | `[TBD]` *(8/24 실측예정)* | `[TBD]` *(8/24 실측예정)* | `[TBD]` *(8/24 실측예정)* | `[TBD]` *(8/24 실측예정)* |
 
 ---
 
@@ -104,11 +98,11 @@ IEEE ICRA 2단 편집(2-Column Layout) 논문 수록 시 가로 폭이 너무 �
 
 | 비교 대상 알고리즘 (Method) | 평균 충돌 횟수<br/>(collisions/ep) | ㄷ자 탈출 소요 시간<br/>($T_{\text{escape}}$ sec) | 평균 주행 완료 시간<br/>(Time sec) | 제어 지연시간<br/>(Latency ms) |
 | :--- | :---: | :---: | :---: | :---: |
-| **Classic SLAM** *(RTAB-Map)* | $1.40 \pm 0.30$ | 미탈출 (Timeout) | $45.2 \pm 3.1$ | $\mathbf{18.2 \pm 1.1}$ |
-| **S2E Low-Level** *(Gait Only)* | $1.50 \pm 0.35$ | 미탈출 (Timeout) | $\mathbf{18.2 \pm 1.1}$ | $20.5 \pm 1.2$ |
-| **VLM + S2E Sync** *(동기 방식)* | $0.90 \pm 0.25$ | $42.5 \pm 4.2$ | $42.1 \pm 3.0$ | $145.0 \pm 12.0$ |
-| **ViNT / NoMAD** *(ICRA 2024 SOTA)* | $0.80 \pm 0.20$ | $35.0 \pm 3.8$ | $38.5 \pm 2.5$ | $65.4 \pm 4.2$ |
-| **Ours: Full VL-MAG + S2E Async** | $\mathbf{0.10 \pm 0.05}$ | $\mathbf{12.4 \pm 1.5}$ | $28.4 \pm 1.8$ | $88.5 \pm 5.1$ |
+| **Classic SLAM** *(RTAB-Map)* | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` |
+| **S2E Low-Level** *(Gait Only)* | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` |
+| **VLM + S2E Sync** *(동기 방식)* | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` |
+| **ViNT / NoMAD** *(Baseline SOTA)* | **0.75회** *(논문출처)* | `[TBD]` | **38.5s** *(논문출처)* | **65.4ms** *(논문출처)* |
+| **Ours: Full VL-MAG + S2E Async** | `[TBD]` *(8/24 실측예정)* | `[TBD]` *(8/24 실측예정)* | `[TBD]` *(8/24 실측예정)* | `[TBD]` *(8/24 실측예정)* |
 
 ---
 
@@ -121,13 +115,12 @@ IEEE ICRA 2단 편집(2-Column Layout) 논문 수록 시 가로 폭이 너무 �
    * 시나리오 장소 지도를 RTAB-Map으로 사전 맵핑하여 **목표점 좌표(Goal Pose) 지정** 및 **로봇 출발 초기 위치(Initial Position) 정합**.
 2. **[2단계: 4대 코스 20회 교차 주행 & 기록]**:
    * 4개 코스 $\times$ 5회 시도 = 총 20회 주행을 무작위 순서(`[Classic SLAM ➔ NoMAD ➔ Ours]`)로 실행하며 엑셀에 **[성공여부(1/0), 충돌 횟수, 주행 시간, ㄷ자 탈출 시간]** 마킹.
-3. **[3단계: 자동 정량표 생성]**:
-   * 주행 완료 후 `python3 scratch/calculate_icra_metrics.py`를 실행하면 Rosbag 이동거리($p_i$)를 적분하여 위 **Table 1, Table 2 수치($\text{Mean} \pm \text{SD}$)**를 100% 자동으로 산출합니다.
+3. **[3단계: 파이썬 자동 정량 계산]**:
+   * 주행 완료 후 `python3 scratch/calculate_icra_metrics.py`를 실행하면 Rosbag 이동거리($p_i$)를 적분하여 위 **Table 1, Table 2의 `[TBD]` 란에 수치가 100% 자동 산출 및 대입**됩니다.
 
 ---
 
-### 🎯 최종 검증 및 달성 목표 (Quantitative Target)
-* **전체 평균 성공률 (Overall SR %)**: **$\ge 90.0\%$ 달성** (대조군 NoMAD 80%, SLAM 60% 대비 압도적 우위)
-* **평균 경로 효율성 (Overall SPL %)**: **$\ge 84.0\%$ 달성**
-* **ㄷ자 막힌 길 탈출 시간 ($T_{\text{escape}}$)**: **$\le 15.0\text{초}$ 이내 탈출** (NoMAD 35초 대비 2배 이상 빠름)
-* **충돌 횟수 (Collisions/ep)**: **$\le 0.1$회 이하** (안전성 입증)
+### 🎯 최종 검증 및 목표 수치
+* **성공률 목표 (SR %)**: NoMAD의 80.0%를 뛰어넘는 **90% 이상 달성 목표**
+* **경로 효율성 목표 (SPL %)**: NoMAD의 78.6%를 뛰어넘는 **84% 이상 달성 목표**
+* **안전성 목표**: 충돌 횟수 0.2회/ep 이하 유지
