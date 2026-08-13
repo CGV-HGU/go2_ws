@@ -40,26 +40,30 @@ def clip_angle(theta) -> float:
 	return theta - 2 * np.pi
       
 
-def pd_controller(waypoint: np.ndarray) -> Tuple[float]:
-	"""PD controller for the robot"""
+def pd_controller(waypoint: np.ndarray) -> Tuple[float, float, float]:
+	"""3-DOF Omnidirectional PD controller for Go2 quadruped (vx, vy, w)"""
 	assert len(waypoint) == 2 or len(waypoint) == 4, "waypoint must be a 2D or 4D vector"
 	if len(waypoint) == 2:
 		dx, dy = waypoint
 	else:
 		dx, dy, hx, hy = waypoint
-	# this controller only uses the predicted heading if dx and dy near zero
+
 	if len(waypoint) == 4 and np.abs(dx) < EPS and np.abs(dy) < EPS:
-		v = 0
-		w = clip_angle(np.arctan2(hy, hx))/DT		
+		v_x = 0.0
+		v_y = 0.0
+		w = clip_angle(np.arctan2(hy, hx)) / DT
 	elif np.abs(dx) < EPS:
-		v =  0
-		w = np.sign(dy) * np.pi/(2*DT)
+		v_x = 0.0
+		v_y = np.clip(dy / DT, -0.2, 0.2) # Holonomic strafing velocity
+		w = np.sign(dy) * np.pi / (2 * DT)
 	else:
-		v = dx / DT
-		w = np.arctan(dy/dx) / DT
-	v = np.clip(v, 0, MAX_V)
+		v_x = dx / DT
+		v_y = np.clip(dy / (2 * DT), -0.2, 0.2) # Gentle 3-DOF lateral velocity for smooth cornering
+		w = np.arctan2(dy, dx) / DT
+
+	v_x = np.clip(v_x, 0, MAX_V)
 	w = np.clip(w, -MAX_W, MAX_W)
-	return v, w
+	return v_x, v_y, w
 
 
 def callback_drive(waypoint_msg: Float32MultiArray):
@@ -90,12 +94,14 @@ def main():
 			print("Reached goal! Stopping...")
 			return
 		elif waypoint.is_valid(verbose=True):
-			v, w = pd_controller(waypoint.get())
+			v_x, v_y, w = pd_controller(waypoint.get())
 			if reverse_mode:
-				v *= -1
-			vel_msg.linear.x = v
+				v_x *= -1
+				v_y *= -1
+			vel_msg.linear.x = v_x
+			vel_msg.linear.y = v_y
 			vel_msg.angular.z = w
-			print(f"publishing new vel: {v}, {w}")
+			print(f"publishing 3-DOF vel: vx={v_x:.2f}, vy={v_y:.2f}, w={w:.2f}")
 		vel_out.publish(vel_msg)
 		rate.sleep()
 	
