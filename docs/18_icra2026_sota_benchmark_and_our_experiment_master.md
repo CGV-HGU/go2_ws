@@ -32,7 +32,7 @@
 
 ### 2-1. 선행연구 ①: NoMAD (IEEE RA-L / ICRA 2024 Best Paper Finalist) 실제 게재 표
 
-* 📄 **arXiv 논문 원문 (PDF)**: [https://arxiv.org/abs/2310.07727](https://arxiv.org/abs/2310.07727)
+* 📄 **arXiv 논문 원문 (PDF)**: [https://arxiv.org/abs/2310.07896](https://arxiv.org/abs/2310.07896)
 * 🌐 **공식 프로젝트 페이지**: [https://nomad-nav.github.io/](https://nomad-nav.github.io/)
 
 > **Table I: Real-world Navigation Performance Comparison (Actual Published Table in NoMAD Paper, Section V-B)**  

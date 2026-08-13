@@ -74,7 +74,7 @@ graph TD
   ➔ *Go2 4족 보행 강화학습 제어기 트레이닝 레포*
 
 ### 📚 선행연구 SOTA 오픈소스 저장소 (Reference Repositories)
-* 📄 **NoMAD (ICRA 2024)**: [https://github.com/vint-sota/nomad](https://github.com/vint-sota/nomad) | [arXiv 논문](https://arxiv.org/abs/2310.07727)
+* 📄 **NoMAD (ICRA 2024)**: [https://github.com/vint-sota/nomad](https://github.com/vint-sota/nomad) | [arXiv 논문](https://arxiv.org/abs/2310.07896)
 * 📄 **ViNT (CoRL 2023)**: [https://github.com/vint-sota/vint-release](https://github.com/vint-sota/vint-release) | [arXiv 논문](https://arxiv.org/abs/2306.14846)
 * 📄 **Unitree ROS 2 SDK**: [https://github.com/unitreerobotics/unitree_ros2](https://github.com/unitreerobotics/unitree_ros2)
 
