@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# ICRA 2026 Go2 Real-Robot Physical 5-Set PointNav Logger Script
+# ICRA 2026 Go2 Real-Robot Physical Indoor PointNav Logger Script
 # ==============================================================================
-# Usage: ./record_experiment.sh <set_name> <model_name> <trial_id>
-# Example: ./record_experiment.sh Set1_Straight_5m Ours_Async Trial1
-# Example: ./record_experiment.sh Set4_Deadlock_Corner S2E_Only Trial1
+# Usage: ./record_experiment.sh <scenario_name> <model_name> <trial_id>
+# Example: ./record_experiment.sh Straight_Corridor Ours_Async Trial1
+# Example: ./record_experiment.sh Corner_90Deg Ours_Async Trial1
+# Example: ./record_experiment.sh TJunction_15m Ours_Async Trial1
+# Example: ./record_experiment.sh Dynamic_Obstacle Ours_Async Trial1
 
-SET_NAME=${1:-"Set1_Straight_5m"}
+SCENARIO=${1:-"Straight_Corridor"}
 MODEL=${2:-"Ours_Async"}
 TRIAL=${3:-"Trial1"}
 
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BAG_NAME="bag_${SET_NAME}_${MODEL}_${TRIAL}_${TIMESTAMP}"
-OUTPUT_DIR="experiments_bags/${SET_NAME}"
+BAG_NAME="bag_${SCENARIO}_${MODEL}_${TRIAL}_${TIMESTAMP}"
+OUTPUT_DIR="experiments_bags/${SCENARIO}"
 
 mkdir -p "${OUTPUT_DIR}"
 
 echo "========================================================================"
 echo " 🎬 Recording Real-Robot PointNav Trial: ${BAG_NAME}"
-echo " Set: ${SET_NAME} | Model: ${MODEL} | Trial: ${TRIAL}"
+echo " Scenario: ${SCENARIO} | Model: ${MODEL} | Trial: ${TRIAL}"
 echo " Saving to: ${OUTPUT_DIR}/${BAG_NAME}"
 echo " Press Ctrl+C when the robot reaches the goal."
 echo "========================================================================"
