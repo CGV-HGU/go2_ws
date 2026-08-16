@@ -151,20 +151,22 @@ python3 ~/go2_ws/scratch/calculate_icra_metrics.py
 go2_ws/ (antarctica 브랜치)
 ├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 Humble 구동 가이드
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
-├── docs/                      <- 기술/학술 보고서 폴더 (21개 세부 마스터 문서 수록)
-│   ├── 01_system_architecture.md
-│   ├── 18_icra2026_sota_benchmark_and_our_experiment_master.md
-│   ├── 20_vl_mag_icra2026_all_in_one_master_overview.md
-│   └── 21_cgv_hgu_all_repositories_and_sdk_integration_guide.md
-├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 백업 드라이버 스크립트 폴더
+├── docs/                      <- [6대 마스터 문서 체계 완비]
+│   ├── 01_system_architecture_and_hardware.md   <- 시스템 아키텍처 & 하드웨어/센서 총괄
+│   ├── 02_network_and_dds_setup.md              <- 네트워크 IP 토폴로지 & CycloneDDS
+│   ├── 03_all_repositories_and_sdk_integration.md <- 5대 깃 레포 & Unitree SDK2 3-DOF 제어기
+│   ├── 04_pointnav_meeting_and_task_strategy.md <- PointNav 미팅 분석 & 이원화 전략
+│   ├── 05_real_robot_indoor_testing_protocol.md <- 학교 실내 4대 코스 현장 주행 프로토콜
+│   └── 06_icra2026_quantitative_benchmark_master.md <- 최종 클린 정량 비교표 (Table 1 & 2)
+├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기
 │   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기
-│   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트
-│   └── calculate_icra_metrics.py <- ICRA 정량 표 (Mean ± SD) 자동 계산기
-├── visualnav-transformer/     <- ViNT / NoMAD 모델 구현 및 pd_controller.py 코드
-├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (tag v5)
+│   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트 (4대 실내 시나리오)
+│   └── calculate_icra_metrics.py <- ICRA 정량 표 (95% Wilson CI & p-value) 자동 계산기
+├── visualnav-transformer/     <- ViNT / NoMAD 모델 및 3-DOF pd_controller.py 코드
+├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (tag v6)
 └── src/
     ├── rtabmap_ros/           <- Go2 자체 센서 기반 RTAB-Map SLAM 패키지
-    │   └── rtabmap_launch/launch/go2_rtabmap.launch.py <- [Go2 전용 RTAB-Map 런치]
+    │   └── rtabmap_launch/launch/go2_rtabmap.launch.py <- [Go2 전용 50Hz RTAB-Map 런치]
     └── go2_robot/             <- Unitree Go2 ROS 2 DDS C++ 통신 드라이버 패키지
 ```
