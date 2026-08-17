@@ -1,7 +1,7 @@
-# 🏗️ [01] VL-MAG 시스템 아키텍처 및 온보드 하드웨어 총괄 가이드
+# 🏗️ [01] ESCAPE-Nav 시스템 아키텍처 및 온보드 하드웨어 총괄 가이드
 
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Odometry Lead)**  
-> **프로젝트 명**: **VL-MAG: A Vision-Language Memory-Action Graph for Asynchronous Robot Navigation (ICRA 2026)**  
+> **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **문서 목적**: Unitree Go2 EDU 사족보행 로봇과 NVIDIA Jetson Orin NX (16GB) 온보드 컴퓨팅 모듈, 원격 GPU 서버(RTX Pro 6000) 간의 **하이브리드 분할 아키텍처 및 센서 제원, 하드웨어 팩트체크 총괄 명세**입니다.
 
 ---

@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# ICRA 2026 Go2 Real-Robot Physical Indoor PointNav Logger Script
+# ICRA 2026 ESCAPE-Nav Go2 Real-Robot Table VIII Experiment Logger Script
 # ==============================================================================
 # Usage: ./record_experiment.sh <scenario_name> <model_name> <trial_id>
-# Example: ./record_experiment.sh Straight_Corridor Ours_Async Trial1
-# Example: ./record_experiment.sh Corner_90Deg Ours_Async Trial1
-# Example: ./record_experiment.sh TJunction_15m Ours_Async Trial1
-# Example: ./record_experiment.sh Dynamic_Obstacle Ours_Async Trial1
+# Example Scenarios (Table VIII Core & Deployment):
+#   - Dead_end_room
+#   - Blocked_goal_direction
+#   - Repeated_corridor
+#   - Active_view_recovery
+#   - Dynamic_obstacle
+#
+# Example Models:
+#   - Direct_goal (Baseline)
+#   - Full_ESCAPE_Nav (Ours)
 
-SCENARIO=${1:-"Straight_Corridor"}
-MODEL=${2:-"Ours_Async"}
+SCENARIO=${1:-"Dead_end_room"}
+MODEL=${2:-"Full_ESCAPE_Nav"}
 TRIAL=${3:-"Trial1"}
 
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
@@ -19,13 +25,15 @@ OUTPUT_DIR="experiments_bags/${SCENARIO}"
 mkdir -p "${OUTPUT_DIR}"
 
 echo "========================================================================"
-echo " 🎬 Recording Real-Robot PointNav Trial: ${BAG_NAME}"
-echo " Scenario: ${SCENARIO} | Model: ${MODEL} | Trial: ${TRIAL}"
+echo " 🎬 [ESCAPE-Nav Table VIII] Recording Real-Robot Trial"
+echo " Scenario : ${SCENARIO}"
+echo " Model    : ${MODEL}"
+echo " Trial    : ${TRIAL}"
 echo " Saving to: ${OUTPUT_DIR}/${BAG_NAME}"
-echo " Press Ctrl+C when the robot reaches the goal."
+echo " Press Ctrl+C when the episode completes (or times out)."
 echo "========================================================================"
 
-# I/O 최적화: 대용량 raw pointcloud를 배제하고 실시간 오도메트리, 제어 속도, 압축 비전, TF만 선별 기록
+# I/O 최적화: 대용량 raw pointcloud 제외, 50Hz Odom, 제어 속도, 압축 비전, TF만 선별 기록
 ros2 bag record -o "${OUTPUT_DIR}/${BAG_NAME}" \
     /rtabmap/odom \
     /cmd_vel \

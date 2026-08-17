@@ -1,8 +1,9 @@
-# 📑 [04] PointNav 미팅 분석 및 플랫폼별 이원화 전략 가이드
+# 📑 [04] ESCAPE-Nav PointNav 미팅 분석 및 플랫폼별 이원화 전략 가이드
 
 > **문서 소유자**: **민석 (Minseok)**  
-> **문서 근거**: 상준 님의 `ICRA_point nav.pdf` 9페이지 전수 분석 및 팀 미팅 의사결정  
-> **문서 목적**: PointNav 비동기 시스템 구조, Habitat(PixNav) vs 실물로봇/NavBench(S2E) 이원화 전략, PointNav 2중 안전 장치(Stop Guard) 및 민석 님 전담 실물 로봇 주행 파이프라인 총괄 명세입니다.
+> **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
+> **문서 근거**: 상준 님의 최신 13페이지 논문 초안(`ICRA_논문 초안.pdf`) 및 팀 미팅 의사결정  
+> **문서 목적**: ESCAPE-Nav 비동기 시스템 구조, Habitat(PixNav) vs 실물로봇/NavBench(S2E) 이원화 전략, PointNav 2중 안전 장치(Stop Guard) 및 민석 님 전담 실물 로봇 주행 파이프라인 총괄 명세입니다.
 
 ---
 

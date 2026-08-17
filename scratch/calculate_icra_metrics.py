@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
-ICRA 2026 Go2 SDAM Rigorous Academic Quantitative Evaluator
+ICRA 2026 ESCAPE-Nav Table VIII Quantitative Evaluator
 ========================================================================================
 Calculates:
-1. Success Rate (SR %, Mean ± SD & 95% Wilson Score Confidence Intervals)
-2. Path Efficiency (SPL %, Mean ± SD & 95% CI)
-3. Average Navigation Time (seconds, Mean ± SD)
-4. Collision Count (Mean ± SD)
-5. Control Loop Latency (ms, Mean ± SD)
-6. Non-parametric Statistical Hypothesis Test (Mann-Whitney U-test p-value vs Baselines)
+1. Success Count (Succ./5) & Intervention-free Count (IF/5) with 95% Wilson CIs
+2. Normalized Completion Time T^dagger (Time s, Mean ± SD)
+3. Motion Duty Cycle (Duty)
+4. Recovery Success Events (Rec. succ.) & Failed-Edge Re-entry Count (Re-entry)
+5. Non-parametric Statistical Hypothesis Test (Mann-Whitney U-test p-value vs Direct-goal)
 """
 
 import math
@@ -18,34 +17,37 @@ from dataclasses import dataclass
 from typing import List, Tuple
 
 @dataclass
-class NavigationEpisode:
+class Go2TableVIIIEpisode:
     episode_id: str
-    scenario_type: str        # "Indoor_Corridor", "Dynamic_Obstacle", "Deadlock_Corner", "Outdoor_Terrain"
+    scenario_name: str        # "Dead_end_room", "Blocked_goal_direction", "Repeated_corridor", "Active_view_recovery", "Dynamic_obstacle"
+    method_name: str          # "Direct_goal", "Full_ESCAPE_Nav"
     success: bool             # Reached goal within 1.0m
-    shortest_path_m: float    # Optimal geodesic distance (l_i)
+    intervention_free: bool   # Completed without manual E-stop / human intervention
+    shortest_path_m: float    # Geodesic distance (l_i)
     actual_positions: List[Tuple[float, float]] # List of (x, y) from /rtabmap/odom
     timestamps_s: List[float] # Timestamps
-    cmd_yaws: List[float]     # Angular velocity commands (\omega_z)
-    collisions: int           # Manual E-stop or physical contact count
-    latency_ms: float         # Control loop latency in ms
+    moving_duration_s: float  # Actual motion duration
+    total_duration_s: float   # Total elapsed time
+    timeout_s: float          # Max allowable time T_max (e.g. 60.0s)
+    recovery_triggered: int   # Number of triggered recovery events
+    recovery_success: int     # Number of successful escape events
+    failed_edge_reentries: int# Number of re-entries into known failed branch
 
-class ICRAMetricCalculator:
-    def __init__(self, goal_threshold_m: float = 1.0):
-        self.goal_threshold_m = goal_threshold_m
+class ESCAPENavTableVIIICalculator:
+    def __init__(self, default_timeout_s: float = 60.0):
+        self.default_timeout_s = default_timeout_s
 
-    def compute_path_length(self, positions: List[Tuple[float, float]]) -> float:
-        """Calculate total actual distance traveled p_i"""
-        if len(positions) < 2:
-            return 0.0
-        dist = 0.0
-        for i in range(1, len(positions)):
-            dx = positions[i][0] - positions[i-1][0]
-            dy = positions[i][1] - positions[i-1][1]
-            dist += math.hypot(dx, dy)
-        return dist
+    def compute_t_dagger(self, ep: Go2TableVIIIEpisode) -> float:
+        """Normalized completion time: T_i^dagger = S_i * min(T_i, T_max) + (1 - S_i) * T_max"""
+        actual_time = ep.total_duration_s
+        t_max = ep.timeout_s if ep.timeout_s > 0 else self.default_timeout_s
+        if ep.success:
+            return min(actual_time, t_max)
+        else:
+            return t_max
 
     def wilson_score_interval(self, k: int, n: int, confidence: float = 0.95) -> Tuple[float, float, float]:
-        """Compute Wilson Score Interval for binomial Success Rate (SR %)"""
+        """Compute Wilson Score Interval for binomial metrics"""
         if n == 0:
             return 0.0, 0.0, 0.0
         p = k / n
@@ -53,63 +55,57 @@ class ICRAMetricCalculator:
         denominator = 1 + z**2 / n
         centre_adjusted_probability = p + z**2 / (2 * n)
         adjusted_standard_error = z * math.sqrt((p * (1 - p) + z**2 / (4 * n)) / n)
-        
         lower_bound = (centre_adjusted_probability - adjusted_standard_error) / denominator
         upper_bound = (centre_adjusted_probability + adjusted_standard_error) / denominator
         return p * 100.0, lower_bound * 100.0, upper_bound * 100.0
 
-    def compute_spl_list(self, episodes: List[NavigationEpisode]) -> List[float]:
-        """Compute per-episode SPL"""
-        spl_list = []
-        for ep in episodes:
-            S_i = 1.0 if ep.success else 0.0
-            l_i = ep.shortest_path_m
-            p_i = self.compute_path_length(ep.actual_positions)
-            denominator = max(p_i, l_i)
-            spl_val = (S_i * (l_i / denominator)) * 100.0 if denominator > 0 else 0.0
-            spl_list.append(spl_val)
-        return spl_list
+    def evaluate_scenario(self, scenario_name: str, direct_goal_eps: List[Go2TableVIIIEpisode], escape_nav_eps: List[Go2TableVIIIEpisode]):
+        """Print official Table VIII row for a specific scenario"""
+        print(f"\n[{scenario_name}]")
+        print("-" * 95)
+        print(f"{'Method':<20} | {'Succ./5':<10} | {'IF/5':<8} | {'Time (s) T^dag':<18} | {'Duty':<8} | {'Rec. succ.':<12} | {'Re-entry':<10}")
+        print("-" * 95)
 
-    def evaluate_benchmark(self, episodes: List[NavigationEpisode], baseline_spl: List[float] = None):
-        """Print complete ICRA paper-ready quantitative results table with 95% CIs and Mann-Whitney U-test"""
-        total_episodes = len(episodes)
-        if total_episodes == 0:
-            print("[ERROR] No episodes to evaluate.")
-            return
+        for method_label, ep_list in [("Direct-goal", direct_goal_eps), ("Full ESCAPE-Nav", escape_nav_eps)]:
+            if not ep_list:
+                continue
+            n = len(ep_list)
+            succ_count = sum(1 for ep in ep_list if ep.success)
+            if_count = sum(1 for ep in ep_list if ep.intervention_free)
+            t_daggers = [self.compute_t_dagger(ep) for ep in ep_list]
+            duties = [ep.moving_duration_s / max(ep.total_duration_s, 1e-3) for ep in ep_list]
+            rec_succ = sum(ep.recovery_success for ep in ep_list)
+            rec_trig = sum(ep.recovery_triggered for ep in ep_list)
+            re_entries = sum(ep.failed_edge_reentries for ep in ep_list)
 
-        success_count = sum(1 for ep in episodes if ep.success)
-        sr_pct, sr_ci_low, sr_ci_high = self.wilson_score_interval(success_count, total_episodes)
-        
-        spl_list = self.compute_spl_list(episodes)
-        time_list = [ep.timestamps_s[-1] - ep.timestamps_s[0] for ep in episodes if ep.timestamps_s]
-        collision_list = [ep.collisions for ep in episodes]
-        latency_list = [ep.latency_ms for ep in episodes]
+            time_mean, time_sd = np.mean(t_daggers), np.std(t_daggers)
+            duty_mean = np.mean(duties)
 
-        spl_mean, spl_sd = np.mean(spl_list), np.std(spl_list)
-        time_mean, time_sd = np.mean(time_list), np.std(time_list)
-        coll_mean, coll_sd = np.mean(collision_list), np.std(collision_list)
-        lat_mean, lat_sd = np.mean(latency_list), np.std(latency_list)
+            rec_str = f"{rec_succ}/{rec_trig}" if rec_trig > 0 else f"{rec_succ}"
 
-        print("=" * 85)
-        print("    🏆 ICRA 2026 RIGOROUS ACADEMIC QUANTITATIVE BENCHMARK TABLE")
-        print("=" * 85)
-        print(f" Total Evaluated Episodes       : {total_episodes}")
-        print(f" 1. Success Rate (SR, %)       : {sr_pct:.1f}% [95% Wilson CI: {sr_ci_low:.1f}% - {sr_ci_high:.1f}%]")
-        print(f" 2. Path Efficiency (SPL, %)   : {spl_mean:.1f} ± {spl_sd:.1f} %")
-        print(f" 3. Avg Navigation Time        : {time_mean:.1f} ± {time_sd:.1f} sec")
-        print(f" 4. Avg Collision Count        : {coll_mean:.2f} ± {coll_sd:.2f} collisions/ep")
-        print(f" 5. Control Latency (ms)       : {lat_mean:.1f} ± {lat_sd:.1f} ms")
+            print(f"{method_label:<20} | {succ_count}/{n:<8} | {if_count}/{n:<6} | {time_mean:5.1f} ± {time_sd:4.1f} s    | {duty_mean:5.2f}    | {rec_str:<12} | {re_entries:<10}")
 
-        if baseline_spl is not None and len(baseline_spl) > 0:
-            stat, p_val = stats.mannwhitneyu(spl_list, baseline_spl, alternative='greater')
-            print(f" 6. Mann-Whitney U-test vs SOTA: U={stat:.1f}, p-value = {p_val:.4f} (p < 0.05 Statistical Significance)")
-        print("=" * 85)
+        if direct_goal_eps and escape_nav_eps:
+            dg_times = [self.compute_t_dagger(ep) for ep in direct_goal_eps]
+            esc_times = [self.compute_t_dagger(ep) for ep in escape_nav_eps]
+            if len(dg_times) > 0 and len(esc_times) > 0:
+                stat, p_val = stats.mannwhitneyu(esc_times, dg_times, alternative='less')
+                print(f" -> Mann-Whitney U-test on T^dagger: U={stat:.1f}, p-value = {p_val:.4f} {'(p < 0.05 Sig.)' if p_val < 0.05 else ''}")
+        print("-" * 95)
 
 if __name__ == '__main__':
-    dummy_episodes = [
-        NavigationEpisode("ep1", "Indoor_Corridor", True, 10.0, [(0,0), (5,0), (10,0)], [0.0, 15.0, 28.0], [0.0, 0.05, 0.0], 0, 85.0),
-        NavigationEpisode("ep2", "Deadlock_Corner", True, 8.0, [(0,0), (3,0), (3,3), (8,3)], [0.0, 10.0, 20.0, 30.0], [0.1, 0.4, 0.1], 0, 92.0),
-        NavigationEpisode("ep3", "Outdoor_Terrain", True, 15.0, [(0,0), (7,0), (15,0)], [0.0, 15.0, 31.0], [0.05, 0.1, 0.0], 0, 88.0)
+    calc = ESCAPENavTableVIIICalculator()
+    print("=" * 95)
+    print("     🏆 ICRA 2026 ESCAPE-Nav TABLE VIII REAL-ROBOT EVALUATION MATRIX")
+    print("=" * 95)
+
+    # Dummy test demo
+    dg_demo = [
+        Go2TableVIIIEpisode("dg1", "Dead_end_room", "Direct_goal", False, False, 10.0, [(0,0)], [0.0], 10.0, 60.0, 60.0, 0, 0, 3),
+        Go2TableVIIIEpisode("dg2", "Dead_end_room", "Direct_goal", False, False, 10.0, [(0,0)], [0.0], 12.0, 60.0, 60.0, 0, 0, 2),
     ]
-    calc = ICRAMetricCalculator()
-    calc.evaluate_benchmark(dummy_episodes, baseline_spl=[45.0, 50.0, 48.0])
+    esc_demo = [
+        Go2TableVIIIEpisode("esc1", "Dead_end_room", "Full_ESCAPE_Nav", True, True, 10.0, [(0,0), (10,0)], [0.0, 24.0], 20.0, 24.0, 60.0, 1, 1, 0),
+        Go2TableVIIIEpisode("esc2", "Dead_end_room", "Full_ESCAPE_Nav", True, True, 10.0, [(0,0), (10,0)], [0.0, 22.0], 19.0, 22.0, 60.0, 1, 1, 0),
+    ]
+    calc.evaluate_scenario("Dead-end room", dg_demo, esc_demo)
