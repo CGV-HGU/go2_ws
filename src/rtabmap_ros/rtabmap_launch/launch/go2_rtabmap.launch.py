@@ -2,6 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 
 def generate_launch_description():
@@ -12,31 +13,49 @@ def generate_launch_description():
     - Front Ultra-Wide RGB Camera (/camera/front/image_raw)
     - Unitree L2 LiDAR (/utlidar/cloud_deskewed)
     - Go2 Body IMU (/utlidar/imu)
+
+    Modes:
+    - localization:=false (Default): 3D Mapping Mode (IncrementalMemory: true, deletes DB on start)
+    - localization:=true           : Pure Odometry Mode for Online S2E Testing (IncrementalMemory: false)
     """
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    localization = LaunchConfiguration('localization', default='false')
 
-    # RTAB-Map Configuration for Go2 Onboard Built-in Sensors
-    rtabmap_parameters = {
+    # Common parameters for both modes
+    base_parameters = {
         'frame_id': 'base_link',
         'odom_frame_id': 'odom',
         'map_frame_id': 'map',
         'publish_tf': True,
         'use_sim_time': use_sim_time,
         
-        # RTAB-Map LIVO (LiDAR-Visual-Inertial Odometry) with Go2 Built-in Sensors
-        'subscribe_depth': False,             # Using Go2 Built-in RGB Camera (No External Depth Camera)
-        'subscribe_rgb': True,                # Go2 Front Ultra-Wide RGB Camera
-        'subscribe_scan_cloud': True,         # Go2 L2 LiDAR Pointcloud
+        # RTAB-Map LIVO with Go2 Built-in Sensors
+        'subscribe_depth': False,
+        'subscribe_rgb': True,
+        'subscribe_scan_cloud': True,
         
         # SLAM & Loop Closure Tuning
-        'Rtabmap/DetectionRate': '2.0',       # 2Hz Loop Closure Detection
+        'Rtabmap/DetectionRate': '2.0',
         'RGBD/NeighborLinkRefining': 'true',
         'RGBD/ProximityBySpace': 'true',
-        'RGBD/AngularUpdate': '0.05',         # Update map every 0.05 rad rotation
-        'RGBD/LinearUpdate': '0.1',           # Update map every 0.1m movement
+        'RGBD/AngularUpdate': '0.05',
+        'RGBD/LinearUpdate': '0.1',
         'Mem/ReconstructData': 'true',
-        'Mem/IncrementalMemory': 'true',
     }
+
+    # Mode 1: Mapping Parameters
+    mapping_parameters = dict(base_parameters)
+    mapping_parameters.update({
+        'Mem/IncrementalMemory': 'true',
+        'Mem/InitWMWithAllNodes': 'false',
+    })
+
+    # Mode 2: Pure Odometry / Localization Parameters (No Map Interference to S2E)
+    localization_parameters = dict(base_parameters)
+    localization_parameters.update({
+        'Mem/IncrementalMemory': 'false',
+        'Mem/InitWMWithAllNodes': 'true',
+    })
 
     remappings = [
         ('rgb/image', '/camera/front/image_raw'),
@@ -47,15 +66,29 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
+        DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
         
-        # RTAB-Map Single Node Execution
+        # Node 1: Mapping Mode Node (when localization:=false)
         Node(
             package='rtabmap_slam',
             executable='rtabmap',
             name='rtabmap',
             output='screen',
-            parameters=[rtabmap_parameters],
+            parameters=[mapping_parameters],
             remappings=remappings,
-            arguments=['-d'] # Delete database on start
+            arguments=['-d'], # Delete database on start for clean new map
+            condition=UnlessCondition(localization)
+        ),
+
+        # Node 2: Localization / Pure Odometry Mode Node (when localization:=true)
+        Node(
+            package='rtabmap_slam',
+            executable='rtabmap',
+            name='rtabmap',
+            output='screen',
+            parameters=[localization_parameters],
+            remappings=remappings,
+            arguments=[], # Load saved map without deleting
+            condition=IfCondition(localization)
         )
     ])

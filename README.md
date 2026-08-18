@@ -151,13 +151,14 @@ python3 ~/go2_ws/scratch/calculate_icra_metrics.py
 go2_ws/ (antarctica 브랜치)
 ├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 Humble 구동 가이드
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
-├── docs/                      <- [6대 마스터 문서 체계 완비]
+├── docs/                      <- [7대 마스터 문서 체계 완비]
 │   ├── 01_system_architecture_and_hardware.md   <- 시스템 아키텍처 & 하드웨어/센서 총괄
 │   ├── 02_network_and_dds_setup.md              <- 네트워크 IP 토폴로지 & CycloneDDS
 │   ├── 03_all_repositories_and_sdk_integration.md <- 5대 깃 레포 & Unitree SDK2 3-DOF 제어기
 │   ├── 04_pointnav_meeting_and_task_strategy.md <- PointNav 미팅 분석 & 이원화 전략
-│   ├── 05_real_robot_indoor_testing_protocol.md <- 학교 실내 4대 코스 현장 주행 프로토콜
-│   └── 06_icra2026_quantitative_benchmark_master.md <- 최종 클린 정량 비교표 (Table 1 & 2)
+│   ├── 05_real_robot_indoor_testing_protocol.md <- 실물 로봇 RTAB-Map LIVO ↔ 도커 연동 및 실증 주행 매뉴얼
+│   ├── 06_icra2026_quantitative_benchmark_master.md <- 최종 클린 정량 비교표 (Table VIII)
+│   └── 07_real_robot_master_plan_factcheck_report.md <- 실물 로봇 마스터 계획서 종합 팩트체크 보고서
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기
 │   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기

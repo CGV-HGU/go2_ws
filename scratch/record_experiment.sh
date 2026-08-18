@@ -2,7 +2,7 @@
 # ==============================================================================
 # ICRA 2026 ESCAPE-Nav Go2 Real-Robot Table VIII Experiment Logger Script
 # ==============================================================================
-# Usage: ./record_experiment.sh <scenario_name> <model_name> <trial_id>
+# Usage: bash record_experiment.sh <scenario_name> <model_name> <trial_id>
 # Example Scenarios (Table VIII Core & Deployment):
 #   - Dead_end_room
 #   - Blocked_goal_direction
@@ -29,12 +29,15 @@ echo " 🎬 [ESCAPE-Nav Table VIII] Recording Real-Robot Trial"
 echo " Scenario : ${SCENARIO}"
 echo " Model    : ${MODEL}"
 echo " Trial    : ${TRIAL}"
+echo " Buffer   : 100MB Queue Buffer (--max-cache-size 104857600)"
 echo " Saving to: ${OUTPUT_DIR}/${BAG_NAME}"
 echo " Press Ctrl+C when the episode completes (or times out)."
 echo "========================================================================"
 
 # I/O 최적화: 대용량 raw pointcloud 제외, 50Hz Odom, 제어 속도, 압축 비전, TF만 선별 기록
+# 100MB 캐시 큐 버퍼를 지정하여 Jetson Flash 스토리지 쓰기 I/O 지연 방지
 ros2 bag record -o "${OUTPUT_DIR}/${BAG_NAME}" \
+    --max-cache-size 104857600 \
     /rtabmap/odom \
     /cmd_vel \
     /camera/front/image_raw/compressed \
