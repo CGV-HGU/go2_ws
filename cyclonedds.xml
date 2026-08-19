@@ -2,7 +2,6 @@
 <CycloneDDS xmlns="https://cdds.io/config">
     <Domain Id="any">
         <General>
-            <NetworkInterfaceAddress>eth0</NetworkInterfaceAddress>
             <AllowMulticast>true</AllowMulticast>
         </General>
         <Internal>
