@@ -25,7 +25,7 @@ from rclpy.qos import QoSProfile, DurabilityPolicy
 
 # Standard ROS 2 Messages
 from nav_msgs.msg import Odometry
-from sensor_msgs.msg import Imu, Image, JointState
+from sensor_msgs.msg import Imu, Image, JointState, PointCloud2
 from geometry_msgs.msg import Twist, TransformStamped
 from tf2_ros import TransformBroadcaster
 from cv_bridge import CvBridge
@@ -45,8 +45,23 @@ class Go2NativeSensorNode(Node):
         self.imu_pub = self.create_publisher(Imu, '/imu', 10)
         self.joint_pub = self.create_publisher(JointState, '/joint_states', 10)
         self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
+        self.pointcloud_pub = self.create_publisher(PointCloud2, '/pointcloud', 10)
         self.camera_pub = self.create_publisher(Image, '/camera/front/image_raw', 10)
         self.sport_req_pub = self.create_publisher(Request, '/api/sport/request', 10)
+        
+        # 2. Subscribe to LiDAR PointCloud
+        self.lidar_sub = self.create_subscription(
+            PointCloud2,
+            'utlidar/cloud',
+            self.lidar_callback,
+            10
+        )
+        self.rt_lidar_sub = self.create_subscription(
+            PointCloud2,
+            'rt/utlidar/cloud',
+            self.lidar_callback,
+            10
+        )
         
         # 2. Subscribe to LowState (IMU + 12 Motors)
         self.lowstate_sub = self.create_subscription(
@@ -182,7 +197,13 @@ class Go2NativeSensorNode(Node):
         tf.transform.translation.y = odom.pose.pose.position.y
         tf.transform.translation.z = odom.pose.pose.position.z
         tf.transform.rotation = odom.pose.pose.orientation
-        self.tf_broadcaster.sendTransform(tf)
+    # --------------------------------------------------------------------------
+    # 2-B. LiDAR Callback -> /pointcloud
+    # --------------------------------------------------------------------------
+    def lidar_callback(self, msg: PointCloud2):
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'radar'
+        self.pointcloud_pub.publish(msg)
 
     # --------------------------------------------------------------------------
     # 3. Camera Callback
