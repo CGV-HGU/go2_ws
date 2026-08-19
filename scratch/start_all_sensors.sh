@@ -29,7 +29,7 @@ CAM_PID=$!
 echo "========================================================================"
 echo " 🤖 [2/2] Launching Go2 Robot Driver & LiDAR (50Hz Odom / 500Hz IMU)..."
 echo "========================================================================"
-ros2 launch go2_bringup go2.launch.py
+ros2 launch go2_bringup go2.launch.py lidar:=True
 
 # 종료 시 카메라 노드도 함께 종료
 kill $CAM_PID 2>/dev/null || true
