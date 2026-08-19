@@ -60,8 +60,8 @@ def generate_launch_description():
     remappings = [
         ('rgb/image', '/camera/front/image_raw'),
         ('rgb/camera_info', '/camera/front/camera_info'),
-        ('scan_cloud', '/utlidar/cloud_deskewed'),
-        ('imu', '/utlidar/imu'),
+        ('scan_cloud', '/pointcloud'),
+        ('imu', '/imu'),
     ]
 
     return LaunchDescription([

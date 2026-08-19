@@ -39,7 +39,8 @@ echo "========================================================================"
 ros2 bag record -o "${OUTPUT_DIR}/${BAG_NAME}" \
     --max-cache-size 104857600 \
     /rtabmap/odom \
+    /odom \
     /cmd_vel \
-    /camera/front/image_raw/compressed \
+    /camera/front/image_raw \
     /tf \
     /tf_static
