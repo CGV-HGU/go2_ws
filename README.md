@@ -151,14 +151,19 @@ python3 ~/go2_ws/scratch/calculate_icra_metrics.py
 go2_ws/ (antarctica 브랜치)
 ├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 Humble 구동 가이드
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
-├── docs/                      <- [7대 마스터 문서 체계 완비]
+├── docs/                      <- [12대 마스터 문서 체계 완비]
 │   ├── 01_system_architecture_and_hardware.md   <- 시스템 아키텍처 & 하드웨어/센서 총괄
 │   ├── 02_network_and_dds_setup.md              <- 네트워크 IP 토폴로지 & CycloneDDS
 │   ├── 03_all_repositories_and_sdk_integration.md <- 5대 깃 레포 & Unitree SDK2 3-DOF 제어기
 │   ├── 04_pointnav_meeting_and_task_strategy.md <- PointNav 미팅 분석 & 이원화 전략
 │   ├── 05_real_robot_indoor_testing_protocol.md <- 실물 로봇 RTAB-Map LIVO ↔ 도커 연동 및 실증 주행 매뉴얼
 │   ├── 06_icra2026_quantitative_benchmark_master.md <- 최종 클린 정량 비교표 (Table VIII)
-│   └── 07_real_robot_master_plan_factcheck_report.md <- 실물 로봇 마스터 계획서 종합 팩트체크 보고서
+│   ├── 07_real_robot_sensor_and_autonomy_verification_plan.md <- 센서 및 자율주행 정밀 검증 마스터 계획서
+│   ├── 08_go2_lidar_and_sensor_hardware_architecture_analysis.md <- 순정 라이다/센서 하드웨어 아키텍처 분석서
+│   ├── 09_built_in_lidar_and_imu_verification_guide.md <- 내장 L1 라이다 및 IMU 정밀 검증 가이드
+│   ├── 10_go2_lidar_root_cause_analysis_and_attempt_history.md <- 라이다 7대 시도 이력 및 원인 분석 보고서
+│   ├── 11_unitree_go2_lidar_0hz_root_cause_and_activation_guide.md <- 라이다 0Hz 원인 분석 및 공식 활성화 가이드
+│   └── 12_unitree_official_repositories_and_master_integration_plan.md <- 공식 6대 레포 생태계 및 마스터 통합 계획서
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기
 │   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기
