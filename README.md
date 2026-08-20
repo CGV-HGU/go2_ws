@@ -176,6 +176,9 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── 13_end_to_end_data_and_control_pipeline_master.md <- [최신/권위] 4단계 전수 데이터 & 제어 파이프라인 마스터 가이드
 │   └── 14_real_robot_live_system_diagnostic_report.md <- [실시간] 온보드 시스템 점검 종합 진단표 (대시보드)
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
+│   ├── bringup_all_escape_nav.sh <- [⭐ 1-Click Master] 4대 계층 일체형 브링업 & E-Stop 스크립트
+│   ├── start_rtabmap_livo.sh  <- 호스트 RTAB-Map LIVO 1-Click 실행기
+│   ├── start_docker_s2e.sh    <- 도커 S2E 자율주행 1-Click 실행기
 │   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기 (Port 9090)
 │   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기 (Port 9091)
 │   ├── go2_front_camera_publisher.py <- 전면 카메라 RTP 멀티캐스트 (30fps) 수신기
@@ -183,6 +186,7 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── hz_sensor_data.py      <- SensorDataQoS 호환 실시간 주파수 측정기
 │   ├── start_all_sensors.sh   <- 1-Click 센서 전체 가동 스크립트
 │   ├── start_unitree_lidar.sh <- 유니트리 공식 라이다 드라이버 실행기 (UDP 6201)
+│   ├── test_vlm_server_connection.py <- 원격 VLM 서버 지연 및 JSON 응답 진단기
 │   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트 (5대 실내 시나리오)
 │   └── calculate_icra_metrics.py <- ICRA 정량 표 (95% Wilson CI & p-value) 자동 계산기
 ├── visualnav-transformer/     <- ViNT / NoMAD 모델 및 3-DOF pd_controller.py 코드
