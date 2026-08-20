@@ -5,9 +5,9 @@
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **대상 장비**: Unitree Go2 EDU Plus (NVIDIA Jetson Orin NX 16GB)  
 > **상위 연계 문서**:  
-> • 호스트 런북: [`docs/jetson_plan/`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/README.md) (01~04 런북 시리즈)  
-> • 도커 런북: [`docs/docker_plan/`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/README.md) (`01_docker_autonomy_deployment_master_plan.md`)  
-> • 실측 진단표: [`docs/14_real_robot_live_system_diagnostic_report.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/14_real_robot_live_system_diagnostic_report.md)
+> • 호스트 런북: [`docs/jetson_plan/`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/README.md) (01~04 런북 시리즈)  
+> • 도커 런북: [`docs/docker/`](file:///home/unitree/go2_ws_antarctica/docs/docker/README.md) (`01_docker_autonomy_deployment_master_plan.md`)  
+> • 실측 진단표: [`docs/14_real_robot_live_system_diagnostic_report.md`](file:///home/unitree/go2_ws_antarctica/docs/14_real_robot_live_system_diagnostic_report.md)
 
 ---
 

@@ -32,6 +32,7 @@ source /home/unitree/go2_ws_antarctica/install/setup.bash
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export CYCLONEDDS_URI="file:///home/unitree/go2_ws_antarctica/cyclonedds.xml"
 export ROS_DOMAIN_ID=0
+export LD_LIBRARY_PATH=/home/unitree/opencv_build/opencv/build/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 # 2. Network Interface & Multicast Setup
 echo "🌐 Configuring Network & Multicast Interfaces..."

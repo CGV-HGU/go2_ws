@@ -5,9 +5,9 @@
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **대상 장비**: Unitree Go2 EDU Plus (NVIDIA Jetson Orin NX 16GB)  
 > **상위 연계 문서**:  
-> • 호스트 런북: [`docs/jetson_plan/`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/README.md) (01~04 런북 시리즈)  
-> • 도커 런북: [`docs/docker_plan/`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/README.md) (`01_docker_autonomy_deployment_master_plan.md`)  
-> • 실측 진단표: [`docs/14_real_robot_live_system_diagnostic_report.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/14_real_robot_live_system_diagnostic_report.md)
+> • 호스트 런북: [`docs/jetson_plan/`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/README.md) (01~04 런북 시리즈)  
+> • 도커 런북: [`docs/docker/`](file:///home/unitree/go2_ws_antarctica/docs/docker/README.md) (`01_docker_autonomy_deployment_master_plan.md`)  
+> • 실측 진단표: [`docs/14_real_robot_live_system_diagnostic_report.md`](file:///home/unitree/go2_ws_antarctica/docs/14_real_robot_live_system_diagnostic_report.md)
 
 ---
 
@@ -36,7 +36,7 @@ graph TD
         B1["127.0.0.1 초저지연 루프백 (< 0.1 ms)<br/>• Magic Header (0x53324501) + CRC32<br/>• Port 9091 (62B Pose) / Port 9090 (54B CmdVel)"]
     end
 
-    subgraph "3. Docker Sandbox (docs/docker_plan/)"
+    subgraph "3. Docker Sandbox (docs/docker/)"
         D1["Ubuntu 24.04 / ROS 2 Jazzy ARM64<br/>• S2E 50Hz 고속 궤적 생성기<br/>• Qwen VLM 126ms 원격 비동기 추론"]
     end
 
@@ -60,9 +60,9 @@ graph TD
 
 | 계층 (Tier) | 환경 및 배포 위치 | 전담 핵심 역할 | 연동 문서 및 런북 |
 | :--- | :--- | :--- | :--- |
-| **호스트 런북 계층<br/>(Jetson Plan)** | • Host OS (Ubuntu 20.04 LTS)<br/>• ROS 2 Foxy / CUDA 11.4<br/>• CycloneDDS (`eth0` 직결) | • CycloneDDS 모션보드(`192.168.123.161`) 통신<br/>• 전면 카메라 30fps 및 `CameraInfo` 발행<br/>• RTAB-Map LIVO 50Hz 3D 오도메트리/맵핑<br/>• Go2 관절 모터 구동 (`SportClient.Move`) | • [`docs/jetson_plan/01_...`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/01_jetson_hardware_network_and_dds_architecture.md)<br/>• [`docs/jetson_plan/02_...`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/02_jetson_rtabmap_livo_pipeline_and_bringup.md)<br/>• [`docs/jetson_plan/03_...`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/03_jetson_host_docker_bridge_and_motor_actuation.md)<br/>• [`docs/jetson_plan/04_...`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/04_jetson_onboard_benchmark_and_logging_runbook.md) |
-| **도커 런북 계층<br/>(Docker Plan)** | • Docker (`sdam_go2_container`)<br/>• Ubuntu 24.04 / ROS 2 Jazzy<br/>• Python 3.12 (ARM64) | • S2E 비동기 궤적 생성 노드 (`vlm_s2e_async_node.py`)<br/>• 원격 VLM 서버 비주얼 메모리 그래프 클라이언트<br/>• 3-DOF 선형/각속도 명령 산출 | • [`docs/docker_plan/01_...`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/01_docker_autonomy_deployment_master_plan.md)<br/>• [`docs/docker_plan/README.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/README.md) |
-| **통합 마스터 계층<br/>(Master Plan)** | • 전수 시스템 총괄 레퍼런스 | • 4계층 전수 데이터 & 제어 파이프라인 관리<br/>• ICRA 2026 Table VIII 20회 주행 데이터 검증 | • [`docs/13_..._master.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/13_end_to_end_data_and_control_pipeline_master.md)<br/>• [`docs/14_..._report.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/14_real_robot_live_system_diagnostic_report.md) |
+| **호스트 런북 계층<br/>(Jetson Plan)** | • Host OS (Ubuntu 20.04 LTS)<br/>• ROS 2 Foxy / CUDA 11.4<br/>• CycloneDDS (`eth0` 직결) | • CycloneDDS 모션보드(`192.168.123.161`) 통신<br/>• 전면 카메라 30fps 및 `CameraInfo` 발행<br/>• RTAB-Map LIVO 50Hz 3D 오도메트리/맵핑<br/>• Go2 관절 모터 구동 (`SportClient.Move`) | • [`docs/jetson_plan/01_...`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/01_jetson_hardware_network_and_dds_architecture.md)<br/>• [`docs/jetson_plan/02_...`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/02_jetson_rtabmap_livo_pipeline_and_bringup.md)<br/>• [`docs/jetson_plan/03_...`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/03_jetson_host_docker_bridge_and_motor_actuation.md)<br/>• [`docs/jetson_plan/04_...`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/04_jetson_onboard_benchmark_and_logging_runbook.md) |
+| **도커 런북 계층<br/>(Docker Plan)** | • Docker (`sdam_go2_container`)<br/>• Ubuntu 24.04 / ROS 2 Jazzy<br/>• Python 3.12 (ARM64) | • S2E 비동기 궤적 생성 노드 (`vlm_s2e_async_node.py`)<br/>• 원격 VLM 서버 비주얼 메모리 그래프 클라이언트<br/>• 3-DOF 선형/각속도 명령 산출 | • [`docs/docker/01_...`](file:///home/unitree/go2_ws_antarctica/docs/docker/01_docker_autonomy_deployment_master_plan.md)<br/>• [`docs/docker/README.md`](file:///home/unitree/go2_ws_antarctica/docs/docker/README.md) |
+| **통합 마스터 계층<br/>(Master Plan)** | • 전수 시스템 총괄 레퍼런스 | • 4계층 전수 데이터 & 제어 파이프라인 관리<br/>• ICRA 2026 Table VIII 20회 주행 데이터 검증 | • [`docs/13_..._master.md`](file:///home/unitree/go2_ws_antarctica/docs/13_end_to_end_data_and_control_pipeline_master.md)<br/>• [`docs/14_..._report.md`](file:///home/unitree/go2_ws_antarctica/docs/14_real_robot_live_system_diagnostic_report.md) |
 
 ---
 
