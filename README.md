@@ -92,55 +92,51 @@ graph TD
 ## 📌 4. antarctica 브랜치 4대 핵심 구축 모듈
 
 1. **Go2 자체 센서 RTAB-Map LIVO 런치 코드**
-   * 위치: [`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py)
+   * 위치: [`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///home/unitree/go2_ws_antarctica/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py)
    * 역할: Go2 전면 초광각 RGB + L2 LiDAR + IMU 바인딩 50Hz 오도메트리(`/rtabmap/odom`) 및 3D 점군 지도 생성.
 2. **이중 OS 루프백 소켓 브릿지**
-   * 위치: [`scratch/host_bridge.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/host_bridge.py) $\leftrightarrow$ [`scratch/docker_bridge.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/docker_bridge.py)
-   * 역할: Host OS(Foxy)와 Docker Container(Jazzy/Humble) 간 $1\text{ms}$ 미만 지연시간 속도 명령 전송.
+   * 위치: [`scratch/host_bridge.py`](file:///home/unitree/go2_ws_antarctica/scratch/host_bridge.py) $\leftrightarrow$ [`scratch/docker_bridge.py`](file:///home/unitree/go2_ws_antarctica/scratch/docker_bridge.py)
+   * 역할: Host OS(Foxy)와 Docker Container(Jazzy) 간 $0.1\text{ms}$ 미만 지연시간 속도/포즈 명령 전송 (Magic Header `0x53324501` + CRC32).
 3. **PD 조향 제어기 & 횡속도 차단**
-   * 위치: [`visualnav-transformer/deployment/src/pd_controller.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/visualnav-transformer/deployment/src/pd_controller.py)
+   * 위치: [`visualnav-transformer/deployment/src/pd_controller.py`](file:///home/unitree/go2_ws_antarctica/visualnav-transformer/deployment/src/pd_controller.py)
    * 역할: $v_x, w_z$ 속도 인가 및 4족 보행 댐핑 ($v_y = 0.0$ 차단).
 4. **1-Click Rosbag 자동 로거 & ICRA 표 산출기**
-   * 위치: [`scratch/record_experiment.sh`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/record_experiment.sh) & [`scratch/calculate_icra_metrics.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/calculate_icra_metrics.py)
-   * 역할: 주행 로깅 후 성공률(SR %), SPL, 주행시간, 충돌 횟수를 $\text{Mean} \pm \text{SD}$ 신뢰구간 표로 자동 출산.
+   * 위치: [`scratch/record_experiment.sh`](file:///home/unitree/go2_ws_antarctica/scratch/record_experiment.sh) & [`scratch/calculate_icra_metrics.py`](file:///home/unitree/go2_ws_antarctica/scratch/calculate_icra_metrics.py)
+   * 역할: 주행 로깅 후 성공률(SR %), SPL, 주행시간, 충돌 횟수를 $\text{Mean} \pm \text{SD}$ 신뢰구간 표로 자동 산출.
 
 ---
 
-## 📋 5. 민석 님 실하드웨어 젯슨 보드 Quick-Run 배포 가이드 (8/17 복귀용)
+## 📋 5. 민석 님 실하드웨어 젯슨 보드 Quick-Run 배포 가이드
 
-복귀 후 젯슨 보드에서 단 4개 터미널 명령어 세트로 실물 로봇 평가를 수행하는 매뉴얼입니다:
+젯슨 보드에서 단 4개 터미널 명령어 세트로 실물 로봇 평가를 수행하는 매뉴얼입니다:
 
 ### 1단계: 최신 코드 동기화 & 호스트 RTAB-Map LIVO 실행 (Host Foxy)
 ```bash
-cd ~/go2_ws
-git pull cgv-hgu antarctica
-colcon build --packages-select rtabmap_ros go2_robot go2_driver && source install/setup.bash
-ros2 launch rtabmap_launch go2_rtabmap.launch.py
+cd /home/unitree/go2_ws_antarctica
+source /opt/ros/foxy/setup.bash
+source install/setup.bash
+ros2 launch rtabmap_launch go2_rtabmap.launch.py localization:=true
 ```
 
 ### 2단계: 도커 컨테이너 가동 & VLM/S2E 정책 실행 (Docker Container)
 ```bash
-# Docker Container 실행 (net=host 및 privileged 필수)
-docker run -it --name sdam_go2_container --net=host --privileged -v /dev:/dev -v ~/go2_ws:/workspace/go2_ws arm64v8/ros:jazzy-ros-base bash
-
-# (컨테이너 내부) s2e-vlm-async-framework v5 태그 실행
-cd /workspace/go2_ws/s2e-vlm-async-framework
-git fetch --tags && git checkout v5
-python3 src/vlm_s2e_async_node.py
+# Docker Container 가동 (net=host 및 privileged 필수)
+docker start sdam_go2_container
+docker exec -it sdam_go2_container bash -c "cd /workspace/go2_ws_antarctica/s2e-vlm-async-framework && python3 src/vlm_s2e_async_node.py"
 ```
 
 ### 3단계: 소켓 통신 브릿지 가동 (Host Terminal)
 ```bash
-python3 ~/go2_ws/scratch/host_bridge.py
+python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py
 ```
 
 ### 4단계: 1-Click 실험 녹화 및 정량 지표 자동 계산
 ```bash
 # 주행 시작 시 (실험 녹화)
-bash ~/go2_ws/scratch/record_experiment.sh Indoor_Corridor Ours_Async Trial1
+bash /home/unitree/go2_ws_antarctica/scratch/record_experiment.sh Dead_end_room Full_ESCAPE_Nav Trial1
 
-# 20회 주행 완료 후 (ICRA 정량 비교표 자동 산출)
-python3 ~/go2_ws/scratch/calculate_icra_metrics.py
+# 5회 주행 완료 후 (ICRA 정량 비교표 자동 산출)
+python3 /home/unitree/go2_ws_antarctica/scratch/calculate_icra_metrics.py
 ```
 
 ---
@@ -148,10 +144,13 @@ python3 ~/go2_ws/scratch/calculate_icra_metrics.py
 ## 📂 6. antarctica 브랜치 워크스페이스 구조 (Workspace Overview)
 
 ```text
-go2_ws/ (antarctica 브랜치)
-├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 Humble 구동 가이드
+go2_ws_antarctica/ (antarctica 브랜치)
+├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 13대 마스터 가이드
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
-├── docs/                      <- [12대 마스터 문서 체계 완비]
+├── docs/                      <- [14대 마스터 문서 체계 완비]
+│   ├── docker/                <- [NEW] 도커 전용 아키텍처 및 자율주행 배포 마스터 플랜
+│   │   ├── 01_docker_autonomy_deployment_master_plan.md <- 도커 자율주행 배포 마스터 플랜
+│   │   └── README.md          <- 도커 문서 인덱스
 │   ├── 01_system_architecture_and_hardware.md   <- 시스템 아키텍처 & 하드웨어/센서 총괄
 │   ├── 02_network_and_dds_setup.md              <- 네트워크 IP 토폴로지 & CycloneDDS
 │   ├── 03_all_repositories_and_sdk_integration.md <- 5대 깃 레포 & Unitree SDK2 3-DOF 제어기
@@ -159,20 +158,29 @@ go2_ws/ (antarctica 브랜치)
 │   ├── 05_real_robot_indoor_testing_protocol.md <- 실물 로봇 RTAB-Map LIVO ↔ 도커 연동 및 실증 주행 매뉴얼
 │   ├── 06_icra2026_quantitative_benchmark_master.md <- 최종 클린 정량 비교표 (Table VIII)
 │   ├── 07_real_robot_sensor_and_autonomy_verification_plan.md <- 센서 및 자율주행 정밀 검증 마스터 계획서
+│   ├── 07_real_robot_master_plan_factcheck_report.md <- 실물 로봇 마스터 계획서 종합 팩트체크 보고서
 │   ├── 08_go2_lidar_and_sensor_hardware_architecture_analysis.md <- 순정 라이다/센서 하드웨어 아키텍처 분석서
 │   ├── 09_built_in_lidar_and_imu_verification_guide.md <- 내장 L1 라이다 및 IMU 정밀 검증 가이드
 │   ├── 10_go2_lidar_root_cause_analysis_and_attempt_history.md <- 라이다 7대 시도 이력 및 원인 분석 보고서
 │   ├── 11_unitree_go2_lidar_0hz_root_cause_and_activation_guide.md <- 라이다 0Hz 원인 분석 및 공식 활성화 가이드
-│   └── 12_unitree_official_repositories_and_master_integration_plan.md <- 공식 6대 레포 생태계 및 마스터 통합 계획서
+│   ├── 12_unitree_official_repositories_and_master_integration_plan.md <- 공식 6대 레포 생태계 및 마스터 통합 계획서
+│   ├── 13_end_to_end_data_and_control_pipeline_master.md <- [최신/권위] 4단계 전수 데이터 & 제어 파이프라인 마스터 가이드
+│   └── 14_real_robot_live_system_diagnostic_report.md <- [실시간] 온보드 시스템 점검 종합 진단표 (대시보드)
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
-│   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기
-│   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기
-│   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트 (4대 실내 시나리오)
+│   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기 (Port 9090)
+│   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기 (Port 9091)
+│   ├── go2_front_camera_publisher.py <- 전면 카메라 RTP 멀티캐스트 (30fps) 수신기
+│   ├── go2_native_sensor_node.py <- CycloneDDS 네이티브 센서 중계기 (/odom, /imu, /joint_states)
+│   ├── hz_sensor_data.py      <- SensorDataQoS 호환 실시간 주파수 측정기
+│   ├── start_all_sensors.sh   <- 1-Click 센서 전체 가동 스크립트
+│   ├── start_unitree_lidar.sh <- 유니트리 공식 라이다 드라이버 실행기 (UDP 6201)
+│   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트 (5대 실내 시나리오)
 │   └── calculate_icra_metrics.py <- ICRA 정량 표 (95% Wilson CI & p-value) 자동 계산기
 ├── visualnav-transformer/     <- ViNT / NoMAD 모델 및 3-DOF pd_controller.py 코드
 ├── s2e-vlm-async-framework/   <- ROS 2 비동기 통합 프레임워크 패키지 (tag v6)
 └── src/
     ├── rtabmap_ros/           <- Go2 자체 센서 기반 RTAB-Map SLAM 패키지
     │   └── rtabmap_launch/launch/go2_rtabmap.launch.py <- [Go2 전용 50Hz RTAB-Map 런치]
-    └── go2_robot/             <- Unitree Go2 ROS 2 DDS C++ 통신 드라이버 패키지
+    ├── go2_robot/             <- Unitree Go2 ROS 2 DDS C++ 통신 드라이버 패키지
+    └── unilidar_sdk2/         <- Unitree 공식 라이다 SDK2 및 unitree_lidar_ros2 패키지
 ```

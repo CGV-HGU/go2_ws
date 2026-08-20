@@ -2,7 +2,7 @@
 
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
-> **문서 목적**: [`docs/05_real_robot_indoor_testing_protocol.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/05_real_robot_indoor_testing_protocol.md) 마스터 계획서의 **이종 ROS 2 통신 구조, Jetson Orin NX 16GB 자원 배분, No-Prior-Metric-Map 학술 정합성, Table VIII 5대 시나리오 및 정량 수식($T^\dagger$, DRS, FBR)에 대한 종합 팩트체크 및 4대 실무 개선 권고 보고서**입니다.
+> **문서 목적**: [`docs/05_real_robot_indoor_testing_protocol.md`](file:///home/unitree/go2_ws_antarctica/docs/05_real_robot_indoor_testing_protocol.md) 마스터 계획서의 **이종 ROS 2 통신 구조, Jetson Orin NX 16GB 자원 배분, No-Prior-Metric-Map 학술 정합성, Table VIII 5대 시나리오 및 정량 수식($T^\dagger$, DRS, FBR)에 대한 종합 팩트체크 및 4대 실무 개선 권고 보고서**입니다.
 
 ---
 

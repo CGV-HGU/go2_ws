@@ -17,7 +17,8 @@ from s2e_vlm_msgs.action import Rotate
 from PIL import Image as PILImage
 import numpy as np
 
-from .schema import Observation, ObservationView, RelativePose2D, RobotState, ActionOutcome, normalize_angle_rad
+from .schema import Observation, ObservationView, RelativePose2D, RobotState, normalize_angle_rad
+from .robot_backend import ActionOutcome
 
 class Ros2RobotBackend(Node):
     """Qwen VLA 에이전트와 실하드웨어 ROS 2 통신망을 다이렉트로 연결하는 실제 배포용 백엔드"""

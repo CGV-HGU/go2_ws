@@ -2,7 +2,7 @@
 
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
-> **상위 검증 문서**: [`docs/07_real_robot_master_plan_factcheck_report.md`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/07_real_robot_master_plan_factcheck_report.md)  
+> **상위 검증 문서**: [`docs/07_real_robot_master_plan_factcheck_report.md`](file:///home/unitree/go2_ws_antarctica/docs/07_real_robot_master_plan_factcheck_report.md)  
 > **테스트 장소**: 한동대학교 연구동 건물 실내 복도 (1~2층)  
 > **문서 목적**: 호스트 OS(Ubuntu 20.04 Foxy)에서 구동되는 **RTAB-Map LIVO(50Hz 오도메트리 & 3D 지도 작성)**와 도커 컨테이너(Ubuntu 24.04 Jazzy)의 **S2E 궤적 생성 노드**를 초저지연($0.1\text{ms}$) 무결성 검증 UDP 소켓 브릿지(매직넘버/체크섬)로 연동하고, **ICRA 2026 Table VIII 5대 시나리오 20회 주행 데이터를 안전하게 수집/검증하기 위한 공식 마스터 계획서**입니다.
 

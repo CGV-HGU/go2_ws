@@ -7,12 +7,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     """
-    Unitree Go2 Built-in RGB Camera + L2 LiDAR + IMU RTAB-Map LIVO Launch Script
+    Unitree Go2 Built-in RGB Camera + L1/L2 LiDAR + IMU RTAB-Map LIVO Launch Script
     =============================================================================
     Uses strictly the Go2 built-in sensor suite:
-    - Front Ultra-Wide RGB Camera (/camera/front/image_raw)
-    - Unitree L2 LiDAR (/utlidar/cloud_deskewed)
-    - Go2 Body IMU (/utlidar/imu)
+    - Front Ultra-Wide RGB Camera (/camera/front/image_raw & /camera/front/camera_info)
+    - Unitree 4D LiDAR (/pointcloud or /utlidar/cloud)
+    - Go2 Body IMU (/imu or /utlidar/imu)
 
     Modes:
     - localization:=false (Default): 3D Mapping Mode (IncrementalMemory: true, deletes DB on start)
@@ -20,8 +20,9 @@ def generate_launch_description():
     """
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     localization = LaunchConfiguration('localization', default='false')
+    scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/pointcloud')
 
-    # Common parameters for both modes
+    # Common LIVO parameters for both modes
     base_parameters = {
         'frame_id': 'base_link',
         'odom_frame_id': 'odom',
@@ -29,10 +30,16 @@ def generate_launch_description():
         'publish_tf': True,
         'use_sim_time': use_sim_time,
         
-        # RTAB-Map LIVO with Go2 Built-in Sensors
+        # RTAB-Map LIVO Sensor Modalities
         'subscribe_depth': False,
         'subscribe_rgb': True,
         'subscribe_scan_cloud': True,
+        
+        # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
+        'approx_sync': True,
+        'approx_sync_max_interval': 0.05,
+        'topic_queue_size': 30,
+        'sync_queue_size': 30,
         
         # SLAM & Loop Closure Tuning
         'Rtabmap/DetectionRate': '2.0',
@@ -60,14 +67,47 @@ def generate_launch_description():
     remappings = [
         ('rgb/image', '/camera/front/image_raw'),
         ('rgb/camera_info', '/camera/front/camera_info'),
-        ('scan_cloud', '/pointcloud'),
+        ('scan_cloud', scan_cloud_topic),
         ('imu', '/imu'),
     ]
 
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
+        DeclareLaunchArgument('scan_cloud_topic', default_value='/pointcloud', description='PointCloud2 topic for LiDAR input'),
         
+        # Static Transforms for Sensor Frames (Self-contained TF tree)
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_to_camera_tf',
+            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'camera_link']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_to_unilidar_tf',
+            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'unilidar_lidar']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_to_radar_tf',
+            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'radar']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_to_imu_tf',
+            arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'imu_link']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_to_unilidar_imu_tf',
+            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'unilidar_imu']
+        ),
+
         # Node 1: Mapping Mode Node (when localization:=false)
         Node(
             package='rtabmap_slam',

@@ -61,11 +61,9 @@ class OpenAICompatibleVLMClient(BaseVLMClient):
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleVLMClient":
-        base_url = os.getenv("QWEN_BASE_URL", "").rstrip("/")
-        api_key = os.getenv("QWEN_API_KEY", "")
-        model = os.getenv("QWEN_MODEL", "qwen3-vl-32b-thinking")
-        if not base_url or not api_key:
-            raise RuntimeError("Set QWEN_BASE_URL and QWEN_API_KEY before using OpenAICompatibleVLMClient.from_env().")
+        base_url = os.getenv("QWEN_BASE_URL", "http://100.96.60.15:8000/v1").rstrip("/")
+        api_key = os.getenv("QWEN_API_KEY", "EMPTY")
+        model = os.getenv("QWEN_MODEL", "qwen3.8-27b-instruct")
         return cls(base_url=base_url, api_key=api_key, model=model)
 
     def _collect_image_refs(self, vlm_input: Dict[str, Any]) -> List[Tuple[str, str]]:
