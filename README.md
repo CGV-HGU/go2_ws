@@ -147,10 +147,19 @@ python3 /home/unitree/go2_ws_antarctica/scratch/calculate_icra_metrics.py
 go2_ws_antarctica/ (antarctica 브랜치)
 ├── README.md                  <- [최신화] 온보드 배포 아키텍처, 2중 팩트체크 및 13대 마스터 가이드
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
-├── docs/                      <- [14대 마스터 문서 체계 완비]
-│   ├── docker/                <- [NEW] 도커 전용 아키텍처 및 자율주행 배포 마스터 플랜
-│   │   ├── 01_docker_autonomy_deployment_master_plan.md <- 도커 자율주행 배포 마스터 플랜
-│   │   └── README.md          <- 도커 문서 인덱스
+├── docs/                      <- [마스터 계획서 및 런북 체계]
+│   ├── master_plan/           <- [NEW] [날짜별] 실물 로봇 통합 총평 및 최종 마스터 플랜
+│   │   ├── [2026-08-20]_ESCAPE-Nav_실물_로봇_Jetson_및_Docker_통합_총평_및_마스터_플랜.md
+│   │   └── README.md
+│   ├── jetson_plan/           <- [호스트 OS 전용 런북 01~04]
+│   │   ├── 01_jetson_hardware_network_and_dds_architecture.md
+│   │   ├── 02_jetson_rtabmap_livo_pipeline_and_bringup.md
+│   │   ├── 03_jetson_host_docker_bridge_and_motor_actuation.md
+│   │   ├── 04_jetson_onboard_benchmark_and_logging_runbook.md
+│   │   └── README.md
+│   ├── docker_plan/           <- [도커 샌드박스 전용 런북]
+│   │   ├── 01_docker_autonomy_deployment_master_plan.md
+│   │   └── README.md
 │   ├── 01_system_architecture_and_hardware.md   <- 시스템 아키텍처 & 하드웨어/센서 총괄
 │   ├── 02_network_and_dds_setup.md              <- 네트워크 IP 토폴로지 & CycloneDDS
 │   ├── 03_all_repositories_and_sdk_integration.md <- 5대 깃 레포 & Unitree SDK2 3-DOF 제어기
