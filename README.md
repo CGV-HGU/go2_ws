@@ -186,6 +186,8 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── hz_sensor_data.py      <- SensorDataQoS 호환 실시간 주파수 측정기
 │   ├── start_all_sensors.sh   <- 1-Click 센서 전체 가동 스크립트
 │   ├── start_unitree_lidar.sh <- 유니트리 공식 라이다 드라이버 실행기 (UDP 6201)
+│   ├── test_docker_50hz_stress.py <- [NEW] 도커 50Hz 고주파 UDP 스트리밍 스트레스 테스트 (500 패킷 0% Loss)
+│   ├── test_docker_real_image_vlm.py <- [NEW] 도커 내 멀티모달 이미지 VLM 실시간 추론 테스트 (720p RGB)
 │   ├── test_vlm_server_connection.py <- 원격 VLM 서버 지연 및 JSON 응답 진단기
 │   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트 (5대 실내 시나리오)
 │   └── calculate_icra_metrics.py <- ICRA 정량 표 (95% Wilson CI & p-value) 자동 계산기
