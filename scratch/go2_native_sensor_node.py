@@ -1,34 +1,30 @@
 #!/usr/bin/env python3
 """
 ========================================================================================
-🏆 Unitree Go2 Full Native Sensor Bringup Node (IMU + Odom + Camera + Joint States)
+🏆 Unitree Go2 Full Native Sensor Bringup Node (IMU + Odom + Joint States + CmdVel)
 ========================================================================================
-Subscribes to Unitree Go2 Native DDS:
-1. "lowstate" (unitree_go/msg/LowState)
-   -> Publishes: /imu (sensor_msgs/Imu @ 10~50Hz) - Quaternion, Gyro, Accel
-   -> Publishes: /joint_states (sensor_msgs/JointState @ 10~50Hz) - 12 Motor Angles
-2. "sportmodestate" / "lf/sportmodestate" (unitree_go/msg/SportModeState)
-   -> Publishes: /odom (nav_msgs/Odometry @ 50Hz) + TF (odom -> base_link)
-3. GStreamer H.264 (230.1.1.1:1720)
-   -> Publishes: /camera/front/image_raw (sensor_msgs/Image @ 30fps)
-4. /cmd_vel (geometry_msgs/Twist)
-   -> Publishes: /api/sport/request (unitree_api/msg/Request)
+Subscribes to Unitree Go2 Native CycloneDDS:
+1. "lowstate" (unitree_go/msg/LowState - Best Effort)
+   -> Publishes: /imu (sensor_msgs/Imu @ 50Hz) - Quaternion, Gyro, Accel
+   -> Publishes: /joint_states (sensor_msgs/JointState @ 50Hz) - 12 Motor Angles
+2. "sportmodestate" / "lf/sportmodestate" (unitree_go/msg/SportModeState - Best Effort)
+   -> Publishes: /odom (nav_msgs/Odometry @ 50Hz) + High-rate TF (odom -> base_link @ 50Hz)
+3. /cmd_vel (geometry_msgs/Twist)
+   -> Publishes: /api/sport/request (unitree_api/msg/Request API 1008)
 ========================================================================================
 """
 
 import json
 import math
-import cv2
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import QoSProfile, DurabilityPolicy
+from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy, HistoryPolicy
 
 # Standard ROS 2 Messages
 from nav_msgs.msg import Odometry
-from sensor_msgs.msg import Imu, Image, JointState, PointCloud2
+from sensor_msgs.msg import Imu, JointState
 from geometry_msgs.msg import Twist, TransformStamped
 from tf2_ros import TransformBroadcaster
-from cv_bridge import CvBridge
 
 # Unitree Official Messages
 from unitree_go.msg import LowState, SportModeState
@@ -39,36 +35,55 @@ class Go2NativeSensorNode(Node):
         super().__init__('go2_native_sensor_node')
         
         self.tf_broadcaster = TransformBroadcaster(self)
-        self.bridge = CvBridge()
+        
+        # Internal pose state for continuous 50Hz TF broadcasting
+        self.pos_x = 0.0
+        self.pos_y = 0.0
+        self.pos_z = 0.0
+        self.quat_x = 0.0
+        self.quat_y = 0.0
+        self.quat_z = 0.0
+        self.quat_w = 1.0
+        
+        # QoS profiles
+        sensor_sub_qos = QoSProfile(
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10,
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE
+        )
+        
+        pub_qos = QoSProfile(
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10,
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE
+        )
         
         # 1. Standard ROS 2 Publishers
-        self.imu_pub = self.create_publisher(Imu, '/imu', 10)
-        self.joint_pub = self.create_publisher(JointState, '/joint_states', 10)
-        self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
-        self.pointcloud_pub = self.create_publisher(PointCloud2, '/pointcloud', 10)
-        self.camera_pub = self.create_publisher(Image, '/camera/front/image_raw', 10)
+        self.imu_pub = self.create_publisher(Imu, '/imu', pub_qos)
+        self.joint_pub = self.create_publisher(JointState, '/joint_states', pub_qos)
+        self.odom_pub = self.create_publisher(Odometry, '/odom', pub_qos)
         self.sport_req_pub = self.create_publisher(Request, '/api/sport/request', 10)
-        
-        # 2. Subscribe to LiDAR PointCloud
-        self.lidar_sub = self.create_subscription(
-            PointCloud2,
-            'utlidar/cloud',
-            self.lidar_callback,
-            10
-        )
-        self.rt_lidar_sub = self.create_subscription(
-            PointCloud2,
-            'rt/utlidar/cloud',
-            self.lidar_callback,
-            10
-        )
         
         # 2. Subscribe to LowState (IMU + 12 Motors)
         self.lowstate_sub = self.create_subscription(
             LowState,
             'lowstate',
             self.lowstate_callback,
-            10
+            sensor_sub_qos
+        )
+        self.rt_lowstate_sub = self.create_subscription(
+            LowState,
+            'rt/lowstate',
+            self.lowstate_callback,
+            sensor_sub_qos
+        )
+        self.lf_lowstate_sub = self.create_subscription(
+            LowState,
+            'lf/lowstate',
+            self.lowstate_callback,
+            sensor_sub_qos
         )
         
         # 3. Subscribe to SportModeState (High-level Odom)
@@ -76,13 +91,19 @@ class Go2NativeSensorNode(Node):
             SportModeState,
             'sportmodestate',
             self.sport_callback,
-            10
+            sensor_sub_qos
         )
         self.lf_sport_sub = self.create_subscription(
             SportModeState,
             'lf/sportmodestate',
             self.sport_callback,
-            10
+            sensor_sub_qos
+        )
+        self.rt_sport_sub = self.create_subscription(
+            SportModeState,
+            'rt/sportmodestate',
+            self.sport_callback,
+            sensor_sub_qos
         )
         
         # 4. Subscribe to /cmd_vel
@@ -92,19 +113,6 @@ class Go2NativeSensorNode(Node):
             self.cmd_callback,
             10
         )
-        
-        # 5. Front Camera GStreamer (30fps)
-        pipeline = (
-            'udpsrc address=230.1.1.1 port=1720 multicast-group=230.1.1.1 auto-multicast=true ! '
-            'application/x-rtp, media=video, clock-rate=90000, payload=96, encoding-name=H264 ! '
-            'rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! appsink drop=true max-buffers=1'
-        )
-        self.cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
-        if self.cap.isOpened():
-            self.get_logger().info("✅ [CAMERA] Unitree Go2 Front Camera Connected! (30 fps)")
-            self.cam_timer = self.create_timer(1.0 / 30.0, self.camera_callback)
-        else:
-            self.get_logger().warn("⚠️ [CAMERA] GStreamer not opened, retrying...")
 
         self.joint_names = [
             "FL_hip_joint", "FL_thigh_joint", "FL_calf_joint",
@@ -112,7 +120,25 @@ class Go2NativeSensorNode(Node):
             "RL_hip_joint", "RL_thigh_joint", "RL_calf_joint",
             "RR_hip_joint", "RR_thigh_joint", "RR_calf_joint"
         ]
-        self.get_logger().info("🚀 [SENSOR NODE] Unitree Go2 Native Sensor Suite Active!")
+
+        # 5. Continuous 50Hz TF Timer (odom -> base_link)
+        self.tf_timer = self.create_timer(1.0 / 50.0, self.tf_timer_callback)
+
+        self.get_logger().info("🚀 [SENSOR NODE] Go2 Native Sensor Suite Active (Best-Effort 50Hz TF Broadcaster)!")
+
+    def tf_timer_callback(self):
+        tf = TransformStamped()
+        tf.header.stamp = self.get_clock().now().to_msg()
+        tf.header.frame_id = 'odom'
+        tf.child_frame_id = 'base_link'
+        tf.transform.translation.x = self.pos_x
+        tf.transform.translation.y = self.pos_y
+        tf.transform.translation.z = self.pos_z
+        tf.transform.rotation.x = self.quat_x
+        tf.transform.rotation.y = self.quat_y
+        tf.transform.rotation.z = self.quat_z
+        tf.transform.rotation.w = self.quat_w
+        self.tf_broadcaster.sendTransform(tf)
 
     # --------------------------------------------------------------------------
     # 1. LowState -> /imu & /joint_states
@@ -156,19 +182,14 @@ class Go2NativeSensorNode(Node):
         self.joint_pub.publish(js_msg)
 
     # --------------------------------------------------------------------------
-    # 2. SportModeState -> /odom & TF
+    # 2. SportModeState -> /odom & TF update
     # --------------------------------------------------------------------------
     def sport_callback(self, msg: SportModeState):
         now = self.get_clock().now().to_msg()
         
-        odom = Odometry()
-        odom.header.stamp = now
-        odom.header.frame_id = 'odom'
-        odom.child_frame_id = 'base_link'
-        
-        odom.pose.pose.position.x = float(msg.position[0])
-        odom.pose.pose.position.y = float(msg.position[1])
-        odom.pose.pose.position.z = float(msg.position[2]) + 0.07
+        self.pos_x = float(msg.position[0])
+        self.pos_y = float(msg.position[1])
+        self.pos_z = float(msg.position[2]) + 0.07
         
         # Euler RPY to Quaternion
         roll, pitch, yaw = msg.imu_state.rpy[0], msg.imu_state.rpy[1], msg.imu_state.rpy[2]
@@ -176,10 +197,24 @@ class Go2NativeSensorNode(Node):
         cp, sp = math.cos(pitch * 0.5), math.sin(pitch * 0.5)
         cr, sr = math.cos(roll * 0.5), math.sin(roll * 0.5)
         
-        odom.pose.pose.orientation.w = float(cr * cp * cy + sr * sp * sy)
-        odom.pose.pose.orientation.x = float(sr * cp * cy - cr * sp * sy)
-        odom.pose.pose.orientation.y = float(cr * sp * cy + sr * cp * sy)
-        odom.pose.pose.orientation.z = float(cr * cp * sy - sr * sp * cy)
+        self.quat_w = float(cr * cp * cy + sr * sp * sy)
+        self.quat_x = float(sr * cp * cy - cr * sp * sy)
+        self.quat_y = float(cr * sp * cy + sr * cp * sy)
+        self.quat_z = float(cr * cp * sy - sr * sp * cy)
+        
+        odom = Odometry()
+        odom.header.stamp = now
+        odom.header.frame_id = 'odom'
+        odom.child_frame_id = 'base_link'
+        
+        odom.pose.pose.position.x = self.pos_x
+        odom.pose.pose.position.y = self.pos_y
+        odom.pose.pose.position.z = self.pos_z
+        
+        odom.pose.pose.orientation.w = self.quat_w
+        odom.pose.pose.orientation.x = self.quat_x
+        odom.pose.pose.orientation.y = self.quat_y
+        odom.pose.pose.orientation.z = self.quat_z
         
         odom.twist.twist.linear.x = float(msg.velocity[0])
         odom.twist.twist.linear.y = float(msg.velocity[1])
@@ -187,39 +222,9 @@ class Go2NativeSensorNode(Node):
         odom.twist.twist.angular.z = float(msg.yaw_speed)
         
         self.odom_pub.publish(odom)
-        
-        # Broadcast TF
-        tf = TransformStamped()
-        tf.header.stamp = now
-        tf.header.frame_id = 'odom'
-        tf.child_frame_id = 'base_link'
-        tf.transform.translation.x = odom.pose.pose.position.x
-        tf.transform.translation.y = odom.pose.pose.position.y
-        tf.transform.translation.z = odom.pose.pose.position.z
-        tf.transform.rotation = odom.pose.pose.orientation
-    # --------------------------------------------------------------------------
-    # 2-B. LiDAR Callback -> /pointcloud
-    # --------------------------------------------------------------------------
-    def lidar_callback(self, msg: PointCloud2):
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'radar'
-        self.pointcloud_pub.publish(msg)
 
     # --------------------------------------------------------------------------
-    # 3. Camera Callback
-    # --------------------------------------------------------------------------
-    def camera_callback(self):
-        if not self.cap.isOpened():
-            return
-        ret, frame = self.cap.read()
-        if ret and frame is not None:
-            img_msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
-            img_msg.header.stamp = self.get_clock().now().to_msg()
-            img_msg.header.frame_id = 'camera_link'
-            self.camera_pub.publish(img_msg)
-
-    # --------------------------------------------------------------------------
-    # 4. /cmd_vel -> Official Move API
+    # 3. /cmd_vel -> Official Move API
     # --------------------------------------------------------------------------
     def cmd_callback(self, msg: Twist):
         req = Request()
@@ -227,11 +232,6 @@ class Go2NativeSensorNode(Node):
         param = {"x": float(msg.linear.x), "y": float(msg.linear.y), "z": float(msg.angular.z)}
         req.parameter = json.dumps(param)
         self.sport_req_pub.publish(req)
-
-    def destroy_node(self):
-        if hasattr(self, 'cap') and self.cap.isOpened():
-            self.cap.release()
-        super().destroy_node()
 
 def main():
     rclpy.init()

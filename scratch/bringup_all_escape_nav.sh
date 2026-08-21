@@ -141,6 +141,15 @@ source /home/unitree/go2_ws_antarctica/install/setup.bash 2>/dev/null || true
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export CYCLONEDDS_URI="file:///home/unitree/go2_ws_antarctica/cyclonedds.xml"
 export ROS_DOMAIN_ID=0
+export LD_LIBRARY_PATH=/home/unitree/opencv_build/opencv/build/lib:/usr/local/lib:$LD_LIBRARY_PATH
+
+# Clean up any stale background nodes from previous runs
+pkill -9 -f unitree_lidar 2>/dev/null || true
+pkill -9 -f go2_native_sensor 2>/dev/null || true
+pkill -9 -f go2_front_camera 2>/dev/null || true
+pkill -9 -f host_bridge 2>/dev/null || true
+pkill -9 -f rtabmap 2>/dev/null || true
+sleep 1
 
 # 멀티캐스트 라우팅 및 4D 라이다 IP 에일리어스 설정
 echo admin | sudo -S ip addr add 192.168.1.2/24 dev eth0 2>/dev/null || true

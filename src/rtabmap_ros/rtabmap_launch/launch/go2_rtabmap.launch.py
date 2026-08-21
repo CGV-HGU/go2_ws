@@ -33,20 +33,22 @@ def generate_launch_description():
         # RTAB-Map LIVO Sensor Modalities
         'subscribe_depth': False,
         'subscribe_rgb': True,
-        'subscribe_scan_cloud': True,
+        'subscribe_odom': True,
+        'subscribe_scan_cloud': False,
         'subscribe_imu': True,
         
         # QoS Reliability (2 = SensorData / Best Effort)
-        'qos_scan_cloud': 2,
+        'qos': 2,
+        'qos_scan': 2,
         'qos_imu': 2,
         'qos_image': 2,
         'qos_camera_info': 2,
+        'qos_odom': 2,
         
         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
         'approx_sync': True,
-        'approx_sync_max_interval': 0.05,
-        'topic_queue_size': 30,
-        'sync_queue_size': 30,
+        'approx_sync_max_interval': 0.1,
+        'queue_size': 50,
         
         # SLAM & Loop Closure Tuning
         'Rtabmap/DetectionRate': '2.0',
@@ -74,6 +76,7 @@ def generate_launch_description():
     remappings = [
         ('rgb/image', '/camera/front/image_raw'),
         ('rgb/camera_info', '/camera/front/camera_info'),
+        ('odom', '/odom'),
         ('scan_cloud', scan_cloud_topic),
         ('imu', '/imu'),
     ]
@@ -81,7 +84,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
-        DeclareLaunchArgument('scan_cloud_topic', default_value='/pointcloud', description='PointCloud2 topic for LiDAR input'),
+        DeclareLaunchArgument('scan_cloud_topic', default_value='/utlidar/cloud', description='PointCloud2 topic for LiDAR input'),
         
         # Static Transforms for Sensor Frames (Self-contained TF tree)
         Node(

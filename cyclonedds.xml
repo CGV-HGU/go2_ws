@@ -4,18 +4,20 @@
         <General>
             <NetworkInterfaceAddress>eth0</NetworkInterfaceAddress>
             <AllowMulticast>true</AllowMulticast>
-            <MaxMessageSize>65500B</MaxMessageSize>
+            <EnableMulticastLoopback>true</EnableMulticastLoopback>
         </General>
         <Discovery>
             <Peers>
                 <Peer address="192.168.123.161"/>
+                <Peer address="127.0.0.1"/>
             </Peers>
             <ParticipantIndex>auto</ParticipantIndex>
+            <MaxAutoParticipantIndex>120</MaxAutoParticipantIndex>
         </Discovery>
         <Internal>
-            <SocketReceiveBufferSize min="10MB"/>
+            <SocketReceiveBufferSize min="20MB"/>
             <Watermarks>
-                <WhcHigh>500kB</WhcHigh>
+                <WhcHigh>10MB</WhcHigh>
             </Watermarks>
         </Internal>
     </Domain>
