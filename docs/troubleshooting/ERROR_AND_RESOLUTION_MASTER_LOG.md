@@ -19,6 +19,7 @@
 | **`[ERR-2026-08-21-04]`** | 2026-08-21 | 정지/와상 상태 TF (`odom` ➔ `base_link`) 단절 경고 및 스레드 기반 카메라/카메라인포 30fps 동기화 완성 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 | **`[ERR-2026-08-21-05]`** | 2026-08-21 | RTAB-Map 3D 점군 맵 및 2D 점유격자지도(Occupancy Grid) 미생성 이슈 및 `Grid/Sensor` 3D 라이다 융합 활성화 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 | **`[ERR-2026-08-21-06]`** | 2026-08-21 | 라이다 점군 대기 시 RTAB-Map `approx_sync` 5초 블로킹 방지 및 순정 LIVO 다이내믹 구독 아키텍처 확립 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-07]`** | 2026-08-21 | OpenCV `dlopen` 라이브러리 경로 누락, ROS 2 CLI 기본 RELIABLE QoS 비호환, 및 라이다 UDP 6201 포트 충돌 전수 해결 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 
 ---
 
@@ -194,3 +195,41 @@
 [rtabmap-6] [INFO] [rtabmap]: rtabmap (9): Rate=0.50s, RTAB-Map=0.0757s (local map=1, WM=1)
 ```
 * **결과: 5초 대기 경고 0건, 프레임 드랍 0건, DB 크기 1.98MB 정상 저장 확인!**
+
+---
+
+## 📌 `[ERR-2026-08-21-07]` OpenCV `dlopen` 라이브러리 경로 누락, ROS 2 CLI 기본 RELIABLE QoS 비호환, 및 라이다 UDP 6201 포트 충돌 전수 해결
+
+* **발생 일시**: 2026년 8월 21일 16:57 KST
+* **보고자**: 민석 (Jetson & Hardware Lead)
+* **영향 범위**: 터미널에서 `ros2 topic hz` 실행 시 패킷 미수신(0Hz) 및 `unitree_lidar_ros2_node` 기동 시 `bind udp port failed` 발생 현상
+
+### 1. ⚠️ 증상 및 원본 터미널 에러 로그
+1. **OpenCV glibc 동적 링킹 에러**:
+   ```text
+   ImportError: libopencv_hdf.so.4.5: cannot open shared object file: No such file or directory
+   ```
+2. **ROS 2 QoS 정책 불일치**:
+   ```text
+   [WARN] New subscription discovered on this topic, requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
+   ```
+3. **UDP 포트 6201 바인딩 실패**:
+   ```text
+   [UDPHandler] create udp socket success.
+   [UDPHandler] bind udp port failed.
+   ```
+
+### 2. 🔍 기술적 근본 원인 분석
+1. **`LD_LIBRARY_PATH` 런타임 상속 한계**: Python 스크립트 내부에서 `os.environ`을 수정해도 이미 로드된 glibc `dlopen` 캐시를 갱신하지 못해 터미널 직접 실행 시 OpenCV 로딩 실패.
+2. **QoS 비호환**: `ros2 topic hz` / `echo` CLI 도구는 기본적으로 `RELIABLE`을 요구하는데 퍼블리셔가 `BEST_EFFORT`로 발행하여 DDS 계층에서 모든 패킷을 드랍함.
+3. **UDP 포트 점유**: 이전 실행 인스턴스가 UDP 6201 포트를 점유한 채 종료되지 않아 신규 라이다 노드 바인딩 실패.
+
+### 3. 🛠️ 해결 조치
+1. **시스템 레벨 영구 링커 등록**: `/etc/ld.so.conf.d/opencv.conf`에 `/home/unitree/opencv_build/opencv/build/lib` 등록 후 `sudo ldconfig` 실행.
+2. **QoS 표준화**: `go2_front_camera_publisher.py` 및 `go2_native_sensor_node.py`의 발행 QoS를 표준 `RELIABLE`(`depth=10, reliability=RELIABLE, durability=VOLATILE`)로 전면 개편.
+3. **포트 자동 해제 SOP**: `bringup_all_escape_nav.sh` 시작부에 `echo admin | sudo -S fuser -k 6201/udp` 삽입하여 포트 충돌 원천 차단.
+
+### 4. 📊 최종 실측 검증 완료 (Verification)
+* `ros2 topic hz /camera/front/image_raw` ➔ **30.0 Hz 실시간 출력 확인**!
+* `ros2 topic hz /tf` ➔ **70.8 Hz 실시간 변환 확인**!
+* RTAB-Map 2.0Hz 연속 키프레임 22개 정상 생성 확인!
