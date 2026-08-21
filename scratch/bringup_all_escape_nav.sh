@@ -19,6 +19,8 @@ set -e
 MODE_ARG="localization:=true"
 MAPPING_MODE=false
 RECORD_MODE=false
+GUI_MODE=false
+GUI_ARG="rtabmap_viz:=false"
 SCENARIO="Dead_end_room"
 MODEL="Full_ESCAPE_Nav"
 TRIAL="Trial1"
@@ -28,6 +30,12 @@ while [[ $# -gt 0 ]]; do
         --mapping)
             MAPPING_MODE=true
             MODE_ARG="localization:=false"
+            shift
+            ;;
+        --gui)
+            GUI_MODE=true
+            GUI_ARG="rtabmap_viz:=true"
+            export DISPLAY="${DISPLAY:-:0}"
             shift
             ;;
         --record)
@@ -189,9 +197,9 @@ python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
 PIDS+=($!)
 sleep 1
 
-# 5. RTAB-Map LIVO 50Hz 위치추정 노드 (L1 라이다 /utlidar/cloud 명시)
-echo "  • [MASTER] Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG})..."
-ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} scan_cloud_topic:=/utlidar/cloud &
+# 5. RTAB-Map LIVO 50Hz 위치추정 노드 (L1 라이다 /utlidar/cloud 및 GUI 여부 명시)
+echo "  • [MASTER] Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG}, ${GUI_ARG})..."
+ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} scan_cloud_topic:=/utlidar/cloud &
 PIDS+=($!)
 sleep 3
 

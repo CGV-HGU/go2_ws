@@ -85,6 +85,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
         DeclareLaunchArgument('scan_cloud_topic', default_value='/utlidar/cloud', description='PointCloud2 topic for LiDAR input'),
+        DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
         
         # Static Transforms for Sensor Frames (Self-contained TF tree)
         Node(
@@ -140,5 +141,16 @@ def generate_launch_description():
             remappings=remappings,
             arguments=[], # Load saved map without deleting
             condition=IfCondition(localization)
+        ),
+
+        # Node 3: Real-time 3D GUI Visualizer Node (when rtabmap_viz:=true)
+        Node(
+            package='rtabmap_viz',
+            executable='rtabmap_viz',
+            name='rtabmap_viz',
+            output='screen',
+            parameters=[mapping_parameters],
+            remappings=remappings,
+            condition=IfCondition(LaunchConfiguration('rtabmap_viz'))
         )
     ])
