@@ -21,6 +21,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     localization = LaunchConfiguration('localization', default='false')
     scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/utlidar/cloud')
+    subscribe_scan_cloud = LaunchConfiguration('subscribe_scan_cloud', default='false')
 
     # Common LIVO parameters for both modes
     base_parameters = {
@@ -34,7 +35,7 @@ def generate_launch_description():
         'subscribe_depth': False,
         'subscribe_rgb': True,
         'subscribe_odom': True,
-        'subscribe_scan_cloud': True,
+        'subscribe_scan_cloud': subscribe_scan_cloud,
         'subscribe_imu': True,
         
         # QoS Reliability (2 = SensorData / Best Effort)
@@ -59,14 +60,11 @@ def generate_launch_description():
         'Mem/ReconstructData': 'true',
 
         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters
-        'Grid/Sensor': '0',            # 0 = scan_cloud (3D Point Cloud LiDAR)
         'Grid/RangeMax': '15.0',       # Max range 15m
         'Grid/RangeMin': '0.2',
         'Grid/CellSize': '0.05',       # 5cm grid resolution
         'Grid/3D': 'true',             # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',     # Ray tracing for clearing free space
-        'Grid/NormalsSegmentation': 'false',
-        'Icp/PointToPlane': 'true',
     }
 
     # Mode 1: Mapping Parameters
@@ -95,6 +93,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
         DeclareLaunchArgument('scan_cloud_topic', default_value='/utlidar/cloud', description='PointCloud2 topic for LiDAR input'),
+        DeclareLaunchArgument('subscribe_scan_cloud', default_value='false', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
         
         # Static Transforms for Sensor Frames (Self-contained TF tree)

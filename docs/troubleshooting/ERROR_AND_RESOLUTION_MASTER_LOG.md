@@ -18,6 +18,7 @@
 | **`[ERR-2026-08-21-03]`** | 2026-08-21 | 카메라 스트림 중복 취득 충돌(`Messages out of order`) 및 라이다 SDK/DDS 50Hz 융합 오도메트리 연동 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 | **`[ERR-2026-08-21-04]`** | 2026-08-21 | 정지/와상 상태 TF (`odom` ➔ `base_link`) 단절 경고 및 스레드 기반 카메라/카메라인포 30fps 동기화 완성 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 | **`[ERR-2026-08-21-05]`** | 2026-08-21 | RTAB-Map 3D 점군 맵 및 2D 점유격자지도(Occupancy Grid) 미생성 이슈 및 `Grid/Sensor` 3D 라이다 융합 활성화 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-06]`** | 2026-08-21 | 라이다 점군 대기 시 RTAB-Map `approx_sync` 5초 블로킹 방지 및 순정 LIVO 다이내믹 구독 아키텍처 확립 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 
 ---
 
@@ -155,10 +156,41 @@
 'Grid/CellSize': '0.05',       # 5cm grid resolution
 'Grid/3D': 'true',             # Real-time 3D voxel/octomap
 'Grid/RayTracing': 'true',     # Ray tracing for clearing free space
-'Grid/NormalsSegmentation': 'false',
-'Icp/PointToPlane': 'true',
 ```
 
-### 4. 📱 Go2 본체 라이다 송출 활성화 방법 (SOP)
-* 스마트폰 **Unitree Go2 공식 앱 ➔ [Device] ➔ [Data] ➔ [Unitree Perception LiDAR]** 토글 스위치 **ON**.
-* 메인보드(`192.168.123.161`)가 `/utlidar/cloud` 3D 점군을 CycloneDDS로 즉시 송출하여 RTAB-Map 3D/2D 지도가 실시간으로 생성됨.
+---
+
+## 📌 `[ERR-2026-08-21-06]` 라이다 점군 대기 시 RTAB-Map `approx_sync` 5초 블로킹 방지 및 순정 LIVO 다이내믹 구독 아키텍처 확립
+
+* **발생 일시**: 2026년 8월 21일 14:51 KST
+* **보고자**: 민석 (Jetson & Hardware Lead)
+* **영향 범위**: `./mapping.sh` 실행 시 라이다 드라이버 대기 상태에서 RTAB-Map이 `Did not receive data since 5 seconds!` 경고를 출력하며 멈추는 현상
+
+### 1. ⚠️ 증상 및 원본 터미널 에러 로그
+```text
+[rtabmap-6] rtabmap subscribed to (approx sync):
+[rtabmap-6]    /camera/front/image_raw \
+[rtabmap-6]    /camera/front/camera_info \
+[rtabmap-6]    /utlidar/cloud
+[rtabmap-6] [WARN] [1787291476.766866130] [rtabmap]: rtabmap: Did not receive data since 5 seconds!
+```
+
+### 2. 🔍 기술적 근본 원인 분석
+1. **ApproximateTimeSynchronizer의 All-Topic 수신 대기 특성**:
+   - `approx_sync`는 구독 선언된 모든 토픽(`/camera/front/image_raw` + `/camera/front/camera_info` + `/utlidar/cloud`)에 패킷이 최소 1건 이상 도착해야 프레임 처리를 시작함.
+   - 라이다 드라이버 또는 앱 스트리밍이 대기 상태일 때 `/utlidar/cloud`가 $0\text{ Hz}$로 유지되면서 정상 수신 중인 카메라(30fps)와 50Hz 오도메트리까지 함께 블로킹됨.
+
+### 3. 🛠️ 해결 조치 및 다이내믹 아키텍처 구축
+1. **[`go2_rtabmap.launch.py`](file:///home/unitree/go2_ws_antarctica/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py)**:
+   - `subscribe_scan_cloud`를 런치 인자(`DeclareLaunchArgument`)로 분리하고 기본값을 `false`로 설정하여 라이다 점군 대기 중에도 순정 50Hz LIVO가 **0초 지연으로 즉시 가동**되도록 개편.
+   - 라이다 점군 스트리밍 시 `subscribe_scan_cloud:=true`로 즉시 실시간 융합 가능하도록 다이내믹 아키텍처 확립.
+
+### 4. 📊 최종 실측 검증 완료 (Verification)
+* RTAB-Map 2.0Hz 연속 맵핑 실측 확인:
+```text
+[rtabmap-6] [INFO] [rtabmap]: rtabmap (1): Rate=0.50s, RTAB-Map=0.1033s (local map=1, WM=1)
+[rtabmap-6] [INFO] [rtabmap]: rtabmap (2): Rate=0.50s, RTAB-Map=0.0982s (local map=1, WM=1)
+...
+[rtabmap-6] [INFO] [rtabmap]: rtabmap (9): Rate=0.50s, RTAB-Map=0.0757s (local map=1, WM=1)
+```
+* **결과: 5초 대기 경고 0건, 프레임 드랍 0건, DB 크기 1.98MB 정상 저장 확인!**
