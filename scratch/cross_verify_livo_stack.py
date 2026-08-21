@@ -30,7 +30,8 @@ class LIVOCrossVerifier(Node):
             ('/map', OccupancyGrid, 0.5, "RTAB-Map 2D Laser Occupancy Grid"),
             ('/imu', Imu, 50.0, "Unitree Go2 Body IMU (50~500Hz)"),
             ('/odom', Odometry, 50.0, "Unitree Go2 Leg Kinematic Odometry (50Hz)"),
-            ('/utlidar/cloud', PointCloud2, 10.0, "Unitree 4D LiDAR L2 PointCloud2"),
+            ('/pointcloud', PointCloud2, 10.0, "Unitree 4D LiDAR L2 PointCloud2 (/pointcloud)"),
+            ('/utlidar/cloud', PointCloud2, 10.0, "Unitree 4D LiDAR DDS PointCloud2 (/utlidar/cloud)"),
         ]
         
         self.msg_counts = {t[0]: 0 for t in self.topic_configs}

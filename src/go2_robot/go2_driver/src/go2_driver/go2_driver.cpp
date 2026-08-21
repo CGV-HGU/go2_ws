@@ -48,22 +48,22 @@ Go2Driver::Go2Driver(
   request_pub_ = create_publisher<unitree_api::msg::Request>("api/sport/request", 10);
 
   pointcloud_sub_ = create_subscription<sensor_msgs::msg::PointCloud2>(
-    "/utlidar/cloud", 10,
+    "/utlidar/cloud", rclcpp::SensorDataQoS(),
     std::bind(&Go2Driver::publish_lidar, this, std::placeholders::_1));
 
   robot_pose_sub_ = create_subscription<geometry_msgs::msg::PoseStamped>(
-    "/utlidar/robot_pose", 10,
+    "/utlidar/robot_pose", rclcpp::SensorDataQoS(),
     std::bind(&Go2Driver::publish_pose_stamped, this, std::placeholders::_1));
 
   sport_mode_state_sub_ = create_subscription<unitree_go::msg::SportModeState>(
-    "sportmodestate", 10,
+    "/sportmodestate", rclcpp::SensorDataQoS(),
     std::bind(&Go2Driver::publish_sport_mode_state, this, std::placeholders::_1));
 
   joy_sub_ = create_subscription<sensor_msgs::msg::Joy>(
     "joy", 10, std::bind(&Go2Driver::joy_callback, this, std::placeholders::_1));
 
   low_state_sub_ = create_subscription<unitree_go::msg::LowState>(
-    "lowstate", 10,
+    "/lowstate", rclcpp::SensorDataQoS(),
     std::bind(&Go2Driver::publish_joint_states, this, std::placeholders::_1));
 
   cmd_vel_sub_ = create_subscription<geometry_msgs::msg::Twist>(
