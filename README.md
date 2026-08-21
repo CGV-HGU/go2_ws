@@ -187,8 +187,9 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   └── 14_real_robot_live_system_diagnostic_report.md <- [실시간] 온보드 시스템 점검 종합 진단표 (대시보드)
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── bringup_all_escape_nav.sh <- [⭐ 1-Click Master] 4대 계층 일체형 브링업 & E-Stop 스크립트
-│   ├── benchmark_vlm_latency_profile.py <- [NEW] 원격 Qwen VLM 4단계 세부 지연 시간(Latency) 프로파일러
-│   ├── check_docker_status_dashboard.py <- 도커 8대 서브시스템 3초 자동 점검기
+│   ├── inspect_rtabmap_db.py  <- [NEW] RTAB-Map 3D DB(rtabmap.db) 키프레임 영상 및 노드 인스펙터
+│   ├── benchmark_vlm_latency_profile.py <- 원격 Qwen VLM 4단계 세부 지연 시간(Latency) 프로파일러
+│   ├── check_docker_status_dashboard.py <- 도커 9대 서브시스템 3초 자동 점검기
 │   ├── test_docker_stall_and_recovery.py <- 운동학적 정체 감지 및 능동 회복(Active-View Recovery) 검증기
 │   ├── test_docker_s2e_dryrun.py <- 도커 S2E 비동기 자율주행 풀 드라이런 검증기
 │   ├── test_docker_50hz_stress.py <- 도커 50Hz 고주파 UDP 스트리밍 스트레스 테스트 (500 패킷 0% Loss)
