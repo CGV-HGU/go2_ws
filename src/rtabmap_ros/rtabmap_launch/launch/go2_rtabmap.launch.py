@@ -60,11 +60,14 @@ def generate_launch_description():
         'Mem/ReconstructData': 'true',
 
         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters
+        'Grid/Sensor': '0',            # 0 = scan_cloud (3D Point Cloud LiDAR)
         'Grid/RangeMax': '15.0',       # Max range 15m
         'Grid/RangeMin': '0.2',
         'Grid/CellSize': '0.05',       # 5cm grid resolution
         'Grid/3D': 'true',             # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',     # Ray tracing for clearing free space
+        'Icp/PointToPlane': 'true',
+        'Icp/VoxelSize': '0.05',
     }
 
     # Mode 1: Mapping Parameters
