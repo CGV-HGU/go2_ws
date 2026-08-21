@@ -159,7 +159,7 @@ pkill -9 -f host_bridge 2>/dev/null || true
 pkill -9 -f rtabmap 2>/dev/null || true
 sleep 1
 
-# 멀티캐스트 라우팅, 라이다 포트 해제 및 4D 라이다 IP 에일리어스 설정
+# 멀티캐스트 라우팅 및 4D 라이다 IP 에일리어스 설정
 echo admin | sudo -S fuser -k 6201/udp 2>/dev/null || true
 echo admin | sudo -S ip addr add 192.168.1.2/24 dev eth0 2>/dev/null || true
 echo admin | sudo -S ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
@@ -170,37 +170,21 @@ python3 /home/unitree/go2_ws_antarctica/scratch/go2_front_camera_publisher.py &
 PIDS+=($!)
 sleep 1
 
-# 2. Unitree 4D LiDAR L2 드라이버 (/utlidar/cloud @ 15Hz)
-echo "  • [2/4] Starting Unitree 4D LiDAR Driver (/utlidar/cloud @ 15Hz)..."
-ros2 run unitree_lidar_ros2 unitree_lidar_ros2_node \
-    --ros-args \
-    -p initialize_type:=2 \
-    -p lidar_ip:="192.168.1.62" \
-    -p local_ip:="192.168.1.2" \
-    -p lidar_port:=6101 \
-    -p local_port:=6201 \
-    -p cloud_frame:="unilidar_lidar" \
-    -p cloud_topic:="/utlidar/cloud" \
-    -p imu_frame:="unilidar_imu" \
-    -p imu_topic:="/utlidar/imu" &
+# 2. Go2 공식 ROS 2 순정 드라이버 & URDF 기구학 스택 (go2_bringup)
+echo "  • [2/4] Starting Native Go2 Bringup (URDF 3D Kinematics + go2_driver C++)..."
+ros2 launch go2_bringup go2.launch.py &
 PIDS+=($!)
-sleep 1
+sleep 2
 
-# 3. 바디 IMU 및 오도메트리 Native 센서 노드 (/imu @ 50Hz, /odom @ 50Hz)
-echo "  • [3/4] Starting Native Body IMU & Kinematic Odometry Node (50Hz)..."
-python3 /home/unitree/go2_ws_antarctica/scratch/go2_native_sensor_node.py &
-PIDS+=($!)
-sleep 1
-
-# 4. Host Bridge (0x53324501 매직넘버 수신기)
-echo "  • [4/4] Starting Host-to-Docker UDP Socket Bridge..."
+# 3. Host Bridge (0x53324501 매직넘버 수신기)
+echo "  • [3/4] Starting Host-to-Docker UDP Socket Bridge..."
 python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
 PIDS+=($!)
 sleep 1
 
-# 5. RTAB-Map LIVO 50Hz 위치추정 노드 (4D L2 라이다 /utlidar/cloud 및 GUI 여부 명시)
+# 4. RTAB-Map LIVO 50Hz 위치추정 노드 (순정 pointcloud 및 GUI 여부 명시)
 echo "  • [MASTER] Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG}, ${GUI_ARG})..."
-ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} subscribe_scan_cloud:=true scan_cloud_topic:=/utlidar/cloud &
+ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} scan_cloud_topic:=pointcloud &
 PIDS+=($!)
 sleep 3
 

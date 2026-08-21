@@ -20,7 +20,7 @@ def generate_launch_description():
     """
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     localization = LaunchConfiguration('localization', default='false')
-    scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/utlidar/cloud')
+    scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='pointcloud')
     subscribe_scan_cloud = LaunchConfiguration('subscribe_scan_cloud', default='true')
 
     # Common LIVO parameters for both modes
