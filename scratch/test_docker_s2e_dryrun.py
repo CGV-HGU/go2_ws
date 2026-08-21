@@ -46,17 +46,17 @@ def run_dryrun_test():
     # 2. Check S2E Core Transforms & Pose Buffer
     print("[2/4] Testing S2E SE(2) Pose Buffer & Math Engine...")
     try:
-        from s2e_vlm_core.pose_buffer import PoseBuffer
-        from s2e_vlm_core.transforms_2d import compose_se2, relative_se2
+        from s2e_vlm_core.pose_buffer import PoseBuffer, Pose2D, PoseSample
+        from s2e_vlm_core.transforms_2d import relative_pose_2d, transform_point_2d
         
-        buf = PoseBuffer(max_duration=10.0)
+        buf = PoseBuffer(max_samples=256)
         t_now = time.time()
         for k in range(50):
-            buf.add_pose(t_now + k * 0.02, x=k*0.01, y=0.0, yaw=0.0)
+            buf.add(PoseSample(stamp=t_now + k * 0.02, pose=Pose2D(x=k*0.01, y=0.0, yaw=0.0)))
         
-        interp = buf.get_pose_at(t_now + 0.5)
-        assert interp is not None, "Pose interpolation failed"
-        print(f"  • SE(2) Pose Buffer (50Hz 10s window): OK (Interpolated x={interp.x:.3f})")
+        result = buf.lookup_latest_before(t_now + 0.5, max_age=1.0)
+        assert result.found and result.pose is not None, "Pose lookup failed"
+        print(f"  • SE(2) Pose Buffer (50Hz window): OK (Found x={result.pose.x:.3f})")
     except Exception as e:
         print(f"  ⚠️ Note: S2E core test note: {e}")
 
