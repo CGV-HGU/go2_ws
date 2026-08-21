@@ -3,7 +3,7 @@
     <Domain id="any">
         <General>
             <Interfaces>
-                <NetworkInterface name="eth0" priority="default" multicast="default" />
+                <NetworkInterface address="192.168.123.99" priority="default" multicast="default" />
             </Interfaces>
             <AllowMulticast>true</AllowMulticast>
             <EnableMulticastLoopback>true</EnableMulticastLoopback>
