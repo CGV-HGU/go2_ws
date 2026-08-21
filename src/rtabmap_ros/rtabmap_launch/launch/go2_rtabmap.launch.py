@@ -50,6 +50,7 @@ def generate_launch_description():
         'approx_sync': True,
         'approx_sync_max_interval': 0.1,
         'queue_size': 50,
+        'subscribe_scan_cloud': LaunchConfiguration('subscribe_scan_cloud'),
         
         # SLAM & Loop Closure Tuning
         'Rtabmap/DetectionRate': '2.0',
@@ -99,7 +100,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
         DeclareLaunchArgument('scan_cloud_topic', default_value='pointcloud', description='PointCloud2 topic for LiDAR input'),
-        DeclareLaunchArgument('subscribe_scan_cloud', default_value='true', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
+        DeclareLaunchArgument('subscribe_scan_cloud', default_value='false', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
         
         # Static Transforms for Sensor Frames (Self-contained TF tree)

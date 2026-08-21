@@ -171,13 +171,27 @@ PIDS+=($!)
 sleep 1
 
 # 2. Go2 공식 ROS 2 순정 드라이버 & URDF 기구학 스택 (go2_bringup)
-echo "  • [2/4] Starting Native Go2 Bringup (URDF 3D Kinematics + go2_driver C++)..."
+echo "  • [2/5] Starting Native Go2 Bringup (URDF 3D Kinematics + go2_driver C++)..."
 ros2 launch go2_bringup go2.launch.py &
 PIDS+=($!)
-sleep 2
+sleep 1
 
-# 3. Host Bridge (0x53324501 매직넘버 수신기)
-echo "  • [3/4] Starting Host-to-Docker UDP Socket Bridge..."
+# 3. Unitree 4D LiDAR L2 하드웨어 드라이버 (15Hz /pointcloud 실시간 발행)
+echo "  • [3/5] Starting Unitree 4D LiDAR L2 Driver (UDP 192.168.1.62:6101 -> /pointcloud)..."
+ros2 run unitree_lidar_ros2 unitree_lidar_ros2_node --ros-args \
+    -p initialize_type:=2 \
+    -p lidar_ip:=192.168.1.62 \
+    -p lidar_port:=6101 \
+    -p local_ip:=192.168.1.2 \
+    -p local_port:=6201 \
+    -p cloud_topic:=/pointcloud \
+    -p cloud_frame:=radar \
+    -p cloud_scan_num:=18 &
+PIDS+=($!)
+sleep 1
+
+# 4. Host Bridge (0x53324501 매직넘버 수신기)
+echo "  • [4/5] Starting Host-to-Docker UDP Socket Bridge..."
 python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
 PIDS+=($!)
 sleep 1
