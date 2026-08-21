@@ -40,6 +40,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include <sensor_msgs/msg/joy.hpp>
 #include "unitree_go/msg/low_state.hpp"
+#include "unitree_go/msg/sport_mode_state.hpp"
 #include "unitree_go/msg/imu_state.hpp"
 #include "tf2_ros/transform_broadcaster.h"
 #include "nlohmann/json.hpp"
@@ -68,6 +69,7 @@ private:
   void publish_pose_stamped(const geometry_msgs::msg::PoseStamped::SharedPtr msg);
   void joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg);
   void publish_joint_states(const unitree_go::msg::LowState::SharedPtr msg);
+  void publish_sport_mode_state(const unitree_go::msg::SportModeState::SharedPtr msg);
   void cmd_vel_callback(const geometry_msgs::msg::Twist::SharedPtr msg);
 
   void handleBodyHeight(
@@ -117,6 +119,7 @@ private:
 
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr pointcloud_sub_;
   rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr robot_pose_sub_;
+  rclcpp::Subscription<unitree_go::msg::SportModeState>::SharedPtr sport_mode_state_sub_;
   rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_sub_;
   rclcpp::Subscription<unitree_go::msg::LowState>::SharedPtr low_state_sub_;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;

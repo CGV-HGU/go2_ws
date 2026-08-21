@@ -55,6 +55,10 @@ Go2Driver::Go2Driver(
     "/utlidar/robot_pose", 10,
     std::bind(&Go2Driver::publish_pose_stamped, this, std::placeholders::_1));
 
+  sport_mode_state_sub_ = create_subscription<unitree_go::msg::SportModeState>(
+    "sportmodestate", 10,
+    std::bind(&Go2Driver::publish_sport_mode_state, this, std::placeholders::_1));
+
   joy_sub_ = create_subscription<sensor_msgs::msg::Joy>(
     "joy", 10, std::bind(&Go2Driver::joy_callback, this, std::placeholders::_1));
 
@@ -171,6 +175,18 @@ void Go2Driver::publish_lidar(const sensor_msgs::msg::PointCloud2::SharedPtr msg
 void Go2Driver::publish_pose_stamped(const geometry_msgs::msg::PoseStamped::SharedPtr msg)
 {
   last_pose_ = msg->pose;
+}
+
+void Go2Driver::publish_sport_mode_state(const unitree_go::msg::SportModeState::SharedPtr msg)
+{
+  // 50Hz Real-time Quadruped Kinematic Odometry & IMU Orientation
+  last_pose_.position.x = msg->position[0];
+  last_pose_.position.y = msg->position[1];
+  last_pose_.position.z = msg->position[2];
+  last_pose_.orientation.w = msg->imu_state.quaternion[0];
+  last_pose_.orientation.x = msg->imu_state.quaternion[1];
+  last_pose_.orientation.y = msg->imu_state.quaternion[2];
+  last_pose_.orientation.z = msg->imu_state.quaternion[3];
 }
 
 void Go2Driver::joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
