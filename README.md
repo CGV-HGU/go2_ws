@@ -149,6 +149,12 @@ go2_ws_antarctica/ (antarctica 브랜치)
 ├── cyclonedds.xml             <- CycloneDDS 네트워크 바인딩 설정 파일
 ├── docs/                      <- [마스터 계획서 및 런북 체계]
 │   ├── master_plan/           <- [NEW] [날짜별] 실물 로봇 통합 총평 및 최종 마스터 플랜
+│   │   ├── 00_live_progress_and_system_status_dashboard.md <- [⭐ LIVE] 실시간 진행상황 및 시스템 상태 점검 대시보드
+│   │   ├── [2026-08-21]_Jetson_및_Docker_담당자별_실물_로봇_최종_탑재_및_동시_실증_운영_SOP.md
+│   │   ├── [2026-08-21]_PointNav_실로봇_5set_맵계획_및_HabitatGS_노이즈_Ablation_종합명세서.md
+│   │   ├── [2026-08-21]_Go2_장애물_회피_API_및_충돌_감지_파이프라인_설계서.md
+│   │   ├── [2026-08-20]_ESCAPE-Nav_Jetson_현장_실증_실행_로드맵_및_운영_매뉴얼.md
+│   │   ├── [2026-08-20]_ESCAPE-Nav_마스터플랜_팩트체크_및_고성능_아키텍처_개선보고서.md
 │   │   ├── [2026-08-20]_ESCAPE-Nav_실물_로봇_Jetson_및_Docker_통합_총평_및_마스터_플랜.md
 │   │   └── README.md
 │   ├── jetson_plan/           <- [호스트 OS 전용 런북 01~04]
@@ -159,6 +165,10 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   │   └── README.md
 │   ├── docker_plan/           <- [도커 샌드박스 전용 런북]
 │   │   ├── 01_docker_autonomy_deployment_master_plan.md
+│   │   ├── 02_docker_comprehensive_verification_checklist.md
+│   │   └── README.md
+│   ├── docker/                <- [도커 라이브 대시보드]
+│   │   ├── 00_live_progress_and_system_status_dashboard.md
 │   │   └── README.md
 │   ├── 01_system_architecture_and_hardware.md   <- 시스템 아키텍처 & 하드웨어/센서 총괄
 │   ├── 02_network_and_dds_setup.md              <- 네트워크 IP 토폴로지 & CycloneDDS
@@ -177,6 +187,11 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   └── 14_real_robot_live_system_diagnostic_report.md <- [실시간] 온보드 시스템 점검 종합 진단표 (대시보드)
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── bringup_all_escape_nav.sh <- [⭐ 1-Click Master] 4대 계층 일체형 브링업 & E-Stop 스크립트
+│   ├── check_docker_status_dashboard.py <- [NEW] 도커 8대 서브시스템 3초 자동 점검기
+│   ├── test_docker_stall_and_recovery.py <- [NEW] 운동학적 정체 감지 및 능동 회복(Active-View Recovery) 검증기
+│   ├── test_docker_s2e_dryrun.py <- 도커 S2E 비동기 자율주행 풀 드라이런 검증기
+│   ├── test_docker_50hz_stress.py <- 도커 50Hz 고주파 UDP 스트리밍 스트레스 테스트 (500 패킷 0% Loss)
+│   ├── test_docker_real_image_vlm.py <- 도커 내 멀티모달 이미지 VLM 실시간 추론 테스트 (720p RGB)
 │   ├── start_rtabmap_livo.sh  <- 호스트 RTAB-Map LIVO 1-Click 실행기
 │   ├── start_docker_s2e.sh    <- 도커 S2E 자율주행 1-Click 실행기
 │   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기 (Port 9090)
@@ -186,8 +201,6 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── hz_sensor_data.py      <- SensorDataQoS 호환 실시간 주파수 측정기
 │   ├── start_all_sensors.sh   <- 1-Click 센서 전체 가동 스크립트
 │   ├── start_unitree_lidar.sh <- 유니트리 공식 라이다 드라이버 실행기 (UDP 6201)
-│   ├── test_docker_50hz_stress.py <- [NEW] 도커 50Hz 고주파 UDP 스트리밍 스트레스 테스트 (500 패킷 0% Loss)
-│   ├── test_docker_real_image_vlm.py <- [NEW] 도커 내 멀티모달 이미지 VLM 실시간 추론 테스트 (720p RGB)
 │   ├── test_vlm_server_connection.py <- 원격 VLM 서버 지연 및 JSON 응답 진단기
 │   ├── record_experiment.sh   <- 1-Click Rosbag 자동 로거 스크립트 (5대 실내 시나리오)
 │   └── calculate_icra_metrics.py <- ICRA 정량 표 (95% Wilson CI & p-value) 자동 계산기
