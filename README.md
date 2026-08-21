@@ -184,7 +184,9 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── 11_unitree_go2_lidar_0hz_root_cause_and_activation_guide.md <- 라이다 0Hz 원인 분석 및 공식 활성화 가이드
 │   ├── 12_unitree_official_repositories_and_master_integration_plan.md <- 공식 6대 레포 생태계 및 마스터 통합 계획서
 │   ├── 13_end_to_end_data_and_control_pipeline_master.md <- [최신/권위] 4단계 전수 데이터 & 제어 파이프라인 마스터 가이드
-│   └── 14_real_robot_live_system_diagnostic_report.md <- [실시간] 온보드 시스템 점검 종합 진단표 (대시보드)
+├── mapping.sh                 <- [⭐ 1-Click 3D Mapping] 복도 3D SLAM 맵핑 실행기 (CLI)
+├── mapping_gui.sh             <- [⭐ 1-Click 3D GUI] 실시간 3D 점군/격자지도 시각화 맵핑기 (rtabmap_viz)
+├── run_test.sh                <- 실내 미세 모션(15cm 왕복) 검증기
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── bringup_all_escape_nav.sh <- [⭐ 1-Click Master] 4대 계층 일체형 브링업 & E-Stop 스크립트
 │   ├── inspect_rtabmap_db.py  <- [NEW] RTAB-Map 3D DB(rtabmap.db) 키프레임 영상 및 노드 인스펙터
