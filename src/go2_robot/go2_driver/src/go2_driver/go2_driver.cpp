@@ -44,7 +44,7 @@ Go2Driver::Go2Driver(
   pointcloud_pub_ = create_publisher<sensor_msgs::msg::PointCloud2>("pointcloud", 10);
   joint_state_pub_ = create_publisher<sensor_msgs::msg::JointState>("joint_states", 10);
   odom_pub_ = create_publisher<nav_msgs::msg::Odometry>("odom", qos_profile);
-  imu_pub_ = create_publisher<unitree_go::msg::IMUState>("imu", 10);
+  imu_pub_ = create_publisher<sensor_msgs::msg::Imu>("imu", 10);
   request_pub_ = create_publisher<unitree_api::msg::Request>("api/sport/request", 10);
 
   pointcloud_sub_ = create_subscription<sensor_msgs::msg::PointCloud2>(
@@ -209,6 +209,22 @@ void Go2Driver::publish_joint_states(const unitree_go::msg::LowState::SharedPtr 
     msg->motor_state[6].q, msg->motor_state[7].q, msg->motor_state[8].q};
 
   joint_state_pub_->publish(joint_state);
+
+  // 500Hz Go2 Native Body IMU Publisher
+  sensor_msgs::msg::Imu imu_msg;
+  imu_msg.header.stamp = now();
+  imu_msg.header.frame_id = "imu";
+  imu_msg.orientation.w = msg->imu_state.quaternion[0];
+  imu_msg.orientation.x = msg->imu_state.quaternion[1];
+  imu_msg.orientation.y = msg->imu_state.quaternion[2];
+  imu_msg.orientation.z = msg->imu_state.quaternion[3];
+  imu_msg.angular_velocity.x = msg->imu_state.gyroscope[0];
+  imu_msg.angular_velocity.y = msg->imu_state.gyroscope[1];
+  imu_msg.angular_velocity.z = msg->imu_state.gyroscope[2];
+  imu_msg.linear_acceleration.x = msg->imu_state.accelerometer[0];
+  imu_msg.linear_acceleration.y = msg->imu_state.accelerometer[1];
+  imu_msg.linear_acceleration.z = msg->imu_state.accelerometer[2];
+  imu_pub_->publish(imu_msg);
 }
 
 void Go2Driver::cmd_vel_callback(const geometry_msgs::msg::Twist::SharedPtr msg)

@@ -130,6 +130,12 @@ def generate_launch_description():
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
+            name='base_to_imu_raw_tf',
+            arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'imu']
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
             name='base_to_unilidar_imu_tf',
             arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'unilidar_imu']
         ),
