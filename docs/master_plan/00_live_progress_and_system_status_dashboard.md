@@ -11,12 +11,12 @@
 
 | 단계 (Phase) | 마일스톤 명칭 | 주요 세부 내용 | 진행률 | 상태 |
 | :---: | :--- | :--- | :---: | :---: |
-| **Phase 1** | **Jetson 호스트 & DDS 환경 구축** | • Jetson Orin NX 16GB `eth0` 고정 바인딩<br/>• `cyclonedds.xml` 로봇 메인보드(`192.168.123.161`) 피어 설정<br/>• 저부하 단일 스레드(`-j1`) `colcon build` 완료 | **100%** | **COMPLETE 🟢** |
-| **Phase 2** | **RTAB-Map LIVO 50Hz 인지 파이프라인** | • 전면 카메라 30fps + `CameraInfo` 타임스탬프 동기화<br/>• 4D L1 라이다 UDP 6201(`/utlidar/cloud` 15Hz)<br/>• IMU 50Hz 융합 및 비동기 싱크(`approx_sync: True`) | **100%** | **COMPLETE 🟢** |
+| **Phase 1** | **Jetson 호스트 & DDS 환경 구축** | • Jetson Orin NX 16GB `eth0` 고정 바인딩<br/>• `cyclonedds.xml` 20MB 버퍼 및 루프백 멀티캐스트 설정<br/>• 저부하 단일 스레드(`-j1`) `colcon build` 완료 | **100%** | **COMPLETE 🟢** |
+| **Phase 2** | **RTAB-Map LIVO 50Hz 인지 파이프라인** | • 전면 카메라 30fps 비블로킹 스레드 + `CameraInfo` 타임스탬프 동기화<br/>• 4D L1 라이다 점군(`/utlidar/cloud` 15Hz) + 상시 50Hz TF 브로드캐스터<br/>• 3D 점군 맵 및 2D 점유격자(`/map`) 생성 파라미터 활성화 | **100%** | **COMPLETE 🟢** |
 | **Phase 3** | **Host ↔ Docker 초저지연 UDP 브릿지** | • Magic Header(`0x53324501`) & CRC16 무결성 검증<br/>• 62B Pose (Port 9091) / 54B CmdVel (Port 9090)<br/>• 500패킷 50Hz 스트레스 테스트 0.00% 유실, 지연 0.134ms | **100%** | **COMPLETE 🟢** |
 | **Phase 4** | **도커 S2E & 원격 Qwen VLM 연동** | • `sdam_go2_container` (Ubuntu 24.04 Jazzy) 구축<br/>• NetBird VPN(14ms) ➔ Qwen3-VL 32B 멀티모달 추론 검증<br/>• 50Hz 비동기 궤적 보상($T_{delta} = T_{curr}^{-1} \cdot T_{vlm}$) | **100%** | **COMPLETE 🟢** |
 | **Phase 5** | **실내 초안전 미세 구동 검증 (run_test)** | • ROS 2 `/cmd_vel` ➔ `go2_driver` ➔ Sport API 1008 연동<br/>• 전진 15cm ➔ 대기 1초 ➔ 후진 15cm 원위치 복귀 검증 | **100%** | **COMPLETE 🟢** |
-| **Phase 6** | **복도 3D 오프라인 맵핑 (`rtabmap.db`)** | • `bash scratch/bringup_all_escape_nav.sh --mapping`<br/>• 복도 1바퀴 수동 주행 ➔ Table VIII 최단경로($l_i$) 기준선 확보 | **90%** | **READY / IN PROGRESS 🟡** |
+| **Phase 6** | **복도 3D 오프라인 맵핑 (`rtabmap.db`)** | • 1-Click 모니터 3D GUI 맵핑: `./mapping_gui.sh`<br/>• 1-Click 헤드리스 터미널 맵핑: `./mapping.sh`<br/>• Windows DB 시각 검증 가이드 및 프레임 추출기 완비 | **100%** | **READY / IN PROGRESS 🟢** |
 | **Phase 7** | **ICRA Table VIII 실물 로봇 20회 실증** | • 5대 시나리오 $\times$ 4대 모델군 $\times$ 5회 반복 = 총 20회 주행<br/>• 100MB 큐 Rosbag 자동 로깅 및 1초 정량 채점기 구동 | **0%** | **STANDBY ⚪** |
 
 ---
@@ -43,18 +43,27 @@ graph LR
 
 ---
 
-## 🎯 3. 관리자 및 현장 담당자 액션 아이템 (Action Items)
+## 🎯 3. 관리자 및 현장 담당자 1-Click 실행 명령
 
-### 📌 [즉시 실행 작업 1] 복도 3D 오프라인 맵핑 (약 2분 소요)
-```bash
-cd ~/go2_ws_antarctica
-bash scratch/bringup_all_escape_nav.sh --mapping
-```
-* **담당자 행동**: 조이스틱으로 복도 1바퀴 천천히 주행 후 출발점 복귀 ➔ `Ctrl + C` 클릭하여 `~/.ros/rtabmap.db` 저장.
+### 📌 [현장 작업 1] 복도 3D 오프라인 맵핑 (1-Click)
+* **모니터에 3D 실시간 GUI 화면을 띄우며 매핑할 때**:
+  ```bash
+  cd ~/go2_ws_antarctica
+  ./mapping_gui.sh
+  ```
+* **헤드리스 터미널로 매핑할 때**:
+  ```bash
+  cd ~/go2_ws_antarctica
+  ./mapping.sh
+  ```
+* **매핑 후 Windows 노트북에서 사진/DB 확인**:
+  ```bash
+  python3 scratch/inspect_rtabmap_db.py
+  ```
 
 ---
 
-### 📌 [즉시 실행 작업 2] Table VIII 1-Click 실물 자율주행 1회차 가동
+### 📌 [현장 작업 2] Table VIII 1-Click 실물 자율주행 1회차 가동
 ```bash
 cd ~/go2_ws_antarctica
 bash scratch/bringup_all_escape_nav.sh --record Dead_end_room Full_ESCAPE_Nav Trial1
@@ -63,7 +72,7 @@ bash scratch/bringup_all_escape_nav.sh --record Dead_end_room Full_ESCAPE_Nav Tr
 
 ---
 
-### 📌 [즉시 실행 작업 3] 주행 직후 1초 정량 채점
+### 📌 [현장 작업 3] 주행 직후 1초 정량 채점
 ```bash
 python3 ~/go2_ws_antarctica/scratch/calculate_icra_metrics.py
 ```
@@ -71,13 +80,8 @@ python3 ~/go2_ws_antarctica/scratch/calculate_icra_metrics.py
 
 ---
 
-## 📑 4. ICRA 2026 Table VIII 실시간 실험 수집 현황판
+## 📚 4. 마스터 트러블슈팅 및 가이드 링크
 
-| 시나리오 번호 및 명칭 | 반복 회차 (Trials) | 완료 여부 | $T^\dagger$ (s) | DRS (%) | FBR (%) | 성공률 (Succ.) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1. Dead-end room** (막다른 방) | Trial 1 ~ 5 | 대기 ⚪ | - | - | - | 0 / 5 |
-| **2. Blocked goal direction** (장애물 차단) | Trial 1 ~ 5 | 대기 ⚪ | - | - | - | 0 / 5 |
-| **3. Repeated corridor** (반복 복도) | Trial 1 ~ 5 | 대기 ⚪ | - | - | - | 0 / 5 |
-| **4. Active-view recovery** (능동 회복) | Trial 1 ~ 5 | 대기 ⚪ | - | - | - | 0 / 5 |
-| **5. Dynamic obstacle** (동적 보행자) | Trial 1 ~ 5 | 대기 ⚪ | - | - | - | 0 / 5 |
-| **합계 (Total Benchmark)** | **총 20회 주행** | **진행률: 0%** | - | - | - | **0 / 20** |
+1. [마스터 에러 및 해결 로그북 (`[ERR-01]` ~ `[ERR-05]`)](file:///home/unitree/go2_ws_antarctica/docs/troubleshooting/ERROR_AND_RESOLUTION_MASTER_LOG.md)
+2. [Windows 및 SSH 환경 RTAB-Map DB 시각 검증 매뉴얼](file:///home/unitree/go2_ws_antarctica/docs/guides/03_windows_and_ssh_rtabmap_database_inspection_guide.md)
+3. [RTAB-Map LIVO 아키텍처 타당성 및 동작 원리 해설서](file:///home/unitree/go2_ws_antarctica/docs/master_plan/%5B2026-08-21%5D_RTAB-Map_LIVO_%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98_%ED%83%80%EB%8B%B9%EC%84%B1_%EB%B0%8F_%EC%84%BC%EC%84%9C%EB%B3%84_%EB%8F%99%EC%9E%91%EC%9B%90%EB%A6%AC_%ED%95%B4%EC%84%A4%EC%84%9C.md)
