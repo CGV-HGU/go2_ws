@@ -70,8 +70,11 @@ cleanup() {
         fi
     done
     pkill -f go2_front_camera_publisher.py 2>/dev/null || true
+    pkill -f unitree_lidar_ros2_node 2>/dev/null || true
+    pkill -f go2_native_sensor_node.py 2>/dev/null || true
     pkill -f host_bridge.py 2>/dev/null || true
     pkill -f go2_rtabmap.launch.py 2>/dev/null || true
+    pkill -f rtabmap 2>/dev/null || true
     
     # 3. 로봇 모터 0 속도 안전 발행
     echo -e "${CYAN}[3/4] Sending zero velocity safety command...${NC}"
@@ -139,24 +142,47 @@ export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export CYCLONEDDS_URI="file:///home/unitree/go2_ws_antarctica/cyclonedds.xml"
 export ROS_DOMAIN_ID=0
 
-# 멀티캐스트 라우팅
+# 멀티캐스트 라우팅 및 4D 라이다 IP 에일리어스 설정
+echo admin | sudo -S ip addr add 192.168.1.2/24 dev eth0 2>/dev/null || true
 echo admin | sudo -S ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
 
 # 1. 전면 카메라 퍼블리셔 (30fps + CameraInfo)
-echo "  • Starting Front Camera & CameraInfo Publisher (30fps)..."
+echo "  • [1/4] Starting Front Camera & CameraInfo Publisher (30fps)..."
 python3 /home/unitree/go2_ws_antarctica/scratch/go2_front_camera_publisher.py &
 PIDS+=($!)
 sleep 1
 
-# 2. Host Bridge (0x53324501 매직넘버 수신기)
-echo "  • Starting Host-to-Docker UDP Socket Bridge..."
+# 2. Unitree 4D L1 라이다 드라이버 (/utlidar/cloud @ 15Hz)
+echo "  • [2/4] Starting Unitree 4D LiDAR Driver (/utlidar/cloud @ 15Hz)..."
+ros2 run unitree_lidar_ros2 unitree_lidar_ros2_node \
+    --ros-args \
+    -p initialize_type:=2 \
+    -p lidar_ip:="192.168.1.62" \
+    -p local_ip:="192.168.1.2" \
+    -p lidar_port:=6101 \
+    -p local_port:=6201 \
+    -p cloud_frame:="unilidar_lidar" \
+    -p cloud_topic:="/utlidar/cloud" \
+    -p imu_frame:="unilidar_imu" \
+    -p imu_topic:="/utlidar/imu" &
+PIDS+=($!)
+sleep 1
+
+# 3. 바디 IMU 및 오도메트리 Native 센서 노드 (/imu @ 50Hz, /odom @ 50Hz)
+echo "  • [3/4] Starting Native Body IMU & Kinematic Odometry Node (50Hz)..."
+python3 /home/unitree/go2_ws_antarctica/scratch/go2_native_sensor_node.py &
+PIDS+=($!)
+sleep 1
+
+# 4. Host Bridge (0x53324501 매직넘버 수신기)
+echo "  • [4/4] Starting Host-to-Docker UDP Socket Bridge..."
 python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
 PIDS+=($!)
 sleep 1
 
-# 3. RTAB-Map LIVO 50Hz 위치추정 노드
-echo "  • Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG})..."
-ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} &
+# 5. RTAB-Map LIVO 50Hz 위치추정 노드 (L1 라이다 /utlidar/cloud 명시)
+echo "  • [MASTER] Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG})..."
+ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} scan_cloud_topic:=/utlidar/cloud &
 PIDS+=($!)
 sleep 3
 

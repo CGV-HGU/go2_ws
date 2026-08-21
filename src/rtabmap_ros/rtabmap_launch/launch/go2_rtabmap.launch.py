@@ -20,7 +20,7 @@ def generate_launch_description():
     """
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     localization = LaunchConfiguration('localization', default='false')
-    scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/pointcloud')
+    scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/utlidar/cloud')
 
     # Common LIVO parameters for both modes
     base_parameters = {
@@ -34,6 +34,13 @@ def generate_launch_description():
         'subscribe_depth': False,
         'subscribe_rgb': True,
         'subscribe_scan_cloud': True,
+        'subscribe_imu': True,
+        
+        # QoS Reliability (2 = SensorData / Best Effort)
+        'qos_scan_cloud': 2,
+        'qos_imu': 2,
+        'qos_image': 2,
+        'qos_camera_info': 2,
         
         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
         'approx_sync': True,
