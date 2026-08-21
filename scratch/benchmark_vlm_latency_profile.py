@@ -91,7 +91,7 @@ def benchmark_vlm_latency():
             decision = client.decide(vlm_input)
             dt = (time.perf_counter() - t0) * 1000
             latencies.append(dt)
-            print(f"  • Query {i+1}: {dt:.1f} ms -> Action: '{decision.get('action')}', Reason: {decision.get('reasoning', '')[:40]}...")
+            print(f"  • Query {i+1}: {dt:.1f} ms -> Action: '{decision.get('action')}', Reason: {str(decision.get('reasoning', ''))[:40]}...")
 
         avg_inference = sum(latencies) / len(latencies)
         min_inference = min(latencies)
