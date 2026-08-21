@@ -56,7 +56,7 @@ class Go2NativeSensorNode(Node):
         pub_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
             depth=10,
-            reliability=ReliabilityPolicy.BEST_EFFORT,
+            reliability=ReliabilityPolicy.RELIABLE,
             durability=DurabilityPolicy.VOLATILE
         )
         

@@ -21,7 +21,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     localization = LaunchConfiguration('localization', default='false')
     scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/utlidar/cloud')
-    subscribe_scan_cloud = LaunchConfiguration('subscribe_scan_cloud', default='false')
+    subscribe_scan_cloud = LaunchConfiguration('subscribe_scan_cloud', default='true')
 
     # Common LIVO parameters for both modes
     base_parameters = {
@@ -38,13 +38,13 @@ def generate_launch_description():
         'subscribe_scan_cloud': subscribe_scan_cloud,
         'subscribe_imu': True,
         
-        # QoS Reliability (2 = SensorData / Best Effort)
-        'qos': 2,
+        # QoS Reliability (2 = SensorData / Best Effort, 0 = System Default / Reliable)
+        'qos': 0,
         'qos_scan': 2,
-        'qos_imu': 2,
-        'qos_image': 2,
-        'qos_camera_info': 2,
-        'qos_odom': 2,
+        'qos_imu': 0,
+        'qos_image': 0,
+        'qos_camera_info': 0,
+        'qos_odom': 0,
         
         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
         'approx_sync': True,
@@ -59,12 +59,12 @@ def generate_launch_description():
         'RGBD/LinearUpdate': '0.1',
         'Mem/ReconstructData': 'true',
 
-        # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Motion & Depth)
+        # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From LiDAR & Motion)
         'gen_depth': True,
         'gen_scan': True,
-        'Grid/FromDepth': 'true',
-        'Grid/Sensor': '1',            # 1 = Generate grid from visual depth & motion
-        'Grid/RangeMax': '10.0',       # Max range 10m
+        'Grid/FromDepth': 'false',
+        'Grid/Sensor': '0',            # 0 = scan_cloud (3D Point Cloud LiDAR)
+        'Grid/RangeMax': '15.0',       # Max range 15m
         'Grid/RangeMin': '0.2',
         'Grid/CellSize': '0.05',       # 5cm grid resolution
         'Grid/3D': 'true',             # Real-time 3D voxel/octomap

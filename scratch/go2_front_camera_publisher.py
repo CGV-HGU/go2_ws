@@ -29,16 +29,16 @@ class Go2FrontCameraPublisher(Node):
     def __init__(self):
         super().__init__('go2_front_camera_publisher')
         
-        # SensorData QoS (Best-Effort, Volatile) for real-time video
-        sensor_qos = QoSProfile(
+        # Standard Reliable QoS for Universal ROS 2 CLI & SLAM Compatibility
+        camera_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
             depth=10,
-            reliability=ReliabilityPolicy.BEST_EFFORT,
+            reliability=ReliabilityPolicy.RELIABLE,
             durability=DurabilityPolicy.VOLATILE
         )
         
-        self.image_pub = self.create_publisher(Image, '/camera/front/image_raw', sensor_qos)
-        self.info_pub = self.create_publisher(CameraInfo, '/camera/front/camera_info', sensor_qos)
+        self.image_pub = self.create_publisher(Image, '/camera/front/image_raw', camera_qos)
+        self.info_pub = self.create_publisher(CameraInfo, '/camera/front/camera_info', camera_qos)
         self.bridge = CvBridge()
         
         # Go2 내장 카메라 H.264 하드웨어 디코딩 GStreamer 파이프라인
