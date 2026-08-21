@@ -68,7 +68,7 @@ fi
 # Test 3: Real 720p Multimodal Image-to-VLM Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[3/6] Running Real 720p Multimodal Image VLM Decision Test...${NC}"
-if docker exec ${CONTAINER} python3 /workspace/go2_ws_antarctica/scratch/test_docker_real_image_vlm.py; then
+if docker exec ${CONTAINER} bash -ic "python3 /workspace/go2_ws_antarctica/scratch/test_docker_real_image_vlm.py"; then
     echo -e "${GREEN}  ✅ Test 3 PASS: Multimodal Image Encoding & Qwen3-VL Decision Extraction${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -79,7 +79,7 @@ fi
 # Test 4: S2E Full End-to-End Dry-Run Loop
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[4/6] Running S2E Full End-to-End Navigation Dry-Run Loop...${NC}"
-if docker exec ${CONTAINER} python3 /workspace/go2_ws_antarctica/scratch/test_docker_s2e_dryrun.py; then
+if docker exec ${CONTAINER} bash -ic "python3 /workspace/go2_ws_antarctica/scratch/test_docker_s2e_dryrun.py"; then
     echo -e "${GREEN}  ✅ Test 4 PASS: Observation ➔ VLM Decision ➔ 50Hz Trajectory ➔ CmdVel Loop${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -90,7 +90,7 @@ fi
 # Test 5: Kinematic Stall & Active-View Recovery Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[5/6] Running Kinematic Stall Detector & Active-View Recovery Test...${NC}"
-if python3 /home/unitree/go2_ws_antarctica/scratch/test_docker_stall_and_recovery.py; then
+if docker exec ${CONTAINER} python3 /workspace/go2_ws_antarctica/scratch/test_docker_stall_and_recovery.py; then
     echo -e "${GREEN}  ✅ Test 5 PASS: Obstacle Stalling Detection & Active-View Recovery Guard${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -101,7 +101,7 @@ fi
 # Test 6: Remote Server 6-Point Communication Robustness Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[6/6] Running Remote Server 6-Point Communication Robustness Test...${NC}"
-if python3 /home/unitree/go2_ws_antarctica/scratch/test_server_communication_robustness.py; then
+if docker exec ${CONTAINER} bash -ic "python3 /workspace/go2_ws_antarctica/scratch/test_server_communication_robustness.py"; then
     echo -e "${GREEN}  ✅ Test 6 PASS: Wi-Fi Jitter, JSON Parsing, Monotonicity & Fallback Guard${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
