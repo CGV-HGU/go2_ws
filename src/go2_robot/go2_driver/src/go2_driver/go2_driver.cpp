@@ -121,12 +121,44 @@ Go2Driver::Go2Driver(
       &Go2Driver::handleSwitchGait, this,
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
-  set_switch_joystick_service_ =
+    set_switch_joystick_service_ =
     this->create_service<go2_interfaces::srv::SwitchJoystick>(
     "switch_joystick",
     std::bind(
       &Go2Driver::handleSwitchJoystick, this,
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
+  // Initialize identity orientation for initial stationary stance
+  last_pose_.orientation.w = 1.0;
+
+  // Continuous 50Hz Odom TF & Odometry Broadcaster (Prevents TF tree disconnection)
+  timer_ = create_wall_timer(
+    std::chrono::milliseconds(20),
+    [this]() {
+      geometry_msgs::msg::TransformStamped transform;
+      transform.header.stamp = now();
+      transform.header.frame_id = "odom";
+      transform.child_frame_id = "base_link";
+      transform.transform.translation.x = last_pose_.position.x;
+      transform.transform.translation.y = last_pose_.position.y;
+      transform.transform.translation.z = last_pose_.position.z + 0.07;
+      transform.transform.rotation.x = last_pose_.orientation.x;
+      transform.transform.rotation.y = last_pose_.orientation.y;
+      transform.transform.rotation.z = last_pose_.orientation.z;
+      transform.transform.rotation.w = (last_pose_.orientation.w == 0.0 && last_pose_.orientation.x == 0.0) ? 1.0 : last_pose_.orientation.w;
+      tf_broadcaster_.sendTransform(transform);
+
+      nav_msgs::msg::Odometry odom;
+      odom.header.stamp = now();
+      odom.header.frame_id = "odom";
+      odom.child_frame_id = "base_link";
+      odom.pose.pose = last_pose_;
+      odom.pose.pose.position.z += 0.07;
+      if (odom.pose.pose.orientation.w == 0.0 && odom.pose.pose.orientation.x == 0.0) {
+        odom.pose.pose.orientation.w = 1.0;
+      }
+      odom_pub_->publish(odom);
+    });
 }
 
 void Go2Driver::publish_lidar(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
@@ -138,31 +170,7 @@ void Go2Driver::publish_lidar(const sensor_msgs::msg::PointCloud2::SharedPtr msg
 
 void Go2Driver::publish_pose_stamped(const geometry_msgs::msg::PoseStamped::SharedPtr msg)
 {
-  geometry_msgs::msg::TransformStamped transform;
-  transform.header.stamp = now();
-  transform.header.frame_id = "odom";
-  transform.child_frame_id = "base_link";
-  transform.transform.translation.x = msg->pose.position.x;
-  transform.transform.translation.y = msg->pose.position.y;
-  transform.transform.translation.z = msg->pose.position.z + 0.07;
-  transform.transform.rotation.x = msg->pose.orientation.x;
-  transform.transform.rotation.y = msg->pose.orientation.y;
-  transform.transform.rotation.z = msg->pose.orientation.z;
-  transform.transform.rotation.w = msg->pose.orientation.w;
-  tf_broadcaster_.sendTransform(transform);
-
-  nav_msgs::msg::Odometry odom;
-  odom.header.stamp = now();
-  odom.header.frame_id = "odom";
-  odom.child_frame_id = "base_link";
-  odom.pose.pose.position.x = msg->pose.position.x;
-  odom.pose.pose.position.y = msg->pose.position.y;
-  odom.pose.pose.position.z = msg->pose.position.z + 0.07;
-  odom.pose.pose.orientation.x = msg->pose.orientation.x;
-  odom.pose.pose.orientation.y = msg->pose.orientation.y;
-  odom.pose.pose.orientation.z = msg->pose.orientation.z;
-  odom.pose.pose.orientation.w = msg->pose.orientation.w;
-  odom_pub_->publish(odom);
+  last_pose_ = msg->pose;
 }
 
 void Go2Driver::joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)

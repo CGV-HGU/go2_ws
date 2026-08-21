@@ -141,6 +141,7 @@ private:
   rclcpp::TimerBase::SharedPtr timer_lidar_;
   tf2_ros::TransformBroadcaster tf_broadcaster_;
   sensor_msgs::msg::Joy joy_state_;
+  geometry_msgs::msg::Pose last_pose_{};
 
   bool odom_published_{false};
 };
