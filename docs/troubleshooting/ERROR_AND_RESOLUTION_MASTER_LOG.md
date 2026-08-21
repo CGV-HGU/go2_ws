@@ -17,6 +17,7 @@
 | **`[ERR-2026-08-21-02]`** | 2026-08-21 | RTAB-Map QoS 파라미터명 불일치(`qos_scan_cloud` vs `qos_scan`) 및 큐 크기(10 ➔ 50) 협소 이슈 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 | **`[ERR-2026-08-21-03]`** | 2026-08-21 | 카메라 스트림 중복 취득 충돌(`Messages out of order`) 및 라이다 SDK/DDS 50Hz 융합 오도메트리 연동 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 | **`[ERR-2026-08-21-04]`** | 2026-08-21 | 정지/와상 상태 TF (`odom` ➔ `base_link`) 단절 경고 및 스레드 기반 카메라/카메라인포 30fps 동기화 완성 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-05]`** | 2026-08-21 | RTAB-Map 3D 점군 맵 및 2D 점유격자지도(Occupancy Grid) 미생성 이슈 및 `Grid/Sensor` 3D 라이다 융합 활성화 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
 
 ---
 
@@ -125,12 +126,39 @@
    - 전용 워커 스레드(`threading.Thread`)를 분리하여 블로킹 없는 30fps 하드웨어 디코딩 보장.
    - 매 프레임 신규 `CameraInfo` 객체 생성 및 SensorData QoS 발행.
 
-### 4. 📊 최종 실측 검증 완료 (Verification)
-* RTAB-Map SLAM 실시간 루프 동작 확인:
-```text
-[rtabmap-6] [INFO] [rtabmap]: rtabmap (1): Rate=0.50s, RTAB-Map=0.0859s, Maps update=0.0002s (local map=1, WM=1)
-[rtabmap-6] [INFO] [rtabmap]: rtabmap (2): Rate=0.50s, RTAB-Map=0.2048s, Maps update=0.0003s (local map=1, WM=1)
-[rtabmap-6] [INFO] [rtabmap]: rtabmap (3): Rate=0.50s, RTAB-Map=0.2270s, Maps update=0.0001s (local map=1, WM=1)
-[rtabmap-6] [INFO] [rtabmap]: rtabmap (4): Rate=0.50s, RTAB-Map=0.1905s, Maps update=0.0002s (local map=1, WM=1)
+---
+
+## 📌 `[ERR-2026-08-21-05]` RTAB-Map 3D 점군 맵 및 2D 점유격자지도(Occupancy Grid) 미생성 이슈 및 `Grid/Sensor` 3D 라이다 융합 활성화
+
+* **발생 일시**: 2026년 8월 21일 14:43 KST
+* **보고자**: 민석 (Jetson & Hardware Lead)
+* **영향 범위**: RTAB-Map GUI 실행 시 노드/외형 그래프만 생성되고 3D 점군 맵 및 2D 격자 맵이 화면에 렌더링되지 않는 현상
+
+### 1. ⚠️ 증상 및 현장 보고
+* RTAB-Map 3D Visualizer(`rtabmap_viz`)를 확인한 결과, 3D Point Cloud Map과 2D Occupancy Grid Map은 비어 있고 카메라 기반의 외형 노드(Node ID 1, 2...)만 누적되는 현상 발생.
+
+### 2. 🔍 기술적 근본 원인 분석
+1. **단안 RGB 카메라의 공간 정보 부재**:
+   - Go2 전면 카메라는 컬러 영상(2D RGB)만 취득하는 단안 카메라이므로 픽셀별 거리(Depth) 정보가 없음.
+   - 거리 정보가 없는 상태에서는 3D 공간 복원이나 2D 점유 격자 지도를 투영할 수 없음.
+2. **라이다 점군 구독 및 Grid 파라미터 비활성화**:
+   - `go2_rtabmap.launch.py`에 `'subscribe_scan_cloud': False`로 되어 있어 점군 수신이 차단되어 있었음.
+
+### 3. 🛠️ 해결 조치 및 수정 코드
+[`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///home/unitree/go2_ws_antarctica/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py):
+```python
+# 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters
+'subscribe_scan_cloud': True,
+'Grid/Sensor': '0',            # 0 = scan_cloud (3D Point Cloud LiDAR)
+'Grid/RangeMax': '15.0',       # Max range 15m
+'Grid/RangeMin': '0.2',
+'Grid/CellSize': '0.05',       # 5cm grid resolution
+'Grid/3D': 'true',             # Real-time 3D voxel/octomap
+'Grid/RayTracing': 'true',     # Ray tracing for clearing free space
+'Grid/NormalsSegmentation': 'false',
+'Icp/PointToPlane': 'true',
 ```
-* **결과: 5초 지연 경고 0건, TF 끊김 0건, 실시간 3D 맵핑 정상 개시!**
+
+### 4. 📱 Go2 본체 라이다 송출 활성화 방법 (SOP)
+* 스마트폰 **Unitree Go2 공식 앱 ➔ [Device] ➔ [Data] ➔ [Unitree Perception LiDAR]** 토글 스위치 **ON**.
+* 메인보드(`192.168.123.161`)가 `/utlidar/cloud` 3D 점군을 CycloneDDS로 즉시 송출하여 RTAB-Map 3D/2D 지도가 실시간으로 생성됨.
