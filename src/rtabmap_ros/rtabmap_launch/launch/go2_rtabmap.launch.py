@@ -64,11 +64,11 @@ def generate_launch_description():
         'RGBD/LinearUpdate': '0.1',
         'Mem/ReconstructData': 'true',
 
-        # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From LiDAR & Motion)
-        'gen_depth': True,
-        'gen_scan': True,
+        # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Native 3D LiDAR)
+        'gen_depth': False,
+        'gen_scan': False,
         'Grid/FromDepth': 'false',
-        'Grid/Sensor': '0',            # 0 = scan_cloud (3D Point Cloud LiDAR)
+        'Grid/Sensor': '0',            # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
         'Grid/RangeMax': '15.0',       # Max range 15m
         'Grid/RangeMin': '0.2',
         'Grid/CellSize': '0.05',       # 5cm grid resolution
