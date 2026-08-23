@@ -1,0 +1,9 @@
+free_thresh: 0.196
+image: 0833_clean.pgm
+negate: 0
+occupied_thresh: 0.5
+origin:
+- -36.1164
+- -4.50504
+- 0.0
+resolution: 0.05

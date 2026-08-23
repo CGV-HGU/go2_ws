@@ -68,14 +68,23 @@ def generate_launch_description():
         'gen_depth': False,
         'gen_scan': False,
         'Grid/FromDepth': 'false',
-        'Grid/Sensor': '0',            # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
-        'Grid/RangeMax': '15.0',       # Max range 15m
+        'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
+        'Grid/RangeMax': '8.0',                # Limit ray-tracing spike overshoot in indoor corridors (8.0m)
         'Grid/RangeMin': '0.2',
-        'Grid/CellSize': '0.05',       # 5cm grid resolution
-        'Grid/3D': 'true',             # Real-time 3D voxel/octomap
-        'Grid/RayTracing': 'true',     # Ray tracing for clearing free space
+        'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
+        'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
+        'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
+        'Grid/NormalsSegmentation': 'true',    # Segment walls vs floor using surface normals
+        'Grid/MaxGroundAngle': '45.0',         # Vertical surfaces > 45 deg classified as walls
+        'Grid/MinGroundHeight': '-0.20',       # Ground height lower bound
+        'Grid/MaxGroundHeight': '0.05',        # Ground height upper bound (filter floor roughness)
+        'Grid/MaxObstacleHeight': '1.50',      # Ignore ceiling lights and overhead frames (>1.5m)
+        'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
+        'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
+        'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
         'Icp/PointToPlane': 'true',
         'Icp/VoxelSize': '0.05',
+        'Icp/MaxCorrespondenceDistance': '0.15',
     }
 
     # Mode 1: Mapping Parameters
