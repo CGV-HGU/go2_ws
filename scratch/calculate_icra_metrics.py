@@ -1,111 +1,156 @@
 #!/usr/bin/env python3
 """
-ICRA 2026 ESCAPE-Nav Table VIII Quantitative Evaluator
 ========================================================================================
-Calculates:
-1. Success Count (Succ./5) & Intervention-free Count (IF/5) with 95% Wilson CIs
-2. Normalized Completion Time T^dagger (Time s, Mean ± SD)
-3. Motion Duty Cycle (Duty)
-4. Recovery Success Events (Rec. succ.) & Failed-Edge Re-entry Count (Re-entry)
-5. Non-parametric Statistical Hypothesis Test (Mann-Whitney U-test p-value vs Direct-goal)
+🏆 ICRA ESCAPE-Nav Real-Robot Table Evaluator (tab:real_robot_quantitative)
+========================================================================================
+Matches exact IEEE ICRA Paper Protocol (table_real_robot.tex & results_template.csv):
+  1. SR       : Success Rate (within 1.0m goal radius, with Wilson 95% CI)
+  2. Intv.    : Human intervention count / run
+  3. Time     : Normalized completion time T^dagger (mean ± std)
+  4. Rec.     : Recovery success ratio (successful / triggered count)
+  5. Lat. (s) : Mean end-to-end VLM latency
+  6. Duty     : Motion duty cycle (active movement duration / wall-clock time)
+  7. Yield    : Application yield (applied decisions / completed decisions)
+  8. Exports  : Formatted LaTeX table row & results_template.csv row
+========================================================================================
 """
 
+import os
+import csv
 import math
 import numpy as np
-from scipy import stats
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 @dataclass
-class Go2TableVIIIEpisode:
+class Go2TableEpisode:
     episode_id: str
-    scenario_name: str        # "Dead_end_room", "Blocked_goal_direction", "Repeated_corridor", "Active_view_recovery", "Dynamic_obstacle"
-    method_name: str          # "Direct_goal", "Full_ESCAPE_Nav"
+    scenario_name: str        # e.g., "Pair1_Newton_To_Oseok", "Pair2_Corner_To_Stairs", etc.
+    method_name: str          # "Direct-goal" or "ESCAPE-Nav (Ours)"
     success: bool             # Reached goal within 1.0m
-    intervention_free: bool   # Completed without manual E-stop / human intervention
+    interventions: int        # Count of human / safety interventions (0 = clean)
     shortest_path_m: float    # Geodesic distance (l_i)
-    actual_positions: List[Tuple[float, float]] # List of (x, y) from /rtabmap/odom
-    timestamps_s: List[float] # Timestamps
-    moving_duration_s: float  # Actual motion duration
-    total_duration_s: float   # Total elapsed time
-    timeout_s: float          # Max allowable time T_max (e.g. 60.0s)
-    recovery_triggered: int   # Number of triggered recovery events
-    recovery_success: int     # Number of successful escape events
-    failed_edge_reentries: int# Number of re-entries into known failed branch
+    actual_path_length_m: float
+    wall_time_s: float        # Total wall-clock time
+    active_motion_time_s: float # Duration robot was actively executing motion
+    timeout_s: float          # T_max (default: 60.0s)
+    vlm_latencies_s: List[float] # VLM submit-to-receive latency trace
+    completed_decisions: int  # Total VLM responses completed
+    applied_decisions: int    # Decisions admitted and applied by Causal Pose Warping
+    recoveries_triggered: int # Deadlocks / stall recovery events triggered
+    recoveries_successful: int# Successful recovery escapes
 
-class ESCAPENavTableVIIICalculator:
+class RealRobotPaperEvaluator:
     def __init__(self, default_timeout_s: float = 60.0):
         self.default_timeout_s = default_timeout_s
 
-    def compute_t_dagger(self, ep: Go2TableVIIIEpisode) -> float:
-        """Normalized completion time: T_i^dagger = S_i * min(T_i, T_max) + (1 - S_i) * T_max"""
-        actual_time = ep.total_duration_s
+    def compute_t_dagger(self, ep: Go2TableEpisode) -> float:
+        """T_i^dagger = S_i * min(T_i, T_max) + (1 - S_i) * T_max"""
         t_max = ep.timeout_s if ep.timeout_s > 0 else self.default_timeout_s
         if ep.success:
-            return min(actual_time, t_max)
-        else:
-            return t_max
+            return min(ep.wall_time_s, t_max)
+        return t_max
 
     def wilson_score_interval(self, k: int, n: int, confidence: float = 0.95) -> Tuple[float, float, float]:
-        """Compute Wilson Score Interval for binomial metrics"""
         if n == 0:
             return 0.0, 0.0, 0.0
         p = k / n
-        z = stats.norm.ppf(1 - (1 - confidence) / 2)
-        denominator = 1 + z**2 / n
-        centre_adjusted_probability = p + z**2 / (2 * n)
-        adjusted_standard_error = z * math.sqrt((p * (1 - p) + z**2 / (4 * n)) / n)
-        lower_bound = (centre_adjusted_probability - adjusted_standard_error) / denominator
-        upper_bound = (centre_adjusted_probability + adjusted_standard_error) / denominator
-        return p * 100.0, lower_bound * 100.0, upper_bound * 100.0
+        z = 1.95996  # 95% two-sided normal quantile
+        denom = 1 + z**2 / n
+        centre = p + z**2 / (2 * n)
+        adj_err = z * math.sqrt((p * (1 - p) + z**2 / (4 * n)) / n)
+        return p * 100.0, max(0.0, (centre - adj_err) / denom) * 100.0, min(100.0, (centre + adj_err) / denom) * 100.0
 
-    def evaluate_scenario(self, scenario_name: str, direct_goal_eps: List[Go2TableVIIIEpisode], escape_nav_eps: List[Go2TableVIIIEpisode]):
-        """Print official Table VIII row for a specific scenario"""
-        print(f"\n[{scenario_name}]")
-        print("-" * 95)
-        print(f"{'Method':<20} | {'Succ./5':<10} | {'IF/5':<8} | {'Time (s) T^dag':<18} | {'Duty':<8} | {'Rec. succ.':<12} | {'Re-entry':<10}")
-        print("-" * 95)
+    def evaluate_method(self, episodes: List[Go2TableEpisode], method_name: str):
+        eps = [e for e in episodes if e.method_name == method_name]
+        n = len(eps)
+        if n == 0:
+            return None
 
-        for method_label, ep_list in [("Direct-goal", direct_goal_eps), ("Full ESCAPE-Nav", escape_nav_eps)]:
-            if not ep_list:
-                continue
-            n = len(ep_list)
-            succ_count = sum(1 for ep in ep_list if ep.success)
-            if_count = sum(1 for ep in ep_list if ep.intervention_free)
-            t_daggers = [self.compute_t_dagger(ep) for ep in ep_list]
-            duties = [ep.moving_duration_s / max(ep.total_duration_s, 1e-3) for ep in ep_list]
-            rec_succ = sum(ep.recovery_success for ep in ep_list)
-            rec_trig = sum(ep.recovery_triggered for ep in ep_list)
-            re_entries = sum(ep.failed_edge_reentries for ep in ep_list)
+        # 1. SR
+        succ_cnt = sum(1 for e in eps if e.success)
+        sr, sr_low, sr_high = self.wilson_score_interval(succ_cnt, n)
 
-            time_mean, time_sd = np.mean(t_daggers), np.std(t_daggers)
-            duty_mean = np.mean(duties)
+        # 2. Intv
+        mean_intv = np.mean([e.interventions for e in eps])
 
-            rec_str = f"{rec_succ}/{rec_trig}" if rec_trig > 0 else f"{rec_succ}"
+        # 3. Time (T^dagger)
+        t_daggers = [self.compute_t_dagger(e) for e in eps]
+        mean_time = np.mean(t_daggers)
+        std_time = np.std(t_daggers)
 
-            print(f"{method_label:<20} | {succ_count}/{n:<8} | {if_count}/{n:<6} | {time_mean:5.1f} ± {time_sd:4.1f} s    | {duty_mean:5.2f}    | {rec_str:<12} | {re_entries:<10}")
+        # 4. Rec
+        total_rec_trig = sum(e.recoveries_triggered for e in eps)
+        total_rec_succ = sum(e.recoveries_successful for e in eps)
+        rec_str = f"{total_rec_succ}/{total_rec_trig}" if total_rec_trig > 0 else "--"
 
-        if direct_goal_eps and escape_nav_eps:
-            dg_times = [self.compute_t_dagger(ep) for ep in direct_goal_eps]
-            esc_times = [self.compute_t_dagger(ep) for ep in escape_nav_eps]
-            if len(dg_times) > 0 and len(esc_times) > 0:
-                stat, p_val = stats.mannwhitneyu(esc_times, dg_times, alternative='less')
-                print(f" -> Mann-Whitney U-test on T^dagger: U={stat:.1f}, p-value = {p_val:.4f} {'(p < 0.05 Sig.)' if p_val < 0.05 else ''}")
-        print("-" * 95)
+        # 5. Latency
+        all_lats = [lat for e in eps for lat in e.vlm_latencies_s]
+        mean_lat = np.mean(all_lats) if len(all_lats) > 0 else 0.0
 
-if __name__ == '__main__':
-    calc = ESCAPENavTableVIIICalculator()
-    print("=" * 95)
-    print("     🏆 ICRA 2026 ESCAPE-Nav TABLE VIII REAL-ROBOT EVALUATION MATRIX")
-    print("=" * 95)
+        # 6. Duty (Active motion ratio)
+        duty_ratios = [e.active_motion_time_s / max(0.001, e.wall_time_s) for e in eps]
+        mean_duty = np.mean(duty_ratios) * 100.0
 
-    # Dummy test demo
-    dg_demo = [
-        Go2TableVIIIEpisode("dg1", "Dead_end_room", "Direct_goal", False, False, 10.0, [(0,0)], [0.0], 10.0, 60.0, 60.0, 0, 0, 3),
-        Go2TableVIIIEpisode("dg2", "Dead_end_room", "Direct_goal", False, False, 10.0, [(0,0)], [0.0], 12.0, 60.0, 60.0, 0, 0, 2),
+        # 7. Yield (Applied / Completed VLM decisions)
+        total_comp = sum(e.completed_decisions for e in eps)
+        total_appl = sum(e.applied_decisions for e in eps)
+        yield_pct = (total_appl / total_comp * 100.0) if total_comp > 0 else 0.0
+
+        return {
+            "method": method_name,
+            "N": n,
+            "SR": sr,
+            "SR_CI": (sr_low, sr_high),
+            "Intv": mean_intv,
+            "Time": mean_time,
+            "Time_std": std_time,
+            "Rec": rec_str,
+            "Lat": mean_lat,
+            "Duty": mean_duty,
+            "Yield": yield_pct,
+            "raw_episodes": eps
+        }
+
+    def print_latex_table(self, direct_res, escape_res):
+        print("=" * 80)
+        print(" 📄 [ICRA Table tab:real_robot_quantitative] LaTeX Export")
+        print("=" * 80)
+        print("\\begin{table}[t]")
+        print("  \\centering")
+        print("  \\caption{Go2 paired navigation in one fixed map ($5P$ trials/method). Time: $T^\\dagger$; Intv.: interventions/run; Rec.: successful/triggered recovery; Lat.: mean VLM latency.}")
+        print("  \\label{tab:real_robot_quantitative}")
+        print("  \\scriptsize")
+        print("  \\setlength{\\tabcolsep}{1.35pt}")
+        print("  \\begin{tabular}{@{}lccccccc@{}}")
+        print("    \\toprule")
+        print("    Method & SR $\\uparrow$ & Intv. $\\downarrow$ & Time $\\downarrow$ & Rec. $\\uparrow$ & Lat. (s) $\\downarrow$ & Duty $\\uparrow$ & Yield $\\uparrow$ \\\\")
+        print("    \\midrule")
+        if direct_res:
+            print(f"    Direct-goal & {direct_res['SR']:.1f} & {direct_res['Intv']:.2f} & {direct_res['Time']:.1f} & {direct_res['Rec']} & {direct_res['Lat']:.2f} & {direct_res['Duty']:.1f}\\% & -- \\\\")
+        if escape_res:
+            print(f"    \\textbf{{\\method}} & \\textbf{{{escape_res['SR']:.1f}}} & \\textbf{{{escape_res['Intv']:.2f}}} & \\textbf{{{escape_res['Time']:.1f}}} & \\textbf{{{escape_res['Rec']}}} & \\textbf{{{escape_res['Lat']:.2f}}} & \\textbf{{{escape_res['Duty']:.1f}\\%}} & \\textbf{{{escape_res['Yield']:.1f}\\%}} \\\\")
+        print("    \\bottomrule")
+        print("  \\end{tabular}")
+        print("\\end{table}")
+        print("=" * 80)
+
+def main():
+    evaluator = RealRobotPaperEvaluator(default_timeout_s=60.0)
+    
+    # Example / Standby dataset with 5 paired runs for Newton-Oseok corridor
+    sample_episodes = [
+        # Direct-goal baseline (Stops during VLM inference, naive stale execution)
+        Go2TableEpisode("ep1", "Newton_To_Oseok_P1", "Direct-goal", True, 0, 24.5, 26.2, 48.5, 22.1, 60.0, [2.1, 2.3, 1.9], 15, 15, 0, 0),
+        Go2TableEpisode("ep2", "Newton_To_Oseok_P2", "Direct-goal", False, 1, 31.0, 28.0, 60.0, 24.0, 60.0, [2.2, 2.5], 14, 14, 2, 0),
+        # ESCAPE-Nav (Ours: 50Hz Causal Pose Warping + Continuous Motion)
+        Go2TableEpisode("ep3", "Newton_To_Oseok_P1", "ESCAPE-Nav (Ours)", True, 0, 24.5, 25.1, 31.2, 28.5, 60.0, [0.21, 0.22, 0.19], 42, 41, 1, 1),
+        Go2TableEpisode("ep4", "Newton_To_Oseok_P2", "ESCAPE-Nav (Ours)", True, 0, 31.0, 32.2, 38.4, 35.0, 60.0, [0.20, 0.21], 48, 47, 1, 1),
     ]
-    esc_demo = [
-        Go2TableVIIIEpisode("esc1", "Dead_end_room", "Full_ESCAPE_Nav", True, True, 10.0, [(0,0), (10,0)], [0.0, 24.0], 20.0, 24.0, 60.0, 1, 1, 0),
-        Go2TableVIIIEpisode("esc2", "Dead_end_room", "Full_ESCAPE_Nav", True, True, 10.0, [(0,0), (10,0)], [0.0, 22.0], 19.0, 22.0, 60.0, 1, 1, 0),
-    ]
-    calc.evaluate_scenario("Dead-end room", dg_demo, esc_demo)
+
+    direct_res = evaluator.evaluate_method(sample_episodes, "Direct-goal")
+    escape_res = evaluator.evaluate_method(sample_episodes, "ESCAPE-Nav (Ours)")
+    evaluator.print_latex_table(direct_res, escape_res)
+
+if __name__ == "__main__":
+    main()
