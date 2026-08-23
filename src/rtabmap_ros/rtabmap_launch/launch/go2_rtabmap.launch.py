@@ -37,19 +37,23 @@ def generate_launch_description():
         'subscribe_odom': True,
         'subscribe_scan_cloud': subscribe_scan_cloud,
         'subscribe_imu': True,
+        'wait_for_transform': 0.2,
+        'wait_for_transform_duration': 0.2,
+        'tf_delay': 0.05,
+        'tf_tolerance': 0.1,
         
-        # QoS Reliability (2 = SensorData / Best Effort, 0 = System Default / Reliable)
+        # QoS Reliability (0 = System Default / Reliable, 2 = SensorData / Best Effort)
         'qos': 0,
-        'qos_scan': 2,
+        'qos_scan': 0,
         'qos_imu': 0,
         'qos_image': 0,
         'qos_camera_info': 0,
         'qos_odom': 0,
         
-        # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
+        # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 30Hz, IMU 800Hz)
         'approx_sync': True,
-        'approx_sync_max_interval': 0.1,
-        'queue_size': 50,
+        'approx_sync_max_interval': 0.2,
+        'queue_size': 100,
         'subscribe_scan_cloud': LaunchConfiguration('subscribe_scan_cloud'),
         
         # SLAM & Loop Closure Tuning
