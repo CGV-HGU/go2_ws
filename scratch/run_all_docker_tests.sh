@@ -9,6 +9,8 @@
 #   4. S2E Full End-to-End Navigation Dry-Run Loop
 #   5. Kinematic Stall Detector & Active-View Recovery Test
 #   6. Remote Server 6-Point Communication Robustness Test
+#
+# Auto-detects whether executed from Host OS or inside Docker Container!
 # ==============================================================================
 
 set -e
@@ -25,28 +27,51 @@ CONTAINER="sdam_go2_container"
 PASSED_COUNT=0
 TOTAL_TESTS=6
 
+# Auto-detect runtime environment (Inside Docker vs Host OS)
+if [ -f "/.dockerenv" ] || [ -d "/workspace/go2_ws_antarctica" ]; then
+    IN_DOCKER=1
+    RUN_ENV="Inside Docker Container (sdam_go2_container)"
+    WS_DIR="/workspace/go2_ws_antarctica"
+else
+    IN_DOCKER=0
+    RUN_ENV="Host OS (Forwarding into sdam_go2_container)"
+    WS_DIR="/workspace/go2_ws_antarctica"
+fi
+
 echo -e "${CYAN}================================================================================${NC}"
 echo -e "${BOLD}${CYAN} 🐳 [ESCAPE-Nav] Docker Autonomy 1-Click Master Test Suite${NC}"
-echo -e "${CYAN} Target Container : ${CONTAINER} (Ubuntu 24.04 LTS / ROS 2 Jazzy ARM64)${NC}"
-echo -e "${CYAN} Remote Server    : http://100.96.60.15:8000/v1 (Qwen3.8-27B / NetBird P2P)${NC}"
+echo -e "${CYAN} Execution Context: ${RUN_ENV}${NC}"
+echo -e "${CYAN} Remote Server    : http://100.96.60.15:8000/v1 (Qwen3.5-9B / NetBird P2P)${NC}"
 echo -e "${CYAN}================================================================================${NC}"
 
-# Check Docker container status
-echo -e "\n${BLUE}[0/6] Checking Docker Container Status...${NC}"
-if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
-    echo -e "${GREEN}  • Container '${CONTAINER}' is ACTIVE and RUNNING 🟢${NC}"
-else
-    echo -e "${YELLOW}  • Container '${CONTAINER}' is stopped. Starting container...${NC}"
-    docker start ${CONTAINER}
-    sleep 1
-    echo -e "${GREEN}  • Container started successfully 🟢${NC}"
+# Check Docker container status if on Host
+if [ "$IN_DOCKER" -eq 0 ]; then
+    echo -e "\n${BLUE}[0/6] Checking Docker Container Status...${NC}"
+    if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
+        echo -e "${GREEN}  • Container '${CONTAINER}' is ACTIVE and RUNNING 🟢${NC}"
+    else
+        echo -e "${YELLOW}  • Container '${CONTAINER}' is stopped. Starting container...${NC}"
+        docker start ${CONTAINER}
+        sleep 1
+        echo -e "${GREEN}  • Container started successfully 🟢${NC}"
+    fi
 fi
+
+# Helper function to run command in the appropriate context
+run_test_cmd() {
+    local cmd="$1"
+    if [ "$IN_DOCKER" -eq 1 ]; then
+        eval "$cmd"
+    else
+        docker exec ${CONTAINER} bash -ic "$cmd"
+    fi
+}
 
 # ------------------------------------------------------------------------------
 # Test 1: S2E Pytest Unit Tests
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[1/6] Running S2E Core Pytest Unit & Contract Tests...${NC}"
-if docker exec ${CONTAINER} bash -c "pytest /workspace/go2_ws_antarctica/s2e-vlm-async-framework/tests /workspace/go2_ws_antarctica/s2e-vlm-async-framework/src/s2e_vlm_core/test -q"; then
+if run_test_cmd "pytest ${WS_DIR}/s2e-vlm-async-framework/tests ${WS_DIR}/s2e-vlm-async-framework/src/s2e_vlm_core/test -q"; then
     echo -e "${GREEN}  ✅ Test 1 PASS: S2E Algorithms & Contracts 100% Validated${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -57,7 +82,7 @@ fi
 # Test 2: 50Hz UDP Stress Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[2/6] Running 50Hz High-Rate UDP Loopback Stress Test (10s, 500 Packets)...${NC}"
-if python3 /home/unitree/go2_ws_antarctica/scratch/test_docker_50hz_stress.py; then
+if run_test_cmd "python3 ${WS_DIR}/scratch/test_docker_50hz_stress.py"; then
     echo -e "${GREEN}  ✅ Test 2 PASS: 50Hz Continuous Streaming (0% Loss, <0.1ms Latency)${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -68,7 +93,7 @@ fi
 # Test 3: Real 720p Multimodal Image-to-VLM Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[3/6] Running Real 720p Multimodal Image VLM Decision Test...${NC}"
-if docker exec ${CONTAINER} bash -ic "python3 /workspace/go2_ws_antarctica/scratch/test_docker_real_image_vlm.py"; then
+if run_test_cmd "python3 ${WS_DIR}/scratch/test_docker_real_image_vlm.py"; then
     echo -e "${GREEN}  ✅ Test 3 PASS: Multimodal Image Encoding & Qwen3-VL Decision Extraction${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -79,7 +104,7 @@ fi
 # Test 4: S2E Full End-to-End Dry-Run Loop
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[4/6] Running S2E Full End-to-End Navigation Dry-Run Loop...${NC}"
-if docker exec ${CONTAINER} bash -ic "python3 /workspace/go2_ws_antarctica/scratch/test_docker_s2e_dryrun.py"; then
+if run_test_cmd "python3 ${WS_DIR}/scratch/test_docker_s2e_dryrun.py"; then
     echo -e "${GREEN}  ✅ Test 4 PASS: Observation ➔ VLM Decision ➔ 50Hz Trajectory ➔ CmdVel Loop${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -90,7 +115,7 @@ fi
 # Test 5: Kinematic Stall & Active-View Recovery Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[5/6] Running Kinematic Stall Detector & Active-View Recovery Test...${NC}"
-if docker exec ${CONTAINER} python3 /workspace/go2_ws_antarctica/scratch/test_docker_stall_and_recovery.py; then
+if run_test_cmd "python3 ${WS_DIR}/scratch/test_docker_stall_and_recovery.py"; then
     echo -e "${GREEN}  ✅ Test 5 PASS: Obstacle Stalling Detection & Active-View Recovery Guard${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
@@ -101,7 +126,7 @@ fi
 # Test 6: Remote Server 6-Point Communication Robustness Test
 # ------------------------------------------------------------------------------
 echo -e "\n${BLUE}[6/6] Running Remote Server 6-Point Communication Robustness Test...${NC}"
-if docker exec ${CONTAINER} bash -ic "python3 /workspace/go2_ws_antarctica/scratch/test_server_communication_robustness.py"; then
+if run_test_cmd "python3 ${WS_DIR}/scratch/test_server_communication_robustness.py"; then
     echo -e "${GREEN}  ✅ Test 6 PASS: Wi-Fi Jitter, JSON Parsing, Monotonicity & Fallback Guard${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
