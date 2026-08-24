@@ -94,7 +94,7 @@ services:
       <<: [*ros-env, *mock-runtime-env]
       S2E_RUNTIME_ROLE: external_pc_vlm
       VLM_BACKEND: ${VLM_BACKEND:-mock}
-      VLM_API_URL: ${VLM_API_URL:-http://qwen-vl-server:8000/v1/chat/completions}
+      VLM_API_URL: ${VLM_API_URL:-http://100.96.60.15:8000/v1/chat/completions}
       VLM_API_TIMEOUT_S: ${VLM_API_TIMEOUT_S:-10.0}
       VLM_API_MAX_RETRIES: ${VLM_API_MAX_RETRIES:-1}
 
