@@ -11,4 +11,4 @@
 * **[`01_docker_autonomy_deployment_master_plan.md`](01_docker_autonomy_deployment_master_plan.md)**: 
   - 도커 컨테이너 스펙, ROS 2 Jazzy 패키지 구조, 원격 VLM 서버(`cgv-server-02`) 연동, 4단계 실전 실행 계획 및 치트시트 총괄
 * **[`visualizations/README.md`](visualizations/README.md)**:
-  - VLM 시각 추론, S2E 50Hz 궤적 및 지연시간, 충돌 정체 감지 및 능동 회복 등 **도커 자율주행 분야별 핵심 시각화 갤러리** (고해상도 PNG 수록)
+  - 실물 로봇 1인칭 카메라 시야(FPV), 실제 83.3m 라이다 SLAM 지도 궤적, 4방향 시각 메모리, 장애물 충돌 및 360도 능동 회복 등 **도커 자율주행 4대 분야별 실물 시각화 갤러리** (고해상도 PNG 수록)
