@@ -153,3 +153,19 @@ class JetsonObstacleStallDetector(Node):
 * `[4..59]`: 7 double floats (`x, y, z, qx, qy, qz, qw` = 56B)
 * `[60]`: `collision_flag` (1 Byte: `0=Normal`, `1=Avoidance Active`, `2=Stalled`)
 * `[61..62]`: CRC16 / Checksum (2B)
+
+---
+
+## 🔍 6. 1-Click 장애물 회피 유효성 점검 도구 (`scratch/check_obstacle_avoidance_status.py`)
+
+호스트 젯슨에서 1초 만에 로봇의 회피 서비스 생존 여부와 On/Off 스위치를 실시간으로 진단하는 도구입니다:
+
+```bash
+cd /home/unitree/go2_ws_antarctica
+python3 scratch/check_obstacle_avoidance_status.py
+```
+
+* **출력 예시**:
+  - `ServiceList` (API 1003): `obstacles_avoid` 시스템 데몬 실행 여부 (`RUNNING 🟢` / `STANDBY ⚪`)
+  - `SwitchGet` (API 1002): 라이다 회피 스위치 상태 (`ENABLED 🟢` / `DISABLED ⚪`)
+
