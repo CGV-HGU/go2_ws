@@ -9,17 +9,30 @@
 
 ---
 
-## 📑 에러 및 해결 로그 목차 (Index)
+## 📑 에러 및 해결 로그 목차 (Milestone별 분류 체계)
 
-| 이슈 ID | 발생 일자 | 이슈 제목 및 핵심 요약 | 대상 계층 | 해결 상태 |
+### 🚩 Milestone 2: 2026-08-21 (슈퍼바이저 교차검증 & LIVO 인지 스택 안정화)
+| 이슈 ID | 분류 태그 | 이슈 제목 및 핵심 요약 | 대상 계층 | 해결 상태 |
 | :--- | :---: | :--- | :---: | :---: |
-| **`[ERR-2026-08-21-01]`** | 2026-08-21 | RTAB-Map LIVO 5초 데이터 미수신 경고 및 라이다/IMU 노드 기동 누락 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
-| **`[ERR-2026-08-21-02]`** | 2026-08-21 | RTAB-Map QoS 파라미터명 불일치(`qos_scan_cloud` vs `qos_scan`) 및 큐 크기(10 ➔ 50) 협소 이슈 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
-| **`[ERR-2026-08-21-03]`** | 2026-08-21 | 카메라 스트림 중복 취득 충돌(`Messages out of order`) 및 라이다 SDK/DDS 50Hz 융합 오도메트리 연동 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
-| **`[ERR-2026-08-21-04]`** | 2026-08-21 | 정지/와상 상태 TF (`odom` ➔ `base_link`) 단절 경고 및 스레드 기반 카메라/카메라인포 30fps 동기화 완성 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
-| **`[ERR-2026-08-21-05]`** | 2026-08-21 | RTAB-Map 3D 점군 맵 및 2D 점유격자지도(Occupancy Grid) 미생성 이슈 및 `Grid/Sensor` 3D 라이다 융합 활성화 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
-| **`[ERR-2026-08-21-06]`** | 2026-08-21 | 라이다 점군 대기 시 RTAB-Map `approx_sync` 5초 블로킹 방지 및 순정 LIVO 다이내믹 구독 아키텍처 확립 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
-| **`[ERR-2026-08-21-07]`** | 2026-08-21 | OpenCV `dlopen` 라이브러리 경로 누락, ROS 2 CLI 기본 RELIABLE QoS 비호환, 및 라이다 UDP 6201 포트 충돌 전수 해결 | Tier 2 (Jetson Host) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-01]`** | `[SLAM/RTAB]` | RTAB-Map LIVO 5초 데이터 미수신 경고 및 라이다/IMU 노드 기동 누락 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-02]`** | `[DDS/QOS]` | RTAB-Map QoS 파라미터명 불일치(`qos_scan_cloud` vs `qos_scan`) 및 큐 크기 협소 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-03]`** | `[CAM/STREAM]` | 카메라 스트림 중복 취득 충돌(`Messages out of order`) 및 50Hz 융합 오도메트리 연동 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-04]`** | `[TF2/ODOM]` | 정지/와상 상태 TF (`odom` ➔ `base_link`) 단절 경고 및 스레드 기반 30fps 동기화 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-05]`** | `[SLAM/GRID]` | RTAB-Map 3D 점군 맵 및 2D 점유격자지도 미생성 이슈 및 `Grid/Sensor` 융합 활성화 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-06]`** | `[SLAM/SYNC]` | 라이다 점군 대기 시 RTAB-Map `approx_sync` 5초 블로킹 방지 및 다이내믹 구독 확립 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-21-07]`** | `[SYS/ENV]` | OpenCV `dlopen` 라이브러리 경로 누락, ROS 2 CLI RELIABLE 비호환, 및 6201 포트 충돌 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+
+### 🚩 Milestone 3: 2026-08-23 (라이다 공식 드라이버 & 2D/3D 실물 복도 맵핑 완성)
+| 이슈 ID | 분류 태그 | 이슈 제목 및 핵심 요약 | 대상 계층 | 해결 상태 |
+| :--- | :---: | :--- | :---: | :---: |
+| **`[ERR-2026-08-23-01]`** | `[LIDAR/ETH]` | Go2 순정 4D 라이다 0Hz 원시 점군 차단 및 비공식 드라이버 6201 포트 충돌 | Tier 1 & Tier 2 | **RESOLVED 🟢** |
+| **`[ERR-2026-08-23-02]`** | `[SLAM/GRID]` | RTAB-Map 2D 점유격자지도 외곽 가시(Spike) 번짐 및 천장/바닥 노이즈 투영 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+
+### 🚩 Milestone 4: 2026-08-24 (공식 포럼 LIVO 정밀화, Docker IP 정합화 및 제어 체계 확립)
+| 이슈 ID | 분류 태그 | 이슈 제목 및 핵심 요약 | 대상 계층 | 해결 상태 |
+| :--- | :---: | :--- | :---: | :---: |
+| **`[ERR-2026-08-24-01]`** | `[SLAM/ICP]` | 4족 보행 피치/롤 진동 시 Z축 자세 드리프트 및 비정형 점군 Normals 연산 부하 | Tier 2 (Jetson) | **RESOLVED 🟢** |
+| **`[ERR-2026-08-24-02]`** | `[DOCKER/NET]` | 도커 Compose VLM API 템플릿 URL 미해석 및 `start_docker_s2e.sh` 블로킹 버그 | Tier 3 (Docker) | **RESOLVED 🟢** |
 
 ---
 
@@ -233,3 +246,123 @@
 * `ros2 topic hz /camera/front/image_raw` ➔ **30.0 Hz 실시간 출력 확인**!
 * `ros2 topic hz /tf` ➔ **70.8 Hz 실시간 변환 확인**!
 * RTAB-Map 2.0Hz 연속 키프레임 22개 정상 생성 확인!
+
+---
+
+## 📌 `[ERR-2026-08-23-01]` Go2 순정 4D 라이다 0Hz 원시 점군 차단 및 비공식 드라이버 6201 포트 충돌
+
+* **발생 일시**: 2026년 8월 23일 11:15 KST
+* **분류 태그**: `[LIDAR/ETH]`
+* **보고자**: 민석 (Jetson & Hardware Lead)
+* **영향 범위**: 라이다 토픽(`/utlidar/cloud`, `/pointcloud`)이 $0\text{ Hz}$로 유지되고 3D 라이다 맵핑 실행 불가
+
+### 1. ⚠️ 증상 및 원본 터미널 에러 로그
+```text
+$ ros2 topic hz /utlidar/cloud
+no new messages
+$ ros2 launch go2_bringup go2.launch.py lidar:=True
+[ERROR] [hesai_lidar]: PING 192.168.1.201 failed (100% packet loss)
+```
+
+### 2. 🔍 기술적 근본 원인 분석
+1. **메인보드 기본 Mute 정책**: Go2 메인보드(`192.168.123.161`)는 부팅 시 라이다 점군을 로컬 연산용(50Hz `/odom`)으로만 소비하며 외부 이더넷(`eth0`) 송출을 기본 잠금(Mute) 상태로 둠.
+2. **비공식 드라이버 불일치**: 외장 Hesai 라이다용 드라이버를 실행하여 내장 4D L1/L2 라이다의 UDP 패킷(포트 6201 on `192.168.1.2`)을 해석하지 못함.
+
+### 3. 🛠️ 해결 조치 및 수정 코드
+1. **공식 리포지토리 탑재**: Unitree 공식 [`unitree_lidar_ros2`](https://github.com/unitreerobotics/unitree_lidar_ros2) 드라이버를 워크스페이스에 통합.
+2. **IP 및 포트 자동화**: `ip addr add 192.168.1.2/24 dev eth0` 및 `fuser -k 6201/udp`를 브링업 스크립트에 삽입.
+3. **공식 서비스 스위치 체결**: 스마트폰 앱 또는 `unitree_ros2` C++ Service API(`/api/robot_state/request`)를 통해 `Perception LiDAR` 스위치를 ON으로 활성화.
+
+### 4. 📊 최종 실측 검증 완료
+* `ros2 topic hz /pointcloud` ➔ **15.0 Hz 실시간 스트리밍 체결 🟢**
+
+---
+
+## 📌 `[ERR-2026-08-23-02]` RTAB-Map 2D 점유격자지도 외곽 가시(Spike) 번짐 및 천장/바닥 노이즈 투영
+
+* **발생 일시**: 2026년 8월 23일 16:40 KST
+* **분류 태그**: `[SLAM/GRID]`
+* **보고자**: 민석 & 도커/S2E 자율주행 Lead
+* **영향 범위**: 실물 복도 맵핑 결과물([`2dmap/0833.yaml`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/2dmap/0833.yaml))의 문틈과 복도 외곽으로 흰색 가시 번짐 및 천장 조명 노이즈 혼입
+
+### 1. ⚠️ 증상 및 맵 정밀 진단
+* 15m `Grid/RangeMax`로 인해 문 열린 틈이나 복도 끝에서 레이트레이싱 광선이 미지 영역으로 길게 뻗어나가 가시 모양 노이즈 형성.
+* 1.5m 이상의 천장 형광등/에어컨 프레임 점군이 바닥 2D 격자로 투영되어 장애물로 오인식.
+
+### 2. 🔍 기술적 근본 원인 분석
+* RTAB-Map 2D 점유 격자 생성 시 최대 거리 제한(`Grid/RangeMax`) 과대 설정 및 높이 필터(`Grid/MaxObstacleHeight`) 미지정.
+
+### 3. 🛠️ 해결 조치 및 수정 코드
+1. **[`go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py)**:
+   ```python
+   'Grid/RangeMax': '8.0',
+   'Grid/MaxObstacleHeight': '1.50',
+   'Grid/MinGroundHeight': '-0.20',
+   'Grid/NoiseFilteringRadius': '0.10',
+   'Grid/NoiseFilteringMinNeighbors': '3',
+   ```
+2. **후처리 정제기 구현**: [`scratch/clean_and_export_2d_map.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/clean_and_export_2d_map.py)를 통해 Morphological Opening/Closing으로 노이즈를 1초 만에 완전 제거.
+
+### 4. 📊 최종 실측 검증 완료
+* $41.15\text{m} \times 72.10\text{m}$ ($787\text{m}^2$) 크기의 논문 출판용 초정밀 클린맵([`2dmap/clean/0833_clean_publication.png`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/2dmap/clean/0833_clean_publication.png)) 확보 완료 🟢
+
+---
+
+## 📌 `[ERR-2026-08-24-01]` 4족 보행 피치/롤 진동 시 Z축 자세 드리프트 및 비정형 점군 Normals 연산 부하
+
+* **발생 일시**: 2026년 8월 24일 11:35 KST
+* **분류 태그**: `[SLAM/ICP]`
+* **보고자**: Antigravity Supervisor & 민석
+* **영향 범위**: RTAB-Map LIVO 구동 시 4족 보행 trotting으로 인한 Z축/Pitch 미세 오차 및 4D 라이다의 Normals 연산 부하
+
+### 1. ⚠️ 증상 및 공식 포럼 분석
+* Introlab Nabble 공식 포럼 분석 결과, 지상 로봇의 실내 평탄 복도 SLAM 시 3차원 자세 자유도(6DoF)를 그대로 두면 4족 보행 고유의 보행 충격으로 Z축과 롤/피치 자세에 미세 누적 오차가 발생할 수 있음.
+* 비정형 4D 라이다 점군에 대해 `Grid/NormalsSegmentation: true`를 적용할 경우 법선 벡터 추정 오차로 바닥 요철이 장애물로 튈 수 있음.
+
+### 2. 🔍 기술적 근본 원인 분석
+* `Reg/Force3DoF` 및 `Optimizer/Slam2D`가 명시되지 않아 6자유도 최적화가 수행되었으며, 비정형 점군에 대한 Normals 연산 비용 발생.
+
+### 3. 🛠️ 해결 조치 및 런치 파라미터 개정
+[`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py):
+```python
+'Reg/Strategy': '1',                 # 1 = ICP (3D LiDAR Point Cloud Scan Matching)
+'Reg/Force3DoF': 'true',             # Ground robot flat terrain 3DoF constraint (x, y, yaw)
+'Optimizer/Slam2D': 'true',          # 2D Pose Graph Optimization
+'Grid/NormalsSegmentation': 'false', # Fast & robust height passthrough for unorganized lidar
+```
+
+### 4. 📊 최종 실측 검증 완료
+* 런치 파일 파라미터 100% 정합화 및 2D 평면 구속 그래프 최적화 체결 🟢
+
+---
+
+## 📌 `[ERR-2026-08-24-02]` 도커 Compose VLM API 템플릿 URL 미해석 및 start_docker_s2e.sh 블로킹 버그
+
+* **발생 일시**: 2026년 8월 24일 11:45 KST
+* **분류 태그**: `[DOCKER/NET]`
+* **보고자**: 민석 & 도커/S2E 자율주행 Lead
+* **영향 범위**: `docker-compose up` 또는 `start_docker_s2e.sh` 실행 시 VLM 서버 미연결 및 S2E 정책 노드 기동 중단 위험
+
+### 1. ⚠️ 증상 및 코드 결함
+* `compose.yaml`의 기본 `VLM_API_URL`이 `http://qwen-vl-server:8000/...`으로 되어 있어 DNS 해석 실패 위험.
+* `scratch/start_docker_s2e.sh`에서 `docker_bridge.py`가 포그라운드로 실행되어 다음 줄인 `vlm_s2e_async_node.py`가 실행되지 못함.
+
+### 2. 🔍 기술적 근본 원인 분석
+* 템플릿 기본값 미수정 및 셸 스크립트의 백그라운드(`&`) 분기 누락.
+
+### 3. 🛠️ 해결 조치 및 수정 코드
+1. **[`s2e-vlm-async-framework/compose.yaml`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/s2e-vlm-async-framework/compose.yaml)**:
+   ```yaml
+   VLM_API_URL: ${VLM_API_URL:-http://100.96.60.15:8000/v1/chat/completions}
+   ```
+2. **[`scratch/start_docker_s2e.sh`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/start_docker_s2e.sh)**:
+   ```bash
+   python3 /workspace/go2_ws_antarctica/scratch/docker_bridge.py &
+   BRIDGE_PID=$!
+   python3 /workspace/go2_ws_antarctica/s2e-vlm-async-framework/src/vlm_s2e_async_node.py
+   kill $BRIDGE_PID 2>/dev/null || true
+   ```
+
+### 4. 📊 최종 실측 검증 완료
+* 도커 내부 백그라운드 브릿지 및 S2E 노드 동시 가동 성공, `antarctica` 브랜치 커밋 완료 🟢
+
