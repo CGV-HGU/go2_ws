@@ -1,5 +1,10 @@
 # 🌐 [13] Unitree Go2 ESCAPE-Nav 4단계 전수 데이터 & 제어 파이프라인 마스터 가이드
 
+> **NON-AUTHORITATIVE / DESIGN INTENT:** 이 문서는 구현 의도를 설명하지만,
+> 누락된 S2E 실행 노드, mock 기본값, 안전 워치독 부재, RTAB-Map/IMU 문제를
+> 반영하지 않은 `검증완료` 주장을 포함합니다. 현재 구현·실행 가능 여부는
+> [`docs/CODEX_PROJECT_MEMORY.md`](CODEX_PROJECT_MEMORY.md)를 우선하십시오.
+
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **최종 검증 일자**: 2026-08-19  

@@ -1,5 +1,11 @@
 # 📊 [Docker Status Dashboard] 온보드 도커 자율주행 상시 상태 및 지연시간 점검표
 
+> **NON-AUTHORITATIVE / SYNTHETIC EVIDENCE:** 이 문서의 9/9 PASS와
+> Production-ready 판정에는 synthetic image, self-loop UDP, hard-coded
+> latency 및 비생산 stall 공식 테스트가 사용되었습니다. 현재 컨테이너와
+> S2E 상태는 [`docs/CODEX_PROJECT_MEMORY.md`](../CODEX_PROJECT_MEMORY.md)를
+> 우선하고 실제 프로세스·모델·토픽을 다시 확인하십시오.
+
 > **최종 갱신 일시**: 2026-08-21 (실시간 자동 갱신 지원)  
 > **대상 컨테이너**: `sdam_go2_container` (Ubuntu 24.04 LTS / ROS 2 Jazzy ARM64 / CPU Mode)  
 > **자동 점검 스크립트**: [`scratch/check_docker_status_dashboard.py`](file:///home/unitree/go2_ws_antarctica/scratch/check_docker_status_dashboard.py) & [`scratch/run_all_docker_tests.sh`](file:///home/unitree/go2_ws_antarctica/scratch/run_all_docker_tests.sh)  

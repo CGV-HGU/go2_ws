@@ -1,5 +1,12 @@
 # ❄️ Unitree Go2 ESCAPE-Nav 자율주행 프로젝트 (antarctica 브랜치)
 
+> **⚠️ CURRENT STATUS — INTEGRATION PROTOTYPE / PHYSICAL AUTONOMY NO-GO**
+> 이 README의 `100% 검증`, `50 Hz LIVO`, S2E 실행 및 Quick-Run 설명은
+> 구현 의도와 과거 기록을 포함하며 현재 실행 가능성이나 안전성을 보증하지
+> 않습니다. 특히 아래의 `src/vlm_s2e_async_node.py`는 존재하지 않습니다.
+> 작업 전 반드시 [`docs/CODEX_PROJECT_MEMORY.md`](docs/CODEX_PROJECT_MEMORY.md)의
+> 최신 감사 결과와 [`AGENTS.md`](AGENTS.md)의 안전 규칙을 확인하십시오.
+
 > **저장소 목적**: 사족보행 로봇 **Unitree Go2 EDU**의 자율주행을 제어하고, **ICRA 2026 자율주행 연구(`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation`)**를 실물 로봇 온보드(Jetson Orin NX 16GB)에 최종 통합 배포하기 위한 ROS 2 메인 워크스페이스(`go2_ws`)입니다.
 
 ---

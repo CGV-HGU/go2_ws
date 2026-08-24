@@ -13,5 +13,14 @@
    - Always print full markdown text directly in the chat output instead of relying only on artifact file links.
 
 4. **Credentials & Device State**:
-   - GO2 SSH password: `admin` (changed from default `123`).
-   - Jetson Orin NX IP: `192.168.123.99`. GO2 Motion Controller IP: `192.168.123.13`.
+   - Never store or repeat SSH/sudo passwords, API keys, or tokens in repository
+     instructions. Use an approved credential mechanism and redact diagnostics.
+   - Jetson Go2-LAN IP is configured as `192.168.123.99`; the audited Go2 DDS
+     peer is `192.168.123.161`. Treat both as configuration, not live health,
+     and revalidate before use.
+
+5. **Authoritative Project Memory**:
+   - Read `/home/unitree/go2_ws_antarctica/AGENTS.md` and
+     `/home/unitree/go2_ws_antarctica/docs/CODEX_PROJECT_MEMORY.md` before
+     deployment or real-robot work. Those reviewed files supersede older
+     completion dashboards and quick-run instructions.

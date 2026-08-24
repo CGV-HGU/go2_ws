@@ -1,5 +1,10 @@
 # 📊 [LIVE DASHBOARD] Unitree Go2 ESCAPE-Nav 실시간 진행상황 및 시스템 상태 점검표
 
+> **NON-AUTHORITATIVE / NOT LIVE:** 이 파일은 자동 갱신되는 실시간
+> 대시보드가 아니며, `100% COMPLETE`와 `READY TO RUN`은 현재 감사 결과로
+> 입증되지 않았습니다. 현재 기준과 안전 제한은
+> [`docs/CODEX_PROJECT_MEMORY.md`](../CODEX_PROJECT_MEMORY.md)를 사용하십시오.
+
 > **최종 갱신 일시**: 2026년 8월 21일 (KST)  
 > **시스템 총괄**: **민석 (Minseok - Hardware & Jetson Lead)** & **도커/S2E 자율주행 Lead**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  

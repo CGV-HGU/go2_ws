@@ -1,5 +1,10 @@
 # 📊 [14] Unitree Go2 실시간 온보드 시스템 점검 종합 진단표 (Live Diagnostic Report)
 
+> **NON-AUTHORITATIVE / HISTORICAL:** 이 문서의 `ALL SYSTEMS OPERATIONAL`,
+> 모델명, 지연시간, 실기동 준비도 주장은 현재 소스·런타임 감사와 충돌합니다.
+> 현재 기준은 [`docs/CODEX_PROJECT_MEMORY.md`](CODEX_PROJECT_MEMORY.md)를
+> 사용하고, 실시간 상태는 반드시 다시 측정하십시오.
+
 > **점검 일시**: 2026-08-19 17:10:00 (KST)  
 > **대상 로봇**: Unitree Go2 EDU Plus (Jetson Orin NX 16GB)  
 > **점검 모드**: Non-Invasive Live Inspection (100% 안전 무부하 진단)  
