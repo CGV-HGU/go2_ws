@@ -36,8 +36,9 @@ graph LR
 
 | 문서 번호 및 제목 | 핵심 내용 | 바로가기 |
 | :--- | :--- | :---: |
-| **01. VLM to S2E Causal Warping 및 궤적 생성** | VLM JSON 스키마 (`vlm_schema.py`), Causal Pose Warping 수식 및 지연 시간 보상 원리, 50Hz 부드러운 속도 생성, PointNav 2중 Stop Guard | [01_문서 보기](file:///home/unitree/go2_ws_antarctica/docs/docker_plan/control/01_vlm_to_s2e_causal_warping_and_trajectory_generation.md) |
-| **02. 도커 제어 스트레스 테스트 및 검증 스위트** | 54B 바이너리 패킷 송신 스트레스 테스트 (1,000회 무손실), VLM 서버 지연 시 Stall 감지 및 세이프티 복구 시험, Dry-run 실행 런북 | [02_문서 보기](file:///home/unitree/go2_ws_antarctica/docs/docker_plan/control/02_docker_control_stress_testing_and_verification_suite.md) |
+| **01. VLM to S2E Causal Warping 및 궤적 생성** | VLM JSON 스키마 (`vlm_schema.py`), Causal Pose Warping 수식 및 지연 시간 보상 원리, 50Hz 부드러운 속도 생성, PointNav 2중 Stop Guard | [01_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/control/01_vlm_to_s2e_causal_warping_and_trajectory_generation.md) |
+| **02. 도커 제어 스트레스 테스트 및 검증 스위트** | 54B 바이너리 패킷 송신 스트레스 테스트 (1,000회 무손실), VLM 서버 지연 시 Stall 감지 및 세이프티 복구 시험, Dry-run 실행 런북 | [02_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/control/02_docker_control_stress_testing_and_verification_suite.md) |
+| **03. VLM 모델 실시간 자동 감지 (Auto-Discovery)** | `/v1/models` 실시간 쿼리, 모델 교체 시 Zero-Config 자동 바인딩 메커니즘 및 무설정 운영 가이드 | [03_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/control/03_vlm_model_auto_discovery_and_zero_config_guide.md) |
 
 ---
 

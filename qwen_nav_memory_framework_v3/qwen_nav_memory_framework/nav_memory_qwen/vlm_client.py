@@ -36,6 +36,22 @@ class BaseVLMClient:
         raise NotImplementedError
 
 
+def auto_detect_served_model(base_url: str, default_model: str = "qwen3.8-27b-instruct", timeout_s: float = 2.0) -> str:
+    """Queries GET /v1/models to automatically discover whatever model is currently served by vLLM/SGLang."""
+    try:
+        url = f"{base_url.rstrip('/')}/models"
+        resp = requests.get(url, timeout=timeout_s)
+        if resp.status_code == 200:
+            data = resp.json()
+            models = [m.get("id") for m in data.get("data", []) if m.get("id")]
+            if models:
+                print(f"🔍 [VLM Auto-Discovery] Detected active served model: '{models[0]}' (Available: {models})")
+                return models[0]
+    except Exception as e:
+        print(f"⚠️ [VLM Auto-Discovery] /models unreachable ({e}), using default: '{default_model}'")
+    return default_model
+
+
 @dataclass
 class OpenAICompatibleVLMClient(BaseVLMClient):
     """Qwen/OpenAI-compatible multimodal chat-completions adapter.
@@ -43,7 +59,7 @@ class OpenAICompatibleVLMClient(BaseVLMClient):
     Environment variables used by :meth:`from_env`:
         QWEN_BASE_URL: e.g. https://your-endpoint/v1
         QWEN_API_KEY: bearer token
-        QWEN_MODEL: model name, e.g. qwen3-vl-32b-thinking
+        QWEN_MODEL: model name, e.g. qwen3-vl-32b-thinking (or 'auto' for auto-detection)
 
     ``extra_payload`` can be used for runtime-specific fields such as thinking
     mode flags, response format, or sampling controls.
@@ -61,22 +77,11 @@ class OpenAICompatibleVLMClient(BaseVLMClient):
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleVLMClient":
-        base_url = os.getenv("QWEN_BASE_URL", "http://100.96.60.15:8000/v1").rstrip("/")
-        api_key = os.getenv("QWEN_API_KEY", "EMPTY")
-        model = os.getenv("QWEN_MODEL")
-        try:
-            import urllib.request, json
-            req = urllib.request.Request(f"{base_url}/models", headers={"User-Agent": "VLMClient"})
-            with urllib.request.urlopen(req, timeout=1.5) as resp:
-                m_data = json.loads(resp.read().decode())
-                available_models = [m["id"] for m in m_data.get("data", [])]
-                if available_models:
-                    if model not in available_models:
-                        model = available_models[0]
-        except Exception:
-            pass
-        if not model:
-            model = "qwen3.5-9b-instruct"
+        env_model = os.getenv("QWEN_MODEL", "auto")
+        if not env_model or env_model.lower() in ("auto", "none", ""):
+            model = auto_detect_served_model(base_url, default_model="qwen3.5-9b-instruct")
+        else:
+            model = env_model
         return cls(base_url=base_url, api_key=api_key, model=model)
 
     def _collect_image_refs(self, vlm_input: Dict[str, Any]) -> List[Tuple[str, str]]:
