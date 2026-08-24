@@ -8,12 +8,13 @@
 
 | 문서 번호 | 런북 문서명 | 주요 세부 내용 및 링크 | 상태 |
 | :---: | :--- | :--- | :---: |
-| **01** | **`01_jetson_hardware_network_and_dds_architecture.md`** | • 젯슨 4계층 아키텍처 및 IP 토폴로지 (`192.168.123.99`)<br/>• CycloneDDS `cyclonedds.xml` 네트워크 인터페이스 바인딩 | 🟢 **완료 (PASS)** |
-| **02** | **`02_jetson_rtabmap_livo_pipeline_and_bringup.md`** | • RTAB-Map 50Hz LIVO Odometry 및 3D 점군 생성<br/>• 라이다 0Hz 이슈 해결 및 1-Click 실행법 | 🟢 **완료 (PASS)** |
-| **03** | **`03_jetson_host_docker_bridge_and_motor_actuation.md`** | • 젯슨 ↔ 도커 간 50Hz 초저지연 UDP 루프백 통신 (<0.2ms)<br/>• Unitree SportClient 모터 토크 제어 파이프라인 | 🟢 **완료 (PASS)** |
-| **04** | **`04_jetson_onboard_benchmark_and_logging_runbook.md`** | • 실기체 주행 로깅 및 ICRA Table 지표 계산 엔진<br/>• `calculate_icra_metrics.py` 및 자동 Rosbag 기록 | 🟢 **완료 (PASS)** |
-| **05** | **`05_jetson_headless_boot_and_autologin_guide.md`** | • 젯슨 헤드리스 자동 로그인 & NetBird/SSH 부팅<br/>• GDM3 자동 로그인 및 모니터 프리 접속 셋업<br/>• 온보드 하드웨어 발열 및 nvv4l2decoder 점검 | 🟢 **완료 (PASS)** |
-| **06** | **`06_jetson_obstacles_avoid_api_and_stall_detector_guide.md`** | • **[NEW] Unitree SDK2 공식 장애물 회피 API (`ObstaclesAvoidClient`)**<br/>• `SportClient::FreeAvoid` & `SwitchAvoidMode` 명세<br/>• 호스트 정체 감지기(Kinematic Stall Detector) & UDP 63B 규격 | 🟢 **최신 (Latest)** |
+| **01** | **`01_jetson_hardware_network_and_dds_architecture.md`** | • 젯슨 4계층 아키텍처 및 IP 토폴로지 (`192.168.123.99`)<br/>• CycloneDDS `cyclonedds.xml` 네트워크 인터페이스 바인딩<br/>👉 **[01_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/01_jetson_hardware_network_and_dds_architecture.md)** | 🟢 **완료 (PASS)** |
+| **02** | **`02_jetson_rtabmap_livo_pipeline_and_bringup.md`** | • RTAB-Map 50Hz LIVO Odometry 및 3D 점군 생성<br/>• 라이다 0Hz 이슈 해결 및 1-Click 실행법<br/>👉 **[02_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/02_jetson_rtabmap_livo_pipeline_and_bringup.md)** | 🟢 **완료 (PASS)** |
+| **03** | **`03_jetson_host_docker_bridge_and_motor_actuation.md`** | • 젯슨 ↔ 도커 간 50Hz 초저지연 UDP 루프백 통신 (<0.2ms)<br/>• Unitree SportClient 모터 토크 제어 파이프라인<br/>👉 **[03_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/03_jetson_host_docker_bridge_and_motor_actuation.md)** | 🟢 **완료 (PASS)** |
+| **04** | **`04_jetson_onboard_benchmark_and_logging_runbook.md`** | • 실기체 주행 로깅 및 ICRA Table 지표 계산 엔진<br/>• `calculate_icra_metrics.py` 및 자동 Rosbag 기록<br/>👉 **[04_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/04_jetson_onboard_benchmark_and_logging_runbook.md)** | 🟢 **완료 (PASS)** |
+| **05** | **`05_jetson_headless_boot_and_autologin_guide.md`** | • 젯슨 헤드리스 자동 로그인 & NetBird/SSH 부팅<br/>• GDM3 자동 로그인 및 모니터 프리 접속 셋업<br/>• 온보드 하드웨어 발열 및 nvv4l2decoder 점검<br/>👉 **[05_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/05_jetson_headless_boot_and_autologin_guide.md)** | 🟢 **완료 (PASS)** |
+| **06** | **`06_jetson_obstacles_avoid_api_and_stall_detector_guide.md`** | • **[NEW] Unitree SDK2 공식 장애물 회피 API (`ObstaclesAvoidClient`)**<br/>• `SportClient::FreeAvoid` & `SwitchAvoidMode` 명세<br/>• 호스트 정체 감지기(Kinematic Stall Detector) & UDP 63B 규격<br/>👉 **[06_문서 보기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/06_jetson_obstacles_avoid_api_and_stall_detector_guide.md)** | 🟢 **최신 (Latest)** |
+| **⭐ Control** | **`control/README.md` (신설)** | • **[NEW] 로봇 제어 및 모터 실측 검증 전용 런북**<br/>• Sport API ID (Move 1008, Damp 1001, StandUp 1002), 0.5초 워치독 안전 정지<br/>• 속도 리미터($0.35\text{ m/s}$), $\pm 30\text{cm}$ 미세 보행 실측 SOP<br/>👉 **[Control 폴더 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/jetson_plan/control/README.md)** | 🟢 **신설 (New)** |
 
 ---
 

@@ -50,16 +50,18 @@ def generate_launch_description():
         'qos_camera_info': 0,
         'qos_odom': 0,
         
-        # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 30Hz, IMU 800Hz)
+        # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
         'approx_sync': True,
         'approx_sync_max_interval': 0.2,
         'queue_size': 100,
-        'subscribe_scan_cloud': LaunchConfiguration('subscribe_scan_cloud'),
         
-        # SLAM & Loop Closure Tuning
+        # SLAM, Registration & Loop Closure Tuning
+        'Reg/Strategy': '1',                   # 1 = ICP (3D LiDAR Point Cloud Scan Matching for Loop Closures)
+        'Reg/Force3DoF': 'true',               # Ground robot flat terrain 3DoF constraint (x, y, yaw)
+        'Optimizer/Slam2D': 'true',            # 2D Pose Graph Optimization
         'Rtabmap/DetectionRate': '2.0',
-        'RGBD/NeighborLinkRefining': 'true',
-        'RGBD/ProximityBySpace': 'true',
+        'RGBD/NeighborLinkRefining': 'true',   # Refine odometry links with ICP
+        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
         'Mem/ReconstructData': 'true',
@@ -74,8 +76,7 @@ def generate_launch_description():
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
-        'Grid/NormalsSegmentation': 'true',    # Segment walls vs floor using surface normals
-        'Grid/MaxGroundAngle': '45.0',         # Vertical surfaces > 45 deg classified as walls
+        'Grid/NormalsSegmentation': 'false',   # Fast & robust height passthrough for unorganized 3D lidar
         'Grid/MinGroundHeight': '-0.20',       # Ground height lower bound
         'Grid/MaxGroundHeight': '0.05',        # Ground height upper bound (filter floor roughness)
         'Grid/MaxObstacleHeight': '1.50',      # Ignore ceiling lights and overhead frames (>1.5m)

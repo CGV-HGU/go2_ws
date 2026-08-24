@@ -8,10 +8,11 @@
 
 | 문서 번호 | 런북 문서명 | 주요 세부 내용 및 링크 | 상태 |
 | :---: | :--- | :--- | :---: |
-| **01** | **`01_docker_autonomy_deployment_master_plan.md`** | • 도커 격리 샌드박스 아키텍처 및 4대 패키지 구조<br/>• Zero-Copy UDP 루프백 통신 및 NetBird VPN<br/>• 3단계 실증 배포 로드맵 및 비상 정지 매뉴얼 | 🟢 **완료 (PASS)** |
-| **02** | **`02_docker_comprehensive_verification_checklist.md`** | • 5대 전 영역 실측 종합 검증 체크리스트<br/>• Pytest 59개 전수 통과 및 50Hz UDP 0% Loss<br/>• 720p 실시간 VLM 추론 및 S2E 풀 드라이런 | 🟢 **완료 (PASS)** |
-| **03** | **`03_docker_practical_testing_and_verification_suite.md`** | • 도커 6대 실용 테스트 스위트 매뉴얼<br/>• `bash scratch/run_all_docker_tests.sh` 1-Click 실행법<br/>• 6대 서브시스템 세부 검증 기준 및 긴급 트러블슈팅 | 🟢 **완료 (PASS)** |
-| **04** | **`04_docker_stationary_vlm_safety_test_runbook.md`** | • **[NEW] 정지/포복 상태 전면 카메라 VLM 궤적 테스트**<br/>• 어안 왜곡 강건성 및 지상 10-Waypoint 투영<br/>• 모터 제로 속도($0.0\text{ m/s}$) 안전 인터록 규정 | 🟢 **최신 (Latest)** |
+| **01** | **`01_docker_autonomy_deployment_master_plan.md`** | • 도커 격리 샌드박스 아키텍처 및 4대 패키지 구조<br/>• Zero-Copy UDP 루프백 통신 및 NetBird VPN<br/>• 3단계 실증 배포 로드맵 및 비상 정지 매뉴얼<br/>👉 **[문서 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/01_docker_autonomy_deployment_master_plan.md)** | 🟢 **완료 (PASS)** |
+| **02** | **`02_docker_comprehensive_verification_checklist.md`** | • 5대 전 영역 실측 종합 검증 체크리스트<br/>• Pytest 59개 전수 통과 및 50Hz UDP 0% Loss<br/>• 720p 실시간 VLM 추론 및 S2E 풀 드라이런<br/>👉 **[문서 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/02_docker_comprehensive_verification_checklist.md)** | 🟢 **완료 (PASS)** |
+| **03** | **`03_docker_practical_testing_and_verification_suite.md`** | • **도커 6대 실용 테스트 스위트 매뉴얼**<br/>• `bash scratch/run_all_docker_tests.sh` 1-Click 실행법<br/>• 6대 서브시스템 세부 검증 기준 및 긴급 트러블슈팅<br/>👉 **[문서 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/03_docker_practical_testing_and_verification_suite.md)** | 🟢 **완료 (PASS)** |
+| **04** | **`04_docker_stationary_vlm_safety_test_runbook.md`** | • **[NEW] 정지/포복 상태 전면 카메라 VLM 궤적 테스트**<br/>• 어안 왜곡 강건성 및 지상 10-Waypoint 투영<br/>• 모터 제로 속도($0.0\text{ m/s}$) 안전 인터록 규정<br/>👉 **[문서 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/04_docker_stationary_vlm_safety_test_runbook.md)** | 🟢 **최신 (Latest)** |
+| **⭐ Control** | **`control/README.md` (신설)** | • **[NEW] S2E 궤적 제어 & VLM Causal Warping 전용 런북**<br/>• Causal Pose Warping 수식, 50Hz 속도 생성, PointNav 2중 Stop Guard<br/>• 54B UDP 바이너리 송신, VLM 모델 자동 감지, Stall 감지/세이프티 복구<br/>👉 **[Control 폴더 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/docker_plan/control/README.md)** | 🟢 **신설 (New)** |
 
 ---
 
