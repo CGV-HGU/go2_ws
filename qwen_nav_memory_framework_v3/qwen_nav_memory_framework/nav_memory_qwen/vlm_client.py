@@ -63,7 +63,20 @@ class OpenAICompatibleVLMClient(BaseVLMClient):
     def from_env(cls) -> "OpenAICompatibleVLMClient":
         base_url = os.getenv("QWEN_BASE_URL", "http://100.96.60.15:8000/v1").rstrip("/")
         api_key = os.getenv("QWEN_API_KEY", "EMPTY")
-        model = os.getenv("QWEN_MODEL", "qwen3.8-27b-instruct")
+        model = os.getenv("QWEN_MODEL")
+        try:
+            import urllib.request, json
+            req = urllib.request.Request(f"{base_url}/models", headers={"User-Agent": "VLMClient"})
+            with urllib.request.urlopen(req, timeout=1.5) as resp:
+                m_data = json.loads(resp.read().decode())
+                available_models = [m["id"] for m in m_data.get("data", [])]
+                if available_models:
+                    if model not in available_models:
+                        model = available_models[0]
+        except Exception:
+            pass
+        if not model:
+            model = "qwen3.5-9b-instruct"
         return cls(base_url=base_url, api_key=api_key, model=model)
 
     def _collect_image_refs(self, vlm_input: Dict[str, Any]) -> List[Tuple[str, str]]:

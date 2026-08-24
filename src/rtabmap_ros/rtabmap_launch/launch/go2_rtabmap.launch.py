@@ -82,6 +82,7 @@ def generate_launch_description():
         'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
         'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
+        'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (removes 70% point cloud overload)
         'Icp/PointToPlane': 'true',
         'Icp/VoxelSize': '0.05',
         'Icp/MaxCorrespondenceDistance': '0.15',
