@@ -32,11 +32,10 @@ graph TD
 ---
 
 ### 📂 1. [`01_robot_camera_fpv_view/`](01_robot_camera_fpv_view/README.md)
-* **주요 내용**: Go2 전면 초광각 내장 카메라 실측 사진 3종에 대한 **원격 Qwen3.5-9B VLM 서버의 실시간 50Hz 궤적(Trajectory) 추출 결과**.
+* **주요 내용**: Go2 전면 초광각 내장 카메라의 **실시간 30fps 라이브 스트림(`230.1.1.1:1720`) 5초 주행 동영상/GIF 및 스냅샷**에 대한 **원격 Qwen3.5-9B VLM 서버의 실시간 50Hz 궤적(Trajectory) 추출 결과**.
 * **수록 파일**:
-  * [`server_extracted_corridor_trajectory.png`](01_robot_camera_fpv_view/server_extracted_corridor_trajectory.png) (복도 주행 $721.4\text{ms}$)
-  * [`server_extracted_lab_trajectory.png`](01_robot_camera_fpv_view/server_extracted_lab_trajectory.png) (연구실 출발 $826.7\text{ms}$)
-  * [`server_extracted_approach_trajectory.png`](01_robot_camera_fpv_view/server_extracted_approach_trajectory.png) (목표 접근 $778.4\text{ms}$)
+  * [`live_robot_camera_trajectory_5s.gif`](01_robot_camera_fpv_view/live_robot_camera_trajectory_5s.gif) (5초 주행 실시간 궤적 애니메이션 GIF)
+  * [`live_front_camera_now_trajectory.png`](01_robot_camera_fpv_view/live_front_camera_now_trajectory.png) (현재 카메라 스냅샷 실시간 궤적)
 
 ---
 

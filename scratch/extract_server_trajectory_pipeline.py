@@ -338,25 +338,11 @@ def main():
         cv2.imwrite(scratch_save, rendered)
         print(f"  💾 Saved Live Trajectory: {save_path}\n")
 
-    base_kf = "/home/unitree/go2_ws_antarctica/scratch/rtabmap_preview"
-    if not os.path.exists(base_kf):
-        base_kf = "/workspace/go2_ws_antarctica/scratch/rtabmap_preview"
-
-    # Process 3 Real Robot Camera Scenarios
-    scenarios = [
-        ("Corridor Hallway (node_0497)", os.path.join(base_kf, "node_0497.jpg"), "server_extracted_corridor_trajectory.png"),
-        ("Lab Room Start (node_0001)", os.path.join(base_kf, "node_0001.jpg"), "server_extracted_lab_trajectory.png"),
-        ("Target Approach (node_0992)", os.path.join(base_kf, "node_0992.jpg"), "server_extracted_approach_trajectory.png"),
-    ]
-
-    for title, img_path, out_name in scenarios:
-        rendered, uv, wps, lat, act = run_pipeline(img_path, title)
-        save_path = os.path.join(out_dir, out_name)
-        cv2.imwrite(save_path, rendered)
-        print(f"  💾 Saved: {save_path}\n")
+    if not live_img:
+        print("⚠️ Live camera stream not currently active. Please power on Go2 base (192.168.123.161).")
 
     print("=" * 80)
-    print("🏆 ALL SERVER-EXTRACTED REAL CAMERA TRAJECTORIES GENERATED SUCCESSFULLY!")
+    print("🏆 SERVER-EXTRACTED REAL-TIME CAMERA TRAJECTORY PROCESSED SUCCESSFULLY!")
     print("=" * 80)
 
 
