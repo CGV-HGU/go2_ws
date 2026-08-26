@@ -65,3 +65,30 @@ ffmpeg -protocol_whitelist file,udp,rtp -i /home/unitree/go2_ws_antarctica/scrat
 # 2. VLM 궤적 추출 및 MP4/GIF 생성
 python3 /home/unitree/go2_ws_antarctica/scratch/process_live_video_trajectory.py
 ```
+
+
+### 📍 [Session EXP-20260826-145125] 15초 실시간 연속 VLM 폐루프 스트리밍 세션
+
+* **세션 일시**: `2026-08-26 14:51:25 KST`
+* **총 실행 시간**: 15초 (152 프레임 @ 15.0fps)
+* **총 VLM 질의 횟수**: **16회 연속 수행**
+* **미디어 파일**: [`live_continuous_vlm_trajectory_15s.gif`](live_continuous_vlm_trajectory_15s.gif) / [`live_continuous_vlm_trajectory_15s.mp4`](live_continuous_vlm_trajectory_15s.mp4)
+
+| 질의 ID | 질의 시각 | VLM 지연시간 | 결정 Action | Subgoal [u, v] | Metric (X, Y) | VLM 추론 내용 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **`Query #01`** | `14:51:09.641` | **759.4 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear between the two offic... |
+| **`Query #02`** | `14:51:10.612` | **708.9 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear between the two offic... |
+| **`Query #03`** | `14:51:11.540` | **764.7 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #04`** | `14:51:12.513` | **749.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #05`** | `14:51:13.472` | **722.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path forward is clear between the two off... |
+| **`Query #06`** | `14:51:14.404` | **817.0 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #07`** | `14:51:15.441` | **892.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #08`** | `14:51:16.542` | **861.2 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #09`** | `14:51:17.612` | **774.3 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, straight path ... |
+| **`Query #10`** | `14:51:18.595` | **646.4 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear between the two offic... |
+| **`Query #11`** | `14:51:19.451` | **640.0 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear and unobstructed, all... |
+| **`Query #12`** | `14:51:20.299` | **672.5 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear, with no immediate ob... |
+| **`Query #13`** | `14:51:21.181` | **729.0 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #14`** | `14:51:22.119` | **708.2 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear and unobstructed, all... |
+| **`Query #15`** | `14:51:23.037` | **772.9 ms** | `GO` | `[640, 432]` | `X=3.75m, Y=-0.00m` | The path directly ahead is clear, with the ma... |
+| **`Query #16`** | `14:51:24.019` | **803.9 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
