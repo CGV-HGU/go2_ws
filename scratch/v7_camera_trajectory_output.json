@@ -1,0 +1,118 @@
+{
+  "schema_version": "nav_vlm_trajectory_v7",
+  "timestamp_utc": "2026-08-26T04:32:27Z",
+  "robot_platform": "Unitree Go2 EDU Plus",
+  "sensor_modalities": {
+    "front_camera": "720p H.264 RTP 30fps (230.1.1.1:1720)",
+    "lidar": "Unitree 4D LiDAR L2 (UDP 6101->6201, /pointcloud 15Hz)",
+    "odometry": "Mainboard DSP Hardware Fused 50Hz (/odom)"
+  },
+  "vlm_decision": {
+    "action": "go",
+    "subgoal_2d": {
+      "u_px": 640,
+      "v_px": 518,
+      "norm_x": 0.5,
+      "norm_y": 0.72
+    },
+    "reasoning": "Clear unobstructed hallway detected ahead. Moving straight toward horizon exit.",
+    "confidence": 0.95
+  },
+  "se2_ground_target": {
+    "x_m": 1.772,
+    "y_m": 0.0,
+    "yaw_deg": 0.0
+  },
+  "trajectory_waypoints_10": [
+    {
+      "step": 1,
+      "t_sec": 0.02,
+      "x_m": 0.177,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 2,
+      "t_sec": 0.04,
+      "x_m": 0.354,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 3,
+      "t_sec": 0.06,
+      "x_m": 0.532,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 4,
+      "t_sec": 0.08,
+      "x_m": 0.709,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 5,
+      "t_sec": 0.1,
+      "x_m": 0.886,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 6,
+      "t_sec": 0.12,
+      "x_m": 1.063,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 7,
+      "t_sec": 0.14,
+      "x_m": 1.241,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 8,
+      "t_sec": 0.16,
+      "x_m": 1.418,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 9,
+      "t_sec": 0.18,
+      "x_m": 1.595,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    },
+    {
+      "step": 10,
+      "t_sec": 0.2,
+      "x_m": 1.772,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "yaw_deg": 0.0
+    }
+  ],
+  "s2e_velocity_profile_50hz": {
+    "vx_mps": 0.35,
+    "vy_mps": 0.0,
+    "wz_radps": 0.0
+  },
+  "safety_guard": {
+    "mode": "PRONE_STANDBY_SAFETY_INTERLOCK",
+    "physical_motion_status": "ZERO_VELOCITY_CLAMPED (vx=0.00, wz=0.00)",
+    "motor_standby_posture": "Lying Down / Prone on Floor"
+  }
+}
