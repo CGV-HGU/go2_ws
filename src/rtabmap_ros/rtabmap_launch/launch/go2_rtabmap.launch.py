@@ -76,8 +76,8 @@ def generate_launch_description():
         'gen_scan': False,
         'Grid/FromDepth': 'false',
         'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
-        'Grid/RangeMax': '8.0',                # Limit ray-tracing spike overshoot in indoor corridors (8.0m)
-        'Grid/RangeMin': '0.2',
+        'Grid/RangeMax': '5.0',                # 5.0m crisp indoor corridor range (eliminates glass/multipath ghost points)
+        'Grid/RangeMin': '0.25',               # 25cm minimum distance (ignores LiDAR housing reflections)
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
@@ -85,13 +85,13 @@ def generate_launch_description():
         'Grid/MinGroundHeight': '-0.45',       # Ground height lower bound (45cm below base_link)
         'Grid/MaxGroundHeight': '-0.25',       # Ground height upper bound (Floor plane is -45cm ~ -25cm)
         'Grid/MaxObstacleHeight': '1.20',      # Obstacles are from -25cm (10cm above floor) to +1.20m (1.55m total height)
-        'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
-        'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
+        'Grid/NoiseFilteringRadius': '0.15',   # 15cm spatial noise filtering radius
+        'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required (eliminates scattered ghost noise)
         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
         'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (removes 70% point cloud overload)
         'Icp/PointToPlane': 'true',
         'Icp/VoxelSize': '0.05',
-        'Icp/MaxCorrespondenceDistance': '0.15',
+        'Icp/MaxCorrespondenceDistance': '0.10',
     }
 
     # Mode 1: Mapping Parameters
