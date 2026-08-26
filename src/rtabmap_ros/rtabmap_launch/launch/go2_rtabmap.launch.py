@@ -81,10 +81,13 @@ def generate_launch_description():
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
-        'Grid/NormalsSegmentation': 'false',   # Fast & robust height passthrough for unorganized 3D lidar
-        'Grid/MinGroundHeight': '-0.45',       # Ground height lower bound (45cm below base_link)
-        'Grid/MaxGroundHeight': '-0.25',       # Ground height upper bound (Floor plane is -45cm ~ -25cm)
-        'Grid/MaxObstacleHeight': '1.20',      # Obstacles are from -25cm (10cm above floor) to +1.20m (1.55m total height)
+        'Grid/NormalsSegmentation': 'true',    # 3D Surface normal segmentation (flawless floor vs vertical wall separation)
+        'Grid/MaxGroundAngle': '45',           # Surfaces with slope <45 deg are 100% ground (immune to body bobbing)
+        'Grid/NormalK': '10',                  # Surface normal computation with 10 neighbors
+        'Grid/ClusterRadius': '0.10',          # Cluster radius for normal grouping
+        'Grid/MinGroundHeight': '-0.60',       # Ground lower bound (-60cm)
+        'Grid/MaxGroundHeight': '0.10',        # Ground upper bound (+10cm)
+        'Grid/MaxObstacleHeight': '1.50',      # Obstacles up to 1.5m
         'Grid/NoiseFilteringRadius': '0.15',   # 15cm spatial noise filtering radius
         'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required (eliminates scattered ghost noise)
         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
