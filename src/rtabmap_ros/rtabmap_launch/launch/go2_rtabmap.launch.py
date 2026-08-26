@@ -42,13 +42,14 @@ def generate_launch_description():
         'tf_delay': 0.05,
         'tf_tolerance': 0.1,
         
-        # QoS Reliability (0 = System Default / Reliable, 2 = SensorData / Best Effort)
-        'qos': 0,
-        'qos_scan': 0,
-        'qos_imu': 0,
+        # QoS Reliability (0 = Reliable, 2 = SensorData / Best Effort for Go2 Driver)
+        'qos': 2,
+        'qos_scan': 2,
+        'qos_scan_cloud': 2,
+        'qos_imu': 2,
         'qos_image': 0,
         'qos_camera_info': 0,
-        'qos_odom': 0,
+        'qos_odom': 2,
         
         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
         'approx_sync': True,
@@ -114,7 +115,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Run in localization/pure odometry mode'),
-        DeclareLaunchArgument('scan_cloud_topic', default_value='pointcloud', description='PointCloud2 topic for LiDAR input'),
+        DeclareLaunchArgument('scan_cloud_topic', default_value='/utlidar/cloud', description='PointCloud2 topic for LiDAR input'),
         DeclareLaunchArgument('subscribe_scan_cloud', default_value='true', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
         
