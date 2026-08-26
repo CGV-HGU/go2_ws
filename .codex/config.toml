@@ -1,0 +1,8 @@
+[features]
+memories = true
+
+[memories]
+use_memories = true
+generate_memories = true
+disable_on_external_context = true
+
