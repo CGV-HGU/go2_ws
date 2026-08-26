@@ -144,6 +144,7 @@ echo -e "\n${BLUE}📷 [Phase 2/4] Launching Host Sensor & RTAB-Map LIVO Stack..
 
 source /opt/ros/foxy/setup.bash
 source /home/unitree/cyclonedds_ws/install/setup.bash 2>/dev/null || true
+source /home/unitree/backup/legacy_workspaces/go2_analysis/go2_ws/install/setup.bash 2>/dev/null || true
 source /home/unitree/go2_ws_antarctica/install/setup.bash 2>/dev/null || true
 
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
@@ -170,9 +171,9 @@ python3 /home/unitree/go2_ws_antarctica/scratch/go2_front_camera_publisher.py &
 PIDS+=($!)
 sleep 1
 
-# 2. Go2 공식 ROS 2 순정 드라이버 & URDF 기구학 스택 (go2_bringup)
-echo "  • [2/5] Starting Native Go2 Bringup (URDF 3D Kinematics + go2_driver C++)..."
-ros2 launch go2_bringup go2.launch.py &
+# 2. 바디 IMU 및 오도메트리 Native 센서 노드 (/imu @ 50Hz, /odom @ 50Hz, /tf @ 50Hz)
+echo "  • [2/5] Starting Native Body IMU & Kinematic Odometry Node (50Hz TF)..."
+python3 /home/unitree/go2_ws_antarctica/scratch/go2_native_sensor_node.py &
 PIDS+=($!)
 sleep 1
 
