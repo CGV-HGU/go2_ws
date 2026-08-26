@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
 ========================================================================================
-🛑 [ESCAPE-Nav] Stationary / Prone Front-Camera VLM Trajectory Test & Visualizer
+🛑 [ESCAPE-Nav] Prone Standby Front-Camera VLM Trajectory Test & Visualizer
 ========================================================================================
-Designed for safe testing when Go2 robot base is unpowered / in prone position:
-1. Captures Front Camera frame (Live Stream if base on, or High-Res FPV Fallback)
-2. Sends 720p frame to Live VLM Server (100.96.60.15:8000 / Qwen3.8-27B)
+Designed for safe testing while robot is fully powered in remote Prone Standby mode:
+1. Captures Front Camera frame (Live Stream from Go2 mainboard, or High-Res FPV Fallback)
+2. Sends 720p frame to Live VLM Server (100.96.60.15:8000 / Auto-discovered VLM)
 3. Extracts Action, Reasoning, and 2D Sub-goal [u, v]
 4. Computes S2E 50Hz 10-Waypoint Local Trajectory (x_i, y_i)
-5. Enforces Zero-Velocity Safety Clamping (vx=0.0 m/s, wz=0.0 rad/s)
+5. Enforces Software Zero-Velocity Safety Clamping (vx=0.0 m/s, wz=0.0 rad/s)
 6. Renders Telemetry HUD + Trajectory Overlay to scratch/stationary_test_vlm_trajectory.png
 ========================================================================================
 """
