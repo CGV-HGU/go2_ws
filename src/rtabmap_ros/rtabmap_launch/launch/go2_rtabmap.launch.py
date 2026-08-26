@@ -56,12 +56,13 @@ def generate_launch_description():
         'approx_sync_max_interval': 0.2,
         'queue_size': 100,
         
-        # SLAM, Registration & Loop Closure Tuning
+        # Full 6-DoF 3D SLAM, Registration & Loop Closure Tuning (Utilizing 4D LiDAR)
         'Reg/Strategy': '1',                   # 1 = ICP (3D LiDAR Point Cloud Scan Matching for Loop Closures)
-        'Reg/Force3DoF': 'true',               # Ground robot flat terrain 3DoF constraint (x, y, yaw)
-        'Optimizer/Slam2D': 'true',            # 2D Pose Graph Optimization
+        'Reg/Force3DoF': 'false',              # Full 6-DoF 3D motion tracking (x, y, z, roll, pitch, yaw)
+        'Optimizer/Slam2D': 'false',           # Full 3D Pose Graph Optimization
+        'Optimizer/Strategy': '1',             # 1 = g2o 6-DoF 3D Graph Optimizer
         'Rtabmap/DetectionRate': '2.0',
-        'RGBD/NeighborLinkRefining': 'true',   # Refine odometry links with ICP
+        'RGBD/NeighborLinkRefining': 'true',   # Refine 3D odometry links with ICP
         'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
