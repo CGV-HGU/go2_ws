@@ -198,7 +198,7 @@ sleep 1
 
 # 4. RTAB-Map LIVO 50Hz 위치추정 노드 (순정 pointcloud 및 GUI 여부 명시)
 echo "  • [MASTER] Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG}, ${GUI_ARG})..."
-ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} scan_cloud_topic:=/utlidar/cloud &
+ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} scan_cloud_topic:=/pointcloud &
 PIDS+=($!)
 sleep 3
 
