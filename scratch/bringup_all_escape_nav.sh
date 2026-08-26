@@ -177,22 +177,8 @@ python3 /home/unitree/go2_ws_antarctica/scratch/go2_native_sensor_node.py &
 PIDS+=($!)
 sleep 1
 
-# 3. Unitree 4D LiDAR L2 하드웨어 드라이버 (20Hz 고속 /pointcloud 실시간 발행)
-echo "  • [3/5] Starting Unitree 4D LiDAR L2 Driver (UDP 192.168.1.62:6101 -> 20Hz /pointcloud)..."
-ros2 run unitree_lidar_ros2 unitree_lidar_ros2_node --ros-args \
-    -p initialize_type:=2 \
-    -p lidar_ip:=192.168.1.62 \
-    -p lidar_port:=6101 \
-    -p local_ip:=192.168.1.2 \
-    -p local_port:=6201 \
-    -p cloud_topic:=/pointcloud \
-    -p cloud_frame:=radar \
-    -p cloud_scan_num:=14 &
-PIDS+=($!)
-sleep 1
-
-# 4. Host Bridge (0x53324501 매직넘버 수신기)
-echo "  • [4/5] Starting Host-to-Docker UDP Socket Bridge..."
+# 3. Host Bridge (0x53324501 매직넘버 수신기)
+echo "  • [3/4] Starting Host-to-Docker UDP Socket Bridge..."
 python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
 PIDS+=($!)
 sleep 1

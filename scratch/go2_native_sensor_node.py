@@ -89,8 +89,7 @@ class Go2NativeSensorNode(Node):
         self.sport_sub = self.create_subscription(SportModeState, 'sportmodestate', self.sport_callback, sensor_sub_qos)
         self.lf_sport_sub = self.create_subscription(SportModeState, 'lf/sportmodestate', self.sport_callback, sensor_sub_qos)
         
-        # 4. Subscribe to Native 4D LiDAR and Synchronize to /pointcloud
-        self.create_subscription(PointCloud2, '/utlidar/cloud', self.lidar_callback, sensor_sub_qos)
+        # 4. Subscribe to Single Native 4D LiDAR (Motion-Deskewed) and Synchronize to /pointcloud
         self.create_subscription(PointCloud2, '/utlidar/cloud_deskewed', self.lidar_callback, sensor_sub_qos)
         
         # 5. Subscribe to /cmd_vel
