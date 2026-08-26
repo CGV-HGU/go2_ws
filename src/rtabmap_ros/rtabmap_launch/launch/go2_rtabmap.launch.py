@@ -47,8 +47,8 @@ def generate_launch_description():
         'qos_scan': 2,
         'qos_scan_cloud': 2,
         'qos_imu': 2,
-        'qos_image': 0,
-        'qos_camera_info': 0,
+        'qos_image': 2,
+        'qos_camera_info': 2,
         'qos_odom': 2,
         
         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
