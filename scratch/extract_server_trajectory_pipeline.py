@@ -285,6 +285,24 @@ def run_pipeline(image_path=None, source_label="Real Robot Camera"):
     return rendered, (u_tgt, v_tgt), waypoints, latency_ms, action
 
 
+def capture_live_frame(save_path="/home/unitree/go2_ws_antarctica/scratch/live_camera_snapshot.jpg"):
+    """Captures 1 live frame from Go2 RTP stream 230.1.1.1:1720 via ffmpeg/SDP."""
+    sdp_path = "/home/unitree/go2_ws_antarctica/scratch/go2_camera.sdp"
+    if not os.path.exists(sdp_path):
+        sdp_path = "/workspace/go2_ws_antarctica/scratch/go2_camera.sdp"
+    with open(sdp_path, "w") as f:
+        f.write("v=0\no=- 0 0 IN IP4 127.0.0.1\ns=Go2 Front Camera\nc=IN IP4 230.1.1.1/127\nt=0 0\nm=video 1720 RTP/AVP 96\na=rtpmap:96 H264/90000\n")
+    
+    cmd = ["ffmpeg", "-protocol_whitelist", "file,udp,rtp", "-i", sdp_path, "-frames:v", "1", "-y", save_path]
+    try:
+        res = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5)
+        if res.returncode == 0 and os.path.exists(save_path) and os.path.getsize(save_path) > 1000:
+            return save_path
+    except Exception:
+        pass
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(description="Server Trajectory Extractor")
     parser.add_argument("--image", type=str, default=None, help="Custom image path")
@@ -294,6 +312,31 @@ def main():
     if not os.path.exists("/home/unitree"):
         out_dir = "/workspace/go2_ws_antarctica/docs/docker/visualizations/01_robot_camera_fpv_view"
     os.makedirs(out_dir, exist_ok=True)
+
+    scratch_dir = "/home/unitree/go2_ws_antarctica/scratch"
+    if not os.path.exists(scratch_dir):
+        scratch_dir = "/workspace/go2_ws_antarctica/scratch"
+
+    if args.image:
+        rendered, uv, wps, lat, act = run_pipeline(args.image, "Custom / Live Camera Input")
+        save_path = os.path.join(out_dir, "live_front_camera_now_trajectory.png")
+        cv2.imwrite(save_path, rendered)
+        scratch_save = os.path.join(scratch_dir, "live_front_camera_now_trajectory.png")
+        cv2.imwrite(scratch_save, rendered)
+        print(f"  💾 Saved Live Trajectory: {save_path}")
+        print(f"  💾 Saved Live Trajectory: {scratch_save}\n")
+        return
+
+    # Check if Live Camera is streaming right now!
+    live_img = capture_live_frame(os.path.join(scratch_dir, "live_camera_snapshot.jpg"))
+    if live_img:
+        print("\n🔴 [LIVE STREAM DETECTED] Capturing and extracting trajectory from ACTIVE GO2 FRONT CAMERA!")
+        rendered, uv, wps, lat, act = run_pipeline(live_img, "Go2 LIVE Real-Time Front Camera")
+        save_path = os.path.join(out_dir, "live_front_camera_now_trajectory.png")
+        cv2.imwrite(save_path, rendered)
+        scratch_save = os.path.join(scratch_dir, "live_front_camera_now_trajectory.png")
+        cv2.imwrite(scratch_save, rendered)
+        print(f"  💾 Saved Live Trajectory: {save_path}\n")
 
     base_kf = "/home/unitree/go2_ws_antarctica/scratch/rtabmap_preview"
     if not os.path.exists(base_kf):
