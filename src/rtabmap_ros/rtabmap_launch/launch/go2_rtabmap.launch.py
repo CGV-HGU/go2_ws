@@ -78,9 +78,9 @@ def generate_launch_description():
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
         'Grid/NormalsSegmentation': 'false',   # Fast & robust height passthrough for unorganized 3D lidar
-        'Grid/MinGroundHeight': '-0.20',       # Ground height lower bound
-        'Grid/MaxGroundHeight': '0.05',        # Ground height upper bound (filter floor roughness)
-        'Grid/MaxObstacleHeight': '1.50',      # Ignore ceiling lights and overhead frames (>1.5m)
+        'Grid/MinGroundHeight': '-0.45',       # Ground height lower bound (45cm below base_link)
+        'Grid/MaxGroundHeight': '-0.25',       # Ground height upper bound (Floor plane is -45cm ~ -25cm)
+        'Grid/MaxObstacleHeight': '1.20',      # Obstacles are from -25cm (10cm above floor) to +1.20m (1.55m total height)
         'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
         'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
@@ -119,7 +119,7 @@ def generate_launch_description():
         DeclareLaunchArgument('subscribe_scan_cloud', default_value='true', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
         
-        # Static Transforms for Sensor Frames (Self-contained TF tree)
+        # Static Transforms for Sensor Frames (Aligned with official Go2 URDF kinematics)
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -130,19 +130,19 @@ def generate_launch_description():
             package='tf2_ros',
             executable='static_transform_publisher',
             name='base_to_utlidar_tf',
-            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'utlidar_lidar']
+            arguments=['0.289', '0', '-0.047', '0', '0', '0', 'base_link', 'utlidar_lidar']
         ),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             name='base_to_unilidar_tf',
-            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'unilidar_lidar']
+            arguments=['0.289', '0', '-0.047', '0', '0', '0', 'base_link', 'unilidar_lidar']
         ),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             name='base_to_radar_tf',
-            arguments=['0.285', '0', '0.01', '0', '0', '0', 'base_link', 'radar']
+            arguments=['0.289', '0', '-0.047', '0', '0', '0', 'base_link', 'radar']
         ),
         Node(
             package='tf2_ros',
