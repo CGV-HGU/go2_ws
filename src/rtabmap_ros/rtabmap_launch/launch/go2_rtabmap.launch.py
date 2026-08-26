@@ -63,9 +63,14 @@ def generate_launch_description():
         'Rtabmap/DetectionRate': '2.0',
         'RGBD/NeighborLinkRefining': 'true',   # Refine odometry links with ICP
         'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
+        'RGBD/ProximityAngle': '180',          # Enable 3D LiDAR loop closure from any approach angle (including reverse)
+        'RGBD/ProximityMaxGraphDepth': '0',    # 0 = Unlimited graph search depth (enables closing big full-corridor loops)
+        'RGBD/ProximityPathMaxNeighbors': '10',# Check up to 10 nearest candidate nodes
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
+        'RGBD/OptimizeFromGraphEnd': 'false',  # Anchors origin [0,0,0] for rock-solid map coordinate stability
         'Mem/ReconstructData': 'true',
+        'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold for reliable loop closure acceptance
 
         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Native 3D LiDAR)
         'gen_depth': False,
