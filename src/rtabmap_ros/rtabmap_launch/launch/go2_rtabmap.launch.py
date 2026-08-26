@@ -61,7 +61,7 @@ def generate_launch_description():
         'Reg/Force3DoF': 'false',              # Full 6-DoF 3D motion tracking (x, y, z, roll, pitch, yaw)
         'Optimizer/Slam2D': 'false',           # Full 3D Pose Graph Optimization
         'Optimizer/Strategy': '1',             # 1 = g2o 6-DoF 3D Graph Optimizer
-        'Rtabmap/DetectionRate': '2.0',
+        'Rtabmap/DetectionRate': '4.0',        # 4.0 Hz high-frequency keyframe detection
         'RGBD/NeighborLinkRefining': 'true',   # Refine 3D odometry links with ICP
         'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection (3D space search)
         'RGBD/ProximityAngle': '180',          # Enable 3D LiDAR loop closure even when returning in opposite direction!
