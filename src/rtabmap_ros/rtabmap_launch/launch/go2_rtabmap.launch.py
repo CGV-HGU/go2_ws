@@ -63,10 +63,13 @@ def generate_launch_description():
         'Optimizer/Strategy': '1',             # 1 = g2o 6-DoF 3D Graph Optimizer
         'Rtabmap/DetectionRate': '2.0',
         'RGBD/NeighborLinkRefining': 'true',   # Refine 3D odometry links with ICP
-        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
+        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection (3D space search)
+        'RGBD/ProximityAngle': '180',          # Enable 3D LiDAR loop closure even when returning in opposite direction!
+        'RGBD/ProximityPathMaxNeighbors': '10',# Check up to 10 neighboring nodes for 3D ICP loop closure
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
         'Mem/ReconstructData': 'true',
+        'Icp/CorrespondenceRatio': '0.2',     # Minimum 20% point overlap required to accept 3D loop closure
 
         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Native 3D LiDAR)
         'gen_depth': False,
