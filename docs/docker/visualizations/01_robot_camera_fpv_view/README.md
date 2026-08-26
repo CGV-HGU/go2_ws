@@ -1,16 +1,17 @@
 # 📸 [Domain 01] 실제 로봇 내장 카메라 실시간 라이브 영상 & 궤적(Trajectory) 추출 갤러리
 
-이 폴더는 Unitree Go2 실물 로봇의 전면 초광각 내장 카메라($1280\times 720$ RGB, 지상고 $h=0.35\text{m}$)로 **지금 현재 로봇 전원을 켜고 실시간 수신한 30fps 라이브 스트림(`230.1.1.1:1720`) 및 5초 주행 영상**에 대해 **원격 Qwen3.5-9B VLM 서버가 실시간으로 추출한 50Hz 보행 궤적(Trajectory) 및 운전자 HUD 화면**을 보관합니다.
+이 폴더는 Unitree Go2 실물 로봇의 전면 초광각 내장 카메라($1280\times 720$ RGB, 지상고 $h=0.45\text{m}$)로 **지금 현재 로봇 전원을 켜고 실시간 수신한 30fps 라이브 스트림(`230.1.1.1:1720`) 및 5초 주행 영상**에 대해 **원격 Qwen3.5-9B VLM 서버가 실시간으로 추출한 50Hz 보행 궤적(Trajectory) 및 운전자 HUD 화면**을 보관합니다.
 
-*(기존 RTAB-Map DB 추출 사진은 사용자 요청에 따라 전면 삭제 및 실시간 라이브 데이터로 완전 교체되었습니다.)*
+* 📝 **실험 누적 기록 일지**: [`EXPERIMENT_RECORD_LOG.md`](EXPERIMENT_RECORD_LOG.md) (날짜, 시간, 로봇 자세, VLM 지연시간, 서브골 픽셀 누적 일지)
 
 ---
 
-## 🎬 1. [실시간 5초 동영상/GIF] 로봇 전면 카메라 라이브 스트림 궤적 추출 (5-Second Animated GIF)
+## 🎬 1. [최신 🌟] 연구실 중앙 기립(Standing) 5초 라이브 궤적 추출 (5-Second Animated GIF)
 * **파일명**: `live_robot_camera_trajectory_5s.gif` (및 `live_robot_camera_trajectory_5s.mp4`)
-* **영상 출처**: 로봇 내장 전면 카메라 실시간 H.264 멀티캐스트 스트림 (`230.1.1.1:1720`)에서 직접 5초간 녹화!
-* **VLM 추론 결과**: Action: `TURN_LEFT` / `GO`, Subgoal Pixel: `[256, 360]` ($X=7.00\text{m}, Y=4.00\text{m}$), Latency: **$725.7\text{ms}$**
-* **VLM Reasoning**: *"The robot is currently facing a desk and office chairs. Identifying the open leftward space to navigate safely around leg obstacles."*
+* **촬영 일시**: `2026-08-26 14:45:49 KST` (Session ID: `EXP-20260826-002`)
+* **로봇 자세 및 위치**: **Standing (직립 기립, 지상고 $h=0.45\text{m}$) / 연구실 중앙 통로**
+* **VLM 추론 결과**: Action: **`GO`**, Subgoal Pixel: **`[640, 503]`** ($X=1.89\text{m}, Y=0.00\text{m}$), Latency: **$820.9\text{ms}$**
+* **VLM Reasoning**: *"The robot is positioned in a narrow corridor between two desks. The floor is clear of obstacles directly ahead, allowing for a straight path. The robot should continue moving forward along this clear path."*
 
 ![Live Robot Camera Trajectory 5s Animation](live_robot_camera_trajectory_5s.gif)
 
@@ -18,8 +19,8 @@
 
 ## 🔴 2. [실시간 단일 프레임] 현재 로봇 전면 카메라 스냅샷 궤적 추출 (Single Snapshot FPV)
 * **파일명**: `live_front_camera_now_trajectory.png`
-* **영상 출처**: 지금 현재 실물 로봇 전면 카메라 실시간 프레임 캡처
-* **VLM 추론 결과**: Action: `GO`, Subgoal: `[512, 380]` ($X=7.00\text{m}, Y=1.49\text{m}$), Latency: **$769.5\text{ms}$**
+* **영상 출처**: 실물 로봇 전면 카메라 실시간 프레임 캡처 ($h=0.45\text{m}$)
+* **VLM 결정**: Action: `GO`, Subgoal Pixel: `[550, 482]` ($X=1.72\text{m}, Y=0.26\text{m}$)
 
 ![Live Front Camera Now Trajectory](live_front_camera_now_trajectory.png)
 

@@ -5,8 +5,8 @@
 ========================================================================================
 1. Ingests 5s live robot camera video (`scratch/live_camera_raw_5s.mp4`).
 2. Extracts live frames and queries remote Qwen3.5-9B VLM server for trajectory decisions.
-3. Renders 50Hz ground trajectory overlay and HUD across all video frames.
-4. Exports both high-definition MP4 and animated GIF.
+3. Renders 50Hz ground trajectory overlay, timestamped HUD across all video frames.
+4. Exports both high-definition MP4 and animated GIF with experiment record logging.
 ========================================================================================
 """
 
@@ -16,6 +16,7 @@ import time
 import json
 import base64
 import re
+import datetime
 import cv2
 import numpy as np
 import requests
@@ -23,6 +24,7 @@ from PIL import Image
 
 SERVER_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
+CAM_HEIGHT_STAND = 0.45  # 45cm for Go2 Standing mode
 
 
 def query_vlm(frame_bgr):
@@ -83,7 +85,7 @@ Return a JSON dictionary in this EXACT schema:
     return "go", (640, 480), "Navigating along free floor.", 750.0
 
 
-def project_uv_to_ground(u, v, img_w=1280, img_h=720, h_cam=0.35, fx=600.0, fy=600.0, cx=640.0, cy=360.0):
+def project_uv_to_ground(u, v, img_w=1280, img_h=720, h_cam=CAM_HEIGHT_STAND, fx=600.0, fy=600.0, cx=640.0, cy=360.0):
     ray_x = (u - cx) / fx
     ray_y = (v - cy) / fy
     eff_y = max(ray_y, 0.05)
@@ -108,14 +110,14 @@ def generate_waypoints(x_target, y_target, n_pts=10, max_v=0.30):
     return waypoints
 
 
-def render_frame_hud(frame, subgoal_uv, waypoints, vlm_action, reasoning, latency_ms, frame_idx, total_frames, fps):
+def render_frame_hud(frame, subgoal_uv, waypoints, vlm_action, reasoning, latency_ms, frame_idx, total_frames, fps, session_timestamp):
     h, w = frame.shape[:2]
     canvas = frame.copy()
     u_tgt, v_tgt = subgoal_uv
     u_tgt = int(np.clip(u_tgt, 100, w - 100))
     v_tgt = int(np.clip(v_tgt, 360, h - 50))
 
-    fx, fy, cx, cy, h_cam = 600.0, 600.0, 640.0, 360.0, 0.35
+    fx, fy, cx, cy, h_cam = 600.0, 600.0, 640.0, 360.0, CAM_HEIGHT_STAND
 
     # 1. Waypoint Line & Dots
     pixel_pts = []
@@ -148,27 +150,29 @@ def render_frame_hud(frame, subgoal_uv, waypoints, vlm_action, reasoning, latenc
                 cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 255), 2)
 
     # 3. Top-Left HUD Telemetry Box
-    cv2.rectangle(canvas, (15, 15), (550, 165), (20, 20, 20), -1)
-    cv2.rectangle(canvas, (15, 15), (550, 165), (0, 255, 200), 2)
-    cv2.putText(canvas, f"Go2 Live Stream FPV (230.1.1.1:1720) [{cur_time_s:.1f}s / 5.0s]", (25, 40),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 200), 2)
-    cv2.putText(canvas, f"> Server Endpoint : {SERVER_URL} ({MODEL_NAME})", (25, 65),
+    cv2.rectangle(canvas, (15, 15), (565, 170), (20, 20, 20), -1)
+    cv2.rectangle(canvas, (15, 15), (565, 170), (0, 255, 200), 2)
+    cv2.putText(canvas, f"Go2 Live FPV (Standing) | {session_timestamp}", (25, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.50, (0, 255, 200), 2)
+    cv2.putText(canvas, f"> Stream / Playback: 230.1.1.1:1720 [{cur_time_s:.1f}s / 5.0s]", (25, 65),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
-    cv2.putText(canvas, f"> VLM Latency     : {latency_ms:.1f} ms | Action: {vlm_action.upper()}", (25, 90),
+    cv2.putText(canvas, f"> Server Endpoint : {SERVER_URL} ({MODEL_NAME})", (25, 90),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
+    cv2.putText(canvas, f"> VLM Latency     : {latency_ms:.1f} ms | Action: {vlm_action.upper()}", (25, 115),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.45, (100, 255, 100), 1)
-    cv2.putText(canvas, f"> Trajectory Math : S2E 50Hz 10-Waypoint Pinhole (h={h_cam}m)", (25, 115),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
     cmd_vx = waypoints[0]["vx"] if waypoints else 0.0
     cmd_wz = waypoints[0]["wz"] if waypoints else 0.0
-    cv2.putText(canvas, f"> Real-Time Cmd   : vx = +{cmd_vx:.2f} m/s, wz = {cmd_wz:+.2f} rad/s", (25, 140),
+    cv2.putText(canvas, f"> Real-Time Cmd   : vx = +{cmd_vx:.2f} m/s, wz = {cmd_wz:+.2f} rad/s (h={h_cam}m)", (25, 140),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 255), 1)
+    cv2.putText(canvas, f"> Frame Number    : #{frame_idx+1:03d} / {total_frames:03d} (@ {fps:.1f} fps)", (25, 160),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.40, (200, 200, 200), 1)
 
     # 4. Top-Right HUD Box
-    cv2.rectangle(canvas, (w - 530, 15), (w - 15, 115), (20, 20, 20), -1)
-    cv2.rectangle(canvas, (w - 530, 15), (w - 15, 115), (0, 200, 255), 2)
+    cv2.rectangle(canvas, (w - 530, 15), (w - 15, 120), (20, 20, 20), -1)
+    cv2.rectangle(canvas, (w - 530, 15), (w - 15, 120), (0, 200, 255), 2)
     cv2.putText(canvas, "Autonomy Safety & Decision Engine", (w - 515, 40),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 200, 255), 2)
-    cv2.putText(canvas, "> Status: 🟢 ACTIVE LIVE STREAM (30fps)", (w - 515, 65),
+    cv2.putText(canvas, "> Posture Status : 🟢 STANDING (Center Lab)", (w - 515, 65),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.45, (100, 255, 100), 1)
     short_reason = (reasoning[:50] + '...') if len(reasoning) > 50 else reasoning
     cv2.putText(canvas, f"> Reason: {short_reason}", (w - 515, 90),
@@ -188,13 +192,15 @@ def main():
     out_mp4 = os.path.join(out_dir, "live_robot_camera_trajectory_5s.mp4")
     out_gif = os.path.join(out_dir, "live_robot_camera_trajectory_5s.gif")
 
+    session_dt = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S KST")
+
     cap = cv2.VideoCapture(raw_video)
     fps = cap.get(cv2.CAP_PROP_FPS) or 15.0
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) or 75
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) or 1280
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) or 720
 
-    print(f"🎬 Processing {total_frames} frames ({w}x{h} @ {fps:.1f} fps)...")
+    print(f"🎬 Processing {total_frames} frames ({w}x{h} @ {fps:.1f} fps) captured at {session_dt}...")
 
     # Read first frame and query VLM
     ret, first_frame = cap.read()
@@ -202,11 +208,12 @@ def main():
         print("❌ Error reading first frame")
         return
 
-    print("🤖 Querying VLM server with live frame...")
+    print("🤖 Querying VLM server with live standing frame...")
     action, (u_tgt, v_tgt), reasoning, latency_ms = query_vlm(first_frame)
     x_tgt, y_tgt = project_uv_to_ground(u_tgt, v_tgt)
     waypoints = generate_waypoints(x_tgt, y_tgt)
     print(f"  • Decision: {action.upper()} | Subgoal: [{u_tgt}, {v_tgt}] (X={x_tgt:.2f}m, Y={y_tgt:.2f}m) | Latency: {latency_ms:.1f}ms")
+    print(f"  • VLM Reason: {reasoning}")
 
     # Reset video
     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
@@ -222,12 +229,14 @@ def main():
         if not ret:
             break
 
-        hud_frame = render_frame_hud(frame, (u_tgt, v_tgt), waypoints, action, reasoning, latency_ms, frame_idx, total_frames, fps)
+        hud_frame = render_frame_hud(frame, (u_tgt, v_tgt), waypoints, action, reasoning, latency_ms, frame_idx, total_frames, fps, session_dt)
         writer.write(hud_frame)
 
-        # For GIF, resize to 640x360 for smooth playback and low file size
-        small_rgb = cv2.cvtColor(cv2.resize(hud_frame, (640, 360)), cv2.COLOR_BGR2RGB)
-        gif_frames.append(Image.fromarray(small_rgb))
+        if frame_idx % 2 == 0:  # Sample at 7.5fps for crisp 4MB GIF
+            small = cv2.resize(hud_frame, (640, 360))
+            rgb = cv2.cvtColor(small, cv2.COLOR_BGR2RGB)
+            im = Image.fromarray(rgb).convert('P', palette=Image.ADAPTIVE, colors=128)
+            gif_frames.append(im)
 
         frame_idx += 1
 
@@ -235,14 +244,14 @@ def main():
     writer.release()
     print(f"✅ Saved MP4 video: {out_mp4}")
 
-    # Export Animated GIF (15 fps -> duration=66ms per frame)
+    # Export Animated GIF
     if gif_frames:
-        print("🎞️ Exporting animated GIF...")
+        print("🎞️ Exporting optimized animated GIF...")
         gif_frames[0].save(
             out_gif,
             save_all=True,
             append_images=gif_frames[1:],
-            duration=int(1000.0 / fps),
+            duration=133,
             loop=0,
             optimize=True
         )
@@ -254,6 +263,20 @@ def main():
         os.system(f"cp {out_gif} {artifact_dir}/live_robot_camera_trajectory_5s.gif")
         os.system(f"cp {out_mp4} {artifact_dir}/live_robot_camera_trajectory_5s.mp4")
         print("✅ Copied animated GIF and MP4 to artifact directory!")
+
+    # Return experiment log summary dictionary
+    return {
+        "timestamp": session_dt,
+        "posture": "Standing (Lab Center)",
+        "model": MODEL_NAME,
+        "latency_ms": latency_ms,
+        "action": action.upper(),
+        "subgoal_uv": [u_tgt, v_tgt],
+        "metric_target": [x_tgt, y_tgt],
+        "reasoning": reasoning,
+        "total_frames": frame_idx,
+        "fps": fps
+    }
 
 
 if __name__ == "__main__":
