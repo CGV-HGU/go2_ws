@@ -92,6 +92,12 @@ def generate_launch_description():
         'Icp/PointToPlane': 'true',
         'Icp/VoxelSize': '0.05',
         'Icp/MaxCorrespondenceDistance': '0.10',
+        'Icp/MaxTranslation': '0.30',          # Rejects jump drift >30cm between frames
+        'Icp/MaxRotation': '0.40',             # Rejects rotational jumps >23 degrees
+        'Icp/Iterations': '30',                # Deep convergence iterations
+        'Icp/Epsilon': '0.001',                # 1mm convergence threshold
+        'RGBD/OptimizeFromGraphEnd': 'false',  # Anchors origin [0,0,0] for stable global map
+        'Mem/NotLinkedNodesKept': 'false',     # Discard unlinked outlier nodes
     }
 
     # Mode 1: Mapping Parameters
