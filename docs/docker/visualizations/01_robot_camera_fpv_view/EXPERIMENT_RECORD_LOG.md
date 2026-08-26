@@ -92,3 +92,30 @@ python3 /home/unitree/go2_ws_antarctica/scratch/process_live_video_trajectory.py
 | **`Query #14`** | `14:51:22.119` | **708.2 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear and unobstructed, all... |
 | **`Query #15`** | `14:51:23.037` | **772.9 ms** | `GO` | `[640, 432]` | `X=3.75m, Y=-0.00m` | The path directly ahead is clear, with the ma... |
 | **`Query #16`** | `14:51:24.019` | **803.9 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+
+
+### 📍 [Session EXP-20260826-151556] 15초 실시간 연속 VLM 폐루프 스트리밍 세션
+
+* **세션 일시**: `2026-08-26 15:15:56 KST`
+* **총 실행 시간**: 15초 (81 프레임 @ 15.0fps)
+* **총 VLM 질의 횟수**: **16회 연속 수행**
+* **미디어 파일**: [`live_continuous_vlm_trajectory_15s.gif`](live_continuous_vlm_trajectory_15s.gif) / [`live_continuous_vlm_trajectory_15s.mp4`](live_continuous_vlm_trajectory_15s.mp4)
+
+| 질의 ID | 질의 시각 | VLM 지연시간 | 결정 Action | Subgoal [u, v] | Metric (X, Y) | VLM 추론 내용 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **`Query #01`** | `15:15:40.853` | **981.8 ms** | `TURN_RIGHT` | `[960, 360]` | `X=8.00m, Y=-4.00m` | The robot is currently positioned behind an o... |
+| **`Query #02`** | `15:15:42.046` | **701.7 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear and unobstructed, all... |
+| **`Query #03`** | `15:15:42.962` | **760.7 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path directly ahead is clear. The primary... |
+| **`Query #04`** | `15:15:43.940` | **756.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #05`** | `15:15:44.910` | **634.0 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear and unobstructed, all... |
+| **`Query #06`** | `15:15:45.764` | **639.1 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path directly ahead is clear and unobstru... |
+| **`Query #07`** | `15:15:46.613` | **642.9 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear. The robot should con... |
+| **`Query #08`** | `15:15:47.466` | **727.5 ms** | `TURN_RIGHT` | `[896, 360]` | `X=8.00m, Y=-3.84m` | The immediate path is obstructed by a person ... |
+| **`Query #09`** | `15:15:48.403` | **755.7 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera view shows a clear, unobstructed p... |
+| **`Query #10`** | `15:15:49.377` | **783.8 ms** | `TURN_RIGHT` | `[896, 360]` | `X=8.00m, Y=-3.84m` | The immediate path is obstructed by a person ... |
+| **`Query #11`** | `15:15:50.371` | **775.6 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The path ahead is clear, with the main obstac... |
+| **`Query #12`** | `15:15:51.356` | **711.7 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera is positioned low, looking forward... |
+| **`Query #13`** | `15:15:52.277` | **801.5 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera is positioned low and close to a p... |
+| **`Query #14`** | `15:15:53.287` | **804.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The robot is positioned in a room with a chai... |
+| **`Query #15`** | `15:15:54.301` | **812.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The camera is positioned low, looking forward... |
+| **`Query #16`** | `15:15:55.323` | **902.8 ms** | `GO` | `[640, 503]` | `X=1.89m, Y=-0.00m` | The robot is positioned in a clear pathway be... |

@@ -2,16 +2,18 @@
 
 이 폴더는 Unitree Go2 실물 로봇의 전면 초광각 내장 카메라($1280\times 720$ RGB, 지상고 $h=0.45\text{m}$)로 **지금 현재 로봇 전원을 켜고 실시간 수신한 30fps 라이브 스트림(`230.1.1.1:1720`)**과 **원격 Qwen3.5-9B VLM 서버 간의 실시간 연속 폐루프 통신(15초 동안 16회 연속 질의)**을 통해 생성된 실시간 50Hz 보행 궤적(Trajectory), 운전자 HUD 화면, 웹 스트리머를 보관합니다.
 
-* 📝 **실험 누적 기록 일지**: [`EXPERIMENT_RECORD_LOG.md`](EXPERIMENT_RECORD_LOG.md) (각 질의별 지연시간, 결정 액션, 목표점 픽셀 누적 일지)
+* 📝 **연구 실증용 실험 누적 기록 일지**: [`EXPERIMENT_RECORD_LOG.md`](EXPERIMENT_RECORD_LOG.md) (각 질의별 지연시간, 결정 액션, 목표점 픽셀 누적 일지)
 * 🌐 **실시간 브라우저 웹 스트리머**: `http://localhost:8888` (0초 지연 실시간 MJPEG 뷰어)
 
 ---
 
-## 🎬 1. [실시간 15초 연속 통신 🌟] 원격 VLM 서버 다중 질의(16회) 연속 궤적 스트리밍 (15-Second Animated GIF)
+## 🎬 1. [방금 실시간 촬영 🌟] 실시간 연속 VLM 통신(16회 다중 질의) 폐루프 궤적 스트리밍 (15-Second Animated GIF)
 * **파일명**: `live_continuous_vlm_trajectory_15s.gif` (및 `live_continuous_vlm_trajectory_15s.mp4`)
+* **촬영 일시**: `2026-08-26 15:15:40 KST` (Session ID: `EXP-20260826-003`)
+* **로봇 자세 및 위치**: **Standing (직립 기립, 지상고 $h=0.45\text{m}$) / 연구실 의자 및 사람 앞**
 * **실시간 통신 방식**: 15초 스트리밍 동안 원격 Qwen3.5-9B 서버로 **16회의 독립적인 실시간 VLM 질의(`Query #01` ~ `Query #16`)를 연속으로 주고받으며 궤적을 실시간 갱신!**
-* **VLM 질의 통계**: 총 16회 질의 완료 (평균 지연시간 **$740\text{ms}$**, HTTP 성공률 **100%**)
-* **동적 궤적 갱신**: 매 질의마다 달라지는 VLM 추론 시간과 Subgoal 좌표가 상단 HUD와 바닥면에 실시간 반영.
+* **동적 회피 & 직진 반응**: 좌측 착석 인원 및 의자를 인식하여 `TURN_RIGHT` (우회전 회피 `[896, 360]`)와 `GO` (직진 전진 `[640, 503]`)를 능동적으로 전환.
+* **VLM 질의 통계**: 총 16회 질의 완료 (평균 지연시간 **$760.1\text{ms}$**, HTTP 성공률 **100%**)
 
 ![Live Continuous VLM Trajectory 15s Animation](live_continuous_vlm_trajectory_15s.gif)
 
