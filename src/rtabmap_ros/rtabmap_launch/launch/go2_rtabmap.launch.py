@@ -56,51 +56,38 @@ def generate_launch_description():
         'approx_sync_max_interval': 0.2,
         'queue_size': 100,
         
-        # Full 6-DoF 3D SLAM, Registration & Loop Closure Tuning (Utilizing 4D LiDAR)
+        # SLAM, Registration & Loop Closure Tuning (Proven 0833.pgm Gold Standard Baseline)
         'Reg/Strategy': '1',                   # 1 = ICP (3D LiDAR Point Cloud Scan Matching for Loop Closures)
-        'Reg/Force3DoF': 'false',              # Full 6-DoF 3D motion tracking (x, y, z, roll, pitch, yaw)
-        'Optimizer/Slam2D': 'false',           # Full 3D Pose Graph Optimization
-        'Optimizer/Strategy': '1',             # 1 = g2o 6-DoF 3D Graph Optimizer
-        'Rtabmap/DetectionRate': '4.0',        # 4.0 Hz high-frequency keyframe detection
-        'RGBD/NeighborLinkRefining': 'true',   # Refine 3D odometry links with ICP
-        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection (3D space search)
-        'RGBD/ProximityAngle': '180',          # Enable 3D LiDAR loop closure even when returning in opposite direction!
-        'RGBD/ProximityPathMaxNeighbors': '10',# Check up to 10 neighboring nodes for 3D ICP loop closure
+        'Reg/Force3DoF': 'true',               # Ground robot flat terrain 3DoF constraint (x, y, yaw) - PREVENTS CORRIDOR TWISTING
+        'Optimizer/Slam2D': 'true',            # 2D Pose Graph Optimization
+        'Rtabmap/DetectionRate': '2.0',
+        'RGBD/NeighborLinkRefining': 'true',   # Refine odometry links with ICP
+        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
         'Mem/ReconstructData': 'true',
-        'Icp/CorrespondenceRatio': '0.2',     # Minimum 20% point overlap required to accept 3D loop closure
 
         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Native 3D LiDAR)
         'gen_depth': False,
         'gen_scan': False,
         'Grid/FromDepth': 'false',
         'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
-        'Grid/RangeMax': '5.0',                # 5.0m crisp indoor corridor range (eliminates glass/multipath ghost points)
-        'Grid/RangeMin': '0.25',               # 25cm minimum distance (ignores LiDAR housing reflections)
+        'Grid/RangeMax': '8.0',                # 8.0m standard range
+        'Grid/RangeMin': '0.2',
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
-        'Grid/NormalsSegmentation': 'true',    # 3D Surface normal segmentation (flawless floor vs vertical wall separation)
-        'Grid/MaxGroundAngle': '45',           # Surfaces with slope <45 deg are 100% ground (immune to body bobbing)
-        'Grid/NormalK': '10',                  # Surface normal computation with 10 neighbors
-        'Grid/ClusterRadius': '0.10',          # Cluster radius for normal grouping
-        'Grid/MinGroundHeight': '-0.60',       # Ground lower bound (-60cm)
-        'Grid/MaxGroundHeight': '0.10',        # Ground upper bound (+10cm)
-        'Grid/MaxObstacleHeight': '1.50',      # Obstacles up to 1.5m
-        'Grid/NoiseFilteringRadius': '0.15',   # 15cm spatial noise filtering radius
-        'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required (eliminates scattered ghost noise)
+        'Grid/NormalsSegmentation': 'false',   # Fast & robust height passthrough for unorganized 3D lidar
+        'Grid/MinGroundHeight': '-0.20',       # Ground height lower bound
+        'Grid/MaxGroundHeight': '0.05',        # Ground height upper bound (filter floor roughness)
+        'Grid/MaxObstacleHeight': '1.50',      # Ignore ceiling lights and overhead frames (>1.5m)
+        'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
+        'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
         'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (removes 70% point cloud overload)
         'Icp/PointToPlane': 'true',
         'Icp/VoxelSize': '0.05',
-        'Icp/MaxCorrespondenceDistance': '0.10',
-        'Icp/MaxTranslation': '0.30',          # Rejects jump drift >30cm between frames
-        'Icp/MaxRotation': '0.40',             # Rejects rotational jumps >23 degrees
-        'Icp/Iterations': '30',                # Deep convergence iterations
-        'Icp/Epsilon': '0.001',                # 1mm convergence threshold
-        'RGBD/OptimizeFromGraphEnd': 'false',  # Anchors origin [0,0,0] for stable global map
-        'Mem/NotLinkedNodesKept': 'false',     # Discard unlinked outlier nodes
+        'Icp/MaxCorrespondenceDistance': '0.15',
     }
 
     # Mode 1: Mapping Parameters
