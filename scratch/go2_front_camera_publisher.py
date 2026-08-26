@@ -2,10 +2,9 @@
 """
 Unitree Go2 Built-in Front Ultra-Wide RGB Camera ROS 2 Publisher
 ================================================================
-Continuous GStreamer RTP multicast capture (230.1.1.1:1720) from Go2 head.
+Jetson Hardware Accelerated GStreamer RTP multicast capture (230.1.1.1:1720) from Go2 head.
 Publishes sensor_msgs/Image to /camera/front/image_raw (30 fps)
 along with synchronized sensor_msgs/CameraInfo to /camera/front/camera_info.
-Uses Best-Effort (SensorDataQoS) matching RTAB-Map and DDS.
 """
 
 import os
@@ -30,7 +29,7 @@ class Go2FrontCameraPublisher(Node):
     def __init__(self):
         super().__init__('go2_front_camera_publisher')
         
-        # Standard Reliable QoS (Universal compatibility with both Reliable & Best-Effort subscribers)
+        # Standard Reliable QoS for universal ROS 2 compatibility
         camera_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
             depth=10,
@@ -43,24 +42,20 @@ class Go2FrontCameraPublisher(Node):
         self.bridge = CvBridge()
         
         self.running = True
-        self.cap = None
-        self.latest_frame = None
-        self.lock = threading.Lock()
+        self.has_received_live_frame = False
         
-        self.get_logger().info('📷 Go2 Front Camera Node Initialized (30fps Best-Effort QoS)...')
+        self.get_logger().info('📷 Go2 Front Camera Node Initialized (Jetson NVDEC Hardware Stream)...')
         
-        # Start Worker Threads
+        # Start GStreamer Worker Thread
         self.capture_thread = threading.Thread(target=self.gstreamer_worker, daemon=True)
         self.capture_thread.start()
-        
-        # 30Hz Fixed-Rate Publisher Timer (guarantees continuous sync with LiDAR)
-        self.timer = self.create_timer(1.0 / 30.0, self.publish_timer_callback)
 
     def gstreamer_worker(self):
         pipeline = (
-            'udpsrc address=230.1.1.1 port=1720 multicast-group=230.1.1.1 auto-multicast=true ! '
-            'application/x-rtp, media=video, clock-rate=90000, payload=96, encoding-name=H264 ! '
-            'rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! appsink drop=true max-buffers=1'
+            'udpsrc port=1720 multicast-group=230.1.1.1 auto-multicast=true ! '
+            'application/x-rtp, media=video, encoding-name=H264 ! '
+            'rtph264depay ! h264parse ! nvv4l2decoder ! nvvidconv ! '
+            'video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink drop=true max-buffers=1'
         )
         
         while rclpy.ok() and self.running:
@@ -70,28 +65,19 @@ class Go2FrontCameraPublisher(Node):
                     time.sleep(0.5)
                     continue
                 
-                self.get_logger().info('🟢 GStreamer Pipeline Opened! Receiving Go2 Front Video...')
+                self.get_logger().info('🟢 Live Camera Stream Connected! Streaming real 1280x720 FPV frames...')
                 while rclpy.ok() and self.running and cap.isOpened():
                     ret, frame = cap.read()
                     if ret and frame is not None:
-                        with self.lock:
-                            self.latest_frame = frame
+                        self.has_received_live_frame = True
+                        self.publish_frame(frame)
                     else:
-                        time.sleep(0.01)
+                        time.sleep(0.005)
                 cap.release()
             except Exception as e:
                 time.sleep(0.5)
 
-    def publish_timer_callback(self):
-        with self.lock:
-            frame = self.latest_frame
-            
-        if frame is None:
-            # Standby nominal frame
-            frame = np.full((720, 1280, 3), 40, dtype=np.uint8)
-            cv2.putText(frame, "Go2 Front Ultra-Wide Camera (Standby)", (350, 360),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 200), 2, cv2.LINE_AA)
-
+    def publish_frame(self, frame):
         now = self.get_clock().now().to_msg()
         
         # 1. Publish Image
