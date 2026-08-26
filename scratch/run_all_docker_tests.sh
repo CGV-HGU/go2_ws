@@ -63,7 +63,7 @@ run_test_cmd() {
     if [ "$IN_DOCKER" -eq 1 ]; then
         eval "$cmd"
     else
-        docker exec ${CONTAINER} bash -ic "$cmd"
+        docker exec -e QWEN_BASE_URL=http://100.96.60.15:8000/v1 -e QWEN_MODEL=qwen3.5-9b-instruct ${CONTAINER} bash -c "$cmd"
     fi
 }
 
@@ -90,14 +90,14 @@ else
 fi
 
 # ------------------------------------------------------------------------------
-# Test 3: Real 720p Multimodal Image-to-VLM Test
+# Test 3: Real Robot Camera Image-to-VLM Trajectory Extraction Test
 # ------------------------------------------------------------------------------
-echo -e "\n${BLUE}[3/6] Running Real 720p Multimodal Image VLM Decision Test...${NC}"
-if run_test_cmd "python3 ${WS_DIR}/scratch/test_docker_real_image_vlm.py"; then
-    echo -e "${GREEN}  ✅ Test 3 PASS: Multimodal Image Encoding & Qwen3-VL Decision Extraction${NC}"
+echo -e "\n${BLUE}[3/6] Running Real Robot Camera VLM Server Trajectory Extraction Pipeline...${NC}"
+if run_test_cmd "python3 ${WS_DIR}/scratch/extract_server_trajectory_pipeline.py"; then
+    echo -e "${GREEN}  ✅ Test 3 PASS: Real Robot Camera Ingress ➔ VLM Decision ➔ 50Hz Trajectory Extracted${NC}"
     PASSED_COUNT=$((PASSED_COUNT + 1))
 else
-    echo -e "${RED}  ❌ Test 3 FAIL: Multimodal VLM Test failed${NC}"
+    echo -e "${RED}  ❌ Test 3 FAIL: Server Trajectory Extraction failed${NC}"
 fi
 
 # ------------------------------------------------------------------------------

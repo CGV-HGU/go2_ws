@@ -77,6 +77,8 @@ class OpenAICompatibleVLMClient(BaseVLMClient):
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleVLMClient":
+        base_url = os.getenv("QWEN_BASE_URL", "http://100.96.60.15:8000/v1")
+        api_key = os.getenv("QWEN_API_KEY", "none")
         env_model = os.getenv("QWEN_MODEL", "auto")
         if not env_model or env_model.lower() in ("auto", "none", ""):
             model = auto_detect_served_model(base_url, default_model="qwen3.5-9b-instruct")

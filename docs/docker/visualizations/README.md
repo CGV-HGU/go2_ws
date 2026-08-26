@@ -2,7 +2,8 @@
 
 > **문서 위치**: `docs/docker/visualizations/`  
 > **총괄 목적**: ESCAPE-Nav 온보드 도커 자율주행 스택이 실제로 로봇 전면 광각 카메라, 4D 라이다, SLAM 오도메트리, 시각 메모리에서 보고 판단하는 **1인칭 실물 센서 화면(FPV)**을 4대 도메인별로 분류하여 제공합니다.  
-> **자동 생성 스크립트**: [`scratch/generate_real_robot_fpv_visualizations.py`](file:///home/unitree/go2_ws_antarctica/scratch/generate_real_robot_fpv_visualizations.py)
+> **실시간 서버 궤적 추출기**: [`scratch/extract_server_trajectory_pipeline.py`](file:///home/unitree/go2_ws_antarctica/scratch/extract_server_trajectory_pipeline.py)  
+> **카메라 선정 아키텍처**: [`docs/docker/02_camera_selection_and_server_trajectory_architecture.md`](file:///home/unitree/go2_ws_antarctica/docs/docker/02_camera_selection_and_server_trajectory_architecture.md)
 
 ---
 
@@ -13,7 +14,7 @@ graph TD
     subgraph "🤖 docs/docker/visualizations/ (로봇 1인칭 실물 시각화 갤러리)"
         M["📄 README.md (마스터 카탈로그)"]
         
-        D1["📁 01_robot_camera_fpv_view/<br/>• 실제 720p 전면 광각 카메라 1인칭 복도 시야<br/>• 바닥면 VLM 서브골 [640, 520] 🎯 & S2E 궤적 🟢<br/>• 실시간 운전자 조종석 HUD"]
+        D1["📁 01_robot_camera_fpv_view/<br/>• 실제 복도/연구실/접근 3대 실사 궤적 추출<br/>• Qwen3.5-9B 실시간 바닥 서브골 🎯 & 50Hz 궤적 🟢<br/>• 실시간 운전자 조종석 HUD"]
         
         D2["📁 02_real_corridor_slam_and_trajectory/<br/>• 실제 83.3m L1 라이다 점유격자 지도 (0833_clean)<br/>• 출발지 ➔ 복도 ➔ 목표 지점 실물 주행 궤적"]
         
@@ -31,8 +32,11 @@ graph TD
 ---
 
 ### 📂 1. [`01_robot_camera_fpv_view/`](01_robot_camera_fpv_view/README.md)
-* **주요 내용**: 로봇 전면 카메라($1280\times 720$, 지상고 $0.35\text{m}$)에서 바라본 실제 복도 1인칭 화면과 VLM 목표점, 10-Waypoint 궤적, 실시간 조종석 HUD.
-* **수록 파일**: [`01_real_corridor_vlm_subgoal_fpv.png`](01_robot_camera_fpv_view/01_real_corridor_vlm_subgoal_fpv.png)
+* **주요 내용**: Go2 전면 초광각 내장 카메라 실측 사진 3종에 대한 **원격 Qwen3.5-9B VLM 서버의 실시간 50Hz 궤적(Trajectory) 추출 결과**.
+* **수록 파일**:
+  * [`server_extracted_corridor_trajectory.png`](01_robot_camera_fpv_view/server_extracted_corridor_trajectory.png) (복도 주행 $721.4\text{ms}$)
+  * [`server_extracted_lab_trajectory.png`](01_robot_camera_fpv_view/server_extracted_lab_trajectory.png) (연구실 출발 $826.7\text{ms}$)
+  * [`server_extracted_approach_trajectory.png`](01_robot_camera_fpv_view/server_extracted_approach_trajectory.png) (목표 접근 $778.4\text{ms}$)
 
 ---
 
@@ -54,8 +58,8 @@ graph TD
 
 ---
 
-## 🚀 5. 실물 시각화 자료 1-Click 일괄 재생성 방법
+## 🚀 5. 실시간 서버 궤적 추출기 실행
 
 ```bash
-python3 /home/unitree/go2_ws_antarctica/scratch/generate_real_robot_fpv_visualizations.py
+python3 /home/unitree/go2_ws_antarctica/scratch/extract_server_trajectory_pipeline.py
 ```

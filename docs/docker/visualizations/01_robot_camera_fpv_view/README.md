@@ -1,17 +1,40 @@
-# 📸 [Domain 01] 실제 로봇 1인칭 전면 카메라 시야 (Go2 Robot FPV View)
+# 📸 [Domain 01] 실제 로봇 내장 카메라 실사 기반 서버 궤적(Trajectory) 추출 갤러리
 
-이 폴더는 Unitree Go2 실물 로봇의 전면 광각 카메라($1280\times 720$ RGB, 지상고 $h=0.35\text{m}$)에서 바라본 실제 복도 1인칭 시야(First-Person View)와 VLM 서브골 🎯, S2E 보행 궤적 🟢, 실시간 운전자 HUD 화면을 보관합니다.
-
----
-
-## 🖼️ 1. 실물 복도 1인칭 주행 뷰 및 VLM 서브골 오버레이
-* **파일명**: `01_real_corridor_vlm_subgoal_fpv.png`
-* **설명**: 로봇 전면 카메라로 인입된 복도 화면(타일 바닥, 연구실 문, 천장 조명, 비상구) 상에 Qwen3.5-9B 두뇌가 선정한 바닥면 목표점 `[640, 520]`과 S2E 10-Waypoint 부드러운 전진 궤적이 렌더링된 실시간 조종석 화면입니다.
-
-![Real Robot FPV View](01_real_corridor_vlm_subgoal_fpv.png)
+이 폴더는 Unitree Go2 실물 로봇의 전면 초광각 내장 카메라($1280\times 720$ RGB, 지상고 $h=0.35\text{m}$)로 촬영한 **실제 환경(복도, 연구실, 목표 접근)**에 대해 **원격 Qwen3.5-9B VLM 서버가 실시간으로 추출한 50Hz 보행 궤적(Trajectory) 및 운전자 HUD 화면**을 보관합니다.
 
 ---
 
-## 🕹️ 2. FPV 조종석 텔레메트리 HUD 스펙
-* **좌측 상단 HUD**: 자율주행 모드(`Full_ESCAPE_Nav`), VLM 응답시간($824.2\text{ms}$), S2E 인과 보정 시간($0.0026\text{ms}$), 전진 선속도($v_x=+0.30\text{m/s}$).
-* **우측 상단 HUD**: Kinematic Stall 안전 가드 상태, 이종 UDP 소켓 브릿지 RTT($0.11\text{ms}$), Supervisor 락 상태.
+## 🖼️ 1. 실제 복도 주행 실사 궤적 추출 (Corridor Hallway)
+* **파일명**: `server_extracted_corridor_trajectory.png`
+* **원본 키프레임**: `scratch/rtabmap_preview/node_0497.jpg` (Go2 실측 복도 SLAM 프레임)
+* **VLM 추론 결과**: Action: `GO`, Subgoal: `[640, 503]` ($X=1.47\text{m}, Y=-0.00\text{m}$), Latency: **$721.4\text{ms}$**
+* **VLM Reasoning**: *"The hallway is clear with no obstacles on the floor. The path ahead is straight and unobstructed, allowing the robot to continue moving forward."*
+
+![Server Extracted Corridor Trajectory](server_extracted_corridor_trajectory.png)
+
+---
+
+## 🖼️ 2. 연구실 출발 지점 실사 궤적 추출 (Lab Room Start)
+* **파일명**: `server_extracted_lab_trajectory.png`
+* **원본 키프레임**: `scratch/rtabmap_preview/node_0001.jpg` (연구실 책상/의자 사이 FPV)
+* **VLM 추론 결과**: Action: `GO`, Subgoal: `[640, 503]` ($X=1.47\text{m}, Y=-0.00\text{m}$), Latency: **$826.7\text{ms}$**
+* **VLM Reasoning**: *"The robot is positioned in a clear area between two office chairs. The floor is unobstructed in the immediate foreground, allowing for safe forward movement."*
+
+![Server Extracted Lab Trajectory](server_extracted_lab_trajectory.png)
+
+---
+
+## 🖼️ 3. 목표물 정밀 접근 실사 궤적 추출 (Target Approach)
+* **파일명**: `server_extracted_approach_trajectory.png`
+* **원본 키프레임**: `scratch/rtabmap_preview/node_0992.jpg` (복도 끝 콘센트/박스 타겟)
+* **VLM 추론 결과**: Action: `GO`, Subgoal: `[640, 503]` ($X=1.47\text{m}, Y=-0.00\text{m}$), Latency: **$778.4\text{ms}$**
+* **VLM Reasoning**: *"The camera view shows a clear, unobstructed path forward between the two office chairs. The floor is flat and free of obstacles in the immediate center."*
+
+![Server Extracted Approach Trajectory](server_extracted_approach_trajectory.png)
+
+---
+
+## 🚀 4. 실시간 1-Click 재추출 스크립트
+```bash
+python3 /home/unitree/go2_ws_antarctica/scratch/extract_server_trajectory_pipeline.py
+```

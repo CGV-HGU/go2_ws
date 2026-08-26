@@ -10,7 +10,10 @@ from .agent import NavMemoryAgent, NavAgentConfig, EpisodeResult, StepResult
 from .memory_graph import MemoryGraph
 from .vlm_client import BaseVLMClient, OpenAICompatibleVLMClient, HeuristicVLMClient
 from .robot_backend import ActionOutcome, StaticImageBackend, RobotBackend
-from .ros2_backend import Ros2RobotBackend
+try:
+    from .ros2_backend import Ros2RobotBackend
+except ImportError:
+    Ros2RobotBackend = None
 from .schema import CoarseGoal, RobotState, Observation, ObservationView, RelativePose2D
 
 __all__ = [

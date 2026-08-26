@@ -37,7 +37,8 @@ def image_to_data_url(image_path: str | Path, max_side: int = 1024, jpeg_quality
         raise FileNotFoundError(f"image not found: {p}")
     img = Image.open(p).convert("RGB")
     if max(img.size) > max_side:
-        img.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
+        resample = getattr(getattr(Image, "Resampling", Image), "LANCZOS", getattr(Image, "ANTIALIAS", 1))
+        img.thumbnail((max_side, max_side), resample)
     buf = io.BytesIO()
     img.save(buf, format="JPEG", quality=jpeg_quality, optimize=True)
     b64 = base64.b64encode(buf.getvalue()).decode("ascii")
