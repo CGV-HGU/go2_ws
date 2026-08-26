@@ -56,7 +56,7 @@ class HostBridge(Node):
             self.get_logger().info("🐕 Unitree Sport API Direct Publisher (API ID 1008) 활성화 완료")
         else:
             self.sport_req_pub = None
-            self.get_logger().warn("⚠️ unitree_api 모듈 미탑재 (표준 /cmd_vel 단독 발행 모드)")
+            self.get_logger().info("ℹ️ 표준 ROS 2 /cmd_vel 모터 구동 모드 활성화 (go2_driver 연동)")
 
         self.last_cmd_time = time.time()
         self.is_stopped = True
