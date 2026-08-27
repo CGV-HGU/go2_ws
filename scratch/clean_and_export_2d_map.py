@@ -112,4 +112,11 @@ def clean_2d_map(pgm_path="2dmap/0833.pgm", yaml_path="2dmap/0833.yaml", output_
     return True
 
 if __name__ == "__main__":
-    clean_2d_map()
+    if len(sys.argv) >= 2:
+        in_pgm = sys.argv[1]
+        in_yaml = sys.argv[2] if len(sys.argv) >= 3 else (os.path.splitext(in_pgm)[0] + ".yaml")
+        out_dir = sys.argv[3] if len(sys.argv) >= 4 else "2dmap/clean"
+        clean_2d_map(in_pgm, in_yaml, out_dir)
+    else:
+        clean_2d_map()
+

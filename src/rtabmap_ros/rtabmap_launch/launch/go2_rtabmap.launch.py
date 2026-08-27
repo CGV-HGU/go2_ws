@@ -84,7 +84,7 @@ def generate_launch_description():
         'Grid/FromDepth': 'false',
         'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
         'Grid/RangeMax': '6.0',                # 6.0m high-confidence indoor range (eliminates glass multipath)
-        'Grid/RangeMin': '0.3',                # 0.3m near-body blind zone
+        'Grid/RangeMin': '0.35',               # 35cm near-body blind zone (cuts off front nose & antenna reflection)
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
@@ -96,7 +96,8 @@ def generate_launch_description():
         'Grid/MaxObstacleHeight': '1.80',      # Captures full door frame, ignores ceiling lights (>1.8m)
         'Grid/NoiseFilteringRadius': '0.15',   # 15cm radius noise filter
         'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required
-        'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
+        'Grid/FootprintRadius': '0.45',        # 45cm Clear robot body footprint & swinging legs (cuts radial spikes)
+        'Grid/FlatObstacleDetected': 'false',  # Disables flat floor obstacle spikes
         'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (removes 70% point cloud overload)
     }
 

@@ -58,11 +58,19 @@ cleanup() {
     echo -e "${BLUE}🗺️ Exporting 2D Map to 2dmap/map_${TIMESTAMP}...${NC}"
     ros2 run nav2_map_server map_saver_cli -f "$DIR/2dmap/map_${TIMESTAMP}" 2>/dev/null || true
     
+    # Auto-clean ray-tracing spikes and wall noise
+    if [ -f "$DIR/2dmap/map_${TIMESTAMP}.pgm" ]; then
+        echo -e "${BLUE}✨ [CLEANER] Removing Ray-Tracing Spikes & Smoothing Walls...${NC}"
+        python3 "$DIR/scratch/clean_and_export_2d_map.py" "$DIR/2dmap/map_${TIMESTAMP}.pgm" "$DIR/2dmap/map_${TIMESTAMP}.yaml" "$DIR/2dmap/clean" 2>/dev/null || true
+    fi
+    
     echo -e "${GREEN}========================================================================${NC}"
     echo -e "${GREEN} 🏆 [SUCCESS] 2D Map & Live Video Successfully Saved!${NC}"
-    echo -e "${GREEN}    👉 Video File: ${VIDEO_OUT}${NC}"
-    echo -e "${GREEN}    👉 Database  : ~/.ros/rtabmap.db${NC}"
-    echo -e "${GREEN}    👉 2D Map    : 2dmap/map_${TIMESTAMP}.pgm${NC}"
+    echo -e "${GREEN}    👉 Video File : ${VIDEO_OUT}${NC}"
+    echo -e "${GREEN}    👉 Database   : ~/.ros/rtabmap.db${NC}"
+    echo -e "${GREEN}    👉 Raw 2D Map : 2dmap/map_${TIMESTAMP}.pgm${NC}"
+    echo -e "${GREEN}    👉 Clean Map  : 2dmap/clean/map_${TIMESTAMP}_clean.pgm${NC}"
+    echo -e "${GREEN}    👉 Paper PNG  : 2dmap/clean/map_${TIMESTAMP}_clean_publication.png${NC}"
     echo -e "${GREEN}========================================================================${NC}"
     exit 0
 }
