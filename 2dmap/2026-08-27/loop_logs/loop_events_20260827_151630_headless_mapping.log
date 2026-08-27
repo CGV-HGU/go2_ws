@@ -1,0 +1,16 @@
+2026-08-27T15:16:30.875+09:00 START
+2026-08-27T15:17:00.876+09:00 HEARTBEAT frames=45 global=0 proximity=0 rejected=0
+2026-08-27T15:17:30.876+09:00 HEARTBEAT frames=102 global=0 proximity=0 rejected=0
+2026-08-27T15:18:00.876+09:00 HEARTBEAT frames=160 global=0 proximity=0 rejected=0
+2026-08-27T15:18:30.876+09:00 HEARTBEAT frames=215 global=0 proximity=0 rejected=0
+2026-08-27T15:19:00.876+09:00 HEARTBEAT frames=273 global=0 proximity=0 rejected=0
+2026-08-27T15:19:09.192+09:00 ACCEPTED_PROXIMITY ref_id=287 matched_id=276 candidate_id=0 score=0.0
+2026-08-27T15:19:11.362+09:00 ACCEPTED_PROXIMITY ref_id=291 matched_id=276 candidate_id=0 score=0.0
+2026-08-27T15:19:11.881+09:00 ACCEPTED_PROXIMITY ref_id=292 matched_id=275 candidate_id=0 score=0.0
+2026-08-27T15:19:14.521+09:00 ACCEPTED_PROXIMITY ref_id=297 matched_id=270 candidate_id=0 score=0.0
+2026-08-27T15:19:17.696+09:00 ACCEPTED_PROXIMITY ref_id=303 matched_id=265 candidate_id=0 score=0.0
+2026-08-27T15:19:30.876+09:00 HEARTBEAT frames=328 global=0 proximity=5 rejected=0
+2026-08-27T15:20:00.876+09:00 HEARTBEAT frames=385 global=0 proximity=5 rejected=0
+2026-08-27T15:20:30.876+09:00 HEARTBEAT frames=442 global=0 proximity=5 rejected=0
+2026-08-27T15:21:00.876+09:00 HEARTBEAT frames=495 global=0 proximity=5 rejected=0
+2026-08-27T15:21:30.876+09:00 HEARTBEAT frames=548 global=0 proximity=5 rejected=0

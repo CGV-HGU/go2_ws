@@ -2,7 +2,7 @@
 """
 Host Bridge (ROS 2 Foxy / Python 3.8 on Ubuntu 20.04)
 ========================================================================================
-- Subscribes to 50Hz RTAB-Map LIVO Odometry (/rtabmap/odom or /utlidar/robot_pose).
+- Subscribes to Unitree LiDAR+IMU odometry prepared on /livo/odom.
 - Packs 7 double floats (x, y, z, qx, qy, qz, qw) with 4-byte Magic Header ('S2E\\x01')
   and checksum -> Sends 60-byte payload over UDP to Docker (127.0.0.1:9091).
 - Receives 52-byte velocity command with Magic Header from Docker (127.0.0.1:9090).
@@ -16,8 +16,9 @@ import json
 import time
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PoseStamped, Twist
+from geometry_msgs.msg import Twist
 
 try:
     from unitree_api.msg import Request
@@ -41,11 +42,9 @@ class HostBridge(Node):
         self.sock_recv.bind(('127.0.0.1', 9090))
         self.sock_recv.setblocking(False)
 
-        # 1. RTAB-Map LIVO 50Hz 오도메트리 구독 (/rtabmap/odom)
-        self.create_subscription(Odometry, '/rtabmap/odom', self.odom_callback, 10)
-        
-        # 2. Go2 기본 라이다 포즈 백업 구독 (/utlidar/robot_pose)
-        self.create_subscription(PoseStamped, '/utlidar/robot_pose', self.pose_callback, 10)
+        # RTAB-Map consumes this external LIO odometry; it does not publish
+        # /rtabmap/odom in this configuration.
+        self.create_subscription(Odometry, '/livo/odom', self.odom_callback, qos_profile_sensor_data)
         
         # 3. 로봇 모터 명령 발행 토픽 (/cmd_vel) - Layer 1
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -68,15 +67,9 @@ class HostBridge(Node):
         self.get_logger().info("🛡️ Host Bridge (Foxy) 가동 시작 (Dual-Layer: /cmd_vel + Sport API 1008, Magic 0x53324501)")
 
     def odom_callback(self, msg: Odometry):
-        """RTAB-Map LIVO 50Hz Odometry -> Magic + 56B Double Packing -> Docker"""
+        """Unitree LIO odometry -> Magic + 56B double packing -> Docker."""
         p = msg.pose.pose.position
         q = msg.pose.pose.orientation
-        self._send_pose(p.x, p.y, p.z, q.x, q.y, q.z, q.w)
-
-    def pose_callback(self, msg: PoseStamped):
-        """Go2 LiDAR Pose 백업 핸들러"""
-        p = msg.pose.position
-        q = msg.pose.orientation
         self._send_pose(p.x, p.y, p.z, q.x, q.y, q.z, q.w)
 
     def _send_pose(self, x, y, z, qx, qy, qz, qw):

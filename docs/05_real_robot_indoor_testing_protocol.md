@@ -1,5 +1,7 @@
 # 🐕 [05] 실물 로봇 RTAB-Map LIVO ↔ 도커 연동 및 실내 실증 주행 마스터 계획서
 
+> **역사 계획 경고 (2026-08-27)**: 이 문서의 4-Tier 폐루프, `localization:=true`의 pure-odometry 설명, 20회 실증 및 recorder/evaluator 설명은 현재 구현과 최신 `paper` 브랜치에 맞지 않는다. 물리 자율주행에 사용하지 말고 [`4-Tier 실측 감사 및 ICRA 2027 프로토콜`](./master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md)을 따른다.
+
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **상위 검증 문서**: [`docs/07_real_robot_master_plan_factcheck_report.md`](file:///home/unitree/go2_ws_antarctica/docs/07_real_robot_master_plan_factcheck_report.md)  

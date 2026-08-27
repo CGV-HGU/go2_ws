@@ -83,13 +83,15 @@ class Go2FrontCameraPublisher(Node):
         # 1. Publish Image
         img_msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
         img_msg.header.stamp = now
-        img_msg.header.frame_id = 'camera_link'
+        # ROS CameraInfo/Image frames use the optical convention: +z forward,
+        # +x right, +y down. The launch file publishes base_link -> this frame.
+        img_msg.header.frame_id = 'camera_optical_frame'
         self.image_pub.publish(img_msg)
         
         # 2. Publish Synchronized CameraInfo
         info = CameraInfo()
         info.header.stamp = now
-        info.header.frame_id = 'camera_link'
+        info.header.frame_id = 'camera_optical_frame'
         info.width = 1280
         info.height = 720
         info.distortion_model = 'plumb_bob'

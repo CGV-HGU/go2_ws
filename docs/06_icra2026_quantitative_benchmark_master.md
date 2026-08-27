@@ -1,5 +1,7 @@
 # 🏆 [06] ESCAPE-Nav (ICRA 2026) 정량적 실험 벤치마크 마스터 총괄보고서
 
+> **역사 문서 경고 (2026-08-27)**: 현재 제출 기준은 ICRA 2027이며 최신 `paper` protocol은 Go2를 deployment validation으로 제한한다. 기존 5 scenario/20회 표를 실행 기준으로 사용하지 말고 [`4-Tier 실측 감사 및 ICRA 2027 실로봇 실험 프로토콜`](./master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md)을 따른다.
+
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation`**  
 > **문서 근거**: 최신 13페이지 논문 초안(`ICRA_논문 초안.pdf`) **TABLE VIII (Unitree Go2 Paired Core-Scenario Template)** 전수 반영  

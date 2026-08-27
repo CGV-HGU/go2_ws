@@ -1,16 +1,16 @@
 #!/bin/bash
 # ==============================================================================
-# 🚀 Unitree Go2 ESCAPE-Nav 4-Tier Master All-in-One Bringup Launcher
+# Unitree Go2 LIO + RGB RTAB-Map / ESCAPE-Nav bringup
 # ==============================================================================
 # Orchestrates:
 #   Tier 1: Go2 Mainboard Hardware (192.168.123.161)
-#   Tier 2: Jetson Host OS (Camera 30fps, RTAB-Map LIVO 50Hz, Host Bridge)
+#   Tier 2: Jetson Host OS (camera, Unitree LIO bridge, RTAB-Map)
 #   Tier 3: Docker Sandbox (sdam_go2_container S2E Async Policy Node)
 #   Tier 4: Remote GPU VLM Server (100.96.60.15:8000 Qwen3-VL)
 #
 # Usage:
 #   bash scratch/bringup_all_escape_nav.sh             # Online Autonomy Mode (localization:=true)
-#   bash scratch/bringup_all_escape_nav.sh --mapping   # 3D Mapping Mode (localization:=false)
+#   bash scratch/bringup_all_escape_nav.sh --mapping   # New 3D map (backs up DB, then uses -d)
 #   bash scratch/bringup_all_escape_nav.sh --record <Scenario> <Model> <Trial>
 # ==============================================================================
 
@@ -66,9 +66,11 @@ cleanup() {
     echo -e "${YELLOW} 🛑 [ESCAPE-Nav E-STOP] Shutting down all processes safely...${NC}"
     echo -e "${YELLOW}========================================================================${NC}"
     
-    # 1. 도커 내부 S2E 노드 정지
+    # 1. 도커 내부 S2E 노드 정지 (mapping mode never starts it)
     echo -e "${CYAN}[1/4] Stopping Docker S2E Autonomy Node...${NC}"
-    docker exec sdam_go2_container pkill -f vlm_s2e_async_node.py 2>/dev/null || true
+    if [ "$MAPPING_MODE" = false ]; then
+        docker exec sdam_go2_container pkill -f vlm_s2e_async_node.py 2>/dev/null || true
+    fi
     
     # 2. 백그라운드 프로세스 정리
     echo -e "${CYAN}[2/4] Killing background host processes...${NC}"
@@ -80,6 +82,7 @@ cleanup() {
     pkill -f go2_front_camera_publisher.py 2>/dev/null || true
     pkill -f unitree_lidar_ros2_node 2>/dev/null || true
     pkill -f go2_native_sensor_node.py 2>/dev/null || true
+    pkill -f go2_livo_sensor_bridge.py 2>/dev/null || true
     pkill -f host_bridge.py 2>/dev/null || true
     pkill -f go2_rtabmap.launch.py 2>/dev/null || true
     pkill -f rtabmap 2>/dev/null || true
@@ -122,19 +125,21 @@ else
     exit 1
 fi
 
-echo -n "  • Checking Remote VLM Server (100.96.60.15)... "
-if ping -c 1 -W 2 100.96.60.15 >/dev/null 2>&1; then
-    echo -e "${GREEN}ONLINE (14ms VPN Direct)${NC}"
-else
-    echo -e "${YELLOW}WARNING (VPN Unreachable - Running in Offline/Fallback Mode)${NC}"
-fi
+if [ "$MAPPING_MODE" = false ]; then
+    echo -n "  • Checking Remote VLM Server (100.96.60.15)... "
+    if ping -c 1 -W 2 100.96.60.15 >/dev/null 2>&1; then
+        echo -e "${GREEN}ONLINE (14ms VPN Direct)${NC}"
+    else
+        echo -e "${YELLOW}WARNING (VPN Unreachable - Running in Offline/Fallback Mode)${NC}"
+    fi
 
-echo -n "  • Checking Docker Container (sdam_go2_container)... "
-if docker ps --format '{{.Names}}' | grep -q "^sdam_go2_container$"; then
-    echo -e "${GREEN}RUNNING${NC}"
-else
-    echo -e "${YELLOW}STARTING CONTAINER...${NC}"
-    docker start sdam_go2_container >/dev/null 2>&1 || true
+    echo -n "  • Checking Docker Container (sdam_go2_container)... "
+    if docker ps --format '{{.Names}}' | grep -q "^sdam_go2_container$"; then
+        echo -e "${GREEN}RUNNING${NC}"
+    else
+        echo -e "${YELLOW}STARTING CONTAINER...${NC}"
+        docker start sdam_go2_container >/dev/null 2>&1 || true
+    fi
 fi
 
 # ------------------------------------------------------------------------------
@@ -155,14 +160,15 @@ export LD_LIBRARY_PATH=/home/unitree/opencv_build/opencv/build/lib:/usr/local/li
 # Clean up any stale background nodes from previous runs
 pkill -9 -f unitree_lidar 2>/dev/null || true
 pkill -9 -f go2_native_sensor 2>/dev/null || true
+pkill -9 -f go2_livo_sensor_bridge 2>/dev/null || true
 pkill -9 -f go2_front_camera 2>/dev/null || true
+pkill -9 -f rtabmap_loop_logger 2>/dev/null || true
 pkill -9 -f host_bridge 2>/dev/null || true
 pkill -9 -f rtabmap 2>/dev/null || true
 sleep 1
 
-# 멀티캐스트 라우팅 및 4D 라이다 IP 에일리어스 설정
-echo admin | sudo -S fuser -k 6201/udp 2>/dev/null || true
-echo admin | sudo -S ip addr add 192.168.1.2/24 dev eth0 2>/dev/null || true
+# Built-in Go2 topics arrive over CycloneDDS. The external L2 SDK and its
+# 192.168.1.2/UDP 6201 setup are intentionally not started on this path.
 echo admin | sudo -S ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
 
 # 1. 전면 카메라 퍼블리셔 (30fps + CameraInfo)
@@ -171,21 +177,53 @@ python3 /home/unitree/go2_ws_antarctica/scratch/go2_front_camera_publisher.py &
 PIDS+=($!)
 sleep 1
 
-# 2. 바디 IMU 및 오도메트리 Native 센서 노드 (/imu @ 50Hz, /odom @ 50Hz, /tf @ 50Hz)
-echo "  • [2/5] Starting Native Body IMU & Kinematic Odometry Node (50Hz TF)..."
-python3 /home/unitree/go2_ws_antarctica/scratch/go2_native_sensor_node.py &
+# 2. Built-in Unitree LiDAR odometry + IMU + deskewed cloud bridge.
+echo "  • [2/4] Starting Unitree LIO time/frame bridge (/livo/*, no actuation)..."
+python3 /home/unitree/go2_ws_antarctica/scratch/go2_livo_sensor_bridge.py \
+    --ros-args -p cloud_mode:=deskewed -p imu_quaternion_order:=auto &
 PIDS+=($!)
 sleep 1
 
-# 3. Host Bridge (0x53324501 매직넘버 수신기)
-echo "  • [3/4] Starting Host-to-Docker UDP Socket Bridge..."
-python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
-PIDS+=($!)
-sleep 1
+# 3. The command-capable Docker bridge is not needed during mapping.
+if [ "$MAPPING_MODE" = false ]; then
+    echo "  • [3/4] Starting Host-to-Docker UDP Socket Bridge..."
+    python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py &
+    PIDS+=($!)
+    sleep 1
+fi
 
-# 4. RTAB-Map LIVO 50Hz 위치추정 노드 (순정 pointcloud 및 GUI 여부 명시)
-echo "  • [MASTER] Starting RTAB-Map LIVO 50Hz SLAM Node (${MODE_ARG}, ${GUI_ARG})..."
-ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} scan_cloud_topic:=/pointcloud &
+# Mapping evidence logger. RTAB-Map publishes /info only while it has a
+# subscriber, so start this before the mapping node. It is read-only with
+# respect to ROS and writes only closure events/heartbeats to ~/.ros.
+LOOP_LOG_DIR="/home/unitree/.ros/rtabmap_loop_logs"
+if [ "$MAPPING_MODE" = true ]; then
+    LOOP_RUN_LABEL="headless_mapping"
+    if [ "$GUI_MODE" = true ]; then
+        LOOP_RUN_LABEL="gui_mapping"
+    fi
+    echo "  • [3/4] Starting RTAB-Map loop event logger (global/proximity/rejected)..."
+    python3 /home/unitree/go2_ws_antarctica/scratch/rtabmap_loop_logger.py \
+        --ros-args \
+        -p info_topic:=/info \
+        -p output_dir:="$LOOP_LOG_DIR" \
+        -p run_label:="$LOOP_RUN_LABEL" &
+    PIDS+=($!)
+    sleep 1
+fi
+
+# Mapping mode intentionally creates a new DB. Preserve the current DB first.
+RTABMAP_DB="/home/unitree/.ros/rtabmap.db"
+if [ "$MAPPING_MODE" = true ] && [ -f "$RTABMAP_DB" ]; then
+    BACKUP_DIR="/home/unitree/.ros/rtabmap_backups"
+    mkdir -p "$BACKUP_DIR"
+    BACKUP_PATH="$BACKUP_DIR/rtabmap_$(date +%Y%m%d_%H%M%S).db"
+    cp -a "$RTABMAP_DB" "$BACKUP_PATH"
+    echo "  • Existing RTAB-Map DB backed up to: $BACKUP_PATH"
+fi
+
+# 4. RTAB-Map consumes external Unitree LIO odometry; it does not publish VO.
+echo "  • [MASTER] Starting RTAB-Map LIO + visual-place mapping (${MODE_ARG}, ${GUI_ARG})..."
+ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} &
 PIDS+=($!)
 sleep 3
 
@@ -215,10 +253,15 @@ fi
 
 echo -e "\n${GREEN}========================================================================${NC}"
 echo -e "${GREEN} ✅ [ALL SYSTEMS LIVE] Unitree Go2 ESCAPE-Nav is now fully operational!${NC}"
-echo -e "${GREEN}    - Host RTAB-Map LIVO : 50Hz (/rtabmap/odom)${NC}"
-echo -e "${GREEN}    - Front RGB Camera   : 30fps (/camera/front/image_raw)${NC}"
-echo -e "${GREEN}    - Inter-OS Bridge    : < 0.1ms (UDP 127.0.0.1:9090 / 9091)${NC}"
-echo -e "${GREEN}    - Docker S2E Autonomy: Active${NC}"
+echo -e "${GREEN}    - Unitree LIO input  : /livo/odom + /livo/imu + /livo/cloud${NC}"
+echo -e "${GREEN}    - RTAB-Map update    : 2Hz, LiDAR ICP + RGB place recognition${NC}"
+echo -e "${GREEN}    - Front RGB Camera   : /camera/front/image_raw${NC}"
+if [ "$MAPPING_MODE" = false ]; then
+    echo -e "${GREEN}    - Docker S2E Autonomy: Active${NC}"
+else
+    echo -e "${GREEN}    - Recorder/Actuation : Disabled in mapping mode${NC}"
+    echo -e "${GREEN}    - Loop event logs     : ${LOOP_LOG_DIR}/loop_events_*${NC}"
+fi
 echo -e "${GREEN}========================================================================${NC}"
 echo -e "${YELLOW}👉 Press Ctrl+C at any time to safely stop the robot and exit.${NC}"
 echo ""

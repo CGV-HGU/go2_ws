@@ -1,5 +1,7 @@
 # 🗺️ [Know-How 03] RTAB-Map LIVO 3D/2D SLAM 튜닝 및 공식 포럼 파라미터 정밀 해설서
 
+> **2026-08-27 실측 정정:** 이 문서의 일반적인 3DoF/ICP 권고는 현재 Go2 내장 LIO 경로의 검증 결과가 아니다. `rtabmap0827` 실행에서는 `RGBD/NeighborLinkRefining=true`가 raw Unitree LIO보다 pose graph를 크게 변형했고 승인된 loop closure는 0건이었다. 현재 실행의 우선 근거와 단계별 수정안은 [2026-08-27 runtime diagnosis](06_rtabmap_livo_2026-08-27_runtime_diagnosis_and_loop_closure_log.md)를 따른다.
+
 > **대상 시스템**: RTAB-Map ROS 2 (LIVO 융합 SLAM), 2D Occupancy Grid Map (`2dmap/0833`)  
 > **문서 목적**: Mathieu Labbé 교수 공식 포럼 권고안, 3DoF 평면 구속, 2D 점유격자 가시 번짐 억제, 1초 클린맵 후처리 원리 해설
 

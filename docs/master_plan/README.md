@@ -1,5 +1,7 @@
 # 🏆 Unitree Go2 ESCAPE-Nav 마스터 플랜 및 총평 허브 (`docs/master_plan/`)
 
+> **2026-08-27 현재 우선 문서**: 과거 문서의 “완성/100%/최종 승인” 표시는 계획 당시 표현이며 현재 acceptance 증거가 아니다. 4-Tier와 ICRA 실험은 [`Robot–Jetson–Docker–Server 4-Tier 실측 감사 및 ICRA 2027 실로봇 실험 프로토콜`](./[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md), RTAB-Map은 [`문제·원인·해결·재검증 총정리`](./[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md)를 먼저 따른다. 현재 physical autonomy 판정은 **NO-GO**, 매핑은 **2D 부분 합격/3D z 발산 미해결**이다.
+
 > **폴더 목적**: `docs/jetson_plan/`(호스트 런북)과 `docs/docker_plan/`(도커 런북)의 성과를 집대성하여, **실시간 6대 시스템 진단 결과, 아키텍처 팩트체크, 장애물 회피 API/충돌 감지 설계서, PointNav 5-Set 맵 계획, Jetson & Docker 담당자별 2인 최종 탑재 SOP, 서버 통신 6대 잠재 이슈 가이드, RTAB-Map LIVO 아키텍처 해설서, 그리고 슈퍼바이저 전수 시스템 정밀 교차검증 보고서를 날짜별로 체계적으로 관리하는 중앙 총평 허브**입니다.
 
 > 📅 **[요일별/일자별 진행상황 아카이브]: [`docs/master_plan/daily_progress/`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/daily_progress/)** (목요일/금요일/일요일 일자별 보고서)  

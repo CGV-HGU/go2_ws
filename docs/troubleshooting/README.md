@@ -10,6 +10,7 @@
 | :--- | :--- | :---: |
 | **⚡ 초고속 에러 해결 쿡북** | 터미널 에러 문자열별 10초 해결 1줄 명령어 색인집 | [**COOKBOOK**](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/troubleshooting/QUICK_ERROR_LOOKUP_AND_REMEDY_COOKBOOK.md) |
 | **📑 전수 에러 마스터 로그북** | 마일스톤별 11대 전수 에러, 원본 로그, Diff, 검증 데이터 | [**MASTER LOG**](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/troubleshooting/ERROR_AND_RESOLUTION_MASTER_LOG.md) |
+| **🧪 2026-08-27 RTAB-Map 실측 진단 로그** | `rtabmap0827` loop closure 0건, LIO 대비 graph 변형, IMU 누락 및 단계별 해결안 | [**RUNTIME DIAGNOSIS**](06_rtabmap_livo_2026-08-27_runtime_diagnosis_and_loop_closure_log.md) |
 
 ---
 

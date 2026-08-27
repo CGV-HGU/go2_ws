@@ -483,6 +483,165 @@ Known weak evidence:
 - `check_docker_status_dashboard.py` embeds latency PASS numbers and interprets
   executable listings as a live graph.
 
+## 10.1 Go2 RTAB-Map LIO mapping correction (2026-08-27 KST)
+
+The configured mapping path is now explicitly:
+
+```text
+/utlidar/robot_odom + /utlidar/imu + /utlidar/cloud_deskewed
+                    -> scratch/go2_livo_sensor_bridge.py
+                    -> /livo/odom + /livo/imu + /livo/cloud(base_link)
+                    -> RTAB-Map 3D ICP mapping
+/camera/front/*     -> RTAB-Map RGB place recognition / loop candidates
+```
+
+This is Unitree LiDAR+IMU odometry (LIO) plus RGB place recognition. It is not
+metric RTAB-Map visual odometry: the built-in front stream is monocular and no
+calibrated depth/stereo input is available. `Reg/Strategy=1` therefore uses 3D
+ICP for registration while RGB remains subscribed for appearance retrieval.
+
+The retired bridge had relabeled `/utlidar/cloud_deskewed` from `odom` to
+`radar` without transforming XYZ. The replacement applies one common
+LiDAR-to-host clock offset, uses time-matched `/utlidar/robot_odom` to transform
+deskewed points back to `base_link`, removes the 10,000 zero-padding records,
+and contains no actuation publisher/subscriber. A stationary live sensor check
+on 2026-08-27 measured approximately 148 Hz odom, 218 Hz IMU and 15 Hz cloud;
+the output frame was `base_link`, zero points were absent, and the transformed
+cloud min/max/centroid matched the simultaneous `/utlidar/cloud_base` values.
+The built-in `/utlidar/imu` ROS fields currently contain a `w,x,y,z` source
+array, unlike the external SDK's documented `x,y,z,w` order. The bridge compares
+both interpretations against measured gravity once at startup and selected
+`wxyz`; the corrected orientation/gravity residual was 0.48 degrees while the
+unreordered quaternion was physically inconsistent. The built-in IMU's measured
+acceleration is z-up, so no external-L2 mount rotation is applied to this topic.
+
+RTAB-Map configuration changes are in
+`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`: unsupported 0.21.1
+keys were removed, `Grid/NormalK` and `GridGlobal/FootprintRadius` are used,
+`Icp/Force4DoF=true` and `Optimizer/GravitySigma=0.3` preserve a 3D trajectory
+while constraining gravity, and `Mem/UseOdomGravity=false` selects the IMU.
+All 38 RTAB-Map core keys in the launch file were found in the installed 0.21.1
+parameter list. `unitree_lidar_ros2` and `rtabmap_launch` built successfully.
+
+The two Unitree source references are `unitreerobotics/unitree_ros2` for Go2
+built-in DDS topics and `unitreerobotics/unilidar_sdk2` for an independently
+connected L2. The main mapping path uses only built-in DDS topics. The external
+SDK launcher publishes `/external_l2/*` so it cannot collide with `/utlidar/*`;
+its UDP defaults are LiDAR `192.168.1.62`, host `192.168.1.2`, ports 6101/6201.
+The local aarch64 static library SHA-256 matched official SDK v2.0.10:
+`4e334b67c1a92152c89363d8014a6e361d7bf590e58484d7d6ddc8541389de28`.
+
+Mapping mode now skips Docker/command bridges and backs up
+`/home/unitree/.ros/rtabmap.db` before the launch file invokes `-d`. Recorder
+startup remains opt-in only through `--record`; it is not part of mapping mode.
+The image/CameraInfo frame now uses ROS optical-axis convention, but camera
+intrinsics (`fx=fy=600`, zero distortion) and camera/IMU extrinsic positions
+are still estimates, not calibration evidence. The physical-autonomy no-go and
+acceptance gate 5 therefore remain unchanged.
+
+## 10.2 `rtabmap0827` loop-closure and graph-distortion diagnosis (2026-08-27 KST)
+
+The 232.38-second `/home/unitree/.ros/rtabmap.db` run contained 402 sensor
+nodes, 402 RGB images, 402 scans and 350,459 ORB features. RGB appearance
+retrieval was active, but the graph had only 219 neighbor links and 395 gravity
+links: global and local-space loop-closure links were both zero. Thirteen
+visual hypotheses were rejected and no hypothesis was accepted. This run is
+therefore not evidence that loop closure improved or degraded the map; no loop
+closure was applied.
+
+Raw Unitree LIO had a 0.772 m start/end gap and a 0.226 m z range. RTAB-Map's
+optimized keyframes had a 2.289 m gap and a 1.434 m z range, with corrections
+up to 2.097 m in XY and 16.23 degrees in yaw. The primary suspect is
+`RGBD/NeighborLinkRefining=true`, which re-estimated every built-in Unitree LIO
+neighbor link supplied as external odometry using sparse L2 point-to-plane ICP. The next controlled run
+should change only that parameter to `false`. It is now `false` in the source
+and rebuilt launch package. It was subsequently verified in the physical
+`rtabmap0827_2` run summarized in section 10.3. Seven IMU interpolation warnings correspond
+exactly to the seven nodes without gravity links and should be addressed
+separately by delaying cloud publication until a covering IMU sample exists.
+
+The complete evidence, hashes, issue table and staged loop test are in
+`docs/troubleshooting/06_rtabmap_livo_2026-08-27_runtime_diagnosis_and_loop_closure_log.md`.
+Headless mapping now starts `scratch/rtabmap_loop_logger.py` before RTAB-Map and
+persists accepted global/proximity closures, rejected hypotheses, heartbeats
+and the shutdown summary under `/home/unitree/.ros/rtabmap_loop_logs/`. The
+logger subscribes only to `/info` and has no ROS publisher or actuation path.
+
+## 10.3 `rtabmap0827_2` measured result (2026-08-27 KST)
+
+The first run with `RGBD/NeighborLinkRefining=false` produced 563 nodes over
+308.44 seconds and `/home/unitree/.ros/rtabmap0827_2.pgm`. The SQLite database
+passed its integrity check. The graph had 414 neighbor links, five type-2
+local-space proximity closures, 557 gravity links and no type-1 global visual
+closure. RGB retrieval was active on 479 nodes and reached a maximum hypothesis
+score of 0.844551, but 83 visual hypotheses were rejected by the LiDAR ICP
+registration. The five accepted links were recent-node closures (287->276,
+291->276, 292->275, 297->270 and 303->265), not a full-lap visual closure.
+
+The new 2D projection is visually more continuous and contains 3,262 occupied
+cells versus 2,296 in `rtabmap0827`; the run also had about 40 percent more
+nodes, so this alone is not an accuracy proof. A critical remaining issue is
+vertical graph deformation: raw Unitree LIO z varied only 0.0212 m, while
+RTAB-Map's `MapToBase_z` statistics spanned 6.452 m and ended near -6.068 m.
+This deformation began before the five proximity closures. For a flat,
+single-floor navigation map, a controlled 3DoF graph run is the next candidate;
+that configuration has not yet been applied.
+
+The first dedicated text log under-counted rejected hypotheses because RTAB-Map
+0.21.1 appended `/` to statistics keys. The JSONL retained the raw statistics,
+so the result was recoverable. `scratch/rtabmap_loop_logger.py` now accepts both
+key forms, distinguishes GUI/headless run labels and writes `SUMMARY` on
+SIGINT/SIGTERM; the fixes passed synthetic event tests but need confirmation in
+the next physical mapping run.
+
+## 10.4 Four-tier and ICRA 2027 evidence audit (2026-08-27 KST)
+
+The current evidence-first entry points are:
+
+- `docs/master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md`
+  for the robot -> Jetson -> Docker -> server architecture, deployment gaps,
+  safety gates and ICRA experiment protocol.
+- `docs/master_plan/[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md`
+  for the RTAB-Map/LIO issue -> cause -> fix -> verification ledger.
+- `2dmap/2026-08-27/MANIFEST.md` for the two maps, loop logs, hashes and the
+  limits of the conclusions that can be drawn from them.
+
+At audit time the local workspace commit was
+`c977dee555ad396aab1483eecccd6631737abe8c`; the live remote `main` and `paper`
+heads were respectively `fc336569a9a521ecd395925f41014bbcc9265c26` and
+`f301e860fe70755036c39a0e58506100b3dd4be8`. These identifiers are provenance,
+not an instruction to reset, merge or push the dirty workspace.
+
+The four physical tiers are reachable, but the application chain is not an
+autonomous navigation system yet. The Go2 exposes live L2 deskewed cloud, IMU
+and LIO odometry over built-in DDS. The Jetson has adequate observed memory and
+storage headroom. The Docker container is alive with host networking but its
+PID 1 is only an idle keep-alive, its compose defaults select mock VLM/E2E
+backends, and the expected S2E source node and ONNX checkpoint are absent. The
+remote server advertises a text-instruction model endpoint; image-conditioned
+navigation behavior and the required structured response contract were not
+validated. The latest `paper` branch describes the Go2/Foxy/Jetson path as a
+future integration target and keeps physical actuation disabled.
+
+For the paper's paired real-robot comparison, choosing five fixed start-goal
+pairs gives `5 pairs x 2 methods x 5 repetitions = 50` main runs. Full-only
+active-view and dynamic-obstacle demonstrations are kept separate so that they
+do not contaminate the paired Direct-goal versus Full comparison. Every reported
+metric must be reconstructed from immutable sensor, decision, command, safety
+and independent-ground-truth artifacts; the existing sample metric script is
+not sufficient evidence.
+
+The 2026-08-27 map result supports one configuration improvement but not a 3D
+accuracy claim: disabling neighbor-link refinement yielded a more continuous
+2D projection and five accepted local-space proximity links, while no global
+visual loop closure was accepted and the optimized graph still developed a
+6.452 m vertical range. The next mapping experiment should therefore be a
+single-variable planar-graph A/B run while retaining 3D LiDAR observations.
+That proposed parameter change has intentionally not been applied yet.
+
+The physical-autonomy status remains **NO-GO** until the acceptance gates in
+section 12 and the experiment-plan safety gates are satisfied.
+
 ## 11. Safe read-only preflight
 
 Run from the Git root. These commands do not authorize motion:

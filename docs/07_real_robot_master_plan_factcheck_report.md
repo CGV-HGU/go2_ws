@@ -1,5 +1,7 @@
 # 📑 [07] ESCAPE-Nav 실물 로봇 실내 실증 주행 마스터 계획서 검증 및 종합 팩트체크 보고서
 
+> **판정 철회 안내 (2026-08-27)**: 아래의 “완벽히 준수/최종 승인” 결론은 실제 source/runtime과 최신 `paper` 브랜치 재감사 결과로 대체됐다. 현재 physical autonomy는 NO-GO이며, 최신 근거는 [`4-Tier 실측 감사 및 ICRA 2027 프로토콜`](./master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md)이다.
+
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **문서 목적**: [`docs/05_real_robot_indoor_testing_protocol.md`](file:///home/unitree/go2_ws_antarctica/docs/05_real_robot_indoor_testing_protocol.md) 마스터 계획서의 **이종 ROS 2 통신 구조, Jetson Orin NX 16GB 자원 배분, No-Prior-Metric-Map 학술 정합성, Table VIII 5대 시나리오 및 정량 수식($T^\dagger$, DRS, FBR)에 대한 종합 팩트체크 및 4대 실무 개선 권고 보고서**입니다.
