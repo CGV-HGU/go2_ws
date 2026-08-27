@@ -53,7 +53,7 @@ def generate_launch_description():
         
         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
         'approx_sync': True,
-        'approx_sync_max_interval': 0.2,
+        'approx_sync_max_interval': 0.15,
         'queue_size': 100,
         
         # SLAM, Registration & Loop Closure Tuning (Proven 0833.pgm Gold Standard Baseline)
@@ -70,29 +70,34 @@ def generate_launch_description():
         'RGBD/LinearUpdate': '0.1',
         'RGBD/OptimizeFromGraphEnd': 'false',  # Anchors origin [0,0,0] for rock-solid map coordinate stability
         'Mem/ReconstructData': 'true',
+        'Mem/UseOdomGravity': 'true',          # Fuse 50Hz DSP odometry gravity quaternion to maintain level horizon
         'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold for reliable loop closure acceptance
+        'Icp/PointToPlane': 'true',            # 3D Point-to-Plane ICP
+        'Icp/PointToPlaneK': '15',             # 15 nearest neighbors for accurate normal calculation
+        'Icp/PointToPlaneGroundNormalsUp': '0.9',# Force ground normals upward during quadruped gait pitch wobbles
+        'Icp/VoxelSize': '0.05',               # 5cm Voxelization for ICP
+        'Icp/MaxCorrespondenceDistance': '0.20',# 20cm correspondence distance for fast convergence
 
         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Native 3D LiDAR)
         'gen_depth': False,
         'gen_scan': False,
         'Grid/FromDepth': 'false',
         'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
-        'Grid/RangeMax': '8.0',                # 8.0m standard range
-        'Grid/RangeMin': '0.2',
+        'Grid/RangeMax': '6.0',                # 6.0m high-confidence indoor range (eliminates glass multipath)
+        'Grid/RangeMin': '0.3',                # 0.3m near-body blind zone
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
-        'Grid/NormalsSegmentation': 'false',   # Fast & robust height passthrough for unorganized 3D lidar
-        'Grid/MinGroundHeight': '-0.20',       # Ground height lower bound
-        'Grid/MaxGroundHeight': '0.05',        # Ground height upper bound (filter floor roughness)
-        'Grid/MaxObstacleHeight': '1.50',      # Ignore ceiling lights and overhead frames (>1.5m)
-        'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
-        'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
+        'Grid/NormalsSegmentation': 'true',    # 3D Surface Normal Vector Segmentation ON (separates ground vs walls)
+        'Grid/MaxGroundAngle': '40',           # Planes <= 40 deg are classified as free ground
+        'Grid/NormalKSearch': '15',            # 15 nearest neighbors for robust normal calculation
+        'Grid/MinGroundHeight': '-0.45',       # Ground height lower bound (-45cm encompasses standing floor at -35cm)
+        'Grid/MaxGroundHeight': '-0.20',       # Ground height upper bound (-20cm clamps floor roughness)
+        'Grid/MaxObstacleHeight': '1.80',      # Captures full door frame, ignores ceiling lights (>1.8m)
+        'Grid/NoiseFilteringRadius': '0.15',   # 15cm radius noise filter
+        'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required
         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
         'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (removes 70% point cloud overload)
-        'Icp/PointToPlane': 'true',
-        'Icp/VoxelSize': '0.05',
-        'Icp/MaxCorrespondenceDistance': '0.15',
     }
 
     # Mode 1: Mapping Parameters
