@@ -61,14 +61,19 @@ def run_dryrun_test():
         print(f"  ⚠️ Note: S2E core test note: {e}")
 
     # 3. Test Multimodal Observation Generation
-    print("[3/4] Generating Synthetic Multi-Step Observation Sequence...")
-    temp_dir = tempfile.mkdtemp()
-    img_path = os.path.join(temp_dir, "dryrun_frame.jpg")
-    img_arr = np.zeros((720, 1280, 3), dtype=np.uint8)
-    img_arr[360:, :, :] = [120, 120, 120]
-    img_arr[:360, 400:880, :] = [200, 200, 250]
-    Image.fromarray(img_arr).save(img_path, quality=85)
-    print(f"  • Test 720p Image Frame generated: {img_path}")
+    print("[3/4] Preparing Real Go2 Front Camera Observation Frame...")
+    real_snapshot = "/workspace/go2_ws_antarctica/scratch/live_camera_snapshot.jpg"
+    if os.path.exists(real_snapshot):
+        img_path = real_snapshot
+        print(f"  • Real Go2 Camera Snapshot Loaded: {img_path}")
+    else:
+        temp_dir = tempfile.mkdtemp()
+        img_path = os.path.join(temp_dir, "dryrun_frame.jpg")
+        img_arr = np.zeros((720, 1280, 3), dtype=np.uint8)
+        img_arr[360:, :, :] = [120, 120, 120]
+        img_arr[:360, 400:880, :] = [200, 200, 250]
+        Image.fromarray(img_arr).save(img_path, quality=85)
+        print(f"  • Fallback 720p Image Frame generated: {img_path}")
 
     # 4. Connect to Live VLM & Validate Closed-Loop Response
     print("[4/4] Testing Closed-Loop Navigation Iteration against VLM Server...")

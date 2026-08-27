@@ -312,7 +312,7 @@ if [ "$MAPPING_MODE" = false ]; then
         source /workspace/go2_ws_antarctica/s2e-vlm-async-framework/install/setup.bash 2>/dev/null || true
         export ROS_DOMAIN_ID=0
         python3 /workspace/go2_ws_antarctica/scratch/docker_bridge.py &
-        python3 /workspace/go2_ws_antarctica/s2e-vlm-async-framework/src/vlm_s2e_async_node.py
+        ros2 launch s2e_vlm_bringup robot_side.launch.py
     "
     echo -e "${GREEN}  • Docker S2E Policy Node Active (Closed-loop 50Hz)!${NC}"
 fi

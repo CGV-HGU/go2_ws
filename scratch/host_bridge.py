@@ -127,9 +127,13 @@ class HostBridge(Node):
                 payload = data[6:]
                 if magic == MAGIC_HEADER and (zlib.crc32(payload) & 0xFFFF) == crc:
                     vx, vy, vz, wx, wy, wz = struct.unpack('6d', payload)
+                    self.last_cmd_time = time.time()
+                    self.is_stopped = False
                     self._publish_actuation(vx, vy, vz, wx, wy, wz)
             elif len(data) == 48: # 레거시 48바이트 호환성 폴백
                 vx, vy, vz, wx, wy, wz = struct.unpack('6d', data)
+                self.last_cmd_time = time.time()
+                self.is_stopped = False
                 self._publish_actuation(vx, vy, vz, wx, wy, wz)
         except BlockingIOError:
             pass
