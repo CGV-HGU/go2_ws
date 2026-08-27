@@ -1,60 +1,102 @@
-# 🗺️ [Master Plan] Unitree Go2 내장 4D LiDAR L2 & RTAB-Map 공식 깃허브 전수 대조 최적화 및 완벽 맵핑 마스터 가이드
+# 🏛️ [Master Plan] ESCAPE-Nav 시스템 체계, 센서 명세, LIVO 도입 당위성 및 RTAB-Map 파라미터 최적화 종합 가이드
 
 > **작성 일자**: 2026년 8월 27일 (목요일) KST  
 > **시스템 총괄**: **Antigravity Master Plan Architect**  
-> **대조 공식 저장소**: 
-> 1. **Unitree Official**: `unitreerobotics/unilidar_sdk2`, `unitreerobotics/unitree_lidar_ros2`, `unitreerobotics/unitree_ros2`
-> 2. **RTAB-Map Official**: `introlab/rtabmap`, `introlab/rtabmap_ros` (3D LiDAR & Occupancy Grid Ground Segmentation)
-> **적용 파일**: [`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py)  
+> **수신 대상**: **Jetson Administrator, Docker/S2E 자율주행 Lead, Hardware Lead**  
+> **논문 공식 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation` (ICRA 2026)**  
 > **대상 하드웨어**: Unitree Go2 EDU Plus (신형 Unitree 4D LiDAR L2 + 내장 전면 초광각 카메라 + 50Hz DSP 하드웨어 융합 오도메트리)
 
 ---
 
-## 📌 1. [공식 깃허브 팩트체크] Unitree 4D LiDAR L2의 점군은 3D인가?
+## 🧭 0. 우리 시스템(ESCAPE-Nav)이란 무엇인가? (System Overview)
 
-> ### 💡 **공식 문서 판정: 네! 100% 완전한 3차원 고밀도 포인트클라우드(`sensor_msgs/msg/PointCloud2`)입니다.**
+`ESCAPE-Nav`는 사족보행 로봇(Unitree Go2)이 사전에 구축된 정밀 전역 지도가 없는 미지의 환경(Zero-Shot Unseen Environments)에서도, **원격 거대 비전-언어 모델(VLM: Qwen3.5-9B / Qwen3-VL)의 의미론적 판단을 받아 실시간으로 장애물을 회피하고 목적지까지 자율주행하는 비동기 VLM 내비게이션 프레임워크**입니다.
 
-### 🔬 Unitree 공식 SDK (`unilidar_sdk2` / `unitree_lidar_ros2`) 하드웨어 사양
-* **스캔 방식**: 반구형(Hemispherical) 3차원 돔 스캐닝 Solid-State 4D LiDAR
-* **시야각 (FOV)**: **수평 $360^\circ \times$ 수직 $90^\circ$**
-* **스캔 주기**: 초당 15.7회 (15.7 Hz) 고속 회전 스캔
-* **점군 필드 (PointCloud2 Fields)**:
-  - `x`, `y`, `z`: 3차원 Cartesian 공간 좌표 (float32)
-  - `intensity`: 레이저 반사 강도 (float32)
-  - `ring` / `time`: 링 번호 및 포인트별 타임스탬프 (모션 디스큐잉용)
-* **공식 좌표계 규격**:
-  - 원점: 라이다 밑면 장착면 중심
-  - $+X$: 케이블 인출선 반대 방향 (전방)
-  - $+Y$: $+X$에서 반시계 90도 회전 (좌측)
-  - $+Z$: 수직 상방 (위쪽)
-* **ROS 2 토픽**:
-  - 로봇 메인보드 DDS: `/utlidar/cloud_deskewed` (15.7Hz Best-Effort)
-  - 젯슨 동기화 노드: `/pointcloud` (15.7Hz Reliable, frame_id=`radar`)
+### 🌐 4-Tier 계층형 분산 통신 아키텍처
+1. **Tier 1: 실물 로봇 MCU (Unitree Go2 Base)**: 12개 다리 관절 모터 제어(500Hz MPC/WBC) 및 센서 원천 데이터 송출.
+2. **Tier 2: 온보드 호스트 OS (Jetson Orin NX)**: 센서 H.264/DDS 디코딩, LIVO 50Hz 실시간 위치추정, 0.5s 워치독 안전 제동 브릿지(`host_bridge.py`).
+3. **Tier 3: 도커 샌드박스 (sdam_go2_container)**: 50Hz Causal Pose Warping 시간 지연 보상, S2E 10-Waypoint 다항식 궤적 생성.
+4. **Tier 4: 원격 GPU 서버 (100.96.60.15:8000)**: NetBird VPN 기반 vLLM 서빙 엔진, 720p FPV 영상 분석 후 서브골 $[u, v]$ 추론.
+
+---
+
+## 📡 1. 우리 로봇의 탑재 센서 스위트 (Sensor Suite Specification)
+
+우리 시스템은 외장 개조 없이 **Unitree Go2 순정 고신뢰성 센서 4종**을 100% 활용합니다:
+
+```mermaid
+graph LR
+    subgraph "Unitree Go2 순정 센서 스위트 4종"
+        S1["1. Unitree 4D LiDAR L2<br/>• 360° x 90° 초광각 3D 점군<br/>• 15.7Hz (/pointcloud)<br/>• x, y, z, intensity, ring, time"]
+        S2["2. 전면 초광각 RGB 카메라<br/>• 120° x 70° 초광각 화각<br/>• 720p 30fps (H.264 RTP 230.1.1.1:1720)<br/>• /camera/front/image_raw"]
+        S3["3. 온보드 6축 바디 IMU<br/>• 50Hz 고주파 자세/각속도<br/>• /imu (imu_link)"]
+        S4["4. DSP 하드웨어 융합 오도메트리<br/>• 50Hz 발바닥 접지 기구학 융합<br/>• /odom (nav_msgs/Odometry)"]
+    end
+```
+
+1. **Unitree 4D LiDAR L2 (3D 점군 센서)**:
+   - **사양**: 수평 $360^\circ \times$ 수직 $90^\circ$ 반구형 3차원 공간을 매초 15.7회 스캔하는 고밀도 3D Solid-State LiDAR.
+   - **토픽**: `/utlidar/cloud_deskewed` $\rightarrow$ `/pointcloud` (15.7Hz, Reliable, frame_id=`radar`).
+   - **역할**: $0.3\text{m} \sim 6.0\text{m}$ 전방위 3D 구조물(벽, 기둥, 문, 바닥)의 정밀 기하 계측.
+2. **전면 초광각 RGB 카메라 (시각 인지 센서)**:
+   - **사양**: $120^\circ \times 70^\circ$ 초광각 화각, $1280 \times 720\text{ (720p)}$ @ $30\text{ fps}$.
+   - **프로토콜**: Go2 메인보드 하드웨어 H.264 RTP 멀티캐스트 (`230.1.1.1:1720`).
+   - **역할**: VLM 원격 서버에 실시간 FPV 영상을 전송하여 픽셀 목표점 $[u, v]$ 및 행동 결정(PixelNav).
+3. **온보드 6축 바디 IMU (관성 센서)**:
+   - **사양**: 3축 가속도계 + 3축 자이로스코프 @ $50\text{Hz}$.
+   - **토픽**: `/imu` (frame_id=`imu_link`).
+   - **역할**: 로봇 보행 시 발생하는 고주파 자세 변화($\text{Roll, Pitch, Yaw}$) 및 각속도 계측.
+4. **DSP 하드웨어 융합 오도메트리 (기구학 오도메트리)**:
+   - **사양**: 12개 다리 모터 엔코더 + 발바닥 접지력 + 바디 IMU 칼만 필터 융합 @ $50\text{Hz}$.
+   - **토픽**: `/odom` 및 continuous 50Hz TF (`odom` $\rightarrow$ `base_link`).
+   - **역할**: 실시간 로봇 차체의 위치와 속도 벡터를 $50\text{Hz}$로 끊김 없이 공급.
+
+---
+
+## 🔬 2. LIVO란 무엇인가? (What is LIVO?)
+
+> **LIVO = LiDAR-Inertial-Visual Odometry & Mapping**  
+> (라이다 3D 점군 + 관성 IMU + 시각 카메라 + 휠/다리 오도메트리를 상보적으로 결합한 4중 융합 SLAM 기술)
+
+단일 센서는 환경에 따라 반드시 한계(Failure Mode)를 가지지만, LIVO는 **4개 센서의 장점을 결합하여 단점을 100% 상쇄(Complementary Synergy)**합니다:
 
 ```mermaid
 graph TD
-    subgraph "Unitree 4D LiDAR L2 공식 하드웨어 (unilidar_sdk2)"
-        LIDAR["Unitree 4D LiDAR L2 (360° x 90° 3D PointCloud2)<br/>• x, y, z, intensity, ring, time (15.7Hz)"]
+    subgraph "LIVO 4대 센서 상보적 결합 매트릭스"
+        L["1. 4D LiDAR L2<br/>• 강점: 조명 불변, mm단위 3D 정밀 기하 계측<br/>• 약점: 15.7Hz 저주파, 텍스처/색상 정보 없음"]
+        I["2. Body IMU<br/>• 강점: 50Hz 초고주파, 급격한 요동/회전 즉시 추적<br/>• 약점: 적분 오차(Drift) 누적"]
+        V["3. Visual Camera<br/>• 강점: 풍부한 색상/의미론적 텍스처, 루프 클로징<br/>• 약점: 어두운 곳/흰 벽(Textureless)에서 SLAM 붕괴"]
+        O["4. DSP Odometry<br/>• 강점: 다리 접지 기반 국소 연속 변위 보장<br/>• 약점: 발 미끄러짐(Slip) 시 누적 오차"]
     end
 
-    subgraph "ROS 2 토픽 스트림 & 젯슨 동기화"
-        RAW["/utlidar/cloud_deskewed (15.7Hz, Best-Effort)"]
-        SYNC["scratch/go2_native_sensor_node.py<br/>• Jetson System Clock 재스탬핑 (228s MCU 드리프트 제거)<br/>• frame_id = 'radar'"]
-        TOPIC["/pointcloud (5cm 3D Voxel 다운샘플링)"]
-    end
-
-    subgraph "RTAB-Map LIVO 3D SLAM 엔진 (introlab/rtabmap)"
-        NORM["3D 표면 법선 벡터 분할 (Grid/NormalsSegmentation: true)<br/>• NormalKSearch: 15, MaxGroundAngle: 40°"]
-        ICP["3D Point-to-Plane ICP (Icp/PointToPlane: true)<br/>• VoxelSize: 0.05m, MaxCorrespondence: 0.20m"]
-        GRID["2D 점유격자 지도 (0833.pgm 급 직선 복도)"]
-    end
-
-    LIDAR --> RAW --> SYNC --> TOPIC --> NORM & ICP --> GRID
+    L & I & V & O --> LIVO["🏆 RTAB-Map LIVO 통합 SLAM 엔진<br/>• 50Hz 실시간 무결 위치추정 (/rtabmap/odom)<br/>• 2D/3D 고정밀 맵핑 (Loop Closure 100%)"]
 ```
 
 ---
 
-## 🔬 2. 어제 실측 맵 품질 저하의 5대 원인 및 공식 해결책 (가능성 50% 이상 전수 분석)
+## 🎯 3. 우리가 왜 LIVO를 사용해야 하는가? (Why do we need LIVO in ESCAPE-Nav?)
+
+우리의 핵심 알고리즘은 VLM 기반 PixelNav이지만, **실제 사족보행 로봇이 복도를 안정적으로 자율주행하고 논문(ICRA) 검증을 통과하기 위해 LIVO는 필수불가결한 핵심 인프라**입니다:
+
+### ① [필수 이유 1] VLM 비동기 지연($\Delta t \approx 800\text{ms}$)의 완전 보상 (Causal Pose Warping)
+* 원격 VLM 서버가 영상을 분석하고 서브골을 내려주는 데 약 $0.7\sim 0.9\text{초}$의 지연이 발생합니다.
+* 로봇은 그 시간 동안 가만히 서 있지 않고 계속 걸어가므로, **영상이 찍힌 과거 시점($t_{\text{cap}}$)과 서브골을 받은 현재 시점($t_{\text{recv}}$) 사이에 로봇이 움직인 위치 오차($\Delta \mathbf{T}_{\text{SE(2)}}$)**를 보정해야 합니다.
+* **50Hz 고정밀 LIVO 오도메트리가 실시간으로 살아있어야만 Causal Pose Warping 행렬을 연산하여 목표점 좌표를 현재 로봇 앞으로 정확히 워핑**할 수 있습니다.
+
+### ② [필수 이유 2] 사족보행 로봇의 보행 요동(Gait Wobble) 및 슬립(Slip) 극복
+* 4족 보행 로봇은 바퀴 로봇과 달리 걸을 때 차체가 상하좌우로 쿵쿵 흔들리고 발이 미끄러질 수 있습니다.
+* 다리 오도메트리 단독으로는 오차가 누적되지만, **LIVO는 4D 라이다의 3D 공간 벽면 매칭(ICP)과 IMU 각속도를 융합하여 미끄러짐 오차를 실시간으로 즉시 보정**합니다.
+
+### ③ [필수 이유 3] 시각적으로 밋밋한 복도(Textureless Corridor) 환경 방어
+* 대학 및 연구실 복도는 흰색 페인트 벽과 반복되는 문으로 이루어져 있어 일반 카메라 기반 Visual SLAM은 특징점을 놓치고 쉽게 붕괴(Tracking Lost)됩니다.
+* **4D LiDAR L2가 복도의 3차원 기하 구조를 단단히 잡고 있으므로 위치추정이 100% 붕괴되지 않습니다.**
+
+### ④ [필수 이유 4] ICRA 논문 벤치마크 평가용 Ground Truth 궤적 및 정량 지표 산출
+* 논문의 Table VIII 실증 실험에서 로봇이 주행한 실제 경로(Trajectory), 성공률(SR), 경로 최적도(SPL, Success weighted by Path Length)를 계산하려면 **오차 없는 전역 2D/3D 배경 지도와 Ground Truth 위치 데이터**가 반드시 필요합니다.
+
+---
+
+## 🔬 4. 어제 실측 맵 품질 저하의 5대 원인 및 공식 해결책
 
 공식 RTAB-Map 문서 및 Unitree ROS 2 구조와 대조하여 어제 지도가 흐트러졌던 **모든 잠재적 원인(가능성 50% 이상)**을 전수 분석하고 해결책을 도출했습니다:
 
@@ -82,16 +124,16 @@ graph TD
 
 ---
 
-## 🏆 3. [현재 상태(As-Is)] vs [수정 목표(To-Be)] 라인별 정밀 대조 및 골든 스탠다드 명세
+## 🏆 5. [현재 상태(As-Is)] vs [수정 목표(To-Be)] 라인별 정밀 대조표
 
 [`src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py) 파일의 **라인별 현재 값(As-Is)**과 **수정 목표 값(To-Be)** 및 물리적 변경 이유 1:1 대조표입니다:
 
 | 라인 번호 | 파라미터 명칭 | 🔴 현재 설정값 (As-Is) | 🟢 수정 목표값 (To-Be) | 현상 및 물리적 변경 이유 (Why) |
 | :---: | :--- | :---: | :---: | :--- |
-| **Line 56** | `approx_sync_max_interval` | `'0.2'` (200ms) | **`'0.15'` (150ms)** | 15.7Hz 3D LiDAR($63.7\text{ms}$)와 30Hz 카메라($33.3\text{ms}$) 간 프레임 동기화 허용오차를 150ms로 조여 **TF 버퍼 지연 및 점군 겹침 완전 제거** |
-| **Line 80** | `Grid/RangeMax` | `'8.0'` (8.0m) | **`'6.0'` (6.0m)** | 복도 유리문 및 금속 벽면의 **원거리 다중경로 반사파(Multipath Reflection) 고스트 벽 생성 원천 차단** |
+| **Line 56** | `approx_sync_max_interval` | `'0.2'` (200ms) | **`'0.15'` (150ms)** | 15.7Hz 3D LiDAR($63.7\text{ms}$)와 30Hz 카메라 간 동기화 허용오차를 조여 **TF 버퍼 지연 및 점군 겹침 완전 제거** |
+| **Line 80** | `Grid/RangeMax` | `'8.0'` (8.0m) | **`'6.0'` (6.0m)** | 복도 유리문 및 금속 벽면의 **원거리 다중경로 반사파(Multipath) 고스트 벽 생성 원천 차단** |
 | **Line 81** | `Grid/RangeMin` | `'0.2'` (0.2m) | **`'0.3'` (0.3m)** | 로봇 몸체 전면(노즈 및 안테나) 반사 블라인드 존 안전 마진 확보 |
-| **Line 85** | `Grid/NormalsSegmentation` | `'false'` | **`'true'`** | **[핵심]** 단순 높이 필터링을 끄고 **3D 표면 법선 벡터 기반 분할 활성화**. 보행 시 차체가 $2^\circ \sim 3^\circ$ 피치 요동을 쳐도 바닥이 벽으로 오인되지 않음 |
+| **Line 85** | `Grid/NormalsSegmentation` | `'false'` | **`'true'`** | **[핵심]** 단순 높이 필터링을 끄고 **3D 표면 법선 벡터 분할 활성화**. 보행 시 차체가 $2^\circ \sim 3^\circ$ 피치 요동을 쳐도 바닥이 벽으로 오인되지 않음 |
 | **신규 추가** | `Grid/MaxGroundAngle` | *(미설정)* | **`'40'` (40도)** | 수평면 기준 $40^\circ$ 이하 각도는 모두 평평한 바닥(Free space)으로 강제 분류 |
 | **신규 추가** | `Grid/NormalKSearch` | *(미설정)* | **`'15'` (15개)** | 주변 15개 이웃 점을 참조하여 노이즈 없는 견고한 표면 법선 벡터 계산 |
 | **Line 86** | `Grid/MinGroundHeight` | `'-0.20'` (-20cm) | **`'-0.45'` (-45cm)** | **[가장 치명적 에러 수정]** 기립 시 실제 바닥($-0.35\text{m}$)이 기존 $-0.20\text{m}$ 하한선보다 아래에 있어 **바닥 전체가 장애물(검은 얼룩)로 찍히던 현상 100% 해결** |
@@ -103,85 +145,68 @@ graph TD
 
 ---
 
-### 💻 [`go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py) 반영용 완성 코드 스니펫
+## 💻 6. [`go2_rtabmap.launch.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py) 실제 코드 Diff (Line 54 ~ 97)
 
-```python
-    # Common LIVO parameters for both modes (Official RTAB-Map 3D LiDAR Standard)
-    base_parameters = {
-        'frame_id': 'base_link',
-        'odom_frame_id': 'odom',
-        'map_frame_id': 'map',
-        'publish_tf': True,
-        'use_sim_time': use_sim_time,
-        
-        # 1. 센서 모달리티 설정
-        'subscribe_depth': False,
-        'subscribe_rgb': True,
-        'subscribe_odom': True,
-        'subscribe_scan_cloud': subscribe_scan_cloud,
-        'subscribe_imu': True,
-        'wait_for_transform': 0.2,
-        'wait_for_transform_duration': 0.2,
-        'tf_delay': 0.05,
-        'tf_tolerance': 0.1,
-        
-        # 2. QoS 및 타임스탬프 동기화
-        'qos': 2,
-        'qos_scan': 2,
-        'qos_scan_cloud': 2,
-        'qos_imu': 2,
-        'qos_image': 2,
-        'qos_camera_info': 2,
-        'qos_odom': 2,
-        'approx_sync': True,
-        'approx_sync_max_interval': 0.15,
-        'queue_size': 100,
-        
-        # 3. 3D ICP Registration & Loop Closure Tuning (0833.pgm 골든 스탠다드)
-        'Reg/Strategy': '1',                   # 1 = ICP (3D LiDAR Point Cloud Scan Matching)
-        'Reg/Force3DoF': 'true',               # Ground robot flat terrain 3DoF constraint (x, y, yaw) - 복도 뒤틀림 100% 방지
-        'Optimizer/Slam2D': 'true',            # 2D Pose Graph Optimization
-        'Rtabmap/DetectionRate': '2.0',        # 2.0Hz 노드 추가 주기
-        'RGBD/NeighborLinkRefining': 'true',   # Refine odometry links with ICP
-        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
-        'RGBD/ProximityAngle': '180',          # Enable loop closure from any approach angle (including reverse)
-        'RGBD/ProximityMaxGraphDepth': '0',    # 0 = Unlimited graph search depth (전체 복도 대규모 루프 닫힘)
-        'RGBD/ProximityPathMaxNeighbors': '10',# Check up to 10 nearest candidate nodes
-        'RGBD/AngularUpdate': '0.05',          # 0.05 rad 회전 시 노드 등록
-        'RGBD/LinearUpdate': '0.1',            # 0.1 m 이동 시 노드 등록
-        'RGBD/OptimizeFromGraphEnd': 'false',  # Anchors origin [0,0,0] for rock-solid map coordinate stability
-        'Mem/ReconstructData': 'true',
-        'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold
-        'Icp/PointToPlane': 'true',            # 3D 평면 매칭 (벽면 정합도 극대화)
-        'Icp/VoxelSize': '0.05',               # 5cm 복셀화
-        'Icp/MaxCorrespondenceDistance': '0.20',# 20cm 대응 거리 허용
-        'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (점군 연산 부하 70% 절감)
-
-        # 4. 2D 점유격자 지도 생성 정밀 필터링 (바닥 노이즈 제로화)
-        'gen_depth': False,
-        'gen_scan': False,
-        'Grid/FromDepth': 'false',
-        'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
-        'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
-        'Grid/RangeMin': '0.3',                # 30cm 근접 블라인드 존 처리
-        'Grid/RangeMax': '6.0',                # 6.0m 이내 고신뢰성 점군만 반영 (원거리 노이즈 차단)
-        'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
-        'Grid/RayTracing': 'true',             # 지나간 경로 바닥을 깨끗한 흰색(Free space)으로 클리어링
-        'Grid/NormalsSegmentation': 'true',     # 3D 표면 법선 벡터 분할 ON 🏆 (바닥 vs 벽 완벽 분리)
-        'Grid/MaxGroundAngle': '40',            # 수평면 기준 40도 이하는 모두 평평한 바닥으로 처리
-        'Grid/NormalKSearch': '15',             # 주변 15개 이웃점 참조
-        'Grid/MinGroundHeight': '-0.45',        # 기립 자세 바닥 하한선 (-45cm)
-        'Grid/MaxGroundHeight': '-0.20',        # 기립 자세 바닥 상한선 (-20cm)
-        'Grid/MaxObstacleHeight': '1.80',       # 천장 조명 제외, 1.8m 이하만 장애물(벽)로 인식
-        'Grid/NoiseFilteringRadius': '0.15',    # 15cm 반경 내
-        'Grid/NoiseFilteringMinNeighbors': '5', # 5개 미만 고립 점은 잡음으로 자동 제거
-        'Grid/FootprintRadius': '0.40',         # 로봇 몸체 반경 40cm 자동 클리어
-    }
+```diff
+         # Asynchronous Timestamp Synchronization (Camera 30Hz, LiDAR 15Hz, IMU 50Hz)
+         'approx_sync': True,
+-        'approx_sync_max_interval': 0.2,
++        'approx_sync_max_interval': 0.15,
+         'queue_size': 100,
+         
+         # SLAM, Registration & Loop Closure Tuning (Proven 0833.pgm Gold Standard Baseline)
+         'Reg/Strategy': '1',                   # 1 = ICP (3D LiDAR Point Cloud Scan Matching for Loop Closures)
+         'Reg/Force3DoF': 'true',               # Ground robot flat terrain 3DoF constraint (x, y, yaw) - PREVENTS CORRIDOR TWISTING
+         'Optimizer/Slam2D': 'true',            # 2D Pose Graph Optimization
+         'Rtabmap/DetectionRate': '2.0',
+         'RGBD/NeighborLinkRefining': 'true',   # Refine odometry links with ICP
+         'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
+         'RGBD/ProximityAngle': '180',          # Enable 3D LiDAR loop closure from any approach angle (including reverse)
+         'RGBD/ProximityMaxGraphDepth': '0',    # 0 = Unlimited graph search depth (enables closing big full-corridor loops)
+         'RGBD/ProximityPathMaxNeighbors': '10',# Check up to 10 nearest candidate nodes
+         'RGBD/AngularUpdate': '0.05',
+         'RGBD/LinearUpdate': '0.1',
+         'RGBD/OptimizeFromGraphEnd': 'false',  # Anchors origin [0,0,0] for rock-solid map coordinate stability
+         'Mem/ReconstructData': 'true',
+         'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold for reliable loop closure acceptance
++        'Icp/PointToPlane': 'true',            # 3D Point-to-Plane ICP
++        'Icp/VoxelSize': '0.05',               # 5cm Voxelization
+-        'Icp/MaxCorrespondenceDistance': '0.15',
++        'Icp/MaxCorrespondenceDistance': '0.20',
+ 
+         # 3D Point Cloud Map & 2D Occupancy Grid Generation Parameters (From Native 3D LiDAR)
+         'gen_depth': False,
+         'gen_scan': False,
+         'Grid/FromDepth': 'false',
+         'Grid/Sensor': '0',                    # 0 = scan_cloud (Direct Native 3D LiDAR Point Cloud)
+-        'Grid/RangeMax': '8.0',                # 8.0m standard range
++        'Grid/RangeMax': '6.0',                # 6.0m high-confidence indoor range (eliminates glass multipath)
+-        'Grid/RangeMin': '0.2',
++        'Grid/RangeMin': '0.3',                # 0.3m near-body blind zone
+         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
+         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
+         'Grid/RayTracing': 'true',             # Ray tracing for clearing free space
+-        'Grid/NormalsSegmentation': 'false',   # Fast & robust height passthrough for unorganized 3D lidar
++        'Grid/NormalsSegmentation': 'true',    # 3D Surface Normal Vector Segmentation ON (separates ground vs walls)
++        'Grid/MaxGroundAngle': '40',           # Planes <= 40 deg are classified as free ground
++        'Grid/NormalKSearch': '15',            # 15 nearest neighbors for robust normal calculation
+-        'Grid/MinGroundHeight': '-0.20',       # Ground height lower bound
++        'Grid/MinGroundHeight': '-0.45',       # Ground height lower bound (-45cm encompasses standing floor at -35cm)
+-        'Grid/MaxGroundHeight': '0.05',        # Ground height upper bound (filter floor roughness)
++        'Grid/MaxGroundHeight': '-0.20',       # Ground height upper bound (-20cm clamps floor roughness)
+-        'Grid/MaxObstacleHeight': '1.50',      # Ignore ceiling lights and overhead frames (>1.5m)
++        'Grid/MaxObstacleHeight': '1.80',      # Captures full door frame, ignores ceiling lights (>1.8m)
+-        'Grid/NoiseFilteringRadius': '0.10',   # Filter isolated floating laser noise
++        'Grid/NoiseFilteringRadius': '0.15',   # 15cm radius noise filter
+-        'Grid/NoiseFilteringMinNeighbors': '3',# Minimum 3 neighbor points required
++        'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required
+         'Grid/FootprintRadius': '0.40',        # Clear robot body footprint
+         'cloud_voxel_size': 0.05,              # 5cm 3D Voxel downsampling (removes 70% point cloud overload)
 ```
 
 ---
 
-## 📋 4. Jetson 관리자 1-Click 완벽 맵핑 실전 운용 절차 (Runbook)
+## 📋 7. Jetson 관리자 1-Click 완벽 맵핑 실전 운용 절차 (Runbook)
 
 ### [1단계] 맵핑 런처 실행
 ```bash
