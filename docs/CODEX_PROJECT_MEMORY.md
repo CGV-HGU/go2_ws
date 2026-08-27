@@ -618,10 +618,14 @@ and LIO odometry over built-in DDS. The Jetson has adequate observed memory and
 storage headroom. The Docker container is alive with host networking but its
 PID 1 is only an idle keep-alive, its compose defaults select mock VLM/E2E
 backends, and the expected S2E source node and ONNX checkpoint are absent. The
-remote server advertises a text-instruction model endpoint; image-conditioned
-navigation behavior and the required structured response contract were not
-validated. The latest `paper` branch describes the Go2/Foxy/Jetson path as a
-future integration target and keeps physical actuation disabled.
+remote server advertises `qwen3.5-9b-instruct`. A 2026-08-27 16:46 KST
+charging-window refresh verified host and container `GET /v1/models`, a
+Docker-originated text `action=stop` JSON response, and one archived real Go2
+RGB image request that identified an office chair while preserving `stop`.
+This proves static image-payload acceptance, not live-camera navigation, the
+full VL-MAG contract, S2E execution or safe actuation. The latest `paper`
+branch describes the Go2/Foxy/Jetson path as a future integration target and
+keeps physical actuation disabled.
 
 For the paper's paired real-robot comparison, choosing five fixed start-goal
 pairs gives `5 pairs x 2 methods x 5 repetitions = 50` main runs. Full-only

@@ -34,7 +34,10 @@
   - ping 평균 약 16.4 ms
   - `/v1/models` 응답 성공
   - 열거된 모델: `qwen3.5-9b-instruct`
-  - 영상 입력, schema 준수, 지연 분포 및 실제 navigation reasoning은 미검증
+  - 16:46 KST 재검사에서 host와 Docker 모두 `/v1/models` 성공
+  - Docker text 요청은 `action=stop` JSON을 반환
+  - 보관된 실제 Go2 RGB frame에서 `office chair`를 식별해 image payload 수용 확인
+  - live camera, 전체 VL-MAG schema, 지연 분포 및 navigation 품질은 미검증
 
 ### 2.2 최신 논문 저장소
 
@@ -97,7 +100,7 @@ flowchart LR
 | Tier 1 Robot | Go2와 내장 L2 DDS topic 도달, 실제 cloud/IMU/odom 표본 수신 | 제어 권한·E-stop·장애물 안전 회로의 독립 검증 없음 | 센서 PASS / 자율제어 NO-GO |
 | Tier 2 Jetson | `/utlidar/* → /livo/* → RTAB-Map`, 2D 지도 생성, 루프 로그 | camera calibration은 추정값, 3D z 발산, localization acceptance 미완료 | 매핑 PARTIAL |
 | Tier 3 Docker | Jazzy와 패키지 executable skeleton 존재 | 컨테이너 idle, 브링업 대상 파일 없음, S2E ONNX 없음, 기본값 mock | FAIL |
-| Tier 4 Server | 네트워크와 `/v1/models` 응답 | 현재 모델의 실제 vision 입력과 strict JSON, latency/retry/failure 검증 없음 | 접속 PASS / 기능 UNVERIFIED |
+| Tier 4 Server | 네트워크, `/v1/models`, text JSON, 보관 Go2 RGB 1장 vision 응답 | live frame, 전체 navigation schema, latency/retry/failure 검증 없음 | 정적 API PARTIAL |
 | 전체 폐루프 | 설계 문서와 일부 bridge 코드 존재 | 최신 VL-MAG/S2E, provenance, safety, logging이 하나의 run으로 닫히지 않음 | NO-GO |
 
 ## 5. 과거 4-Tier 문서에서 교정할 사항
@@ -337,7 +340,8 @@ experiments/real_robot_icra2027/<campaign_id>/
 - [ ] 브링업이 존재하는 ROS package executable을 호출하도록 변경
 - [ ] native S2E checkpoint 확보, hash 고정, 실제 11-frame inference 검증
 - [ ] VLM request에 실제 image/multi-view가 포함되고 strict schema가 검증됨
-- [ ] 서버 모델이 vision input을 지원함을 실제 API test로 확인
+- [x] 보관된 실제 Go2 RGB 1장으로 서버의 image payload 수용 확인
+- [ ] live camera와 전체 navigation schema로 vision behavior 재검증
 - [ ] 실측 camera intrinsics/distortion/extrinsics 적용
 - [ ] 4DoF/3DoF map A/B 후 deployment DB 하나 고정
 - [ ] Docker 기본 mock을 fail-closed로 제거하고 real/mock provenance 표시
@@ -421,7 +425,8 @@ Active-view recovery, rolling obstacle, 승인된 dynamic trial을 main paired �
 | camera가 metric visual odometry 제공 | 불가 |
 | 4-Tier full autonomy 완성 | 불가 |
 | Qwen server 접속과 model enumeration | 가능 |
-| 현재 server/model의 vision navigation 품질 | 불가: 미검증 |
+| 현재 server가 보관 Go2 RGB image payload를 처리 | 가능: 단일 frame API 확인 |
+| 현재 server/model의 live vision navigation 품질 | 불가: 전체 경로 미검증 |
 | ICRA real-robot quantitative result | 불가: 실제 campaign 없음 |
 
 ## 16. 참조

@@ -1,5 +1,7 @@
 # 🐳 Unitree Go2 도커(Docker) 샌드박스 자율주행 마스터 플랜 및 운영 런북
 
+> **역사 계획 안내**: 아래 `PASS/완료` 표시는 현재 real S2E 폐루프 acceptance가 아니다. 현재 측정값과 안전한 무구동 순서는 [`docs/README.md`](../README.md)와 [`00_CURRENT_STATUS_AND_NEXT_STEPS.md`](../00_CURRENT_STATUS_AND_NEXT_STEPS.md)를 따른다.
+
 > **폴더 목적**: Host OS(Ubuntu 20.04 / Foxy)와 격리된 **도커 컨테이너(`sdam_go2_container`, Ubuntu 24.04 LTS / ROS 2 Jazzy ARM64 / Python 3.12)** 내부에서 비동기 VLM 추론 및 S2E 50Hz 고속 궤적 제어기를 안전하고 무결하게 배포/운영/검증하기 위한 전용 런북 허브입니다.
 
 ---

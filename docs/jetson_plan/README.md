@@ -1,5 +1,7 @@
 # ⚡ Unitree Go2 젯슨(Jetson) 호스트 OS 마스터 플랜 및 운영 런북
 
+> **현재 실행 기준**: 아래 과거 완료 표보다 [`docs/README.md`](../README.md)와 [`충전 중 무구동 점검 및 충전 후 RTAB-Map 순서`](../00_CURRENT_STATUS_AND_NEXT_STEPS.md)를 우선한다. 현재 launch는 아직 4DoF이며 planar 3DoF 자격 검증 전이다.
+
 > **폴더 목적**: Unitree Go2 온보드 **Jetson Orin NX (Ubuntu 20.04 LTS / ROS 2 Foxy / CUDA 11.4)** 호스트 환경에서 하드웨어 센서, DDS 네트워크, LIVO SLAM 매핑, 도커 브릿지 및 모터 제어를 총괄 운영하기 위한 전용 런북 허브입니다.
 
 ---

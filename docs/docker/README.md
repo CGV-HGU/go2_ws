@@ -1,5 +1,7 @@
 # 🐳 Unitree Go2 ESCAPE-Nav Docker Documentation Index
 
+> **현재 상태 우선**: 이 폴더의 과거 PASS 표현보다 [`docs/README.md`](../README.md)와 [`Jetson–Docker–Server 무구동 점검`](../00_CURRENT_STATUS_AND_NEXT_STEPS.md)을 우선한다. 컨테이너는 현재 idle이며 실제 S2E/checkpoint와 물리 command path는 준비되지 않았다.
+
 이 폴더는 Unitree Go2 로봇의 온보드 도커 샌드박스(`sdam_go2_container`, Ubuntu 24.04 / ROS 2 Jazzy) 관련 아키텍처, 셋업 가이드 및 자율주행 배포 마스터 플랜 문서를 관리합니다.
 
 ---
