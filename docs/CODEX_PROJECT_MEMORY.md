@@ -641,7 +641,11 @@ accuracy claim: disabling neighbor-link refinement yielded a more continuous
 visual loop closure was accepted and the optimized graph still developed a
 6.452 m vertical range. The next mapping experiment should therefore be a
 single-variable planar-graph A/B run while retaining 3D LiDAR observations.
-That proposed parameter change has intentionally not been applied yet.
+The default launch remains the 4DoF baseline. A dedicated
+`mapping_planar_headless.sh` now selects the three planar arguments and stores
+the database, console, loop events, configuration snapshots and hashes under a
+single run ID. It has passed static/build validation but has no physical result
+yet.
 
 The physical-autonomy status remains **NO-GO** until the acceptance gates in
 section 12 and the experiment-plan safety gates are satisfied.

@@ -18,7 +18,7 @@
 | 구간 | 현재 상태 | 다음 게이트 |
 |---|---|---|
 | Go2/L2 | 충전 중·로봇 OFF(사용자 전달) | 전원 후 DDS cloud/IMU/odom preflight |
-| RTAB-Map | 2D map 개선, type-2 closure 5개 | planar 3DoF 짧은 A/B와 type-1 global visual closure |
+| RTAB-Map | 2D map 개선, type-2 closure 5개; 별도 planar headless profile 준비 | `mapping_planar_headless.sh` 짧은 A/B와 type-1 global visual closure |
 | Jetson | Docker·NetBird·NetworkManager active, 자원 여유 | 현 상태 유지 |
 | Jetson↔Docker | 임시 비제어 포트 양방향 UDP PASS | production bridge 대신 command sink 시험 |
 | Docker | 컨테이너 실행 중, PID 1은 idle `tail` | 실제 S2E runtime/checkpoint 배치 |
@@ -43,4 +43,3 @@
 - **NO-GO**: 물리 자율주행 금지
 
 과거 문서의 `완벽`, `100%`, `ALL PASS`, `50 Hz RTAB-Map`, `Production-ready` 문구는 현재 acceptance 근거가 아니다. 위 우선 문서와 실제 소스·런타임이 항상 우선한다.
-

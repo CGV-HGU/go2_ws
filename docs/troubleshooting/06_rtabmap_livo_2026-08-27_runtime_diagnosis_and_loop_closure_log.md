@@ -371,7 +371,7 @@ Recorder는 mapping 기본 경로에서 계속 비활성 상태다.
 - `RGBD/NeighborLinkRefining=false` 적용
 - recorder, Docker/VLM, host command bridge는 계속 비활성
 
-Logger는 RTAB-Map `/info`를 읽기만 하며 ROS publisher나 제어 인터페이스가 없다. 출력 경로:
+Logger는 RTAB-Map `/info`를 읽기만 하며 ROS publisher나 제어 인터페이스가 없다. 기존 4DoF wrapper의 출력 경로:
 
 ```text
 /home/unitree/.ros/rtabmap_loop_logs/loop_events_<time>_headless_mapping.jsonl
@@ -392,15 +392,17 @@ Headless 실행:
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_headless.sh
+./mapping_planar_headless.sh
 ```
+
+이 planar wrapper는 기존 `mapping_headless.sh`의 4DoF 기본값을 보존하면서 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`, `Optimizer/Slam2D=true`를 함께 전달한다. DB, 전체 console, loop event, config snapshot과 SHA-256은 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 보존한다.
 
 SSH 단절 가능성이 있으면 foreground mapping을 임의로 `nohup` 처리하기보다 `tmux` 안에서 실행하고, 종료 시 다시 attach하여 `Ctrl+C`로 RTAB-Map과 logger를 정상 종료한다.
 
 실시간 확인 예시:
 
 ```bash
-latest_log=$(ls -1t /home/unitree/.ros/rtabmap_loop_logs/loop_events_*.log | head -1)
+latest_log=$(ls -1t /home/unitree/.ros/rtabmap_runs/latest/loop_logs/loop_events_*.log | head -1)
 tail -F "$latest_log"
 ```
 
@@ -457,7 +459,7 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 
 새 PGM은 육안상 벽 점이 더 연속적이고 세부 구조가 더 많이 남았다. 다만 노드 수도 약 40% 증가했으므로 occupied cell 증가만으로 절대 정확도를 증명할 수는 없다. 개선의 주된 후보는 잘못된 연속 neighbor ICP를 끈 것이며, 5개의 local proximity closure도 해당 구간 정합에 기여했을 수 있다.
 
-출발점과 종료점이 물리적으로 같은 장소였다는 전제에서 raw LIO의 시작-종료 XY gap은 약 1.471 m, RTAB-Map graph pose의 XY gap은 약 0.895 m로 약 39.2% 감소했다. 이는 planar graph 보정이 유익했다는 증거지만, ground-truth 위치 측정이 없으므로 절대 위치 정확도 수치로 사용하지 않는다.
+출발점과 종료점이 물리적으로 같은 장소였다는 전제에서 raw LIO의 시작-종료 XY gap은 약 1.471 m, RTAB-Map graph pose의 XY gap은 약 0.895 m로 약 39.2% 감소했다. 이는 당시 4DoF RTAB graph 내부 보정이 XY gap을 줄인 증거지만, ground-truth 위치 측정이 없으므로 절대 위치 정확도 수치로 사용하지 않는다.
 
 ### 15.4 3D graph 주의사항
 
@@ -468,7 +470,7 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 - 최종 raw LIO z: 약 0.310 m
 - 최종 RTAB-Map map pose z: 약 -6.068 m
 
-수직 변형은 첫 proximity closure 전부터 누적되어 있었으므로 5개 local closure만의 문제는 아니다. gravity-constrained 4DoF graph가 보행 중 roll/pitch를 반영하면서 긴 평면 경로를 z 방향으로 기울인 가능성이 크다. 단일층 2D navigation map이 목적이면 다음 A/B는 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`, `Optimizer/Slam2D=true`가 우선 후보다. 이 3DoF 변경은 이 결과 기록 시점에는 적용하지 않았다.
+수직 변형은 첫 proximity closure 전부터 누적되어 있었으므로 5개 local closure만의 문제는 아니다. gravity-constrained 4DoF graph가 보행 중 roll/pitch를 반영하면서 긴 평면 경로를 z 방향으로 기울인 가능성이 크다. 단일층 2D navigation map이 목적이면 다음 A/B는 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`, `Optimizer/Slam2D=true`가 우선 후보다. 이 3DoF 변경은 당시 결과 기록 시점에는 적용되지 않았고, 현재는 별도 planar headless profile로 준비되어 실주행 검증을 기다린다.
 
 ### 15.5 Logger 정정
 

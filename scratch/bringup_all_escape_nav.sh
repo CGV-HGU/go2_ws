@@ -11,6 +11,8 @@
 # Usage:
 #   bash scratch/bringup_all_escape_nav.sh             # Online Autonomy Mode (localization:=true)
 #   bash scratch/bringup_all_escape_nav.sh --mapping   # New 3D map (backs up DB, then uses -d)
+#   bash scratch/bringup_all_escape_nav.sh --mapping --planar
+#                                                     # Planar x/y/yaw graph with 3D LiDAR ICP
 #   bash scratch/bringup_all_escape_nav.sh --record <Scenario> <Model> <Trial>
 # ==============================================================================
 
@@ -21,6 +23,13 @@ MAPPING_MODE=false
 RECORD_MODE=false
 GUI_MODE=false
 GUI_ARG="rtabmap_viz:=false"
+PRINT_CONFIG=false
+GRAPH_PROFILE="4dof"
+GRAPH_ARGS=(
+    "reg_force_3dof:=false"
+    "icp_force_4dof:=true"
+    "optimizer_slam_2d:=false"
+)
 SCENARIO="Dead_end_room"
 MODEL="Full_ESCAPE_Nav"
 TRIAL="Trial1"
@@ -38,6 +47,19 @@ while [[ $# -gt 0 ]]; do
             export DISPLAY="${DISPLAY:-:0}"
             shift
             ;;
+        --planar)
+            GRAPH_PROFILE="planar3dof"
+            GRAPH_ARGS=(
+                "reg_force_3dof:=true"
+                "icp_force_4dof:=false"
+                "optimizer_slam_2d:=true"
+            )
+            shift
+            ;;
+        --print-config)
+            PRINT_CONFIG=true
+            shift
+            ;;
         --record)
             RECORD_MODE=true
             SCENARIO=${2:-"Dead_end_room"}
@@ -51,6 +73,21 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+if [ "$GRAPH_PROFILE" = "planar3dof" ] && [ "$MAPPING_MODE" = false ]; then
+    echo "Error: --planar is accepted only together with --mapping."
+    exit 2
+fi
+
+if [ "$PRINT_CONFIG" = true ]; then
+    echo "mapping_mode=$MAPPING_MODE"
+    echo "gui_mode=$GUI_MODE"
+    echo "graph_profile=$GRAPH_PROFILE"
+    printf 'graph_arg=%s\n' "${GRAPH_ARGS[@]}"
+    echo "recorder=$RECORD_MODE"
+    echo "run_dir=${RTABMAP_RUN_DIR:-default}"
+    exit 0
+fi
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -61,9 +98,15 @@ NC='\033[0m' # No Color
 PIDS=()
 
 cleanup() {
+    local cleanup_status=$?
+    trap - SIGINT SIGTERM EXIT
     echo ""
     echo -e "${YELLOW}========================================================================${NC}"
-    echo -e "${YELLOW} 🛑 [ESCAPE-Nav E-STOP] Shutting down all processes safely...${NC}"
+    if [ "$MAPPING_MODE" = true ]; then
+        echo -e "${YELLOW} 🛑 [MAPPING SHUTDOWN] Stopping sensor and mapping processes...${NC}"
+    else
+        echo -e "${YELLOW} 🛑 [ESCAPE-Nav E-STOP] Shutting down all processes safely...${NC}"
+    fi
     echo -e "${YELLOW}========================================================================${NC}"
     
     # 1. 도커 내부 S2E 노드 정지 (mapping mode never starts it)
@@ -79,6 +122,14 @@ cleanup() {
             kill -SIGINT "$pid" 2>/dev/null || kill -9 "$pid" 2>/dev/null || true
         fi
     done
+    # Give the read-only loop logger time to fsync its SUMMARY before the
+    # fallback process-name cleanup below.
+    for pid in "${PIDS[@]}"; do
+        for _ in {1..20}; do
+            kill -0 "$pid" 2>/dev/null || break
+            sleep 0.05
+        done
+    done
     pkill -f go2_front_camera_publisher.py 2>/dev/null || true
     pkill -f unitree_lidar_ros2_node 2>/dev/null || true
     pkill -f go2_native_sensor_node.py 2>/dev/null || true
@@ -87,9 +138,11 @@ cleanup() {
     pkill -f go2_rtabmap.launch.py 2>/dev/null || true
     pkill -f rtabmap 2>/dev/null || true
     
-    # 3. 로봇 모터 0 속도 안전 발행
-    echo -e "${CYAN}[3/4] Sending zero velocity safety command...${NC}"
-    python3 -c "
+    # 3. Mapping never creates a command path. Online autonomy is not an
+    # accepted physical mode, but preserve its historical zero-packet cleanup.
+    if [ "$MAPPING_MODE" = false ]; then
+        echo -e "${CYAN}[3/4] Sending zero velocity safety command...${NC}"
+        python3 -c "
 import socket, struct, zlib
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 raw = struct.pack('6d', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
@@ -97,9 +150,12 @@ crc = zlib.crc32(raw) & 0xFFFF
 packet = struct.pack('!IH', 0x53324501, crc) + raw
 sock.sendto(packet, ('127.0.0.1', 9090))
 " 2>/dev/null || true
+    else
+        echo -e "${CYAN}[3/4] Mapping mode: no command socket or motor packet was created.${NC}"
+    fi
 
     echo -e "${GREEN}[4/4] All systems safely terminated. Bye! 🐕${NC}"
-    exit 0
+    exit "$cleanup_status"
 }
 
 trap cleanup SIGINT SIGTERM EXIT
@@ -107,6 +163,7 @@ trap cleanup SIGINT SIGTERM EXIT
 echo -e "${CYAN}========================================================================${NC}"
 echo -e "${CYAN} 🐕 [Unitree Go2 ESCAPE-Nav] 4-Tier Master Bringup System${NC}"
 echo -e "${CYAN} Mode    : $([ "$MAPPING_MODE" = true ] && echo "🗺️ 3D MAPPING" || echo "🚀 ONLINE AUTONOMOUS NAVIGATION")${NC}"
+echo -e "${CYAN} Graph   : ${GRAPH_PROFILE} (${GRAPH_ARGS[*]})${NC}"
 echo -e "${CYAN} Host    : Jetson Orin NX (Ubuntu 20.04 Foxy / CUDA 11.4)${NC}"
 echo -e "${CYAN} Docker  : sdam_go2_container (Ubuntu 24.04 Jazzy ARM64)${NC}"
 echo -e "${CYAN} Server  : RTX Pro 6000 (100.96.60.15:8000 Qwen3-VL)${NC}"
@@ -168,8 +225,22 @@ pkill -9 -f rtabmap 2>/dev/null || true
 sleep 1
 
 # Built-in Go2 topics arrive over CycloneDDS. The external L2 SDK and its
-# 192.168.1.2/UDP 6201 setup are intentionally not started on this path.
-echo admin | sudo -S ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
+# 192.168.1.2/UDP 6201 setup are intentionally not started on this path. Never
+# store or pipe a credential here: use an existing route or non-interactive
+# sudo configured by the operator.
+if ! ip route show 230.0.0.0/8 2>/dev/null | grep -q 'dev eth0'; then
+    sudo -n ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
+fi
+if ! ip route show 230.0.0.0/8 2>/dev/null | grep -q 'dev eth0' && [ -t 0 ]; then
+    echo -e "${YELLOW}  • Go2 DDS multicast route is missing; sudo authentication is required once.${NC}"
+    sudo ip route add 230.0.0.0/8 dev eth0 || true
+fi
+if ! ip route show 230.0.0.0/8 2>/dev/null | grep -q 'dev eth0'; then
+    echo -e "${RED}ERROR: multicast route 230.0.0.0/8 via eth0 is missing.${NC}"
+    echo "Run 'sudo ip route add 230.0.0.0/8 dev eth0' in a terminal; no credential is stored by this script."
+    exit 1
+fi
+echo "  • Go2 DDS multicast route ready: $(ip route show 230.0.0.0/8)"
 
 # 1. 전면 카메라 퍼블리셔 (30fps + CameraInfo)
 echo "  • [1/4] Starting Front Camera & CameraInfo Publisher (30fps)..."
@@ -195,11 +266,14 @@ fi
 # Mapping evidence logger. RTAB-Map publishes /info only while it has a
 # subscriber, so start this before the mapping node. It is read-only with
 # respect to ROS and writes only closure events/heartbeats to ~/.ros.
-LOOP_LOG_DIR="/home/unitree/.ros/rtabmap_loop_logs"
+LOOP_LOG_DIR="${RTABMAP_RUN_DIR:-/home/unitree/.ros/rtabmap_loop_logs}"
+if [ -n "${RTABMAP_RUN_DIR:-}" ]; then
+    LOOP_LOG_DIR="${RTABMAP_RUN_DIR}/loop_logs"
+fi
 if [ "$MAPPING_MODE" = true ]; then
-    LOOP_RUN_LABEL="headless_mapping"
+    LOOP_RUN_LABEL="headless_${GRAPH_PROFILE}"
     if [ "$GUI_MODE" = true ]; then
-        LOOP_RUN_LABEL="gui_mapping"
+        LOOP_RUN_LABEL="gui_${GRAPH_PROFILE}"
     fi
     echo "  • [3/4] Starting RTAB-Map loop event logger (global/proximity/rejected)..."
     python3 /home/unitree/go2_ws_antarctica/scratch/rtabmap_loop_logger.py \
@@ -223,7 +297,8 @@ fi
 
 # 4. RTAB-Map consumes external Unitree LIO odometry; it does not publish VO.
 echo "  • [MASTER] Starting RTAB-Map LIO + visual-place mapping (${MODE_ARG}, ${GUI_ARG})..."
-ros2 launch rtabmap_launch go2_rtabmap.launch.py ${MODE_ARG} ${GUI_ARG} &
+ros2 launch rtabmap_launch go2_rtabmap.launch.py \
+    ${MODE_ARG} ${GUI_ARG} "${GRAPH_ARGS[@]}" &
 PIDS+=($!)
 sleep 3
 
@@ -252,7 +327,11 @@ if [ "$RECORD_MODE" = true ]; then
 fi
 
 echo -e "\n${GREEN}========================================================================${NC}"
-echo -e "${GREEN} ✅ [ALL SYSTEMS LIVE] Unitree Go2 ESCAPE-Nav is now fully operational!${NC}"
+if [ "$MAPPING_MODE" = true ]; then
+    echo -e "${GREEN} ✅ [MAPPING STACK LIVE] Sensors, LIO and RTAB-Map are active.${NC}"
+else
+    echo -e "${GREEN} ✅ [ALL SYSTEMS LIVE] Unitree Go2 ESCAPE-Nav is now fully operational!${NC}"
+fi
 echo -e "${GREEN}    - Unitree LIO input  : /livo/odom + /livo/imu + /livo/cloud${NC}"
 echo -e "${GREEN}    - RTAB-Map update    : 2Hz, LiDAR ICP + RGB place recognition${NC}"
 echo -e "${GREEN}    - Front RGB Camera   : /camera/front/image_raw${NC}"
@@ -263,7 +342,11 @@ else
     echo -e "${GREEN}    - Loop event logs     : ${LOOP_LOG_DIR}/loop_events_*${NC}"
 fi
 echo -e "${GREEN}========================================================================${NC}"
-echo -e "${YELLOW}👉 Press Ctrl+C at any time to safely stop the robot and exit.${NC}"
+if [ "$MAPPING_MODE" = true ]; then
+    echo -e "${YELLOW}👉 Press Ctrl+C once to save logs and stop mapping (no motor command is sent).${NC}"
+else
+    echo -e "${YELLOW}👉 Press Ctrl+C at any time to safely stop the robot and exit.${NC}"
+fi
 echo ""
 
 # 메인 프로세스 유지

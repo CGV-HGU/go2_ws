@@ -55,6 +55,7 @@
 | `scratch/bringup_all_escape_nav.sh` | mapping에서 command bridge/Docker/recorder 제외, DB backup, loop logger 시작 |
 | `mapping_gui.sh` | GUI mapping wrapper |
 | `mapping_headless.sh` | 무디스플레이 mapping wrapper |
+| `mapping_planar_headless.sh` | 3D LiDAR ICP는 유지하고 graph만 x/y/yaw로 제한; run별 DB·console·loop·config/hash 보존 |
 
 ## 4. 두 번의 실주행 비교
 
@@ -100,7 +101,7 @@
 'Optimizer/Slam2D': 'true'
 ```
 
-이 값은 **아직 현재 launch에 적용하지 않았다.** 이유는 기존 4DoF 결과를 보존하고, 다음 동일 경로 A/B에서 효과를 분리하기 위해서다.
+launch 기본값은 기존 4DoF 결과 보존을 위해 그대로다. 별도 `mapping_planar_headless.sh`가 이 세 launch argument만 함께 덮어쓰며, 아직 물리 주행 결과는 없다.
 
 합격 기준:
 
@@ -139,8 +140,11 @@ cd /home/unitree/go2_ws_antarctica
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_headless.sh
+./mapping_planar_headless.sh
 ```
+
+기존 `mapping_headless.sh`는 4DoF 비교 기준으로 남겨 두었다. planar wrapper의 결과는 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 self-contained evidence로 저장된다.
+부팅 후 Go2 DDS multicast route가 없으면 시작 시 sudo 인증을 한 번 요청한다. credential은 source나 evidence log에 저장하지 않으며, route 추가 실패 시 mapping stack은 시작되지 않는다.
 
 두 경로 모두 현재 mapping mode에서 다음을 실행하지 않는다.
 

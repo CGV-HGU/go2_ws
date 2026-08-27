@@ -10,7 +10,7 @@
 
 그러나 Docker의 실제 S2E model/checkpoint와 안전한 production command path는 없으므로, 이 결과를 4-Tier 자율주행 완료로 해석하면 안 된다.
 
-충전 후에는 RTAB-Map을 먼저 마무리하는 방향이 맞다. 단, 현재 `mapping_gui.sh`는 아직 4DoF graph 설정이므로 곧바로 전체 최종 맵을 찍지 말고 **planar 3DoF 짧은 자격 주행 → global visual loop 검증 → 전체 맵** 순서로 진행한다.
+충전 후에는 RTAB-Map을 먼저 마무리하는 방향이 맞다. 기존 `mapping_gui.sh`와 `mapping_headless.sh`는 4DoF 비교 기준으로 보존했고, 별도 `mapping_planar_headless.sh`가 planar 3DoF와 실행별 증거 저장을 담당한다. 곧바로 전체 최종 맵을 찍지 말고 **planar 3DoF 짧은 자격 주행 → global visual loop 검증 → 전체 맵** 순서로 진행한다.
 
 ## 2. 16:46 KST 무구동 실측 결과
 
@@ -89,12 +89,12 @@ docker exec sdam_go2_container bash -lc '
 
 ### Gate B — planar 3DoF 짧은 자격 주행
 
-현재 launch는 다음 4DoF 값이다.
+launch의 기본값은 기존 4DoF 비교 기준으로 유지된다.
 
 ```text
 Reg/Force3DoF=false
 Icp/Force4DoF=true
-Optimizer/Slam2D 미설정
+Optimizer/Slam2D=false
 ```
 
 이 구성은 두 번째 실주행에서 raw LIO z range 약 0.0212 m에 비해 RTAB graph z range 약 6.452 m를 만들었다. 다음 비교 profile은 아래 세 값만 바꾸는 단일-variable 묶음이다.
@@ -105,12 +105,47 @@ Icp/Force4DoF=false
 Optimizer/Slam2D=true
 ```
 
-아직 현재 source에는 적용하지 않았다. 별도 planar profile을 만든 뒤 짧은 동일 경로 한 바퀴로 다음을 확인한다.
+별도 `mapping_planar_headless.sh`는 아래 세 launch argument를 함께 전달한다. 따라서 다른 4DoF 실행기를 덮어쓰지 않고 동일 경로 한 바퀴를 비교할 수 있다.
 
 - RTAB graph z가 수 cm 수준으로 제한
 - raw LIO보다 endpoint gap이 악화되지 않음
 - 벽 직선성과 평행성이 map2 이상
 - false closure로 지도가 접히지 않음
+
+실행:
+
+```bash
+cd /home/unitree/go2_ws_antarctica
+./mapping_planar_headless.sh
+```
+
+현재 부팅 세션에 `230.0.0.0/8 dev eth0` 경로가 없으면 시작 시 sudo 비밀번호를 터미널에서 한 번 묻는다. 비밀번호는 파일이나 로그에 저장하지 않는다. 경로 추가가 실패하면 센서·RTAB-Map을 시작하기 전에 중단된다.
+
+시작 화면에 반드시 다음이 보여야 한다.
+
+```text
+profile=planar3dof
+Reg/Force3DoF=true
+Icp/Force4DoF=false
+Optimizer/Slam2D=true
+Recorder=false
+Docker/motor=false
+```
+
+복귀 후 `Ctrl+C`로 한 번 정상 종료한다. 실행별 증거는 아래에 묶인다.
+
+```text
+/home/unitree/.ros/rtabmap_runs/<timestamp>_planar3dof_headless/
+├── run_manifest.txt
+├── runtime.log
+├── rtabmap.db
+├── SHA256SUMS
+├── git_status.txt
+├── config/
+└── loop_logs/
+```
+
+가장 최근 실행은 `/home/unitree/.ros/rtabmap_runs/latest` symlink로 찾는다.
 
 ### Gate C — global visual loop closure
 
@@ -128,7 +163,7 @@ type-1이 생성됐다는 사실만으로 합격하지 않는다. 올바른 장�
 Gate A~C 통과 후 실제 주행 구역 전체 맵을 촬영한다.
 
 - 주요 복도·교차로·출발 구역을 재방문
-- `mapping_gui.sh` wrapper의 기존 DB backup 확인
+- `mapping_planar_headless.sh` wrapper와 기존 DB backup 확인
 - recorder, Docker, VLM, command bridge는 계속 OFF
 - 종료 후 DB/PGM/YAML/loop log hash 보존
 - 동일 DB로 localization 재시작을 반복해 시작 pose 분산과 map jump 확인
@@ -158,4 +193,3 @@ archived/live sensor replay
 - [`RTAB-Map 문제·원인·해결·재검증 총정리`](./master_plan/[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md)
 - [`오늘 지도와 loop log manifest`](../2dmap/2026-08-27/MANIFEST.md)
 - [`프로젝트 안전·acceptance memory`](./CODEX_PROJECT_MEMORY.md)
-

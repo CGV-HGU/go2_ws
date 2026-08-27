@@ -25,6 +25,9 @@ def generate_launch_description():
     localization = LaunchConfiguration('localization', default='false')
     scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/livo/cloud')
     subscribe_scan_cloud = LaunchConfiguration('subscribe_scan_cloud', default='true')
+    reg_force_3dof = LaunchConfiguration('reg_force_3dof', default='false')
+    icp_force_4dof = LaunchConfiguration('icp_force_4dof', default='true')
+    optimizer_slam_2d = LaunchConfiguration('optimizer_slam_2d', default='false')
 
     # Common LIO mapping parameters for both modes.
     base_parameters = {
@@ -60,12 +63,13 @@ def generate_launch_description():
         'approx_sync_max_interval': 0.12,
         'queue_size': 30,
         
-        # 3D LiDAR registration and graph constraints. Keep z motion while
-        # constraining roll/pitch with IMU gravity (4DoF ICP), rather than
-        # flattening every transform into a 2D graph.
+        # 3D LiDAR registration and graph constraints. The default remains the
+        # measured 4DoF baseline. The dedicated planar wrapper overrides the
+        # three graph arguments together, while retaining the same 3D cloud.
         'Reg/Strategy': '1',                   # 1 = ICP; RGB still detects loop candidates
-        'Reg/Force3DoF': 'false',
-        'Icp/Force4DoF': 'true',
+        'Reg/Force3DoF': reg_force_3dof,
+        'Icp/Force4DoF': icp_force_4dof,
+        'Optimizer/Slam2D': optimizer_slam_2d,
         'Optimizer/GravitySigma': '0.3',
         'Rtabmap/DetectionRate': '2.0',
         'Rtabmap/PublishStats': 'true',        # Required by the headless loop-event logger
@@ -136,6 +140,9 @@ def generate_launch_description():
         DeclareLaunchArgument('scan_cloud_topic', default_value='/livo/cloud', description='Base-frame PointCloud2 topic prepared by go2_livo_sensor_bridge.py'),
         DeclareLaunchArgument('subscribe_scan_cloud', default_value='true', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
+        DeclareLaunchArgument('reg_force_3dof', default_value='false', description='Constrain registration transforms to x/y/yaw'),
+        DeclareLaunchArgument('icp_force_4dof', default_value='true', description='Allow ICP x/y/z/yaw correction for the 4DoF baseline'),
+        DeclareLaunchArgument('optimizer_slam_2d', default_value='false', description='Optimize the pose graph in planar x/y/yaw mode'),
         
         # Camera mount is the existing project estimate. Calibrated camera
         # intrinsics/extrinsics are still required for reliable visual loops.
