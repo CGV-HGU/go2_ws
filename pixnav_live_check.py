@@ -34,7 +34,12 @@ if str(PACKAGE_SOURCE) not in sys.path:
 from escape_nav_pixnav import AuditJsonlSink, PixNavMacroAdapter, verify_audit_chain
 from escape_nav_pixnav.contracts import sha256_canonical
 from escape_nav_pixnav.event_ledger import CausalAdmissionLedger, EventStage, make_event
-from escape_nav_pixnav.live_contract import live_decision_from_report, make_upstream_hold
+from escape_nav_pixnav.live_contract import (
+    assess_vlm_grounding,
+    live_decision_from_report,
+    make_upstream_hold,
+)
+from escape_nav_pixnav.policy_runtime import FrozenPixNavRuntime
 from escape_nav_pixnav.vlm_grounding import validate_grounding
 
 
@@ -68,6 +73,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--frame-interval", type=float, default=0.20)
     parser.add_argument("--camera-timeout", type=float, default=15.0)
     parser.add_argument("--vlm-timeout", type=float, default=20.0)
+    parser.add_argument(
+        "--vlm-confidence-min",
+        type=float,
+        default=0.55,
+        help="minimum self-reported VLM confidence required before PixNav",
+    )
     parser.add_argument("--event-ttl", type=float, default=120.0)
     parser.add_argument(
         "--server-base",
@@ -77,6 +88,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--vlm-executor", choices=("docker", "host"), default="docker")
     parser.add_argument("--container", default="sdam_go2_container")
     parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda")
+    parser.add_argument(
+        "--pixnav-runtime",
+        choices=("persistent", "subprocess"),
+        default="persistent",
+        help="persistent preloaded model is required for meaningful live latency",
+    )
     return parser.parse_args()
 
 
@@ -342,6 +359,40 @@ def run_pixnav(
     return report, telemetry, report_path
 
 
+def run_pixnav_persistent(
+    runtime: FrozenPixNavRuntime,
+    *,
+    frame_metadata: list[dict[str, Any]],
+    goal_u: int,
+    goal_v: int,
+    output_root: Path,
+) -> tuple[dict[str, Any], dict[str, Any], Path]:
+    report = runtime.infer_files(
+        [Path(item["file"]) for item in frame_metadata],
+        goal_frame_index=0,
+        history_start_index=0,
+        goal_u=goal_u,
+        goal_v=goal_v,
+    )
+    report_dir = output_root / "persistent"
+    report_dir.mkdir(mode=0o700, exist_ok=False)
+    report_path = report_dir / "report.json"
+    write_json(report_path, report)
+    telemetry = {
+        "runtime": "persistent_in_process_file_only",
+        "started_monotonic_ns": report["started_monotonic_ns"],
+        "finished_monotonic_ns": report["finished_monotonic_ns"],
+        "returncode": 0,
+        "report": str(report_path),
+        "report_sha256": sha256_file(report_path),
+        "subprocess_created": False,
+        "actuation_calls": 0,
+    }
+    if report.get("overall") != "PASS_PERSISTENT_FILE_ONLY_INFERENCE":
+        raise RuntimeError(f"PIXNAV_INFERENCE_FAILED:{report.get('overall')}")
+    return report, telemetry, report_path
+
+
 def write_hash_manifest(run_dir: Path) -> None:
     lines = []
     for path in sorted(item for item in run_dir.rglob("*") if item.is_file() and item.name != "SHA256SUMS"):
@@ -359,6 +410,8 @@ def main() -> int:
         raise SystemExit("--frame-interval must be finite and nonnegative")
     if not math.isfinite(args.event_ttl) or args.event_ttl <= 0.0:
         raise SystemExit("--event-ttl must be positive and finite")
+    if not math.isfinite(args.vlm_confidence_min) or not 0.0 <= args.vlm_confidence_min <= 1.0:
+        raise SystemExit("--vlm-confidence-min must be finite and in [0, 1]")
 
     os.umask(0o077)
     run_id = time.strftime("%Y%m%d_%H%M%S_pixnav_live_no_actuation")
@@ -371,7 +424,7 @@ def main() -> int:
     exchange_dir.mkdir(parents=True, mode=0o700, exist_ok=False)
 
     report: dict[str, Any] = {
-        "schema_version": "go2_pixnav_live_p6_report_v1",
+        "schema_version": "go2_pixnav_live_p6_report_v2",
         "run_id": run_id,
         "created_unix_ns": time.time_ns(),
         "git_head": git_head(),
@@ -382,6 +435,8 @@ def main() -> int:
         "udp_command_senders_created": 0,
         "controller_processes_started": 0,
         "vlm_executor": args.vlm_executor,
+        "vlm_confidence_min": args.vlm_confidence_min,
+        "pixnav_runtime_kind": args.pixnav_runtime,
         "stages": {},
         "overall": "BLOCKED",
         "motion_readiness": False,
@@ -393,6 +448,7 @@ def main() -> int:
     last_event_hash = "0" * 64
     causal_id = "0" * 64
     proposal = None
+    pixnav_runtime = None
 
     def append_event(stage: EventStage, payload: Mapping[str, Any]) -> None:
         nonlocal event_sequence, last_event_hash
@@ -434,6 +490,16 @@ def main() -> int:
         if args.vlm_executor == "docker":
             report["docker"] = docker_runtime(args.container)
         report["stages"]["vlm_executor_preflight"] = "PASS"
+
+        if args.pixnav_runtime == "persistent":
+            pixnav_runtime = FrozenPixNavRuntime(device=args.device)
+            report["pixnav_runtime"] = pixnav_runtime.metadata
+            report["pixnav_runtime_warmup"] = pixnav_runtime.warmup(
+                sequence_length=args.history_frames + 1,
+            )
+            report["stages"]["pixnav_runtime_preflight"] = "PASS_PRELOADED_WARM"
+        else:
+            report["stages"]["pixnav_runtime_preflight"] = "PASS_SUBPROCESS_COMPATIBILITY"
 
         opencv_lib = "/home/unitree/opencv_build/opencv/build/lib"
         current_ld_path = os.environ.get("LD_LIBRARY_PATH", "")
@@ -488,52 +554,74 @@ def main() -> int:
                 height=goal_meta["height"],
             )
             write_json(run_dir / "vlm_validated.json", grounding)
+            vlm_admitted, vlm_admission_reason = assess_vlm_grounding(
+                grounding,
+                confidence_min=args.vlm_confidence_min,
+            )
+            report["vlm_admission"] = {
+                "admitted_to_pixnav": vlm_admitted,
+                "reason": vlm_admission_reason,
+                "confidence": grounding["confidence"],
+                "confidence_min": args.vlm_confidence_min,
+            }
             append_event(EventStage.VLM_COMPLETED, {"transport": envelope, "validated": grounding})
             report["stages"]["docker_to_server_vlm"] = "PASS"
             report["stages"]["strict_vlm_semantics"] = "PASS"
 
-            next_capture = time.monotonic()
-            for offset in range(1, args.history_frames + 1):
-                while time.monotonic() < next_capture:
-                    time.sleep(min(0.01, next_capture - time.monotonic()))
-                history_frame = read_frame(capture, timeout_s=args.camera_timeout)
-                history_path = frames_dir / f"frame_{offset:02d}_history.jpg"
-                frame_metadata.append(
-                    save_frame(
-                        history_frame,
-                        history_path,
-                        index=offset,
-                        role="post_goal_observation",
+            if vlm_admitted:
+                next_capture = time.monotonic()
+                for offset in range(1, args.history_frames + 1):
+                    while time.monotonic() < next_capture:
+                        time.sleep(min(0.01, next_capture - time.monotonic()))
+                    history_frame = read_frame(capture, timeout_s=args.camera_timeout)
+                    history_path = frames_dir / f"frame_{offset:02d}_history.jpg"
+                    frame_metadata.append(
+                        save_frame(
+                            history_frame,
+                            history_path,
+                            index=offset,
+                            role="post_goal_observation",
+                        )
                     )
-                )
-                next_capture = time.monotonic() + args.frame_interval
+                    next_capture = time.monotonic() + args.frame_interval
         finally:
             capture.release()
         write_json(run_dir / "frames.json", frame_metadata)
-        report["stages"]["post_capture_history"] = "PASS"
+        report["stages"]["post_capture_history"] = (
+            "PASS" if vlm_admitted else "SKIPPED_UPSTREAM_HOLD"
+        )
 
-        if grounding["action"] != "go":
+        if not vlm_admitted:
             proposal = make_upstream_hold(
-                event_id=f"p6.{run_id}.vlm_stop",
+                event_id=f"p6.{run_id}.vlm_hold",
                 sequence_id=0,
                 source_frame_sha256=goal_meta["sha256_file"],
-                reason="VLM_EXPLICIT_STOP",
+                reason=vlm_admission_reason,
             )
             append_event(
                 EventStage.PIXNAV_COMPLETED,
-                {"executed": False, "reason": "VLM_EXPLICIT_STOP"},
+                {"executed": False, "reason": vlm_admission_reason},
             )
-            report["stages"]["pixnav_cuda"] = "SKIPPED_VLM_STOP"
+            report["stages"]["pixnav_cuda"] = f"SKIPPED_{vlm_admission_reason}"
         else:
             goal_u, goal_v = grounding["selected_image_point"]
-            pixnav_report, pixnav_process, pixnav_report_path = run_pixnav(
-                frames_dir=frames_dir,
-                frame_count=len(frame_metadata),
-                goal_u=goal_u,
-                goal_v=goal_v,
-                device=args.device,
-                output_root=pixnav_output_root,
-            )
+            if pixnav_runtime is not None:
+                pixnav_report, pixnav_process, pixnav_report_path = run_pixnav_persistent(
+                    pixnav_runtime,
+                    frame_metadata=frame_metadata,
+                    goal_u=goal_u,
+                    goal_v=goal_v,
+                    output_root=pixnav_output_root,
+                )
+            else:
+                pixnav_report, pixnav_process, pixnav_report_path = run_pixnav(
+                    frames_dir=frames_dir,
+                    frame_count=len(frame_metadata),
+                    goal_u=goal_u,
+                    goal_v=goal_v,
+                    device=args.device,
+                    output_root=pixnav_output_root,
+                )
             write_json(run_dir / "pixnav_process.json", pixnav_process)
             live_decision = live_decision_from_report(
                 pixnav_report,
@@ -573,7 +661,7 @@ def main() -> int:
         report["overall"] = (
             "PASS_ONE_CYCLE_LIVE_CHAIN_NO_ACTUATION"
             if report["stages"].get("pixnav_cuda") == "PASS"
-            else "PASS_LIVE_VLM_STOP_FILE_ONLY"
+            else "PASS_LIVE_UPSTREAM_HOLD_FILE_ONLY"
         )
     except Exception as error:
         report["error_type"] = type(error).__name__

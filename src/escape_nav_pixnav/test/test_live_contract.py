@@ -1,5 +1,11 @@
+import pytest
+
 from escape_nav_pixnav.contracts import PIXNAV_CHECKPOINT_A_SHA256
-from escape_nav_pixnav.live_contract import live_decision_from_report, make_upstream_hold
+from escape_nav_pixnav.live_contract import (
+    assess_vlm_grounding,
+    live_decision_from_report,
+    make_upstream_hold,
+)
 
 
 def test_upstream_hold_never_allows_actuation():
@@ -50,3 +56,26 @@ def test_live_decision_uses_prediction_frame_timestamp_and_hash():
     assert decision["inferred_at_ns"] == 30
     assert decision["source_frame_sha256"] == "2" * 64
     assert decision["sequence_id"] == 7
+
+
+def test_vlm_go_requires_configured_confidence():
+    assert assess_vlm_grounding(
+        {"action": "go", "confidence": 0.54},
+        confidence_min=0.55,
+    ) == (False, "VLM_CONFIDENCE_BELOW_MIN")
+    assert assess_vlm_grounding(
+        {"action": "go", "confidence": 0.55},
+        confidence_min=0.55,
+    ) == (True, "VLM_GO_ACCEPTED")
+
+
+def test_vlm_explicit_stop_and_invalid_threshold_are_safe():
+    assert assess_vlm_grounding(
+        {"action": "stop", "confidence": 1.0},
+        confidence_min=0.55,
+    ) == (False, "VLM_EXPLICIT_STOP")
+    with pytest.raises(ValueError, match="confidence_min"):
+        assess_vlm_grounding(
+            {"action": "go", "confidence": 1.0},
+            confidence_min=float("nan"),
+        )

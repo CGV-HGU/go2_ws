@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Any, Mapping, Sequence
 
 from .contracts import (
@@ -49,6 +50,36 @@ def make_upstream_hold(
         requires_reobservation=False,
         actuation_permitted=False,
     )
+
+
+def assess_vlm_grounding(
+    grounding: Mapping[str, Any],
+    *,
+    confidence_min: float,
+) -> tuple[bool, str]:
+    """Decide whether a validated VLM goal may enter PixNav.
+
+    Pixel/schema validity and model confidence are separate concerns.  A
+    schema-valid response whose own confidence is too low must still become a
+    zero-hold instead of silently entering the policy.
+    """
+
+    if not math.isfinite(confidence_min) or not 0.0 <= confidence_min <= 1.0:
+        raise ValueError("confidence_min must be finite and in [0, 1]")
+    action = grounding.get("action")
+    if action == "stop":
+        return False, "VLM_EXPLICIT_STOP"
+    if action != "go":
+        raise ValueError("grounding action must be go or stop")
+    confidence = grounding.get("confidence")
+    if isinstance(confidence, bool) or not isinstance(confidence, (int, float)):
+        raise ValueError("grounding confidence must be numeric")
+    confidence_value = float(confidence)
+    if not math.isfinite(confidence_value) or not 0.0 <= confidence_value <= 1.0:
+        raise ValueError("grounding confidence must be finite and in [0, 1]")
+    if confidence_value < confidence_min:
+        return False, "VLM_CONFIDENCE_BELOW_MIN"
+    return True, "VLM_GO_ACCEPTED"
 
 
 def live_decision_from_report(
