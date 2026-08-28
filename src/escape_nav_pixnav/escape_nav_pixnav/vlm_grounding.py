@@ -100,7 +100,15 @@ def response_json_schema(width: int, height: int) -> dict[str, Any]:
                 "required": ["valid", "point_px"],
                 "additionalProperties": False,
             },
-            "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0,
+                "description": (
+                    "Confidence in the selected go pixel: 0 means no confidence and "
+                    "1 means completely certain"
+                ),
+            },
             "reason": {"type": "string", "minLength": 1, "maxLength": 240},
         },
         "required": [
@@ -235,12 +243,15 @@ def query_grounding(
     base_url: str,
     model: str,
     timeout_s: float,
+    confidence_min: float = 0.55,
     api_key: str = "",
 ) -> dict[str, Any]:
     if not image_path.is_file():
         raise FileNotFoundError(image_path)
     if not math.isfinite(timeout_s) or timeout_s <= 0.0:
         raise ValueError("timeout must be positive and finite")
+    if not math.isfinite(confidence_min) or not 0.0 <= confidence_min <= 1.0:
+        raise ValueError("confidence_min must be finite and in [0, 1]")
     selected_model = model if model and model.lower() != "auto" else discover_model(
         base_url, timeout_s=min(timeout_s, 5.0)
     )
@@ -251,7 +262,10 @@ def query_grounding(
         "as a local image-space goal. Do not infer metric/map coordinates and do not issue a "
         "robot command. If no safe floor goal is visible, return action=stop with view_id=-1, "
         "view_type=none, both pixel arrays [-1,-1], and fine_goal.valid=false. For action=go, "
-        "use view_id=0, view_type=front, identical integer pixel arrays, and valid=true."
+        "use view_id=0, view_type=front, identical integer pixel arrays, and valid=true. "
+        "Confidence means confidence in the selected go pixel: 0 means no confidence and 1 "
+        f"means completely certain. Use action=go only when confidence is at least {confidence_min:.2f}; "
+        "otherwise use the explicit stop form."
     )
     payload = {
         "model": selected_model,
@@ -299,6 +313,7 @@ def query_grounding(
         "latency_s": latency_s,
         "image_sha256": image_hash,
         "request_sha256": request_hash,
+        "confidence_min_requested": confidence_min,
         "api_key_present": bool(api_key),
         "raw": raw,
     }
@@ -312,6 +327,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-url", default=os.getenv("QWEN_BASE_URL", "http://100.96.60.15:8000/v1"))
     parser.add_argument("--model", default=os.getenv("QWEN_MODEL", "auto"))
     parser.add_argument("--timeout", type=float, default=20.0)
+    parser.add_argument("--confidence-min", type=float, default=0.55)
     return parser.parse_args()
 
 
@@ -324,6 +340,7 @@ def main() -> int:
         base_url=args.base_url,
         model=args.model,
         timeout_s=args.timeout,
+        confidence_min=args.confidence_min,
         api_key=os.getenv("QWEN_API_KEY", ""),
     )
     print(canonical_json(result))

@@ -52,7 +52,7 @@ graph LR
     D1 <-->|NetBird VPN / wt0| S1
 ```
 
-### 📋 4대 계층 실측 현황 대조표 (2026-08-27 실측 기준)
+### 📋 4대 계층 실측 현황 대조표 (2026-08-28 17:51 KST 기준)
 
 | 계층 (Tier) | 구성 요소 | 현재 실측 상태 (Status) | 엔지니어링 팩트 및 주의사항 |
 | :--- | :--- | :---: | :--- |
@@ -61,18 +61,18 @@ graph LR
 | **Tier 2 (Jetson)** | LIVO 센서 브릿지 | 🟢 **완전 검증 (PASS)** | 매 프레임 10,000개 제로패딩 제거 및 `base_link` 점군 정상 복원. |
 | **Tier 2 (Jetson)** | RTAB-Map LIVO mapping | 🟡 **재매핑 필요 (Progress)** | 3DoF로 Z 발산은 해결했으나 최신 전체-map은 aggressive Type-2 proximity 때문에 90도 코너가 접힘. Type-2 OFF 짧은 재자격 후 전체 remap 필요. |
 | **Tier 3 (Docker)** | Jazzy 소프트웨어 패키지 | 🟡 **골격만 준비 (PARTIAL)** | 패키지와 unit test는 있으나 container 실제 프로세스는 `tail -f /dev/null`뿐이고 `e2e_node/controller_node`는 PixNav 실구현이 아님. |
-| **Tier 2/3 경계** | frozen PixNav runtime | 🟡 **v2 GPU 추론·file adapter PASS / live 대기** | Jetson 격리 Python 3.8에서 VLM capture-view를 정확히 사용한 Checkpoint_A CUDA v2 replay를 통과했다. bounded macro proposal, hash-chain sink, offline causal chain, pure fault 22/22까지 구현했다. Docker live chain·controller·actuator 권한은 없다. S2E ONNX는 paper의 실로봇 주 backend가 아님. |
-| **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟡 **전송 PARTIAL** | 모델 endpoint와 text/보관 RGB 응답은 통과했지만 strict waypoint schema, live timing/provenance는 미통과. |
+| **Tier 2/3 경계** | frozen PixNav runtime | 🟡 **persistent live 1-cycle PASS** | Checkpoint_A를 미리 적재한 뒤 최신 실제 5-frame CUDA 0.091 s, P7 source age 0.274 s를 확인했다. L2/odom P7까지 연결했지만 10분 soak·controller·actuator 권한은 없다. S2E ONNX는 주 backend가 아님. |
+| **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟡 **live strict schema PASS / soak 대기** | 실제 capture-view에서 strict pixel/confidence response와 1.194 s timing/provenance를 확인했다. 반복·network fault는 미수행. |
 | **End-to-End** | 실로봇 paired campaign | 🔴 **미수행 (Pending)** | Gate 0~9, map/config freeze, 실제 artifact recorder/importer 통과 후 총 50회 수행. |
 
-2026-08-28 16:47 KST의 4-Tier 전용 가중 평가는 `Robot 45% / Jetson 58% / Docker 28% /
-Server 66%`, 실제 cross-tier End-to-End는 **37%**다. 구성요소 단순 평균 49%는 자율주행
-완료율로 사용하지 않는다. 상세 배점, 현재 실측과 재실행 명령은
+2026-08-28 17:51 KST의 4-Tier 전용 가중 평가는 `Robot 58% / Jetson 65% / Docker 45% /
+Server 84%`, live safe-file-sink까지의 cross-tier End-to-End는 **64%**다. 이 수치는 P8 actuator,
+golden localization과 pilot을 포함한 자율주행 완료율로 사용하지 않는다. 상세 배점과 재실행 명령은
 [`Robot–Jetson–Docker–Server 4-Tier 구현률`](../experiments/07_4tier_robot_jetson_docker_server_readiness.md)을
-따른다. 현재 병목은 Tier 3의 실제 no-actuation process 부재와 Tier 1 offline/golden
-localization 미검증이다.
+따른다. 이후 17:51 KST에 ephemeral no-actuation 1-cycle은 통과했으며, 현재 병목은 10분
+상주 service/ fault 반복, 물리 operator-enable·E-stop과 golden localization 미검증이다.
 
-### 1.1 2026-08-28 16:30 KST 통합 진행 현황
+### 1.1 2026-08-28 17:51 KST 통합 진행 현황
 
 아래 표는 코드가 존재한다는 사실과 실제 artifact가 생성됐다는 사실을 구분한다. `PASS`는 해당
 행의 좁은 범위만 통과했다는 뜻이며, 다음 행이나 전체 자율주행의 통과를 의미하지 않는다.
@@ -86,13 +86,13 @@ localization 미검증이다.
 | RTAB 3D map export | `rtabmap-export --scan --poses`로 Type-2 제거 분석본 219,640-point PLY 생성 확인 | golden DB의 최종 PLY/PCD/octomap 동결 | **추출 기능 PASS, 최종본 없음** |
 | 2D occupancy map | 과거 PGM/YAML 4세트와 clean 파생본 보존 | 2026-08-28 Type-2 OFF golden PGM/YAML 생성 | **과거본만 존재** |
 | PixNav 코드/모델 | paper commit, 연구실 pin, Checkpoint_A 217,967,433 bytes와 SHA-256 일치; Jetson CUDA에서 실제 action logits/distance/tracked-goal 계산 | optional `torchvision.io` ABI 경고 정리와 production runtime pin | **실추론 PASS** |
-| PixNav 실제 RGB 입력 | VLM이 pixel을 고른 `frame_10`을 goal/capture-view와 첫 history로 사용한 v2 CUDA replay, finite 출력, 구동 0 | capture 이후 관측이 포함된 서로 다른 실제 clip 최소 20개 | **v2 1-step file replay PASS** |
-| PixNav→Go2 궤적 | 6-way action→0.25 m/±30° bounded macro **proposal**, TTL/확률/hash 검사, hash-chain file sink 구현. `look_down`은 reobserve/zero로 처리 | live localization/obstacle/E-stop/controller와 단일 gateway 연결 | **file-only adapter PASS / 구동 NO-GO** |
-| 4-Tier 네트워크 | 핫스팟 OFF, eth0 학교망+Go2 직결망 동시 유지, NetBird active, server `/v1/models` HTTP 200(0.051 s), Jetson↔Docker 비제어 UDP | live RGB→VLM→PixNav→controller를 하나의 identity로 연결 | **전송 PARTIAL** |
+| PixNav 실제 RGB 입력 | live capture-view+4 post-capture history, persistent CUDA 0.091 s, P7 source age 0.274 s, finite, 구동 0 | 서로 다른 실제 clip 최소 20개와 10분 soak | **live 1-cycle PASS** |
+| PixNav→Go2 궤적 | bounded proposal과 live L2/odom P7 평가 연결. `look_down`은 reobserve/zero로 처리 | operator-enable/E-stop/P8 single gateway | **P7 PARTIAL / 구동 NO-GO** |
+| 4-Tier 네트워크 | 실제 Go2 RGB→Docker→server VLM→Jetson PixNav→file audit에 하나의 causal identity 연결 | 상주 container service, 10분 soak와 network fault | **1-cycle PASS** |
 | Docker runtime | `sdam_go2_container` 실행 중 | container 내부 실제 navigation process 없음(`tail -f /dev/null`만 실행) | **IDLE/PARTIAL** |
-| 원격 VLM | `qwen3.5-9b-instruct` 조회, text/보관 RGB 요청 성공 | strict waypoint schema, live timing, stale-response rejection | **PARTIAL** |
+| 원격 VLM | `qwen3.5-9b-instruct`, 실제 RGB strict pixel/confidence, 1.194 s live response | 반복 timing과 stale/network-fault rejection | **1-cycle PASS** |
 | localization | 모드와 DB 로딩 경로는 존재 | 올바른 golden DB가 없어 cold-start/재지역화 미실행 | **대기** |
-| 제어/안전 | file-only causal ledger, stale/duplicate/out-of-order 차단, pure/file-copy 고장 주입 22/22 PASS | live timeout/pose loss, 단일 command authority, 이중 `/cmd_vel`+Sport 제거, E-stop/ACK/실제 stop latency | **소프트웨어 부분 PASS / 물리 NO-GO** |
+| 제어/안전 | file causal ledger, pure fault 22/22, live L2/odom freshness·clearance 평가와 operator/E-stop 미연결 fail-closed | live fault 반복, 단일 authority, E-stop/ACK/실제 stop latency | **P7 부분 PASS / 물리 NO-GO** |
 | 논문 실험 | 계획표와 checkpoint pin 존재 | 저속 pilot와 Direct-goal/Full paired campaign 전부 | **미수행** |
 
 ### 1.2 2D 지도 artifact 전수 목록
@@ -253,15 +253,16 @@ hash를 묶은 file-only qualification manifest가 생성됐다.
 
 #### Stage 6 — live 4-Tier 무구동 폐루프
 
-현재: **통신 PARTIAL + offline causal contract PASS**. Docker/NetBird/server는 동작하지만
-container navigation process와 live capture/history 연결은 없다.
+현재: **live 1-cycle PASS / 10분 soak pending**. 실제 Go2 RGB→Docker→remote VLM→Jetson
+persistent PixNav→file sink가 연결됐고 L2/odom read-only P7 평가도 같은 run에서 수행했다.
+container 상주 navigation service와 production command authority는 아직 없다.
 
 남은 작업:
 
-- 실제 `camera + localization → VLM → PixNav → adapter → file sink` process를 container/host에 배치
-- ~~offline VLM artifact/request/response/PixNav/action에 하나의 causal identity/hash 연결~~;
-  동일 계약을 live event logger에 적용
-- VLM strict waypoint schema를 sanitizer 보정 없이 통과
+- ~~실제 `camera → VLM → PixNav → adapter → file sink`를 container/host 경계에 배치~~
+- ~~live VLM request/response/PixNav/action에 하나의 causal identity/hash 연결~~
+- ~~VLM strict pixel/confidence schema를 sanitizer 보정 없이 통과~~
+- physical operator-enable/E-stop과 필요 시 global localization side-channel 연결
 - Docker의 `tail -f /dev/null` 상태를 실제 검증 node로 교체
 - 최소 10분 live run에서 `/cmd_vel`, Sport API, command UDP 송신이 0인지 감사
 
@@ -269,13 +270,13 @@ container navigation process와 live capture/history 연결은 없다.
 
 #### Stage 7 — fault injection과 watchdog
 
-현재: **pure/file-copy 22/22 PASS, live/physical 미시작**.
+현재: **pure/file-copy 22/22 PASS + live L2/odom fail-closed 1-cycle PASS, physical 미시작**.
 
 남은 작업:
 
 - server timeout/disconnect, NetBird/Wi-Fi loss, Docker restart/kill
 - ~~malformed/missing JSON, out-of-order/duplicate, stale decision, hash/actuation tamper~~
-- live server/VPN/Docker loss, camera/pose stale, process kill
+- live server/VPN/Docker loss, camera/odom stale, process kill
 - localization loss/jump와 command sink block 시험
 - 모든 fault에서 zero-hold, recovery 후 오래된 decision 재적용 금지
 
@@ -351,13 +352,13 @@ container navigation process와 live capture/history 연결은 없다.
 | 작업 묶음 | 전체 가중치 | 묶음 내 완료율 | 확보 점수 | 남은 핵심 작업 |
 |---|---:|---:|---:|---|
 | RTAB mapping·artifact·localization | 25 | 55% | 13.75 | Type-2 OFF 자격, 전체 remap, PGM/trajectory/PLY 동결, localization 10회 |
-| frozen PixNav·Go2 adapter | 20 | 65% | 13.00 | post-capture 20 clips, runtime 경고, live localization/obstacle 연결 |
-| live 4-Tier 무구동 통합 | 20 | 42.5% | 8.50 | 실제 container process, strict schema, live causal identity, 10분 sink |
-| actuator safety·fault·pilot | 20 | 12.5% | 2.50 | live fault, 단일 authority, E-stop 10회, 저속 pilot |
+| frozen PixNav·Go2 adapter | 20 | 75% | 15.00 | post-capture 20 clips, runtime 경고, operator/E-stop 연결 |
+| live 4-Tier 무구동 통합 | 20 | 60% | 12.00 | 10분 soak, 실제 container service, live fault 반복 |
+| actuator safety·fault·pilot | 20 | 17.5% | 3.50 | live fault, 단일 authority, E-stop 10회, 저속 pilot |
 | recorder·평가·논문 campaign | 15 | 5% | 0.75 | recorder/importer 수정, 50 paired runs, 통계·영상·hash |
-| **합계** | **100** |  | **38.50** |  |
+| **합계** | **100** |  | **45.00** |  |
 
-따라서 2026-08-28 16:30 기준 보수적 전체 완료율은 **약 39%**, 남은 작업은 **약 61%**다.
+따라서 2026-08-28 17:51 기준 보수적 전체 완료율은 **약 45%**, 남은 작업은 **약 55%**다.
 
 단계별 단순 진행률은 다음과 같다. 단계마다 규모가 달라 이 열의 평균을 전체 완료율로 사용하지 않는다.
 
@@ -367,10 +368,10 @@ container navigation process와 live capture/history 연결은 없다.
 | 1 짧은 RTAB 자격 | 75% | 25% | 물리 두-코너 run 1회 PASS |
 | 2 전체 golden map | 20% | 80% | 전체 remap + 5종 artifact/hash |
 | 3 localization | 0% | 100% | cold-start 10회와 false match 0 |
-| 4 PixNav runtime/replay | 65% | 35% | post-capture 실제 RGB 20 clips + runtime 경고 정리 |
-| 5 PixNav→Go2 adapter | 55% | 45% | live pose/obstacle/controller 전 zero-hold 연결 |
-| 6 live 4-Tier 무구동 | 40% | 60% | 실제 chain 10분 + motion output 0 |
-| 7 fault injection | 25% | 75% | live loss/kill/pose fault와 watchdog 반복 통과 |
+| 4 PixNav runtime/replay | 75% | 25% | post-capture 실제 RGB 20 clips + runtime 경고 정리 |
+| 5 PixNav→Go2 adapter | 70% | 30% | operator/E-stop과 P8 전 zero-hold 연결 |
+| 6 live 4-Tier 무구동 | 60% | 40% | 실제 chain 10분 + motion output 0 |
+| 7 fault injection | 30% | 70% | live loss/kill/odom fault와 watchdog 반복 통과 |
 | 8 actuator/E-stop | 10% | 90% | 단일 gateway + safe-stop 10/10 |
 | 9 저속 pilot | 0% | 100% | 직선/L/T 단계 통과 |
 | 10 논문 campaign | 5% | 95% | recorder 수정 + paired run 50/50 |
@@ -537,7 +538,7 @@ graph TD
 | Gate 2 planar 3DoF | 부분 PASS | 정상 종료, Type-1 ≥2/3, golden DB 저장 |
 | Gate 3 localization | 대기 | 독립 reference에서 cold start 10/10, false relocalization 0 |
 | Gate 4 PixelNav | **v2 1-step 부분 PASS** | post-capture history를 가진 20 clips |
-| Gate 5 4-Tier sink | offline chain PASS/live 대기 | live causal chain 10분, actuator topic 발행 0 |
+| Gate 5 4-Tier sink | live 1-cycle PASS/10분 대기 | live causal chain 10분, actuator topic 발행 0 |
 | Gate 6 fault injection | pure/file-copy 22/22 | live stale 적용 0, 모든 고장에서 실제 stop ≤0.5 s |
 | Gate 7 actuator safety | 대기 | 단일 command authority, safe-stop 10/10 |
 | Gate 8 저속 pilot | 대기 | collision/intervention/localization loss 0 |

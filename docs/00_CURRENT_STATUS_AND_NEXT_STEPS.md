@@ -1,8 +1,8 @@
-# 현재 상태와 다음 실행 순서 — RTAB-Map 3DoF 자격 검증
+# 현재 상태와 다음 실행 순서 — 4-Tier PixNav와 RTAB-Map
 
-> 최신 측정: 2026-08-28 17:19 KST
+> 최신 측정: 2026-08-28 17:51 KST
 > 실측 run: `20260828_141247_planar3dof_headless`
-> 안전 범위: recorder, Docker/VLM, 모터/`/cmd_vel`, Sport API, production bridge를 시작하지 않음
+> 안전 범위: Docker/VLM/PixNav/L2는 read-only/file-only; recorder, 모터/`/cmd_vel`, Sport API, production bridge는 시작하지 않음
 
 ## 1. 결론
 
@@ -11,8 +11,10 @@
 최신 paper branch의 실로봇 주 backend인 frozen PixNav는 Jetson CUDA에서 VLM이 실제 pixel을
 고른 `frame_10`을 capture-view로 사용한 수정 v2 replay를 통과했다. 초기 11-frame 세 run은
 `frame_00`을 goal로 쓴 input-pairing 오류 때문에 forward 진단 자료로만 남기고 acceptance에서는
-제외한다. bounded macro proposal/file sink는 구현됐지만 안전한 production command path는 아직
-없으므로 이를 4-Tier 자율주행 완료로 해석하면 안 된다. S2E는 별도 NavBench-GS 보조 실험이다.
+제외한다. bounded macro proposal/file sink에 이어 실제 Go2 RGB→Docker→server VLM→Jetson
+persistent PixNav→L2/odom P7 평가까지 1-cycle로 연결됐다. 다만 operator-enable, 물리 E-stop,
+P8 단일 gateway와 production command path는 없으므로 이를 4-Tier 자율주행 완료로 해석하면
+안 된다. S2E는 별도 NavBench-GS 보조 실험이다.
 
 RTAB-Map 기본 운용은 **planar 3DoF로 확정한다.** 같은 층의 평평한 복도에서 3D LiDAR 입력과 3D map 생성은 유지하고, pose graph만 `x/y/yaw`로 구속한다. 4DoF는 실제 경사·고도 변화가 실험 범위일 때만 별도 DB로 비교한다.
 
@@ -63,8 +65,9 @@ planar 3DoF와 global visual loop의 기능 자체는 확인됐다. 그러나 �
 
 ## 2. 16:46 KST 무구동 실측 결과
 
-4-Tier의 최신 가중 평가는 Robot 45%, Jetson 58%, Docker 28%, Server 66%, 실제 cross-tier
-End-to-End 37%다. 상세 점수와 `status/full` 재검증 명령은
+4-Tier의 최신 가중 평가는 Robot 58%, Jetson 65%, Docker 45%, Server 84%, 실제 cross-tier
+End-to-End 64%다. 이는 live safe file sink까지의 배치 readiness이며 물리 자율주행률이 아니다.
+상세 점수와 `status/full` 재검증 명령은
 [`Robot–Jetson–Docker–Server 4-Tier 구현률`](./experiments/07_4tier_robot_jetson_docker_server_readiness.md)을
 따른다. 이 퍼센트는 engineering readiness estimate이며 논문 성능 지표가 아니다.
 
@@ -83,14 +86,15 @@ End-to-End 37%다. 상세 점수와 `status/full` 재검증 명령은
 | advertised model | MEASURED | `qwen3.5-9b-instruct`, root `AxionML/Qwen3.5-9B-NVFP4` |
 | text JSON contract | PASS | `status=ok`, `action=stop`, `source=docker-server-preflight` 반환 |
 | archived RGB vision | PASS/제한적 | `scratch/live_camera_snapshot.jpg`에서 가까운 물체를 `office chair`로 반환하고 `action=stop` 유지 |
-| frozen PixNav CUDA replay | PASS/제한적 | 수정 v2에서 `frame_10` capture-view+1-step observation, Checkpoint_A, finite, actuation 0; post-capture multi-step history는 없음 |
-| PixNav file adapter | PASS/제한적 | bounded proposal, hash-chain JSONL, causal ledger, 56 tests; ROS/socket/SDK/actuation 권한 없음 |
+| frozen PixNav CUDA replay | PASS/제한적 | Checkpoint_A persistent runtime 실제 5-frame CUDA 0.106 s, finite, actuation 0; 20 clips/soak은 없음 |
+| PixNav file adapter | PASS/제한적 | bounded proposal, hash-chain JSONL, causal ledger, 72 tests; 핵심 package에 ROS/socket/SDK/actuation 권한 없음 |
 | offline causal/fault | PASS/제한적 | VLM→PixNav→macro identity PASS, pure/file-copy fault 22/22; live timeout·physical stop latency 증거 아님 |
 | 현재 유선/서버 경로 | PASS | wlan0 disconnected, eth0 학교망+Go2 직결망, NetBird active, server HTTP 200(0.051 s) |
 | S2E core tests | PASS | isolated package: 43 passed |
 | bringup contract tests | PASS | isolated package: 3 passed |
 | live camera acquisition | PASS | 정상 기립·정지 Go2에서 RTP→`/camera/front/image_raw` 1280×720 BGR8, 실수신 14.33 Hz |
-| live camera → PixNav P6 | NOT IMPLEMENTED | 실카메라 입력은 PASS지만 capture/VLM/PixNav/file-sink causal process는 아직 없음 |
+| live camera → PixNav P6 | 1-CYCLE PASS | 실제 RGB→Docker→server VLM→persistent CUDA PixNav→file sink, 최신 P7 source age 0.274 s; 10분 soak pending |
+| live L2/odom P7 | PARTIAL PASS | read-only L2/odom clearance/freshness 실평가 PASS; operator-enable/E-stop/P8 미연결로 gateway=false |
 | production command path | NOT STARTED | 9090/9091 bridge와 motor sink를 실행하지 않음 |
 
 보관 RGB 한 장의 성공은 서버가 OpenAI-compatible image payload를 받을 수 있다는 증거다. 실시간 camera timestamp, full VL-MAG schema, memory, S2E trajectory, stale response rejection 또는 navigation 품질의 증거는 아니다.
@@ -116,6 +120,26 @@ camera/LIVO probe, RTAB-Map, host command bridge, PixNav/S2E live process가 남
 Foxy의 `ros2 topic info --verbose`는 최신 Unitree DDS type-hash를 XML-RPC로 표시하는 과정에서
 호환 예외가 발생했지만, 각 토픽 publisher 1개와 위 실제 sample 수신은 별도로 확인됐다.
 
+### 2.2 17:51 live PixNav + L2/odom P7 무구동 결합
+
+`pixnav_live_check.py`를 정상 기립·정지 Go2에서 실행했고 ROS publisher, Unitree SDK client,
+command UDP sender와 controller를 한 개도 만들지 않았다.
+
+| 항목 | 실측 | 판정 |
+|---|---:|---|
+| Docker→remote VLM | confidence 0.99, 1.436 s, strict pixel 계약 | PASS |
+| persistent PixNav | live CUDA 0.091 s | PASS |
+| 최종 관측 / P7 age | 0.269 / 0.274 s (`source TTL=1.0 s`) | PASS |
+| L2/odom | 1,488 valid points, stamp delta 0.059 s | PASS |
+| clearance | 전방 1.725 m, 회전 0.543 m | sensor gate PASS |
+| PixNav output | `look_down`, probability 0.893 | fixed camera `reobserve`, 이동 0 |
+| P7 최종 | operator-enable=false, E-stop clear 미연결 | gateway candidate=false, fail-closed |
+| artifact | `~/.ros/pixnav_live_runs/20260828_180030_pixnav_live_no_actuation/` | P7 TTL + source manifest + SHA256 전부 OK |
+
+따라서 현재 빠른 우선순위는 RTAB remap이 아니라 P6 10분 soak/fault와 P8 이전의 물리
+operator-enable/E-stop 계약이다. RTAB 골든맵·localization은 실제 이동량/궤적 평가를 시작하기
+전에 다시 합류시키면 된다.
+
 ## 3. 충전 중 할 수 있는 일
 
 ### 3.1 지금 안전하게 가능한 작업
@@ -123,11 +147,13 @@ Foxy의 `ros2 topic info --verbose`는 최신 Unitree DDS type-hash를 XML-RPC�
 1. ~~최신 `paper` commit과 연구실 PixNav 구현 pin 확정~~ — 완료.
 2. ~~공식 PixNav Checkpoint_A 배치와 SHA-256 계약~~ — 완료.
 3. ~~VLM capture-view를 정확히 사용한 v2 1-step CUDA replay~~ — 완료.
-4. ~~bounded macro proposal, hash-chain sink, causal ledger, pure fault harness~~ — 56 tests와 22/22 완료.
+4. ~~bounded macro proposal, hash-chain sink, causal ledger, pure fault harness~~ — 72 tests와 22/22 완료.
 5. ~~checkpoint/reference/adapter/evidence file-only manifest 동결~~ — 완료.
-6. capture 이후 history가 있는 서로 다른 실제 RGB clip을 최소 20개로 늘린다.
-7. event logger를 live VLM submit/complete/PixNav/sink process에 연결한다.
-8. live timeout, server loss, stale pose/image를 주입하고 항상 zero-hold인지 확인한다.
+6. ~~live RGB→Docker VLM→persistent PixNav→file sink 1-cycle 연결~~ — 완료.
+7. ~~L2/odom read-only clearance/freshness를 P7 입구에 연결~~ — 완료.
+8. 10분 P6 soak과 live timeout/server loss/camera·odom stale/process kill을 주입한다.
+9. 물리 operator-enable/E-stop 입력과 P8 single gateway를 별도 승인 후 구현한다.
+10. capture 이후 history가 있는 서로 다른 실제 RGB clip을 최소 20개로 늘린다.
 
 ### 3.2 반복 가능한 읽기 전용 확인 명령
 

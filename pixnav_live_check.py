@@ -14,6 +14,7 @@ import math
 import os
 from pathlib import Path
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -27,6 +28,7 @@ DOCKER_PACKAGE_SOURCE = DOCKER_REPO_ROOT / "src" / "escape_nav_pixnav"
 DEFAULT_OUTPUT_ROOT = Path.home() / ".ros" / "pixnav_live_runs"
 DEFAULT_EXCHANGE_ROOT = REPO_ROOT / ".local-data" / "pixnav_live_exchange"
 PIXNAV_CHECK = REPO_ROOT / "pixnav_check.py"
+LIVE_SENSOR_GUARD = REPO_ROOT / "scratch" / "pixnav_live_sensor_guard.py"
 
 if str(PACKAGE_SOURCE) not in sys.path:
     sys.path.insert(0, str(PACKAGE_SOURCE))
@@ -40,6 +42,7 @@ from escape_nav_pixnav.live_contract import (
     make_upstream_hold,
 )
 from escape_nav_pixnav.policy_runtime import FrozenPixNavRuntime
+from escape_nav_pixnav.safety_admission import evaluate_safety_admission
 from escape_nav_pixnav.vlm_grounding import validate_grounding
 
 
@@ -61,6 +64,7 @@ MAPPING_MARKERS = (
     "go2_livo_sensor_bridge.py",
 )
 COMMAND_UDP_PORTS = (9090, 9091)
+ROS_FOXY_SETUP = Path("/opt/ros/foxy/setup.bash")
 
 
 def parse_args() -> argparse.Namespace:
@@ -121,6 +125,44 @@ def git_head() -> Optional[str]:
         ).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         return None
+
+
+def git_worktree_status() -> list[str]:
+    try:
+        output = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "status", "--short", "--untracked-files=all"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return ["GIT_STATUS_UNAVAILABLE"]
+    return [line for line in output.splitlines() if line]
+
+
+def source_manifest() -> dict[str, Any]:
+    paths = (
+        REPO_ROOT / "pixnav_live_check.py",
+        REPO_ROOT / "scratch" / "pixnav_live_sensor_guard.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "adapter.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "contracts.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "event_ledger.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "live_contract.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "policy_runtime.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "safety_admission.py",
+        PACKAGE_SOURCE / "escape_nav_pixnav" / "vlm_grounding.py",
+    )
+    return {
+        "schema_version": "go2_pixnav_live_source_manifest_v1",
+        "git_head": git_head(),
+        "files": [
+            {
+                "path": str(path.relative_to(REPO_ROOT)),
+                "sha256": sha256_file(path) if path.is_file() else None,
+            }
+            for path in paths
+        ],
+    }
 
 
 def process_matches() -> dict[str, list[dict[str, Any]]]:
@@ -231,6 +273,99 @@ def docker_runtime(container: str) -> dict[str, Any]:
     return {"container": container, "image": image, "container_id": container_id}
 
 
+def ros_foxy_environment() -> dict[str, str]:
+    if not ROS_FOXY_SETUP.is_file():
+        raise RuntimeError("ROS_FOXY_SETUP_MISSING")
+    completed = subprocess.run(
+        [
+            "bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            f"source {ROS_FOXY_SETUP} >/dev/null 2>&1 && env -0",
+        ],
+        check=True,
+        capture_output=True,
+        timeout=10.0,
+    )
+    environment: dict[str, str] = {}
+    for entry in completed.stdout.split(b"\0"):
+        if not entry or b"=" not in entry:
+            continue
+        key, value = entry.split(b"=", 1)
+        environment[key.decode("utf-8")] = value.decode("utf-8", errors="surrogateescape")
+    existing_pythonpath = environment.get("PYTHONPATH", "")
+    environment["PYTHONPATH"] = f"{PACKAGE_SOURCE}:{existing_pythonpath}"
+    return environment
+
+
+def start_live_sensor_guard(output_path: Path) -> tuple[subprocess.Popen[str], dict[str, Any]]:
+    command = [
+        sys.executable,
+        str(LIVE_SENSOR_GUARD),
+        "--output",
+        str(output_path),
+        "--duration",
+        "120.0",
+        "--interval",
+        "0.05",
+    ]
+    started_ns = time.monotonic_ns()
+    process = subprocess.Popen(
+        command,
+        cwd=str(REPO_ROOT),
+        env=ros_foxy_environment(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    deadline = time.monotonic() + 8.0
+    last_status = "NO_SNAPSHOT"
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            stdout, stderr = process.communicate()
+            raise RuntimeError(f"LIVE_SENSOR_GUARD_EXITED:{process.returncode}:{stderr[-1000:]}")
+        if output_path.is_file():
+            try:
+                value = json.loads(output_path.read_text(encoding="utf-8"))
+                last_status = str(value.get("status"))
+                if last_status == "PASS_LIVE_L2_ODOM_SNAPSHOT":
+                    return process, {
+                        "command": command,
+                        "started_monotonic_ns": started_ns,
+                        "ready_monotonic_ns": time.monotonic_ns(),
+                        "ready_status": last_status,
+                        "ros_publishers_created": 0,
+                        "actuation_calls": 0,
+                    }
+            except (OSError, json.JSONDecodeError):
+                pass
+        time.sleep(0.05)
+    process.send_signal(signal.SIGINT)
+    stdout, stderr = process.communicate(timeout=5.0)
+    raise RuntimeError(f"LIVE_SENSOR_GUARD_NOT_READY:{last_status}:{stderr[-1000:]}")
+
+
+def stop_live_sensor_guard(
+    process: subprocess.Popen[str],
+    telemetry: dict[str, Any],
+) -> dict[str, Any]:
+    if process.poll() is None:
+        process.send_signal(signal.SIGINT)
+    try:
+        stdout, stderr = process.communicate(timeout=5.0)
+    except subprocess.TimeoutExpired:
+        process.terminate()
+        stdout, stderr = process.communicate(timeout=5.0)
+    return {
+        **telemetry,
+        "finished_monotonic_ns": time.monotonic_ns(),
+        "returncode": process.returncode,
+        "stdout": stdout[-2000:],
+        "stderr": stderr[-4000:],
+    }
+
+
 def query_vlm_subprocess(
     *,
     executor: str,
@@ -242,6 +377,7 @@ def query_vlm_subprocess(
     server_base: str,
     model: str,
     timeout_s: float,
+    confidence_min: float,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     module_args = [
         "-m",
@@ -258,6 +394,8 @@ def query_vlm_subprocess(
         model,
         "--timeout",
         str(timeout_s),
+        "--confidence-min",
+        str(confidence_min),
     ]
     if executor == "docker":
         command = ["docker", "exec", "-e", f"PYTHONPATH={DOCKER_PACKAGE_SOURCE}"]
@@ -428,6 +566,7 @@ def main() -> int:
         "run_id": run_id,
         "created_unix_ns": time.time_ns(),
         "git_head": git_head(),
+        "git_worktree_status": git_worktree_status(),
         "mode": "LIVE_REAL_CAMERA_STRICT_ZERO_ACTUATION",
         "physical_actuation_allowed": False,
         "ros_publishers_created": 0,
@@ -448,7 +587,12 @@ def main() -> int:
     last_event_hash = "0" * 64
     causal_id = "0" * 64
     proposal = None
+    live_decision = None
     pixnav_runtime = None
+    sensor_guard_process = None
+    sensor_guard_telemetry = None
+    sensor_snapshot_path = run_dir / "l2_odom_safety_snapshot.json"
+    write_json(run_dir / "source_manifest.json", source_manifest())
 
     def append_event(stage: EventStage, payload: Mapping[str, Any]) -> None:
         nonlocal event_sequence, last_event_hash
@@ -501,6 +645,11 @@ def main() -> int:
         else:
             report["stages"]["pixnav_runtime_preflight"] = "PASS_SUBPROCESS_COMPATIBILITY"
 
+        sensor_guard_process, sensor_guard_telemetry = start_live_sensor_guard(
+            sensor_snapshot_path
+        )
+        report["stages"]["live_l2_odom_guard"] = "PASS_READ_ONLY_SUBSCRIPTIONS"
+
         opencv_lib = "/home/unitree/opencv_build/opencv/build/lib"
         current_ld_path = os.environ.get("LD_LIBRARY_PATH", "")
         if opencv_lib not in current_ld_path.split(":"):
@@ -544,6 +693,7 @@ def main() -> int:
                 server_base=args.server_base,
                 model=args.model,
                 timeout_s=args.vlm_timeout,
+                confidence_min=args.vlm_confidence_min,
             )
             write_json(run_dir / "vlm_transport.json", {**envelope, "raw": "stored_in_vlm_raw.json"})
             write_json(run_dir / "vlm_process.json", vlm_process)
@@ -646,6 +796,30 @@ def main() -> int:
             )
             report["stages"]["pixnav_cuda"] = "PASS"
 
+        sensor_snapshot = json.loads(sensor_snapshot_path.read_text(encoding="utf-8"))
+        safety_admission = evaluate_safety_admission(
+            proposal.to_dict(),
+            sensor_snapshot,
+            evaluated_at_ns=time.monotonic_ns(),
+            decision_observed_at_ns=(
+                int(live_decision["observed_at_ns"]) if live_decision is not None else None
+            ),
+            decision_inferred_at_ns=(
+                int(live_decision["inferred_at_ns"]) if live_decision is not None else None
+            ),
+            operator_enabled=False,
+            estop_clear=False,
+            global_localization_available=False,
+        )
+        write_json(run_dir / "safety_admission.json", safety_admission)
+        report["safety_admission"] = safety_admission
+        report["stages"]["safety_admission_p7"] = (
+            "PASS_CANDIDATE_ONLY_NO_ACTUATION"
+            if safety_admission["admitted_to_gateway"]
+            else "PASS_EVALUATED_FAIL_CLOSED"
+        )
+        report["gateway_candidate"] = safety_admission["admitted_to_gateway"]
+
         sink = AuditJsonlSink(run_dir / "macro_actions.jsonl")
         record_hash = sink.append(proposal)
         audit_result = verify_audit_chain(run_dir / "macro_actions.jsonl")
@@ -685,12 +859,23 @@ def main() -> int:
             now_ns=time.monotonic_ns() + int(args.event_ttl * 1_000_000_000) + 1
         )
     finally:
+        if sensor_guard_process is not None and sensor_guard_telemetry is not None:
+            try:
+                sensor_guard_result = stop_live_sensor_guard(
+                    sensor_guard_process,
+                    sensor_guard_telemetry,
+                )
+                write_json(run_dir / "sensor_guard_process.json", sensor_guard_result)
+                report["sensor_guard_process"] = sensor_guard_result
+            except Exception as sensor_guard_error:
+                report["sensor_guard_stop_error"] = str(sensor_guard_error)[:1000]
         report["frames_captured"] = len(frame_metadata)
         report["causal_id_sha256"] = causal_id
         report["actuation_permitted"] = False
         report["claim_scope"] = (
             "One-cycle live real-camera, Docker VLM transport, frozen PixNav and file-only "
-            "proposal causality only; not a 10-minute soak, controller, calibration, localization "
+            "proposal causality plus read-only L2/odom P7 evaluation only; not a 10-minute "
+            "soak, physical operator-enable/E-stop, P8 gateway, controller, global localization "
             "or physical navigation proof."
         )
         write_json(run_dir / "causal_events.json", causal_events)

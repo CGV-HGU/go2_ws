@@ -960,3 +960,104 @@ launch package. `colcon test` passed 56 tests with zero failures. This is not a
 controller, live camera/history, localization, obstacle safety, E-stop, actual
 watchdog stop-latency or robot-motion proof. Existing data has no frames after
 `frame_10`, so multi-step PixNav history still requires newly recorded clips.
+
+## 20. Live persistent PixNav and read-only L2/odom P7 admission (2026-08-28 17:51 KST)
+
+RTAB remapping was intentionally deferred while the non-actuating policy path
+was connected. `pixnav_live_check.py` now performs one bounded live cycle:
+
+```text
+Go2 H264 RTP capture-view
+  -> Docker OpenAI-compatible strict VLM grounding
+  -> four post-capture history frames
+  -> preloaded frozen Checkpoint_A on Jetson CUDA
+  -> PixNavMacroAdapter file proposal
+  -> read-only L2/robot-odom P7 evaluation
+  -> hash-chained file audit
+```
+
+The VLM prompt now defines confidence explicitly (`0` means no confidence,
+`1` completely certain, `go` requires at least 0.55). The local validator
+still rejects mismatched/out-of-range pixels without clipping. A previous live
+response with confidence 0.0 was correctly converted to
+`VLM_CONFIDENCE_BELOW_MIN` zero-hold at:
+
+```text
+~/.ros/pixnav_live_runs/20260828_174223_pixnav_live_no_actuation/
+```
+
+Reloading the policy per observation was the cause of the earlier 13.8 s
+subprocess latency. A persistent runtime measured checkpoint load 4.447 s,
+synthetic warmup 2.298 s, then identical real five-frame inference in 0.060 s
+and 0.047 s. The integrated accepted-VLM P6 run is:
+
+```text
+~/.ros/pixnav_live_runs/20260828_174349_pixnav_live_no_actuation/
+VLM confidence=0.99, VLM latency=2.203 s
+PixNav latency=0.083 s, final source age=0.203 s
+action=look_down -> reobserve/zero target
+```
+
+The ROS-facing L2 adapter remains outside the pure `escape_nav_pixnav`
+package at `scratch/pixnav_live_sensor_guard.py`. It creates only two
+subscriptions (`/utlidar/cloud_deskewed`, `/utlidar/robot_odom`), transforms
+deskewed `odom` points back to `base_link` with the matching robot odometry,
+and computes conservative forward/rotation clearance. The core package still
+directly imports no ROS, socket, Unitree SDK or geometry message API.
+
+The combined P6/P7 one-cycle evidence is:
+
+```text
+~/.ros/pixnav_live_runs/20260828_175109_pixnav_live_no_actuation/
+VLM confidence=0.55, latency=1.194 s
+PixNav latency=0.106 s, final source age=0.250 s
+L2 valid points=1440, cloud/odom stamp delta=0.078 s
+front clearance=1.334 m, rotation clearance=0.506 m
+action=look_down, probability=0.918 -> reobserve/zero target
+operator_enabled=false, estop_clear=false -> gateway_candidate=false
+all artifact SHA256 checks OK, sensor guard return code 0
+```
+
+Unit tests pass 72/72, including P7 decision/frame TTL revalidation. The path created zero ROS publishers, zero Unitree SDK
+clients, zero command UDP senders, zero controller processes and never grants
+actuation. P6 is only a one-cycle pass; the 10-minute soak and live server,
+camera, odometry and process-kill faults remain. P7 is partial because physical
+operator-enable/E-stop and P8 single command authority are not connected.
+Global RTAB localization remains deferred and must rejoin before
+execution-grounded trajectory/localization evaluation or any physical pilot.
+
+The final rerun added an exact source manifest and dirty-worktree disclosure:
+
+```text
+~/.ros/pixnav_live_runs/20260828_175715_pixnav_live_no_actuation/
+git_head=a1eda05bd75894ec90125910b8b6d684346d3f42
+VLM confidence=0.99, latency=1.274 s
+PixNav latency=0.092 s, final source age=0.330 s
+L2 valid points=1511, cloud/odom stamp delta=0.081 s
+front clearance=0.960 m, rotation clearance=0.522 m
+action=look_down, probability=0.718 -> reobserve/zero target
+gateway_candidate=false, all artifact SHA256 checks OK
+```
+
+`source_manifest.json` records the SHA-256 of the live runner, read-only ROS
+adapter and all policy/safety contract sources. This `175715` run was then
+superseded after adding a second source/decision TTL check at the P7 gate.
+
+Final post-TTL source-hashed evidence:
+
+```text
+~/.ros/pixnav_live_runs/20260828_180030_pixnav_live_no_actuation/
+VLM confidence=0.99, latency=1.436 s
+PixNav latency=0.091 s
+inference source age=0.269 s
+P7 frame age=0.274 s, P7 decision age=0.004 s
+L2 valid points=1488, cloud/odom stamp delta=0.059 s
+front clearance=1.725 m, rotation clearance=0.543 m
+action=look_down, probability=0.893 -> reobserve/zero target
+gateway_candidate=false, all artifact SHA256 checks OK
+```
+
+The P7 gate now independently rejects a source frame older than 1.0 s or a
+PixNav decision older than 0.5 s even if the upstream adapter previously
+accepted it. Foxy `colcon test` passes 72/72. The source manifest preserves the
+exact uncommitted runtime sources until the user commits and pushes them.
