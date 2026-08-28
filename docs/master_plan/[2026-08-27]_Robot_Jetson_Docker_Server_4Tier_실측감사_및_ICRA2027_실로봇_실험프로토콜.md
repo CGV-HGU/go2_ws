@@ -5,11 +5,13 @@
 > 판정 원칙: 실제 런타임과 현재 소스가 과거 문서의 “완성/100%” 표현보다 우선한다.  
 > 안전 상태: 이 감사에서는 자율주행 노드와 모터 브리지를 시작하거나 이동 명령을 발행하지 않았다.
 
+> **2026-08-28 실측 개정**: planar 3DoF run `20260828_113542_planar3dof_headless`는 raw Z span 0.0335 m, sampled map Z span 0.0175 m, Type-2 closure 9개로 Z 안정성은 통과했다. 그러나 Type-1 global closure는 0개이고 wrapper status 141로 최종 optimized graph가 저장되지 않아 golden map은 미통과다. 또한 현재 HEAD `3dc0da70e569054004a2ff0fe07223457e05f19c`에서 `e2e_node/controller_node`는 여전히 `ros_mock_runtime`을 호출하고 실제 `s2e.onnx`가 없으므로 physical autonomy NO-GO는 유지한다. 전체 최신 실행 순서는 [`../experiments/00_real_robot_end_to_end_master_test_plan.md`](../experiments/00_real_robot_end_to_end_master_test_plan.md)를 따른다.
+
 ## 1. 한 줄 결론
 
 현재 시스템은 **Tier 1 로봇 센서 → Tier 2 Jetson LIO/RTAB-Map 매핑**과 **Tier 4 서버 접속**까지는 실측되었지만, **Tier 3 S2E/VL-MAG와 실로봇 제어를 잇는 폐루프는 실행 불가**다. 따라서 지금 가능한 것은 맵핑·정적 센서 검증이고, 논문용 자율주행은 아래 안전/구현 게이트를 닫은 뒤 진행해야 한다.
 
-오늘 두 번째 2D 지도는 첫 지도보다 좋아졌지만, 그것은 전역 시각 루프 폐쇄가 아니라 **5개의 LiDAR 공간 근접 폐쇄(type 2)**와 neighbor-link ICP 비활성화의 효과다. 현재 3D pose graph에는 약 6.452 m의 z 발산이 있으므로 **“정확한 3D SLAM 완성”으로 주장할 수 없다.**
+2026-08-27 두 번째 2D 지도는 첫 지도보다 좋아졌지만, 그것은 전역 시각 루프 폐쇄가 아니라 **5개의 LiDAR 공간 근접 폐쇄(type 2)**와 neighbor-link ICP 비활성화의 효과다. 당시 4DoF graph에는 약 6.452 m의 z 발산이 있었다. 2026-08-28 3DoF는 이 수직 발산을 제거했지만 global visual loop와 정상 종료 저장이 남았으므로 아직 **“golden map 완성”으로 주장할 수 없다.**
 
 또한 현재 날짜와 공식 일정을 기준으로 대상은 “ICRA 2026”이 아니라 **ICRA 2027**로 정리해야 한다. 공식 논문 마감은 **2026-09-15 23:59 PST**이며, 전체 원고는 참고문헌을 포함해 8쪽이다.
 
@@ -98,8 +100,8 @@ flowchart LR
 | 계층 | 확인된 것 | 남은 핵심 문제 | 판정 |
 |---|---|---|---|
 | Tier 1 Robot | Go2와 내장 L2 DDS topic 도달, 실제 cloud/IMU/odom 표본 수신 | 제어 권한·E-stop·장애물 안전 회로의 독립 검증 없음 | 센서 PASS / 자율제어 NO-GO |
-| Tier 2 Jetson | `/utlidar/* → /livo/* → RTAB-Map`, 2D 지도 생성, 루프 로그 | camera calibration은 추정값, 3D z 발산, localization acceptance 미완료 | 매핑 PARTIAL |
-| Tier 3 Docker | Jazzy와 패키지 executable skeleton 존재 | 컨테이너 idle, 브링업 대상 파일 없음, S2E ONNX 없음, 기본값 mock | FAIL |
+| Tier 2 Jetson | `/utlidar/* → /livo/* → RTAB-Map`, 3DoF Z 안정, Type-2 closure 9개 | Type-1 global loop, 정상 종료 저장, camera calibration, localization acceptance | 매핑 PARTIAL |
+| Tier 3 Docker | Jazzy package/executable과 mock graph 존재 | 현재 container runtime 미가동, node가 mock runtime 호출, S2E ONNX 없음 | FAIL |
 | Tier 4 Server | 네트워크, `/v1/models`, text JSON, 보관 Go2 RGB 1장 vision 응답 | live frame, 전체 navigation schema, latency/retry/failure 검증 없음 | 정적 API PARTIAL |
 | 전체 폐루프 | 설계 문서와 일부 bridge 코드 존재 | 최신 VL-MAG/S2E, provenance, safety, logging이 하나의 run으로 닫히지 않음 | NO-GO |
 
@@ -170,7 +172,7 @@ main paired trials = P pairs × 2 methods × 5 repetitions
 | 현재 4DoF ICP | 비평면/경사 대응 가능성 확인 | z error와 wall tilt가 independent reference 이내 |
 | 실내 planar 3DoF | 단층 평면 주행 안정화 | endpoint drift, wall straightness, repeat localization 향상 |
 
-기존 4DoF launch 기본값은 비교 기준으로 유지하고, `mapping_planar_headless.sh`가 planar 세 인자와 run별 evidence 저장을 선택한다. 이 profile은 build/static 검증만 통과했으며 물리 결과는 아직 없다.
+기존 4DoF launch는 경사 코스 비교 자료로만 보존하고, `mapping_planar_headless.sh`가 평면 campaign의 run별 evidence를 저장한다. 2026-08-28 물리 주행에서 3DoF Z 안정성은 통과했지만 Type-1 global loop와 정상 종료 저장이 미완료이므로 deployment DB는 아직 고정하지 않는다.
 
 이 A/B는 ESCAPE-Nav의 알고리즘 ablation이 아니라 **평가 장비를 고정하기 위한 infrastructure qualification**이다. 더 좋은 설정 하나를 결과를 보기 전에 고정하고 모든 방법에 동일하게 사용한다.
 
@@ -345,7 +347,7 @@ experiments/real_robot_icra2027/<campaign_id>/
 - [x] 보관된 실제 Go2 RGB 1장으로 서버의 image payload 수용 확인
 - [ ] live camera와 전체 navigation schema로 vision behavior 재검증
 - [ ] 실측 camera intrinsics/distortion/extrinsics 적용
-- [ ] 4DoF/3DoF map A/B 후 deployment DB 하나 고정
+- [ ] planar 3DoF Type-1/정상 종료/반복성 통과 후 deployment DB 하나 고정
 - [ ] Docker 기본 mock을 fail-closed로 제거하고 real/mock provenance 표시
 - [ ] 단일 command authority만 MCU에 명령; 중복 `/cmd_vel`/Sport API 경로 제거
 - [ ] legacy 무검증 UDP packet 수용 제거, sequence/timestamp/TTL 추가
@@ -363,7 +365,7 @@ experiments/real_robot_icra2027/<campaign_id>/
 
 ### Phase A — 지도/센서 자격 검증
 
-1. 오늘 map2와 4DoF/3DoF 재주행 결과를 independent reference로 비교
+1. 3DoF 정상 종료와 Type-1 global loop를 해결하고 3회 반복성 검증
 2. camera calibration 수행
 3. 고정 DB와 5개 pair 좌표/yaw를 사전 등록
 4. 같은 위치에서 반복 localization 분산과 loop correction jump 측정

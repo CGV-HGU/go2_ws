@@ -240,7 +240,7 @@
 ### 3. 🛠️ 해결 조치
 1. **시스템 레벨 영구 링커 등록**: `/etc/ld.so.conf.d/opencv.conf`에 `/home/unitree/opencv_build/opencv/build/lib` 등록 후 `sudo ldconfig` 실행.
 2. **QoS 표준화**: `go2_front_camera_publisher.py` 및 `go2_native_sensor_node.py`의 발행 QoS를 표준 `RELIABLE`(`depth=10, reliability=RELIABLE, durability=VOLATILE`)로 전면 개편.
-3. **포트 자동 해제 SOP**: `bringup_all_escape_nav.sh` 시작부에 `echo admin | sudo -S fuser -k 6201/udp` 삽입하여 포트 충돌 원천 차단.
+3. **포트 해제 SOP**: 사용자가 소유한 잔여 프로세스를 확인한 뒤 `fuser -k 6201/udp`로 종료한다. 권한이 필요한 경우에만 터미널에서 `sudo fuser -k 6201/udp`를 직접 실행하며 credential을 source에 저장하지 않는다.
 
 ### 4. 📊 최종 실측 검증 완료 (Verification)
 * `ros2 topic hz /camera/front/image_raw` ➔ **30.0 Hz 실시간 출력 확인**!
@@ -366,3 +366,13 @@ $ ros2 launch go2_bringup go2.launch.py lidar:=True
 ### 4. 📊 최종 실측 검증 완료
 * 도커 내부 백그라운드 브릿지 및 S2E 노드 동시 가동 성공, `antarctica` 브랜치 커밋 완료 🟢
 
+---
+
+## `[ERR-2026-08-28-01]` Planar headless 시작 직후 `Broken pipe` / status 141
+
+- **발생 run**: `20260828_113015_planar3dof_headless`
+- **영향**: Phase 2 센서 시작 전 종료. 이 run에는 주행, planar graph, loop closure 결과가 없음.
+- **근본 원인**: stale-process 정리의 `pkill -9 -f rtabmap`이 RTAB-Map뿐 아니라 경로에 `rtabmap_runs`가 들어간 wrapper의 `tee`까지 일치시켜 종료함. bringup shell은 닫힌 pipe에 출력하다 SIGPIPE(status 141)로 종료됨.
+- **수정**: `rtabmap`과 `rtabmap_viz`의 정확한 process name 및 특정 `ros2 launch ... go2_rtabmap.launch.py` 명령만 종료하도록 범위를 축소함.
+- **증거 보호**: `/rtabmap` startup gate가 통과하면 `RTABMAP_STARTED`를 만들고, 이 sentinel이 있는 run에서만 DB를 복사하도록 wrapper를 변경함. 실패 run의 기존 DB 오인 보존을 방지하기 위해 manifest에 `rtabmap_started`, `rtabmap_db_saved`도 기록함.
+- **검증 상태**: shell syntax, Python compile, `git diff --check`, evidence 경로를 가진 모의 process 생존 회귀 시험은 통과. 수정 후 physical planar 3DoF 주행은 아직 재실행 전이므로 결과 검증은 미완료.

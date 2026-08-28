@@ -14,8 +14,13 @@ export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export CYCLONEDDS_URI="file:///home/unitree/go2_ws_antarctica/cyclonedds.xml"
 export ROS_DOMAIN_ID=0
 
-# Ensure 192.168.1.2/24 alias exists for LiDAR UDP communication
-echo admin | sudo -S ip addr add 192.168.1.2/24 dev eth0 2>/dev/null || true
+# The independent external L2 needs this alias, but this script never stores
+# or supplies a sudo credential. Configure it explicitly once if absent.
+if ! ip -4 addr show dev eth0 | grep -q '192\.168\.1\.2/24'; then
+    echo "ERROR: external L2 requires 192.168.1.2/24 on eth0."
+    echo "Run once in a terminal: sudo ip addr add 192.168.1.2/24 dev eth0"
+    exit 1
+fi
 
 echo "🚀 [EXTERNAL L2] Launching Unitree unilidar_sdk2 v2.x driver..."
 ros2 run unitree_lidar_ros2 unitree_lidar_ros2_node \

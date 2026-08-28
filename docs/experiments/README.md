@@ -1,22 +1,45 @@
-# 🧪 [Quantitative Experiments Hub] 실물 실증 정량적 실험 계획 및 평가 매트릭스 허브
+# 실로봇 End-to-End 실험 계획 허브
 
-> **작성 일자**: 2026년 8월 28일 (금요일) KST  
-> **허브 목적**: Table 1 (PointNav 주행 성능) 및 Table 2 (안전성 및 지연시간)의 모든 실물 실증 실험을 체계적으로 총괄하는 전용 실험 허브입니다.
+> 실측 개정: 2026-08-28 KST
+> 현재 판정: mapping qualification 진행 중 / physical autonomy NO-GO
+> 판정 원칙: 실제 소스·checkpoint·runtime artifact가 과거 문서의 “완성/Final” 표현보다 우선함
 
----
+## 문서 우선순위
 
-## 📂 4대 핵심 정량 실험 가이드 목록
+| 우선순위 | 문서 | 용도 | 현재 상태 |
+|---:|---|---|---|
+| 1 | [실로봇 전체 E2E 마스터 계획](00_real_robot_end_to_end_master_test_plan.md) | 센서→3DoF map→localization→PixelNav/S2E→4-Tier→안전→pilot→50-run campaign | **Authoritative / Active** |
+| 2 | [4-Tier 실측 감사 및 ICRA 2027 프로토콜](../master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md) | 현재 구현 준비도와 paired campaign 원칙 | **Authoritative audit** |
+| 3 | [RTAB-Map 실물 검증계획](../07_real_robot_sensor_and_autonomy_verification_plan.md) | 센서·map·global loop 세부 기준 | **Active** |
+| 4 | [실로봇 정량 테이블 규격](01_table1_table2_quantitative_experiment_master_protocol.md) | Direct-goal vs Full, 25회/method, main/deployment/safety table | **Schema active / 값 미측정** |
+| 5 | [4개 arena 초안](02_four_arenas_physical_setup_and_evaluation_guide.md) | 확장 deployment 후보와 측량 양식 | **Draft / 좌표 미검증** |
+| 6 | [비교 방법 정의](03_five_baselines_implementation_and_execution_guide.md) | main 두 방법의 공정성 계약과 optional baseline 준비도 | **Definition active / 실행 NO-GO** |
+| 7 | [지표·통계·테이블 생성 명세](04_statistical_metrics_and_auto_scoring_pipeline.md) | artifact schema, paired 통계, importer acceptance | **Schema active / importer 미구현** |
 
-| 번호 | 실험 가이드 문서명 | 주요 세부 내용 및 링크 | 상태 |
-| :---: | :--- | :--- | :---: |
-| **01** | **`01_table1_table2_quantitative_experiment_master_protocol.md`** | • **[🏆 마스터 프로토콜]** Table 1 & Table 2 규격, 4대 지형, 5대 비교군 총괄 명세<br/>👉 **[마스터 프로토콜 바로가기](01_table1_table2_quantitative_experiment_master_protocol.md)** | 🟢 **최신 확정 (Final)** |
-| **02** | **`02_four_arenas_physical_setup_and_evaluation_guide.md`** | • **[🏟️ 4대 지형 셋업 가이드]** 직선 30m, 90° 코너 15m, T자 갈림길 20m, 동적 장애물 20m 물리 규격 및 현장 기록지<br/>👉 **[지형 셋업 가이드 바로가기](02_four_arenas_physical_setup_and_evaluation_guide.md)** | 🟢 **정식 등록** |
-| **03** | **`03_five_baselines_implementation_and_execution_guide.md`** | • **[🔬 5대 비교군 실행 가이드]** Classic SLAM, S2E Gait Only, VLM Sync, ViNT SOTA, Ours Async 실행법<br/>👉 **[비교군 실행 가이드 바로가기](03_five_baselines_implementation_and_execution_guide.md)** | 🟢 **정식 등록** |
-| **04** | **`04_statistical_metrics_and_auto_scoring_pipeline.md`** | • **[📈 평가 지표 & 통계 엔진]** SR(Wilson CI), SPL, Tnav, Collisions, Latency, Mann-Whitney U-test $p$-value 수식<br/>👉 **[통계 엔진 명세 바로가기](04_statistical_metrics_and_auto_scoring_pipeline.md)** | 🟢 **정식 등록** |
+## 전체 실행 순서
 
----
+```text
+버전·안전 동결
+  → 실센서 preflight
+  → planar 3DoF golden map
+  → map localization
+  → PixelNav/S2E real replay
+  → live 4-Tier command sink
+  → fault injection
+  → actuator/E-stop
+  → 저속 pilot
+  → 50-run paired campaign
+```
 
-## 🔗 상위 연계 문서 바로가기
-* **최고수준 완전무결 마스터플랜**: [`docs/master_plan/[2026-08-28]_Unitree_Go2_LIVO_SLAM_및_ESCAPE-Nav_실물실증_최고수준_완전무결_마스터플랜.md`](../master_plan/%5B2026-08-28%5D_Unitree_Go2_LIVO_SLAM_%EB%B0%8F_ESCAPE-Nav_%EC%8B%A4%EB%AC%BC%EC%8B%A4%EC%A6%9D_%EC%B5%9C%EA%B3%A0%EC%88%98%EC%A4%80_%EC%99%84%EC%A0%84%EB%AC%B4%EA%B2%B0_%EB%A7%88%EC%8A%A4%ED%84%B0%ED%94%8C%EB%9E%9C.md)
-* **내일 연구실 1-Click 마스터 SOP**: [`docs/master_plan/[2026-08-28_내일_연구실_현장_실물실증_완전정복_1-Click_체크리스트_및_SOP].md`](../master_plan/%5B2026-08-28_%EB%82%B4%EC%9D%BC_%EC%97%B0%EA%B5%AC%EC%8B%A4_%ED%98%84%EC%9E%A5_%EC%8B%A4%EB%AC%BC%EC%8B%A4%EC%A6%9D_%EC%99%84%EC%A0%84%EC%A0%95%EB%B3%B5_1-Click_%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8_%EB%B0%8F_SOP%5D.md)
-* **마스터 플랜 메인 인덱스**: [`docs/master_plan/README.md`](../master_plan/README.md)
+각 단계의 합격 기준과 현재 상태는 [실로봇 전체 E2E 마스터 계획](00_real_robot_end_to_end_master_test_plan.md)을 따른다.
+
+## 현재 금지 사항
+
+- `bringup_all_escape_nav.sh` autonomy mode로 실제 로봇 이동
+- mock `e2e_node/controller_node` 결과를 실로봇 PASS로 기록
+- checkpoint hash가 없는 PixelNav/S2E 결과 사용
+- sample episode가 내장된 `calculate_icra_metrics.py` 출력을 논문 수치로 사용
+- `/cmd_vel`과 Sport API를 동시에 command authority로 사용
+- 사람을 동적 장애물로 투입하는 시험을 안전 Gate보다 먼저 수행
+
+mapping 동안 recorder는 OFF를 유지한다. 논문 campaign에서는 실제 topic과 provenance가 수정된 전용 recorder가 준비된 뒤에만 기록을 시작한다.

@@ -48,17 +48,28 @@ git -C "$WORKSPACE_DIR" status --short > "$RUN_DIR/git_status.txt" 2>/dev/null |
 
 finalize_run() {
     local exit_status=$?
+    local rtabmap_started=false
+    local rtabmap_db_saved=false
+    local db_report="not saved (RTAB-Map startup gate did not pass)"
     trap - EXIT
     set +e
+
+    if [ -f "$RUN_DIR/RTABMAP_STARTED" ]; then
+        rtabmap_started=true
+        if [ -f "$RTABMAP_DB" ] && cp -a "$RTABMAP_DB" "$RUN_DIR/rtabmap.db"; then
+            rtabmap_db_saved=true
+            db_report="$RUN_DIR/rtabmap.db"
+        else
+            db_report="not saved (startup passed, but no readable RTAB-Map DB was found)"
+        fi
+    fi
 
     {
         echo "finished_at=$(date --iso-8601=seconds)"
         echo "wrapper_exit_status=$exit_status"
+        echo "rtabmap_started=$rtabmap_started"
+        echo "rtabmap_db_saved=$rtabmap_db_saved"
     } >> "$MANIFEST"
-
-    if [ -f "$RTABMAP_DB" ]; then
-        cp -a "$RTABMAP_DB" "$RUN_DIR/rtabmap.db"
-    fi
 
     (
         cd "$RUN_DIR" || exit 0
@@ -67,6 +78,7 @@ finalize_run() {
             run_manifest.txt \
             git_status.txt \
             runtime.log \
+            RTABMAP_STARTED \
             rtabmap.db \
             config/go2_rtabmap.launch.py \
             config/go2_livo_sensor_bridge.py \
@@ -87,7 +99,8 @@ finalize_run() {
     echo " Planar mapping evidence saved"
     echo " Run ID : $RUN_ID"
     echo " Run dir: $RUN_DIR"
-    echo " DB     : $RUN_DIR/rtabmap.db"
+    echo " Started: $rtabmap_started"
+    echo " DB     : $db_report"
     echo " Logs   : $RUN_DIR/runtime.log and $RUN_DIR/loop_logs/"
     echo " Hashes : $RUN_DIR/SHA256SUMS"
     echo "========================================================================"

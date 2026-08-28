@@ -9,7 +9,7 @@
 | 터미널 에러 문자열 (Grep Keyword) | 해당 계층 | 핵심 원인 | 1줄 즉각 해결 명령어 |
 | :--- | :---: | :--- | :--- |
 | **`Did not receive data since 5 seconds!`** | RTAB-Map | 센서 토픽 중 1개 이상 0Hz | `bash scratch/start_rtabmap_livo.sh mapping` |
-| **`bind udp port failed`** | 라이다 드라이버 | 이전 라이다 프로세스 6201 포트 점유 | `echo admin \| sudo -S fuser -k 6201/udp` |
+| **`bind udp port failed`** | 라이다 드라이버 | 이전 라이다 프로세스 6201 포트 점유 | `fuser -k 6201/udp` (필요한 경우 터미널에서 명시적 `sudo`) |
 | **`ImportError: libopencv_hdf.so.4.5`** | 전면 카메라 | glibc 런타임 링커 경로 누락 | `sudo ldconfig /home/unitree/opencv_build/opencv/build/lib` |
 | **`0 Hz` on `/utlidar/cloud`** | 4D 라이다 | 메인보드 원시 점군 Mute 상태 | `smart app toggle` or `unitree_ros2 service request` |
 | **`Could not find a connection between odom and base_link`** | TF2 | 로봇 와상/정지 상태 TF 미발행 | `go2_native_sensor_node.py` 50Hz 타이머 TF 활성화 |
@@ -40,7 +40,7 @@
 * **원인**: 이전 실행 인스턴스가 비정상 종료되어 UDP 6201 포트를 여전히 점유하고 있음.
 * **해결**:
   ```bash
-  echo admin | sudo -S fuser -k 6201/udp
+  fuser -k 6201/udp
   sleep 0.5
   bash scratch/start_unitree_lidar.sh
   ```

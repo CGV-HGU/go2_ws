@@ -1,90 +1,187 @@
-# 📊 [Master Protocol] Table 1 & Table 2 실물 실증 정량적 실험 마스터 프로토콜
+# Go2 실로봇 정량 테이블 규격 및 campaign 프로토콜
 
-> **작성 일자**: 2026년 8월 28일 (금요일) KST  
-> **시스템 총괄**: **Antigravity Master Plan Architect**  
-> **기체 플랫폼**: Unitree Go2 EDU Plus (4D LiDAR L2 + 50Hz DSP IMU/Odometry + Front RGB Camera)  
-> **온보드 호스트**: Jetson Orin NX (Ubuntu 20.04 Foxy) / Docker Sandbox (Ubuntu 24.04 Jazzy)  
-> **원격 GPU 서버**: RTX Pro 6000 Ada Server (`100.96.60.15:8000`, `qwen3.5-9b-instruct`)  
-> **문서 목적**: **"Table 1 (PointNav 핵심 성능) 및 Table 2 (안전성 및 지연시간)의 모든 빈칸([TBD])을 실제 로봇 실측 데이터로 채우기 위한 4대 평가 환경, 5대 비교 알고리즘, 9대 정량 지표 수식 및 1-Click 자동 채점 종합 프로토콜."**
+> 개정: 2026-08-28 KST
+> 파일명은 과거 링크 호환을 위해 유지함
+> 현재 상태: table schema 확정 / 실측값 없음 / recorder·importer 미완료
+> 전체 Gate: [`00_real_robot_end_to_end_master_test_plan.md`](00_real_robot_end_to_end_master_test_plan.md)
 
----
+## 1. 기존 초안에서 교정한 내용
 
-## 🎯 1. 2대 목표 평가 테이블 규격 (Target Matrices)
+| 기존 항목 | 문제 | 교정 |
+|---|---|---|
+| 4 arena × 5 methods를 main table로 사용 | 실제 구현되지 않은 baseline이 포함되고 현재 paired paper protocol과 불일치 | main은 Direct-goal vs Full ESCAPE-Nav 두 방법만 사용 |
+| ViNT/NoMAD에 80/80/60/60, SPL 58.2, latency 65.4 ms 입력 | 이 Go2와 이 코스에서 측정한 값이 아니며 출처·조건이 동일하지 않음 | 모두 제거. 재현 실측하지 않은 baseline 숫자는 표에 넣지 않음 |
+| `T_nav`를 성공 run 평균으로만 계산 | 실패/timeout을 제외해 성능을 과대평가 | 실패에 공통 `T_max`를 부여하는 `T†` 사용 |
+| success radius 0.8 m와 1.0 m 혼용 | trial 판정이 campaign 중 바뀔 수 있음 | main campaign은 1.0 m로 사전 고정 |
+| 동적 장애물에서 “정지하면 실패” | 안전 정지가 오히려 실패로 처리됨 | 접촉 없이 goal 도달을 success로 판정하고 연속성은 Duty로 측정 |
+| Mann–Whitney p-value 열을 main table에 강제 | paired design과 작은 실로봇 표본에 부적절 | raw denominator와 pair-aware interval을 우선, 검정은 보조 분석 |
+| 1-Click evaluator가 실측 표를 만든다고 설명 | 현재 evaluator는 코드 내부 sample episode를 사용 | 실제 artifact importer가 완성될 때까지 자동 표 생성 금지 |
 
-### 📋 Table 1: Real-World Indoor PointNav Navigation Performance on Unitree Go2 (Main Performance)
+## 2. Main real-robot table
 
-$$\begin{array}{lcccccc}
-\toprule
-\textbf{Method} & \textbf{Straight SR} \uparrow & \textbf{90}^\circ\textbf{ Corner SR} \uparrow & \textbf{T-Junction SR} \uparrow & \textbf{Dynamic SR} \uparrow & \textbf{Overall SPL} \uparrow & \textbf{T}_{\text{nav}}\text{ (s)} \downarrow \\
-\midrule
-\text{Classic SLAM (RTAB-Map)} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} \\
-\text{S2E Low-Level (Gait Only)} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} \\
-\text{VLM + S2E Sync (Stop-and-Go)} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} & \text{[TBD]} \\
-\text{ViNT / NoMAD (Baseline SOTA)} & 80.0\% & 80.0\% & 60.0\% & 60.0\% & 58.2\% & 38.5\text{s} \\
-\textbf{\text{Ours: Full VL-MAG + S2E Async}} & \textbf{[TBD]} & \textbf{[TBD]} & \textbf{[TBD]} & \textbf{[TBD]} & \textbf{[TBD]} & \textbf{[TBD]} \\
-\bottomrule
-\end{array}$$
+실로봇 main 비교는 같은 고정 map과 같은 start–goal pair에서 두 방법을 비교한다.
 
-### 📋 Table 2: Safety and Latency Evaluation (Safety & Efficiency)
+- `Direct-goal`: active observation/directional memory를 우회하는 동일 frozen backend
+- `Full ESCAPE-Nav`: 최종 고정 시스템
+- `P=5` fixed pairs
+- pair마다 method별 5회
+- `n=25/method`, 총 50 main runs
+- 각 repetition은 두 방법을 묶은 paired block으로 정의
+- AB/BA 선행 방법 수 차이가 1 이하가 되도록 사전 생성한 counterbalanced order 사용
 
-$$\begin{array}{lccc}
-\toprule
-\textbf{Method} & \textbf{\# Collisions / ep} \downarrow & \textbf{Latency (ms)} \downarrow & \textbf{Mann-Whitney U-test vs SOTA (p-value)} \\
-\midrule
-\text{Classic SLAM (RTAB-Map)} & \text{[TBD]} & \text{[TBD]} & \text{--} \\
-\text{S2E Low-Level (Gait Only)} & \text{[TBD]} & \text{[TBD]} & \text{--} \\
-\text{VLM + S2E Sync (동기 방식)} & \text{[TBD]} & \text{[TBD]} & \text{--} \\
-\text{ViNT / NoMAD (Baseline SOTA)} & 0.75\text{회} & 65.4\text{ms} & \text{--} \\
-\textbf{\text{Ours: Full VL-MAG + S2E Async}} & \textbf{[TBD]} & \textbf{[TBD]} & \textbf{[TBD]} \\
-\bottomrule
-\end{array}$$
+### 2.1 논문용 빈 LaTeX template
 
----
+아래 값은 실제 artifact import 전까지 `--`로 둔다. 임의 예상값이나 pilot 결과를 채우지 않는다.
 
-## 🗺️ 2. 4대 실물 평가 지형 환경 (4 Test Arenas)
-
-```mermaid
-graph TD
-    A1["1. 직선 복도 (Straight Corridor, 30m)<br/>• 문과 기둥이 반복되는 장거리 대칭 복도<br/>• 성공 기준: 벽면 충돌 없이 60초 내 목적지 0.8m 도달"]
-    A2["2. 90° 코너 (90° Blind Corner, 15m)<br/>• 시야가 벽에 가려진 L자형 블라인드 코너<br/>• 성공 기준: 코너 컷팅(안쪽 벽 충돌) 없이 45초 내 선회 완주"]
-    A3["3. T자 갈림길 (T-Junction, 20m)<br/>• 분기로에서 좌/우 개구부 중 목표 방향 선택<br/>• 성공 기준: 반대편 교착(Deadlock) 없이 50초 내 올바른 통로 진입"]
-    A4["4. 동적 장애물 (Dynamic Obstacle, 20m)<br/>• 마주 오는 보행자(0.5m/s) 조우<br/>• 성공 기준: 정지 없이 측면 보행로로 부드러운 연속 회피"]
+```latex
+\begin{table}[t]
+  \centering
+  \caption{Go2 paired navigation in one fixed map
+  ($P=5$, five repetitions per pair and method, $n=25$/method).
+  Time is timeout-normalized $T^\dagger$; Rec. is successful/triggered recovery.}
+  \label{tab:real_robot_quantitative}
+  \scriptsize
+  \setlength{\tabcolsep}{1.35pt}
+  \begin{tabular}{@{}lccccccc@{}}
+    \toprule
+    Method & SR $\uparrow$ & Intv. $\downarrow$ & Time $\downarrow$
+      & Rec. $\uparrow$ & Lat. (s) $\downarrow$
+      & Duty $\uparrow$ & Yield $\uparrow$ \\
+    \midrule
+    Direct-goal & -- & -- & -- & -- & -- & -- & -- \\
+    \textbf{Full ESCAPE-Nav} & -- & -- & -- & -- & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 ```
 
----
+### 2.2 셀 형식
 
-## 🔬 3. 5대 비교 대상 알고리즘 (Comparison Methods)
+| 열 | 셀 형식 | 계산 단위 |
+|---|---|---|
+| SR | `k/25 (xx.x%)` | 성공 run / 전체 run |
+| Intv. | `mean ± SD` | intervention count/run |
+| Time | `mean ± SD` seconds | 모든 25 run의 `T†` |
+| Rec. | `successful/triggered` | recovery event 합계 |
+| Lat. | `mean ± SD` seconds | run별 VLM dispatch→response parse 평균을 25 run에서 요약 |
+| Duty | `mean ± SD %` | active base motion / episode wall time |
+| Yield | `applied/completed (xx.x%)` | admission된 decision / completed decision |
 
-1. **`Classic SLAM (RTAB-Map)`**: 사전 맵핑된 2D 점유격자 지도 위에서 2D Costmap 생성 후 DWA/TEB 로컬 플래너로 이동.
-2. **`S2E Low-Level (Gait Only)`**: VLM 고수준 계획 없이, 4D LiDAR의 로컬 깊이 점군만으로 반응형 장애물 회피 보행(CoRL 2023 방식) 수행.
-3. **`VLM + S2E Sync (Stop-and-Go)`**: VLM이 추론하는 $1.5\text{초}$ 동안 로봇을 완전히 정지시키고 이동하는 동기식 방식.
-4. **`ViNT / NoMAD (ICRA 2024 Baseline SOTA)`**: 시각 목표 지향 사전학습 모델 기반 실시간 정책 ($SR = 80.0\% / 80.0\% / 60.0\% / 60.0\%$, $SPL = 58.2\%$).
-5. **`Ours: Full VL-MAG + S2E Async (ICRA 2026)` 🏆**: **50Hz Causal Pose Warping + Directional Memory + Active Sweeping** 융합 제안 모델.
+Direct-goal에도 VLM completion/admission 개념이 있다면 같은 정의로 Yield를 계산한다. 해당 메커니즘이 구조적으로 없을 때만 `N/A`를 쓰고, 0으로 기록하지 않는다.
 
----
+## 3. 지표 정의
 
-## 📐 4. 핵심 정량 지표의 수학적 정의
+### 3.1 Success
 
-1. **성공률 ($\text{SR}$)**: $\text{SR} = \frac{1}{N} \sum S_i \times 100\%$ (Wilson 95% 신뢰구간 병기).
-2. **경로 효율성 ($\text{SPL}$)**: $\text{SPL} = \frac{1}{N} \sum S_i \frac{L_i}{\max(P_i, L_i)} \times 100\%$ ($L_i$: 최단거리, $P_i$: 실제 주행거리).
-3. **평균 주행 시간 ($T_{\text{nav}}$)**: 성공 에피소드의 평균 완주 시간.
-4. **평균 충돌 횟수 ($\text{Collisions/ep}$)**: 에피소드당 물리적 범퍼/벽면 접촉 횟수.
-5. **제어 지연시간 ($\text{Latency}$)**: $\text{Latency} = \Delta t_{\text{inference}} + \Delta t_{\text{warping}} + \Delta t_{\text{bridge}}$.
-6. **통계적 유의성 검증 ($p\text{-value}$)**: ViNT/NoMAD 대비 Mann-Whitney U-test ($p < 0.05$ 검증).
+다음 조건을 모두 만족해야 success다.
 
----
+- 사전 측량한 물리 goal 중심의 1.0 m 원 안에 base 중심이 도달
+- `T_max` 이내 도달
+- 사람 또는 safety intervention 없음
+- 충돌 또는 E-stop 종료 없음
 
-## 🏃 5. 현장 1-Click 실행 및 자동 채점
+intervention이 발생한 run은 intervention count에 포함하고 success는 0으로 처리한다.
 
-```bash
-cd /home/unitree/go2_ws_antarctica
+goal 원은 campaign 전에 바닥 표식/측량 좌표로 고정하고 operator video로 판정한다. 정책 입력에 쓰인 RTAB-Map pose를 독립 success ground truth로 재사용하지 않는다. 연속된 한 번의 수동 takeover는 intervention 1건으로 세며, autonomy를 다시 넘긴 뒤 발생한 새 takeover만 추가 event로 센다.
 
-# 1. 4대 지형별 실물 주행 (회차당 5회 반복)
-bash scratch/bringup_all_escape_nav.sh --record Straight_Corridor Full_VL_MAG_S2E_Async Trial1
-bash scratch/bringup_all_escape_nav.sh --record Corner_90deg Full_VL_MAG_S2E_Async Trial1
-bash scratch/bringup_all_escape_nav.sh --record T_Junction Full_VL_MAG_S2E_Async Trial1
-bash scratch/bringup_all_escape_nav.sh --record Dynamic_Obstacle Full_VL_MAG_S2E_Async Trial1
+### 3.2 Timeout-normalized completion time
 
-# 2. 주행 완료 즉시 Table 1 및 Table 2 LaTeX 표 자동 생성
-python3 scratch/calculate_icra_metrics.py
+```text
+T† = S·min(T, T_max) + (1-S)·T_max
 ```
+
+실패, 충돌, E-stop, timeout run을 삭제하거나 성공 run 평균에서 제외하지 않는다.
+
+### 3.3 Recovery
+
+trigger와 success event가 명시적으로 연결된 경우에만 `successful/triggered`로 센다. RTAB-Map Type-1/Type-2 loop closure는 VL-MAG recovery가 아니므로 Recovery 열에 포함하지 않는다.
+
+### 3.4 Latency, Duty, Yield
+
+- Latency: request dispatch부터 response parsing 완료까지. network RTT만 쓰지 않는다. 각 run에서 먼저 평균을 구한 뒤 method의 25개 run 평균±SD를 계산하고 request-level p50/p95는 보조 진단으로 둔다.
+- Duty: `|v|`가 사전 정의된 motion threshold보다 큰 시간 / episode wall time.
+- Yield: completed VLM response 중 sequence/TTL/pose-delta/schema admission을 통과해 실제 backend에 적용된 비율.
+
+threshold와 clock source는 campaign 전에 manifest에 고정한다.
+
+## 4. 고정 start–goal pair
+
+아래는 경로 특성이고 좌표는 golden map과 독립 측량 후 별도 YAML에 사전 등록한다.
+
+| Pair | 경로 특성 | 핵심 실패 모드 |
+|---|---|---|
+| P1 | 직선 복도 | tracking, latency, stop-and-go |
+| P2 | 90° L-turn | camera FOV, corner cutting |
+| P3 | T-junction/blocked bearing | branch selection |
+| P4 | 반복 문·유사 복도 | failed branch re-entry |
+| P5 | 다중 코너 장거리 | stale decision, localization stability |
+
+모든 pair에 대해 다음을 사전 고정한다.
+
+- start map coordinate와 yaw
+- goal coordinate와 1.0 m radius
+- `T_max`
+- shortest path reference와 측정 방법
+- 장애물 배치, 조명 구간, battery band
+- paired block ID와 AB/BA order. 5회가 홀수이므로 pair별 선행 방법 수 차이는 최대 1로 제한하고 전체 order를 결과 확인 전에 동결
+
+## 5. Main table과 분리할 deployment table
+
+Active-view recovery와 dynamic obstacle은 main paired superiority 결과에 섞지 않는다.
+
+```latex
+\begin{table}[t]
+  \centering
+  \caption{Go2 deployment-only stress tests. These trials are not pooled
+  with the paired main comparison.}
+  \label{tab:real_robot_deployment}
+  \scriptsize
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Condition & Runs & Success & Intv. & Collisions & Min clear. (m) \\
+    \midrule
+    Active-view recovery & -- & -- & -- & -- & -- \\
+    Rolling obstacle/dummy & -- & -- & -- & -- & -- \\
+    Approved dynamic trial & -- & -- & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+- 조건별 최소 5회 수행한다.
+- 먼저 rolling obstacle/dummy를 사용한다.
+- 사람 dynamic trial은 안전·통제 절차가 승인된 경우에만 수행한다.
+- “멈추지 않음”을 success 조건으로 사용하지 않고 Duty/Time으로 보고한다.
+
+## 6. 보조 안전·시스템 테이블
+
+다음 표는 main 성능표와 분리해 supplement 또는 engineering report에 둔다.
+
+| Method | Runs | Collisions | Near-misses | E-stops | Min clearance | Watchdog stop p95 | Localization losses |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Direct-goal | -- | -- | -- | -- | -- | -- | -- |
+| Full ESCAPE-Nav | -- | -- | -- | -- | -- | -- | -- |
+
+충돌과 near-miss는 서로 다른 event이며 합치지 않는다. minimum clearance에는 sensor/source와 유효 범위를 함께 기록한다.
+
+## 7. 통계 보고 원칙
+
+- SR은 반드시 `k/n`과 percentage를 함께 표기한다.
+- Wilson interval은 method별 binary rate의 보조 interval로 사용할 수 있다.
+- 방법 차이는 pair를 상위 resampling unit으로 하고 pair 내부 paired repetition을 하위 단위로 한 hierarchical paired bootstrap interval을 우선한다.
+- 연속형 matched run-slot 분석이 정당할 때 Wilcoxon signed-rank를 보조로 사용할 수 있다.
+- 임의의 ViNT/NoMAD 문헌 숫자와 이 Go2 결과를 직접 p-value로 비교하지 않는다.
+- `n=25/method`에서 유의하지 않은 차이를 우월성으로 표현하지 않는다.
+- exclusion은 결과 확인 전에 정의한 hardware/system fault에만 허용하고 exclusion log를 공개한다.
+
+## 8. 테이블 채우기 전 필수 조건
+
+- Gate 0~8 통과와 final configuration freeze
+- complete run artifact 50/50
+- `result.json`과 원시 event log의 일치
+- 실제 artifact importer와 schema validation PASS
+- failure/intervention/timeout 누락 0
+- exact input, config, model, DB와 code hash 보존
+- pilot run과 final campaign run 완전 분리
+
+현재는 위 조건을 충족하지 않았으므로 모든 결과 셀은 비어 있어야 한다.

@@ -1,73 +1,169 @@
-# 📈 [Evaluation Engine] 9대 정량 지표 통계 수식 및 자동 채점 파이프라인 명세서
+# 실로봇 지표·통계·테이블 생성 파이프라인 명세
 
-> **작성 일자**: 2026년 8월 28일 (금요일) KST  
-> **시스템 총괄**: **Antigravity Master Plan Architect**  
-> **문서 목적**: Table 1 및 Table 2의 모든 정량 지표에 대한 **엄밀한 수학적 수식 정의, Wilson 95% 신뢰구간, Mann-Whitney U-test $p$-value 통계 검증 알고리즘 및 1초 자동 채점 스크립트([`scratch/calculate_icra_metrics.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/calculate_icra_metrics.py)) 연동 규격**을 정립함.
+> 개정: 2026-08-28 KST
+> 현재 상태: 계산 규격만 확정 / 실제 artifact importer 미구현
+> 주의: `scratch/calculate_icra_metrics.py`는 sample episode 기반이므로 논문 결과 생성에 사용하지 않음
+> table schema: [`01_table1_table2_quantitative_experiment_master_protocol.md`](01_table1_table2_quantitative_experiment_master_protocol.md)
 
----
+## 1. Main table 지표
 
-## 📐 1. Table 1 & Table 2 9대 정량 지표 수학적 정의
+| 지표 | 정의 | 실패 run 처리 |
+|---|---|---|
+| SR | success run / 전체 run | 실패를 denominator에 포함 |
+| Intv. | intervention count/run | intervention run은 success=0 |
+| Time `T†` | timeout-normalized completion time | 공통 `T_max` 부여 |
+| Rec. | successful recovery / triggered recovery | event identity가 연결된 경우만 계산 |
+| Lat. | run별 VLM dispatch→parse completion 평균 | timeout도 별도 event로 보존 |
+| Duty | active base motion / wall time | 실패 run도 포함 |
+| Yield | applied / completed VLM decisions | rejected completion도 denominator에 포함 |
 
-```mermaid
-graph TD
-    subgraph "9대 정량 평가 지표 수학적 정의"
-        M1["1. 성공률 (SR %)<br/>• SR = (1/N) * sum(S_i) * 100% (Wilson 95% CI)"]
-        M2["2. 경로 효율성 (SPL %)<br/>• SPL = (1/N) * sum(S_i * L_i / max(P_i, L_i)) * 100%"]
-        M3["3. 평균 주행 시간 (Tnav s)<br/>• Tnav = (1/N_succ) * sum(T_i)"]
-        M4["4. 평균 충돌 횟수 (# Collisions / ep)<br/>• Collisions = (1/N) * sum(C_i)"]
-        M5["5. 제어 지연시간 (Latency ms)<br/>• Latency = t_inference + t_warping + t_actuation"]
-        M6["6. Mann-Whitney U-test (p-value)<br/>• p < 0.05 검증으로 SOTA 대비 유의차 증명"]
-    end
+### 1.1 Success와 시간
+
+```text
+success = within_goal_radius
+          AND within_timeout
+          AND interventions == 0
+          AND collisions == 0
+          AND stop_reason == "goal_reached"
+
+T† = success·min(wall_time, T_max) + (1-success)·T_max
 ```
 
-### 1) 성공률 ($\text{SR}$) 및 Wilson 95% 신뢰구간
-에피소드 $i$의 성공 여부 $S_i \in \{0, 1\}$ (목표 반경 $0.8\text{m}$ 도달 시 1, 충돌/타임아웃 시 0):
+main campaign goal radius는 1.0 m로 고정한다.
 
-$$\text{SR} = \left( \frac{1}{N} \sum_{i=1}^N S_i \right) \times 100\%$$
+### 1.2 Duty와 Yield
 
-소표본($N=5$)에서도 신뢰할 수 있는 Wilson Score Interval 적용:
-
-$$\text{Wilson CI}_{95\%} = \frac{\hat{p} + \frac{z^2}{2N} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{N} + \frac{z^2}{4N^2}}}{1 + \frac{z^2}{N}} \quad (z = 1.96, \, \hat{p} = \text{SR}/100)$$
-
----
-
-### 2) 최단 경로 대비 주행 효율성 ($\text{SPL}$)
-최적 최단 경로 길이 $L_i$ 대비 실제 로봇 주행 궤적 길이 $P_i$:
-
-$$\text{SPL} = \left( \frac{1}{N} \sum_{i=1}^N S_i \frac{L_i}{\max(P_i, L_i)} \right) \times 100\%$$
-
----
-
-### 3) 제어 지연시간 ($\text{Latency}$)
-전면 카메라 프레임 취득부터 실제 사족보행 모터 속도 인가까지의 종단간(End-to-End) 지연시간:
-
-$$\text{Latency} = \Delta t_{\text{inference}} + \Delta t_{\text{warping}} + \Delta t_{\text{bridge}}$$
-
-* $\Delta t_{\text{inference}}$: 원격 Qwen3.5-9B 서버 통신 및 추론 시간 ($\approx 1.4\sim 1.8\text{s}$)
-* $\Delta t_{\text{warping}}$: 50Hz Causal Pose Warping 연산 시간 ($< 0.5\text{ms}$)
-* $\Delta t_{\text{bridge}}$: 도커 ➔ 호스트 UDP 소켓 전송 시간 ($< 0.2\text{ms}$)
-
----
-
-### 4) Mann-Whitney U-test 통계적 유의성 검증 ($p$-value)
-제안 방법(Ours)과 SOTA(ViNT/NoMAD) 간의 주행 시간 및 충돌 횟수 비모수 검정:
-
-$$U_1 = R_1 - \frac{n_1(n_1 + 1)}{2}, \quad z = \frac{U_1 - \frac{n_1 n_2}{2}}{\sqrt{\frac{n_1 n_2 (n_1 + n_2 + 1)}{12}}} \quad \longrightarrow \quad p = 2(1 - \Phi(|z|))$$
-
-* **유의성 판정**: $p < 0.05$ 일 때 SOTA 대비 통계적으로 유의미한 성능 향상으로 입증.
-
----
-
-## 💻 2. 1-Click 자동 채점 스크립트 구조 ([`scratch/calculate_icra_metrics.py`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/scratch/calculate_icra_metrics.py))
-
-```bash
-cd /home/unitree/go2_ws_antarctica
-
-# Rosbag 및 trajectory_eval.csv 전수 파싱 및 Table 1, Table 2 LaTeX 자동 생성
-python3 scratch/calculate_icra_metrics.py
+```text
+Duty  = active_motion_duration / episode_wall_time
+Yield = applied_decisions / completed_decisions
 ```
 
-### 📄 자동 생성되는 최종 파일
-1. **`paper/figures/table1_pointnav_main.tex`**: Table 1 논문 본문용 LaTeX 표 코드.
-2. **`paper/figures/table2_safety_latency.tex`**: Table 2 논문 본문용 LaTeX 표 코드.
-3. **`paper/results_quantitative_benchmark.csv`**: 51개 컬럼의 전수 원시 통계 데이터.
+active-motion threshold, command source, monotonic clock와 decision state machine은 campaign manifest에 기록한다.
+
+## 2. 필수 입력 artifact
+
+테이블 생성기는 rosbag 하나만 읽어서는 안 된다. 다음 파일을 함께 검증해야 한다.
+
+```text
+run_manifest.json
+result.json
+localization.csv
+trajectory.csv
+vlm_events.jsonl
+s2e_events.jsonl
+command_watchdog.csv
+interventions.jsonl
+SHA256SUMS
+```
+
+최소 `result.json` schema:
+
+```json
+{
+  "schema_version": "real_robot_result_v1",
+  "campaign_id": "...",
+  "pair_id": "P1",
+  "paired_block_id": "P1-R1",
+  "method_order": "A_first|B_first",
+  "method": "Direct-goal|Full ESCAPE-Nav",
+  "repetition": 1,
+  "success": false,
+  "stop_reason": "goal_reached|timeout|collision|e_stop|intervention|system_fault",
+  "within_goal_radius": false,
+  "goal_distance_m": 0.0,
+  "goal_reference": "surveyed_floor_marker+operator_video",
+  "goal_radius_m": 1.0,
+  "wall_time_s": 0.0,
+  "timeout_s": 0.0,
+  "interventions": 0,
+  "collisions": 0,
+  "recoveries_triggered": 0,
+  "recoveries_successful": 0,
+  "active_motion_time_s": 0.0,
+  "completed_decisions": 0,
+  "applied_decisions": 0,
+  "complete": false
+}
+```
+
+`complete=true`는 required artifact와 hash가 모두 존재하고 cross-check를 통과했을 때 importer만 설정한다.
+
+## 3. Import validation
+
+run별로 다음을 검증한다.
+
+1. campaign/pair/paired-block/method/order/repetition이 preregistration과 일치
+2. 동일 run identity 중복 없음
+3. config/model/map/code hash가 frozen manifest와 일치
+4. monotonic event timestamp 역행 없음
+5. VLM submit/completion/apply/reject identity 연결
+6. completed decision 수와 apply+reject 수 일치
+7. trajectory와 command가 같은 source decision을 참조
+8. intervention/collision/E-stop event와 stop reason 일치
+9. wall time, active time, latency가 음수/NaN/Inf가 아님
+10. bag/video/log/hash 누락 없음
+
+하나라도 실패하면 해당 run을 자동으로 삭제하지 않고 `complete=false`와 이유를 exclusion audit에 기록한다.
+
+## 4. 통계
+
+### 4.1 방법별 요약
+
+- SR: `k/n`, percentage, Wilson 95% interval
+- count 지표: total과 mean/run을 함께 표기
+- 연속 지표: mean±SD를 기본으로 하고 median[IQR]을 보조 제공
+- recovery와 yield: numerator/denominator를 반드시 보존
+
+### 4.2 방법 간 비교
+
+main design은 같은 5개 pair에서 두 방법을 5개 paired block으로 반복하는 paired/block design이다. 각 block의 AB/BA 선행 순서는 사전 생성하며 홀수 반복 때문에 생기는 불균형은 pair별 최대 1회로 제한한다.
+
+- pair를 상위 resampling unit, pair 내부 paired block을 하위 단위로 한 hierarchical paired bootstrap difference와 95% interval을 우선한다.
+- 명확히 matched된 run slot이 있을 때 연속형 지표에 Wilcoxon signed-rank를 보조로 사용할 수 있다.
+- binary paired outcome에 정당한 1:1 matching이 있을 때만 McNemar exact test를 고려한다.
+- 독립표본 Mann–Whitney U-test를 “SOTA 대비 필수 p-value”로 사용하지 않는다.
+- 문헌에 보고된 ViNT/NoMAD 숫자와 이 campaign raw runs 사이의 p-value를 계산하지 않는다.
+
+작은 실로봇 표본에서는 raw denominator와 effect interval이 p-value보다 우선한다.
+
+## 5. 보조 진단 지표
+
+다음은 main table과 분리한다.
+
+- collision, near-miss, minimum clearance
+- path length와 SPL
+- failed-edge re-entry/opportunity
+- localization loss와 correction jump
+- RTAB Type-1/Type-2 closure timestamp
+- command age, watchdog stop latency
+- Jetson thermal/power와 packet loss
+
+SPL은 독립 reference의 shortest path와 실제 path가 모두 신뢰할 수 있을 때만 계산한다. 정책이 사용하는 RTAB-Map pose를 독립 ground truth로 재사용하지 않는다.
+
+## 6. 출력 파일
+
+실제 importer가 완성되면 다음을 생성한다.
+
+```text
+campaign_validation_report.json
+run_level_results.csv
+pair_level_results.csv
+table_real_robot_quantitative.tex
+table_real_robot_deployment.tex
+table_real_robot_safety.tex
+exclusions.csv
+SHA256SUMS
+```
+
+LaTeX 표의 모든 셀은 run-level CSV에서 재생성 가능해야 한다. 수기로 숫자를 넣지 않는다.
+
+## 7. 현재 evaluator 처리
+
+현재 `scratch/calculate_icra_metrics.py`는 다음 이유로 acceptance 도구가 아니다.
+
+- main 함수가 4개의 hard-coded sample episode를 생성
+- rosbag/result/event artifact를 읽지 않음
+- campaign completeness와 hash를 확인하지 않음
+- pilot/final campaign을 구분하지 않음
+
+따라서 실제 importer 구현 전까지 이 스크립트 출력은 demo로만 취급하고 논문 표·그래프·통계에 사용하지 않는다.

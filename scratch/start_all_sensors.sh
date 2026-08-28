@@ -14,8 +14,13 @@ export CYCLONEDDS_URI="file:///home/unitree/go2_ws_antarctica/cyclonedds.xml"
 export ROS_DOMAIN_ID=0
 export LD_LIBRARY_PATH=/home/unitree/opencv_build/opencv/build/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
-# 1. 멀티캐스트 라우팅 보장
-echo admin | sudo -S ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
+# 1. Go2 직접 경로 확인. CycloneDDS와 RTP camera가 eth0를 명시하므로
+# 별도 privileged 230/8 route나 source 내 credential이 필요하지 않다.
+ROBOT_ROUTE="$(ip -4 route get 192.168.123.161 2>/dev/null || true)"
+if [[ "$ROBOT_ROUTE" != *"dev eth0"* ]] || [[ "$ROBOT_ROUTE" != *"src 192.168.123.99"* ]]; then
+    echo "ERROR: Go2 must be reached through eth0 with source 192.168.123.99."
+    exit 1
+fi
 
 # 2. 이전 잔여 노드 정리
 pkill -f go2_front_camera_publisher.py 2>/dev/null || true

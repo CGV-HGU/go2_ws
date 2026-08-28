@@ -52,7 +52,7 @@ class Go2FrontCameraPublisher(Node):
 
     def gstreamer_worker(self):
         pipeline = (
-            'udpsrc port=1720 multicast-group=230.1.1.1 auto-multicast=true ! '
+            'udpsrc port=1720 multicast-group=230.1.1.1 multicast-iface=eth0 auto-multicast=true ! '
             'application/x-rtp, media=video, encoding-name=H264 ! '
             'rtph264depay ! h264parse ! nvv4l2decoder ! nvvidconv ! '
             'video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink drop=true max-buffers=1'

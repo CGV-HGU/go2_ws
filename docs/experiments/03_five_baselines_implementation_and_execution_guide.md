@@ -1,75 +1,87 @@
-# 🔬 [Baselines Guide] 5대 비교 대상 알고리즘 구현 및 실물 실행 가이드
+# 실로봇 비교 방법 정의 및 구현 준비도
 
-> **작성 일자**: 2026년 8월 28일 (금요일) KST  
-> **시스템 총괄**: **Antigravity Master Plan Architect**  
-> **문서 목적**: Table 1 및 Table 2에 수록되는 **5대 비교 대상 알고리즘(Classic SLAM, S2E Low-Level, VLM+S2E Sync, ViNT/NoMAD, Full VL-MAG+S2E Async)의 아키텍처 구현 원리, 실행 명령어 및 파라미터 구성**을 명세함.
+> 개정: 2026-08-28 KST
+> 파일명은 과거 링크 호환을 위해 유지함
+> 현재 main 비교: Direct-goal vs Full ESCAPE-Nav
+> 물리 실행: Gate 0~8 통과 전 금지
 
----
+## 1. Main paired comparison
 
-## 🏗️ 1. 5대 비교 알고리즘 아키텍처 개요
+main 실로봇 표에는 구현·안전·logging이 동일한 두 방법만 넣는다.
 
-```mermaid
-graph TD
-    subgraph "5대 비교 알고리즘 아키텍처"
-        M1["Method 1: Classic SLAM<br/>• RTAB-Map 2D Costmap + DWA Local Planner<br/>• 사전 지도 기반 전통적 내비게이션"]
-        M2["Method 2: S2E Low-Level (Gait Only)<br/>• CoRL 2023 반응형 보행 Gait 제어기<br/>• 고수준 VLM 계획 없이 로컬 라이다 회피만 수행"]
-        M3["Method 3: VLM + S2E Sync (동기 방식)<br/>• 1.5s VLM 추론 시마다 로봇을 정지시키는 Stop-and-Go"]
-        M4["Method 4: ViNT / NoMAD (Baseline SOTA)<br/>• ICRA 2024 시각 목표 지향 사전학습 모델"]
-        M5["Method 5: Ours (Full VL-MAG + S2E Async) 🏆<br/>• 50Hz Causal Pose Warping + Directional Memory + Active Sweeping"]
-    end
+| 항목 | Direct-goal | Full ESCAPE-Nav |
+|---|---|---|
+| 공통 frozen backend | 같은 S2E/PixelNav checkpoint, controller, localization, VLM endpoint | 동일 |
+| coarse goal | 직접 goal pursuit | VL-MAG가 선택한 local goal |
+| adaptive observation | OFF | ON |
+| causal admission/warping | 논문 정의에 따라 고정된 baseline behavior | ON |
+| directional outcome memory | OFF | ON |
+| speed/safety limits | 동일 | 동일 |
+| map/DB와 calibration | 동일 | 동일 |
+| run 수 | 5 pairs × 5 reps = 25 | 5 pairs × 5 reps = 25 |
+
+두 방법의 차이는 논문이 비교하려는 mechanism으로 제한한다. 한쪽에만 다른 checkpoint, 속도 제한, obstacle API 또는 map을 적용하면 campaign을 다시 시작한다.
+
+## 2. 구현 acceptance
+
+각 method는 final campaign 전에 다음을 만족해야 한다.
+
+- 존재하는 package executable로 시작
+- mock backend OFF와 provenance 표시
+- 실제 Go2 camera/LIO 입력
+- 실제 S2E checkpoint SHA-256 고정
+- 모든 VLM submit/complete/apply/reject identity 기록
+- 같은 controller와 단일 Go2 command gateway 사용
+- timeout/server loss/odom loss에서 동일한 fail-closed safety 적용
+- command sink, fault injection, actuator safe-stop Gate PASS
+
+현재 이 조건은 두 method 모두 충족하지 않았으므로 실행 명령을 제공하지 않는다.
+
+## 3. 과거 5개 baseline 후보의 상태
+
+| 후보 | 로컬 구현 확인 | 모델/checkpoint | 실물 command path | main table 사용 |
+|---|---|---|---|---|
+| Classic Nav2/SLAM | 검증된 Nav2 planner launch 없음 | 해당 없음 | 미검증 | **NO** |
+| S2E gait-only | 실제 정책 node 미확인 | 실제 S2E 없음 | 미검증 | **NO** |
+| VLM+S2E Sync | method switch/실행 artifact 없음 | 실제 S2E 없음 | 미검증 | **NO** |
+| ViNT/NoMAD | source 후보만 존재 | Go2용 checkpoint/config 미검증 | 없음 | **NO** |
+| Full ESCAPE-Nav | mock graph와 설계 골격 존재 | 실제 S2E 없음 | 안전 미검증 | main 후보, 현재 NO-GO |
+
+과거 문서에 있던 ViNT/NoMAD의 `80/80/60/60`, `SPL 58.2%`, `38.5s`, `0.75 collision`, `65.4ms` 값은 이 Go2, 이 map, 이 goal과 같은 조건에서 측정된 값이 아니므로 삭제했다.
+
+## 4. Optional extension baseline을 추가하는 조건
+
+Classic Nav2, Sync, ViNT/NoMAD 등을 확장 표에 추가하려면 각 방법에 대해 다음을 별도로 통과해야 한다.
+
+1. 정확한 upstream commit과 license 기록
+2. checkpoint와 preprocessing hash 고정
+3. Go2 sensor/actuator adapter 검증
+4. 같은 localization, success radius, timeout, speed/safety 사용
+5. pilot 최소 3회에서 collision/intervention 0
+6. main과 동일한 pair/order/repetition protocol
+7. 실제 artifact importer로 complete run 생성
+
+문헌 숫자를 가져와 로컬 실측 행처럼 넣지 않는다. 재현하지 못한 방법은 관련 연구 설명에만 두고 quantitative row에서 제외한다.
+
+## 5. Method manifest
+
+각 run은 최소한 다음 method identity를 기록한다.
+
+```json
+{
+  "method": "Direct-goal|Full ESCAPE-Nav",
+  "method_version": "...",
+  "enabled_mechanisms": {
+    "adaptive_observation": false,
+    "causal_warping": false,
+    "directional_memory": false
+  },
+  "s2e_checkpoint_sha256": "...",
+  "vlm_model": "...",
+  "prompt_schema_sha256": "...",
+  "controller_config_sha256": "...",
+  "rtabmap_db_sha256": "..."
+}
 ```
 
----
-
-## 💻 2. 알고리즘별 상세 구현 및 실행 명령어
-
-### 1) Method 1: Classic SLAM (`RTAB-Map + DWA Planner`)
-* **원리**: 사전에 생성된 `golden_map.pgm` 위에서 Nav2 Costmap을 생성하고 DWA 로컬 플래너로 `/cmd_vel`을 출력.
-* **실행 명령어**:
-  ```bash
-  # Classic SLAM 베이스라인 실행
-  bash scratch/bringup_all_escape_nav.sh --record <Arena> Classic_SLAM Trial1
-  ```
-* **동작 파라미터**: `max_vel_x: 0.35 m/s`, `max_vel_theta: 0.5 rad/s`, `sim_time: 1.5s`.
-
----
-
-### 2) Method 2: S2E Low-Level (`Gait Only`, CoRL 2023)
-* **원리**: VLM 추론을 끄고, 4D LiDAR L2의 로컬 복셀 점군만을 사용하여 장애물을 피하며 직진하는 반응형 제어.
-* **실행 명령어**:
-  ```bash
-  # S2E Low-Level 단독 실행
-  bash scratch/bringup_all_escape_nav.sh --record <Arena> S2E_LowLevel_GaitOnly Trial1
-  ```
-
----
-
-### 3) Method 3: VLM + S2E Sync (`Stop-and-Go 동기 방식`)
-* **원리**: VLM에게 이미지를 보내고 응답이 올 때까지($\Delta t \approx 1.5\text{s}$) 로봇 속도를 $0.0\text{ m/s}$로 정지. 서브골을 받으면 $1.0\text{m}$ 전진 후 다시 멈추는 반복 동기식 제어.
-* **실행 명령어**:
-  ```bash
-  # VLM 동기식 정지-출발 실행
-  bash scratch/bringup_all_escape_nav.sh --record <Arena> VLM_S2E_Sync Trial1
-  ```
-
----
-
-### 4) Method 4: ViNT / NoMAD (`ICRA 2024 Baseline SOTA`)
-* **원리**: 이미지 토폴로지 그래프 기반의 시각 내비게이션 SOTA 모델.
-* **기준 논문 데이터 ([ICRA 2024])**:
-  - 직선 복도 SR: $80.0\%$, 90° 코너 SR: $80.0\%$, T자 갈림길 SR: $60.0\%$, 동적 회피 SR: $60.0\%$
-  - Overall SPL: $58.2\%$, 주행 시간: $38.5\text{s}$, 충돌: $0.75\text{회}$, 지연: $65.4\text{ms}$
-
----
-
-### 5) Method 5: Ours (`Full VL-MAG + S2E Async`) 🏆
-* **원리**: **50Hz Causal Pose Warping ($\mathbf{T}_{\text{curr}\leftarrow\text{obs}}$)**으로 $1.5\text{초}$ 지연 중에도 멈춤 없이 쾌속 연속 주행하며, Action-Outcome Graph로 막다른 길을 즉시 회피.
-* **실행 명령어**:
-  ```bash
-  # 제안 모델 풀 스택 실행
-  bash scratch/bringup_all_escape_nav.sh --record <Arena> Full_VL_MAG_S2E_Async Trial1
-  ```
-* **핵심 구성**:
-  - 원격 서버: `Qwen3.5-9B-Instruct` (NVFP4, $100.96.60.15:8000$)
-  - 워핑 주기: $50\text{Hz}$ ($20\text{ms}$)
-  - 최대 속도: $v_x = 0.45\text{ m/s}, \omega_z = 0.50\text{ rad/s}$
+표의 method 이름만 다르고 실제 enabled mechanism이 같거나, 반대로 method 이름은 같지만 config hash가 다르면 importer가 run을 거부해야 한다.

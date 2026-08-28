@@ -3,6 +3,8 @@
 > **작성 일자**: 2026년 8월 27일 (목요일) 21:40 KST  
 > **허브 목적**: 내일 연구실 현장에서 진행될 **[Phase 0 ➔ Phase 1 ➔ Phase 2 ➔ Phase 3 ➔ Phase 4]의 각 단계별 세부 실행 가이드 및 트러블슈팅 매뉴얼을 1:1로 직결 제공하는 전용 허브**입니다.
 
+> **2026-08-28 실행 상태**: Phase 2~4의 기존 원클릭 명령은 아직 검증되지 않아 그대로 실행하면 안 된다. 실제 순서는 [`../../experiments/00_real_robot_end_to_end_master_test_plan.md`](../../experiments/00_real_robot_end_to_end_master_test_plan.md)의 Gate 0~9를 따르며, main campaign은 `Direct-goal`과 `Full ESCAPE-Nav`의 총 50회 paired test다.
+
 ---
 
 ## 🧭 4대 Phase별 상세 가이드 문서 목록
@@ -12,8 +14,8 @@
 | **Phase 0** | **`00_phase0_arrival_preflight_and_network_healthcheck_guide.md`** | • 연구실 도착 직후 5분 퀵 점검<br/>• 배터리, 젯슨 자원, 4-Tier 핑(Go2/GPU서버) 무결성 검증 | 👉 **[Phase 0 가이드 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/tomorrow_execution_guides/00_phase0_arrival_preflight_and_network_healthcheck_guide.md)** |
 | **Phase 1** | **`01_phase1_planar_3dof_golden_mapping_and_freeze_guide.md`** | • 평면 3DoF 맵핑 실측 (`./mapping_planar_headless.sh`)<br/>• Z축 변동 $< 5\text{cm}$ 수렴 확인 & 골든 맵 영구 동결 | 👉 **[Phase 1 가이드 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/tomorrow_execution_guides/01_phase1_planar_3dof_golden_mapping_and_freeze_guide.md)** |
 | **Phase 2** | **`02_phase2_docker_s2e_zero_actuation_dryrun_and_safety_guide.md`** | • 도커 S2E 무구동 가상 폐루프 검증<br/>• Qwen3.5-9B 서브골 수신 ➔ 50Hz 궤적 파일 로깅 & 0속도 인터록 | 👉 **[Phase 2 가이드 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/tomorrow_execution_guides/02_phase2_docker_s2e_zero_actuation_dryrun_and_safety_guide.md)** |
-| **Phase 3** | **`03_phase3_180m_corridor_5_scenarios_autonomous_driving_guide.md`** | • 180m 복도 5대 시나리오 실물 자율주행<br/>• `bringup_all_escape_nav.sh --record` 실행 및 100MB Rosbag 수집 | 👉 **[Phase 3 가이드 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/tomorrow_execution_guides/03_phase3_180m_corridor_5_scenarios_autonomous_driving_guide.md)** |
-| **Phase 4** | **`04_phase4_paper_table_latex_auto_scoring_and_dataset_export_guide.md`** | • 1초 논문 Table LaTeX 자동 채점<br/>• `calculate_icra_metrics.py` 가동 및 `table_real_robot.tex` 산출 | 👉 **[Phase 4 가이드 바로가기](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/tomorrow_execution_guides/04_phase4_paper_table_latex_auto_scoring_and_dataset_export_guide.md)** |
+| **Phase 3** | **`03_phase3_180m_corridor_5_scenarios_autonomous_driving_guide.md`** | **보류**: Gate 0~8 통과 뒤 승인된 5개 pair로 재작성 필요 | [Phase 3 초안](03_phase3_180m_corridor_5_scenarios_autonomous_driving_guide.md) |
+| **Phase 4** | **`04_phase4_paper_table_latex_auto_scoring_and_dataset_export_guide.md`** | **BLOCKED**: 실제 artifact importer 구현 전 sample evaluator 사용 금지 | [Phase 4 상태/계약](04_phase4_paper_table_latex_auto_scoring_and_dataset_export_guide.md) |
 
 ---
 

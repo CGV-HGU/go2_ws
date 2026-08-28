@@ -6,6 +6,8 @@
 > **대상 로봇**: Unitree Go2 EDU Plus (NVIDIA Jetson Orin NX 16GB)  
 > **문서 목적**: 실물 로봇 최종 탑재(Deployment)를 앞두고, **[Jetson/하드웨어 담당자]와 [Docker/S2E 정책 담당자] 2인이 각각 무엇을 사전 점검하고, 현장에서 단 1줄 명령어로 어떻게 동시 결합하여 실증 주행(Table VIII)을 성공시킬 것인지에 대한 즉시 실행 가능한 표준 운영 절차(SOP)**입니다.
 
+> **역사 문서 경고 (2026-08-28)**: 아래 출력의 `1/5`, `5/5`, 시간, duty, p-value는 실제 artifact에서 계산한 결과가 아닌 예시값이다. `calculate_icra_metrics.py`도 현재 4개 sample episode만 사용하므로 논문 수치 생성에 사용하지 않는다. 실제 실험/표 규격은 [`../experiments/00_real_robot_end_to_end_master_test_plan.md`](../experiments/00_real_robot_end_to_end_master_test_plan.md)와 [`../experiments/01_table1_table2_quantitative_experiment_master_protocol.md`](../experiments/01_table1_table2_quantitative_experiment_master_protocol.md)를 따른다.
+
 ---
 
 ## 📌 목차 (Table of Contents)

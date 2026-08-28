@@ -144,7 +144,7 @@ cd /home/unitree/go2_ws_antarctica
 ```
 
 기존 `mapping_headless.sh`는 4DoF 비교 기준으로 남겨 두었다. planar wrapper의 결과는 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 self-contained evidence로 저장된다.
-부팅 후 Go2 DDS multicast route가 없으면 시작 시 sudo 인증을 한 번 요청한다. credential은 source나 evidence log에 저장하지 않으며, route 추가 실패 시 mapping stack은 시작되지 않는다.
+Go2 built-in DDS는 CycloneDDS에서 `192.168.123.99/eth0`에 고정하고, RTP camera는 GStreamer `multicast-iface=eth0`를 사용한다. 따라서 별도 privileged `230.0.0.0/8` route를 만들지 않으며, bringup은 Go2 direct eth0 path만 읽기 전용으로 검사한다.
 
 두 경로 모두 현재 mapping mode에서 다음을 실행하지 않는다.
 

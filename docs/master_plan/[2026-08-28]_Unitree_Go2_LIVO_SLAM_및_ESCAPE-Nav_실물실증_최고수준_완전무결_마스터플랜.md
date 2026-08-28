@@ -1,13 +1,13 @@
 # 🏛️ [Master Plan & System Specification] Unitree Go2 고정밀 LIVO SLAM 및 ESCAPE-Nav 비동기 VLM 자율주행 완전무결 실물 실증 마스터플랜
 
-> **작성 일자**: 2026년 8월 27일 (목요일) 21:45 KST  
-> **문서 상태**: **최종 확정본 (Authoritative Master Specification & Ground Truth)**  
+> **작성 일자**: 2026년 8월 27일 21:45 KST / **실측 개정**: 2026년 8월 28일
+> **문서 상태**: **검증 진행본 — 3DoF 선택 완료, global loop 및 정상 종료 미통과**
 > **대상 기체**: Unitree Go2 EDU Plus (내장 4D LiDAR L2 + 50Hz DSP IMU/Odometry + 전면 단안 RGB 카메라)  
 > **온보드 호스트**: Jetson Orin NX 16GB (Ubuntu 20.04.6 LTS / ROS 2 Foxy / CycloneDDS / CUDA 11.4)  
 > **도커 샌드박스**: `sdam_go2_container` (Ubuntu 24.04 LTS / ROS 2 Jazzy ARM64 / Python 3.12)  
 > **원격 추론 서버**: RTX Pro 6000 Ada GPU Server (`100.96.60.15:8000`, `qwen3.5-9b-instruct` NVFP4)  
 > **공식 논문 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation`**  
-> **문서 목적**: **"모든 가짜 성공(Mock/Synthetic)과 안이한 가정을 배제하고, 현장 실측 데이터·기하학 수식·엄밀한 6단계 게이트(Gate)를 기반으로 고정밀 2D/3D 지도 구축부터 180m 실물 자율주행 및 논문 Table 산출까지 완전무결하게 완결하는 최고 권위의 엔지니어링 마스터 명세서."**
+> **문서 목적**: **"모든 가짜 성공(Mock/Synthetic)과 안이한 가정을 배제하고, 현장 실측 데이터와 순차 Gate를 기반으로 센서·지도·localization·PixelNav/S2E·4-Tier 안전 폐루프부터 논문 campaign까지 검증하는 엔지니어링 마스터 명세서."**
 
 ---
 
@@ -18,8 +18,8 @@
 3. [RTAB-Map 포즈 그래프 최적화 및 평면 3DoF 솔루션 (Graph Optimization & Planar 3DoF)](#3-rtab-map-포즈-그래프-최적화-및-평면-3dof-솔루션-graph-optimization--planar-3dof)
 4. [장소 인식 및 루프 클로저 프로토콜 (Place Recognition & Loop Closure Protocol)](#4-장소-인식-및-루프-클로저-프로토콜-place-recognition--loop-closure-protocol)
 5. [도커 샌드박스 런타임 및 S2E 정책 통합 (Docker Runtime & S2E Policy Integration)](#5-도커-샌드박스-런타임-및-s2e-정책-통합-docker-runtime--s2e-policy-integration)
-6. [엄밀한 6단계 게이트 순차 검증 로드맵 (Strict 6-Gate Verification Roadmap)](#6-엄밀한-6단계-게이트-순차-검증-로드맵-strict-6-gate-verification-roadmap)
-7. [180m 복도 실증 시나리오 및 논문 Table 산출 (180m Corridor Experiments & Metrics)](#7-180m-복도-실증-시나리오-및-논문-table-산출-180m-corridor-experiments--metrics)
+6. [실로봇 전체 End-to-End 순차 검증 로드맵](#6-실로봇-전체-end-to-end-순차-검증-로드맵)
+7. [실로봇 paired campaign 및 논문 Table](#7-실로봇-paired-campaign-및-논문-table)
 8. [현장 비상 대응, E-Stop 및 트러블슈팅 매뉴얼 (Emergency E-Stop & Troubleshooting SOP)](#8-현장-비상-대응-e-stop-및-트러블슈팅-매뉴얼-emergency-e-stop--troubleshooting-sop)
 
 ---
@@ -62,7 +62,7 @@ graph LR
 | **Tier 3 (Docker)** | Jazzy 소프트웨어 패키지 | 🟢 **빌드 완료 (PASS)** | `s2e_vlm_core` 단위 테스트 43개 전수 PASS. |
 | **Tier 3 (Docker)** | S2E 체크포인트 배치 | 🟡 **배치 필요 (Pending)** | `/models/s2e/S2E/s2e.onnx` 파일 경로 체결 및 SHA-256 검증 필요. |
 | **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟢 **완전 검증 (PASS)** | 실제 Go2 사진 전송 시 `office chair` 인식 및 `action=stop` 계약 통과. |
-| **End-to-End** | 180m 실물 자율주행 | 🔴 **미수행 (Pending)** | 맵 동결 및 무구동 드라이런 통과 후 실증 예정. |
+| **End-to-End** | 실로봇 paired campaign | 🔴 **미수행 (Pending)** | Gate 0~8, map/config freeze, 실제 artifact recorder/importer 통과 후 총 50회 수행. |
 
 ---
 
@@ -114,12 +114,21 @@ $$\mathbf{p}_{\text{base}} = \mathbf{T}_{\text{base}\leftarrow\text{odom}} \cdot
   - 실내 단층 평지 복도에서는 $Z=0, \text{Roll}=0, \text{Pitch}=0$이 물리적 진실입니다.
   - 최적화 공간을 $\mathrm{SE}(3)$에서 **완전한 2D 리만 다양체 $\mathrm{SE}(2)$**로 강제 사영합니다:
     ```python
-    'Reg/Force3DoF': 'true',        # Z=0, Roll=0, Pitch=0 평면 구속 🏆
-    'Icp/Force4DoF': 'false',       # 수직 Z축 이동 자유도 완전 제거 🏆
-    'Optimizer/Slam2D': 'true',     # 2D 평면 그래프 최적화기 (g2o/GTSAM) 🏆
+    'Reg/Force3DoF': 'true',        # canonical x/y/yaw 평면 구속
+    'Icp/Force4DoF': 'false',       # ICP의 수직 Z 보정 금지
     ```
 
-### 3) 2D 점유격자 지도(Occupancy Grid) 노이즈 박멸 파라미터 세트
+설치된 RTAB-Map 0.21.1에서는 `Optimizer/Slam2D`가 제거된 legacy 이름이므로 독립적인 유효 파라미터로 판정하지 않는다. 실행 배너와 manifest에서 이 이름을 보더라도 실제 planar 판정은 위 두 설정으로 한다.
+
+### 3) 2026-08-28 planar 3DoF 실측과 운용 결정
+
+`20260828_113542_planar3dof_headless`에서 raw LIO Z span은 0.0335 m, sampled map-to-base Z span은 0.0175 m였고, 352개 node와 Type-2 LiDAR proximity closure 9개가 기록됐다. odometry lost, optimizer failure, NaN은 없었다. 이 결과는 4DoF의 6.452 m 수직 발산과 대비되어 **단층 평면 맵의 기본 프로파일을 3DoF로 확정**할 근거가 된다.
+
+단, Type-1 global visual closure는 0개였고 wrapper가 status 141로 종료되어 최종 optimized pose가 저장되지 않았다. 따라서 이 run은 3DoF 진단 PASS이지만 골든 맵/현장 localization DB로는 FAIL이다. 다음 순서는 정상 종료 저장 검증, Type-1 global loop 검증, 3회 반복성 검증이다.
+
+4DoF는 삭제하지 않고 실제 경사로·고도 변화가 연구 범위에 포함될 때만 별도 DB/run ID로 수행한다. 3DoF에서도 4D L2의 3D point cloud, LIO, IMU와 3D occupancy 생성은 그대로 유지된다.
+
+### 4) 2D 점유격자 지도(Occupancy Grid) 노이즈 저감 파라미터 세트
 * **`GridGlobal/FootprintRadius: '0.45'`**: 로봇 앞다리가 스윙할 때 라이다에 걸려 사방으로 뿜어내는 **방사형 가시(Starburst Spikes) 100% 제거**.
 * **`Grid/RangeMin: '0.35'`**: 로봇 코/안테나 근접 반사 블라인드 존 처리.
 * **`Grid/RangeMax: '6.0'`**: 문틈이나 창문을 통과한 원거리 빔이 미지 영역을 찢는 빗살무늬 가시 원천 차단.
@@ -132,6 +141,8 @@ $$\mathbf{p}_{\text{base}} = \mathbf{T}_{\text{base}\leftarrow\text{odom}} \cdot
 ## 👁️ 4. 장소 인식 및 루프 클로저 프로토콜 (Place Recognition & Loop Closure Protocol)
 
 RTAB-Map의 루프 클로징은 단순한 위치 재방문이 아니라, **[시각 어휘(Visual Words) 매칭 ➔ 3D LiDAR ICP 기하 검증 ➔ 포즈 그래프 최적화]**의 3단계 엄격한 파이프라인으로 수행됩니다.
+
+2026-08-28 run에서는 2D visual feature와 hypothesis는 생성됐지만 단안 RGB에 metric depth가 없어 기본 PnP가 `Not enough features in images`로 기각했다. 다음 A/B 실험은 동일 pose/heading 재방문 조건에서 `RGBD/LoopClosureIdentityGuess=true`를 사용하고, LiDAR ICP가 identity guess에서 후보를 검증하는지 확인한다. 반복 실패 또는 큰 관점 변화가 필수일 때만 D435i RGB-D branch를 검토한다.
 
 ```mermaid
 graph TD
@@ -174,47 +185,71 @@ $$\begin{bmatrix} x_{\text{curr}} \\ y_{\text{curr}} \\ 1 \end{bmatrix} = \mathb
 
 ---
 
-## 🚦 6. 엄밀한 6단계 게이트 순차 검증 로드맵 (Strict 6-Gate Verification Roadmap)
+## 🚦 6. 실로봇 전체 End-to-End 순차 검증 로드맵
 
 모든 단계는 이전 단계의 합격 기준(Acceptance Criteria)을 100% 만족해야만 다음 단계로 진입합니다.
 
+세부 실행표와 안전 기준의 authoritative 문서는 [`../experiments/00_real_robot_end_to_end_master_test_plan.md`](../experiments/00_real_robot_end_to_end_master_test_plan.md)다.
+
 ```mermaid
 graph TD
-    G_A["Gate A: 센서 & 하드웨어 Preflight (5분)<br/>• DDS 핑, 라이다 점군, 카메라 스트림 정상"]
-    G_B["Gate B: 평면 3DoF 짧은 자격 주행 (10분)<br/>• ./mapping_planar_headless.sh<br/>• Z축 변동 < 5cm & 벽면 직선성 합격"]
-    G_C["Gate C: 전역 시각 루프 (Type-1) 검증 (5분)<br/>• 출발/도착 3초 정지<br/>• Type-1 Global Link 생성 확인"]
-    G_D["Gate D: 180m 전체 맵 및 DB 영구 동결 (5분)<br/>• golden_map.pgm 및 rtabmap.db SHA-256 고정"]
-    G_E["Gate E: 도커 S2E 무구동 가상 폐루프 검증 (15분)<br/>• 모터 미구동 VLM 서브골 ➔ 50Hz 궤적 파일 로깅<br/>• 5초 타임아웃 0속도 안전 인터록 통과"]
-    G_F["Gate F: 180m 복도 실물 자율주행 및 논문 Table 채점 (45분)<br/>• 5대 시나리오 실물 주행<br/>• calculate_icra_metrics.py로 table_real_robot.tex 완성 🏆"]
+    G0["Gate 0<br/>버전·안전 동결"]
+    G1["Gate 1<br/>실센서 preflight"]
+    G2["Gate 2<br/>planar 3DoF golden map"]
+    G3["Gate 3<br/>map localization 10회"]
+    G4["Gate 4<br/>PixelNav/S2E real replay"]
+    G5["Gate 5<br/>live 4-Tier command sink"]
+    G6["Gate 6<br/>fault injection"]
+    G7["Gate 7<br/>actuator·E-stop"]
+    G8["Gate 8<br/>저속 pilot"]
+    G9["Gate 9<br/>paired final campaign"]
 
-    G_A --> G_B --> G_C --> G_D --> G_E --> G_F
+    G0 --> G1 --> G2 --> G3 --> G4 --> G5 --> G6 --> G7 --> G8 --> G9
 ```
+
+| 단계 | 현재 상태 | 다음 합격 증거 |
+|---|---|---|
+| Gate 0 버전·안전 동결 | **FAIL** | 실제 checkpoint/config hash, motion 기본 OFF, E-stop 절차 |
+| Gate 1 실센서 | 부분 PASS | 다음 run에서 rate/timestamp/TF 반복 확인 |
+| Gate 2 planar 3DoF | 부분 PASS | 정상 종료, Type-1 ≥2/3, golden DB 저장 |
+| Gate 3 localization | 대기 | 독립 reference에서 cold start 10/10, false relocalization 0 |
+| Gate 4 PixelNav/S2E | **FAIL** | mock OFF, 실제 checkpoint와 real 11-frame trajectory |
+| Gate 5 4-Tier sink | 대기 | live causal chain, actuator topic 발행 0 |
+| Gate 6 fault injection | 대기 | stale 적용 0, 모든 고장에서 stop ≤0.5 s |
+| Gate 7 actuator safety | 대기 | 단일 command authority, safe-stop 10/10 |
+| Gate 8 저속 pilot | 대기 | collision/intervention/localization loss 0 |
+| Gate 9 final campaign | 대기 | 5 pairs × 2 methods × 5 reps = 50 complete runs |
 
 ---
 
-## 📊 7. 180m 복도 실증 시나리오 및 논문 Table 산출 (180m Corridor Experiments & Metrics)
+## 📊 7. 실로봇 paired campaign 및 논문 Table
 
-### 1) 5대 실증 시나리오 정의
-1. **`Dead-end Room (막다른 방 탈출)`**: 막다른 복도 끝에서 $180^\circ$ 능동 U턴 회피.
-2. **`Blocked Goal Direction (목표 방향 차단)`**: 주 복도 장애물 조우 시 측면 복도로 자율 우회.
-3. **`Repeated Corridor (유사 대칭 복도)`**: 문과 기둥이 반복되는 50m 구간에서 방향성 유지.
-4. **`Active-view Recovery (능동 시야 회복)`**: $90^\circ$ 코너에서 카메라 선회 후 미지 경로 개척.
-5. **`Dynamic Obstacle (동적 보행자 회피)`**: 보행자 조우 시 멈추지 않고 측면 보행로로 연속 통과.
+> **실측값 없음**: 현재 main 계획은 Direct-goal과 Full ESCAPE-Nav의 50회 paired campaign이다. `calculate_icra_metrics.py`는 sample episode 기반이므로 논문 수치 생성에 사용하지 않는다. 정확한 table schema는 [`../experiments/01_table1_table2_quantitative_experiment_master_protocol.md`](../experiments/01_table1_table2_quantitative_experiment_master_protocol.md)를 따른다.
 
-### 2) 논문 Table 공식 8대 지표 및 수식 ([`table_real_robot.tex`](file:///C:/Users/USER/Desktop/%EC%BA%A1%EC%8A%A4%ED%86%A4/go2/docs/master_plan/%5B2026-08-23%5D_%EC%B5%9C%EC%8B%A0_%EB%85%BC%EB%AC%B8%28paper%EB%B8%8C%EB%9E%9C%EC%B9%98%29_%EB%8C%80%EC%A1%B0_%EB%B0%8F_%EB%A7%88%EC%8A%A4%ED%84%B0%ED%94%8C%EB%9E%9C_%EC%A0%84%EC%88%98_%EC%A0%95%ED%95%A9%EC%84%B1_%EA%B0%9C%EC%A0%95%EB%B3%B4%EA%B3%A0%EC%84%9C.md))
+### 1) 5개 고정 start–goal pair
+
+1. **P1 직선 복도**: tracking, latency, stop-and-go.
+2. **P2 90° L-turn**: camera FOV와 corner cutting.
+3. **P3 T-junction/blocked bearing**: branch selection.
+4. **P4 반복 문·유사 복도**: failed branch re-entry.
+5. **P5 다중 코너 장거리**: stale decision과 localization stability.
+
+각 pair에서 Direct-goal과 Full ESCAPE-Nav를 각각 5회 실행해 `25 runs/method`, 총 50회로 구성한다. Active-view recovery와 rolling/dynamic obstacle은 main 표와 분리한다.
+
+### 2) Main table 빈 template
 
 $$\begin{array}{lccccccc}
 \toprule
 \textbf{Method} & \textbf{SR} \uparrow & \textbf{Intv.} \downarrow & \textbf{Time (s)} \downarrow & \textbf{Rec.} \uparrow & \textbf{Lat. (s)} \downarrow & \textbf{Duty} \uparrow & \textbf{Yield} \uparrow \\
 \midrule
-\text{Direct-goal (Sync)} & \text{60.0\%} & 2.40 & 412.5 & 20.0\% & 1.82 & 35.2\% & 48.0\% \\
-\text{Naive Async} & \text{45.0\%} & 3.10 & 350.1 & 30.0\% & 1.78 & 78.4\% & 62.1\% \\
-\textbf{\text{ESCAPE-Nav (Ours)}} & \textbf{95.0\%} & \textbf{0.20} & \textbf{214.5} & \textbf{100.0\%} & \textbf{1.48} & \textbf{93.4\%} & \textbf{95.2\%} \\
+\text{Direct-goal} & -- & -- & -- & -- & -- & -- & -- \\
+\textbf{\text{Full ESCAPE-Nav}} & -- & -- & -- & -- & -- & -- & -- \\
 \bottomrule
 \end{array}$$
 
-* **정규화 완주 시간 ($T^\dagger$)**: $T^\dagger = S_i \min(T_i, T_{\max}) + (1-S_i) T_{\max}$ ($T_{\max} = 500\text{s}$, $S_i \in \{0, 1\}$).
-* **성공률 신뢰구간 (Wilson Score Interval)**: $\hat{p} \pm \frac{z}{1 + z^2/n} \sqrt{\frac{\hat{p}(1-\hat{p})}{n} + \frac{z^2}{4n^2}}$ ($z = 1.96$).
+* **정규화 완주 시간 ($T^\dagger$)**: $T^\dagger_i = S_i\min(T_i,T_{\max,p}) + (1-S_i)T_{\max,p}$, $S_i \in \{0,1\}$.
+* **campaign 고정값**: goal radius는 $1.0\text{m}$이며, pair별 $T_{\max,p}$는 첫 본실험 전에 동결한다.
+* **성공률 표기**: 각 방법은 raw count를 보존해 `k/25 (xx.x%)`로 표기하고 Wilson 95% CI를 함께 보고한다.
 
 ---
 
@@ -233,7 +268,7 @@ $$\begin{array}{lccccccc}
 
 | 증상 / 에러 | 원인 분석 | 즉각 조치 절차 |
 | :--- | :--- | :--- |
-| **`sudo ip route add 230.0.0.0/8` 오류** | 부팅 시 멀티캐스트 미등록 | `sudo ip route add 230.0.0.0/8 dev eth0` 수동 실행 |
+| **Go2 sensor topic 미수신** | eth0/source 또는 DDS/RTP interface binding 불일치 | `ip -4 route get 192.168.123.161`과 `cyclonedds.xml`, `multicast-iface=eth0` 확인 |
 | **`NetBird 100.96.60.15` 연결 실패** | VPN 데몬 세션 만료 | `sudo systemctl restart netbird` 후 `netbird status` 확인 |
 | **2D 맵에 벽면 이중선 발생** | 급회전 보행으로 인한 스캔 탈조 | 보행 속도를 $0.2\text{ m/s}$로 줄이고 회전각을 완만하게 주행 |
 | **SQLite DB Busy Lock 발생** | 맵핑 노드 비정상 종료 잔여 | `killall -9 rtabmap; cp ~/.ros/rtabmap.db /tmp/backup.db` |

@@ -594,6 +594,13 @@ key forms, distinguishes GUI/headless run labels and writes `SUMMARY` on
 SIGINT/SIGTERM; the fixes passed synthetic event tests but need confirmation in
 the next physical mapping run.
 
+On 2026-08-28, with no explicit `230.0.0.0/8` route installed, current live
+checks received `/utlidar/robot_odom`, `/utlidar/cloud_deskewed` and 1280x720
+front-camera frames. CycloneDDS already pins `192.168.123.99/eth0` and the
+GStreamer camera source now pins `multicast-iface=eth0`. Mapping bringup no
+longer mutates kernel routes or requests sudo; it only verifies that the Go2
+unicast path uses eth0 with source `192.168.123.99`.
+
 ## 10.4 Four-tier and ICRA 2027 evidence audit (2026-08-27 KST)
 
 The current evidence-first entry points are:
@@ -658,6 +665,16 @@ probe with an isolated `/tmp` database reached SLAM/callback/subscription setup
 and survived until its 12-second timeout. Bringup now also requires the actual
 `/rtabmap` node to survive initialization before printing its LIVE banner. No
 physical planar result has been collected after this correction yet.
+
+The first planar wrapper attempt on 2026-08-28 (`20260828_113015_planar3dof_headless`)
+also produced no physical result. Startup cleanup used broad
+`pkill -9 -f rtabmap`, which matched the wrapper's `tee` because its evidence
+path contained `~/.ros/rtabmap_runs`; the pipeline then exited with SIGPIPE
+status 141 before any sensor or RTAB-Map node started. Cleanup now targets the
+exact `rtabmap`/`rtabmap_viz` process names and the specific ROS launch command.
+The wrapper archives a DB only after an `RTABMAP_STARTED` sentinel is written
+by the verified `/rtabmap` startup gate, preventing an old DB from being
+mislabelled as output from a failed run.
 
 The physical-autonomy status remains **NO-GO** until the acceptance gates in
 section 12 and the experiment-plan safety gates are satisfied.

@@ -44,15 +44,16 @@ graph LR
     JET_VPN <-->|NetBird VPN| SRV
 ```
 
-### 필수 네트워크 라우팅 설정
-1. **라이다 통신용 에일리어스 IP 바인딩**:
+### 네트워크 인터페이스 설정
+1. **독립 외장 L2 SDK를 사용할 때만 필요한 에일리어스 IP 바인딩**:
    ```bash
-   echo admin | sudo -S ip addr add 192.168.1.2/24 dev eth0 2>/dev/null || true
+   sudo ip addr add 192.168.1.2/24 dev eth0
    ```
-2. **카메라 RTP 멀티캐스트 라우팅 등록**:
+2. **현재 built-in DDS/RTP 경로 확인**:
    ```bash
-   echo admin | sudo -S ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
+   ip -4 route get 192.168.123.161
    ```
+   CycloneDDS와 GStreamer가 eth0를 명시하므로 별도 `230.0.0.0/8` root route는 요구하지 않습니다.
 
 ---
 

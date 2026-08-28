@@ -135,8 +135,12 @@ cleanup() {
     pkill -f go2_native_sensor_node.py 2>/dev/null || true
     pkill -f go2_livo_sensor_bridge.py 2>/dev/null || true
     pkill -f host_bridge.py 2>/dev/null || true
-    pkill -f go2_rtabmap.launch.py 2>/dev/null || true
-    pkill -f rtabmap 2>/dev/null || true
+    # Match the launch command and executable names precisely. A broad
+    # `pkill -f rtabmap` also matches evidence paths such as
+    # ~/.ros/rtabmap_runs/.../runtime.log and can kill the wrapper's tee.
+    pkill -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
+    pkill -x rtabmap 2>/dev/null || true
+    pkill -x rtabmap_viz 2>/dev/null || true
     
     # 3. Mapping never creates a command path. Online autonomy is not an
     # accepted physical mode, but preserve its historical zero-packet cleanup.
@@ -221,26 +225,24 @@ pkill -9 -f go2_livo_sensor_bridge 2>/dev/null || true
 pkill -9 -f go2_front_camera 2>/dev/null || true
 pkill -9 -f rtabmap_loop_logger 2>/dev/null || true
 pkill -9 -f host_bridge 2>/dev/null || true
-pkill -9 -f rtabmap 2>/dev/null || true
+# Do not use `pkill -f rtabmap` here. The planar wrapper pipes output to a tee
+# whose command line contains ~/.ros/rtabmap_runs/.../runtime.log.
+pkill -9 -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
+pkill -9 -x rtabmap 2>/dev/null || true
+pkill -9 -x rtabmap_viz 2>/dev/null || true
 sleep 1
 
-# Built-in Go2 topics arrive over CycloneDDS. The external L2 SDK and its
-# 192.168.1.2/UDP 6201 setup are intentionally not started on this path. Never
-# store or pipe a credential here: use an existing route or non-interactive
-# sudo configured by the operator.
-if ! ip route show 230.0.0.0/8 2>/dev/null | grep -q 'dev eth0'; then
-    sudo -n ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
-fi
-if ! ip route show 230.0.0.0/8 2>/dev/null | grep -q 'dev eth0' && [ -t 0 ]; then
-    echo -e "${YELLOW}  • Go2 DDS multicast route is missing; sudo authentication is required once.${NC}"
-    sudo ip route add 230.0.0.0/8 dev eth0 || true
-fi
-if ! ip route show 230.0.0.0/8 2>/dev/null | grep -q 'dev eth0'; then
-    echo -e "${RED}ERROR: multicast route 230.0.0.0/8 via eth0 is missing.${NC}"
-    echo "Run 'sudo ip route add 230.0.0.0/8 dev eth0' in a terminal; no credential is stored by this script."
+# Built-in Go2 DDS is pinned to 192.168.123.99/eth0 in cyclonedds.xml, and the
+# RTP camera pins its multicast membership to eth0. A privileged 230/8 kernel
+# route is therefore neither created nor required. Only verify the direct Go2
+# unicast path here. The independent external-L2 SDK path is not started.
+ROBOT_ROUTE="$(ip -4 route get 192.168.123.161 2>/dev/null || true)"
+if [[ "$ROBOT_ROUTE" != *"dev eth0"* ]] || [[ "$ROBOT_ROUTE" != *"src 192.168.123.99"* ]]; then
+    echo -e "${RED}ERROR: Go2 must be reached through eth0 with source 192.168.123.99.${NC}"
+    echo "Observed route: ${ROBOT_ROUTE:-unavailable}"
     exit 1
 fi
-echo "  • Go2 DDS multicast route ready: $(ip route show 230.0.0.0/8)"
+echo "  • Go2 network path ready (no sudo): $ROBOT_ROUTE"
 
 # 1. 전면 카메라 퍼블리셔 (30fps + CameraInfo)
 echo "  • [1/4] Starting Front Camera & CameraInfo Publisher (30fps)..."
@@ -313,6 +315,12 @@ if ! kill -0 "$RTABMAP_LAUNCH_PID" 2>/dev/null || \
     exit 1
 fi
 echo "  • RTAB-Map startup gate passed: /rtabmap is alive."
+if [ -n "${RTABMAP_RUN_DIR:-}" ]; then
+    # The evidence wrapper uses this sentinel to distinguish a real mapping
+    # session from a pre-start failure and must not archive an older DB as if
+    # it were produced by the failed run.
+    touch "${RTABMAP_RUN_DIR}/RTABMAP_STARTED"
+fi
 
 # ------------------------------------------------------------------------------
 # Phase 3: 도커 샌드박스 S2E 비동기 자율주행 가동

@@ -81,20 +81,17 @@ curl -s --connect-timeout 3 http://100.96.60.15:8000/v1/models | grep -o '"id":"
 
 ---
 
-### [Step 0-4] DDS 멀티캐스트 라우팅 및 도커 샌드박스 상태 점검
+### [Step 0-4] Go2 direct route 및 도커 샌드박스 상태 점검
 ```bash
-# 1. DDS 멀티캐스트 라우팅 테이블 확인 (230.0.0.0/8 경로 존재 여부)
-ip route show | grep "230.0.0.0"
-
-# (만약 경로가 없다면 eth0에 추가)
-sudo ip route add 230.0.0.0/8 dev eth0 2>/dev/null || true
+# 1. Go2가 eth0와 192.168.123.99 source로 직접 연결되는지 확인
+ip -4 route get 192.168.123.161
 
 # 2. 도커 sdam_go2_container 실행 상태 확인
 docker ps --filter "name=sdam_go2_container" --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
 ```
 * **정상 콘솔 출력 예시**:
   ```text
-  230.0.0.0/8 dev eth0 scope link 
+  192.168.123.161 dev eth0 src 192.168.123.99
   CONTAINER ID   NAMES                STATUS
   8a1b2c3d4e5f   sdam_go2_container   Up 2 hours
   ```

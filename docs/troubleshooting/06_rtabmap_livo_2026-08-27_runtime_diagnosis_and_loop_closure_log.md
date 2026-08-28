@@ -491,3 +491,18 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 수정된 4DoF string parameter YAML은 동일한 Foxy/CycloneDDS 환경에서 별도 `/tmp` DB를 사용해 SLAM mode, callback setup, RGB/scan-cloud subscription까지 완료했고 12초 probe 제한시간까지 생존했다(`timeout` status 124). 이 probe는 파라미터 초기화만 검증하며 센서 처리나 실제 loop closure 증거는 아니다.
 
 또한 GUI나 launch parent만 살아 있어도 LIVE banner가 표시되던 문제를 막기 위해, bringup은 parameter 초기화 시간을 기다린 뒤 실제 `/rtabmap` 노드가 발견될 때만 startup gate를 통과한다. 실패하면 mapping 시작 전 종료되며 motor/command 경로는 생성하지 않는다. 이 수정은 build/static/startup-probe 검증을 통과했지만 2026-08-28 physical planar 결과는 아직 없다.
+
+## 17. 2026-08-28 planar headless 즉시 종료(`Broken pipe`)와 수정
+
+11:30 KST의 `20260828_113015_planar3dof_headless` 실행은 Phase 2 진입 직후 종료됐다. `runtime.log`는 센서 시작 전 문장에서 끝났고, loop log는 생성되지 않았으며, manifest의 `wrapper_exit_status=141`은 출력 pipeline의 SIGPIPE를 뜻한다. 따라서 이 실행에는 주행, planar graph, loop closure를 평가할 데이터가 없다.
+
+원인은 stale-process 정리에 사용한 `pkill -9 -f rtabmap`이었다. evidence logger의 `tee` 명령행에도 `/home/unitree/.ros/rtabmap_runs/.../runtime.log`가 포함되므로, 이 패턴이 RTAB-Map이 아니라 자기 부모 pipeline의 `tee`를 종료했다. 그 결과 bringup shell은 닫힌 pipe에 출력하다 SIGPIPE로 끝났다.
+
+수정 내용:
+
+- RTAB-Map core와 GUI는 각각 정확한 process name인 `rtabmap`, `rtabmap_viz`만 종료한다.
+- launch parent는 `ros2 launch rtabmap_launch go2_rtabmap.launch.py` 명령 형태만 선택한다.
+- 실제 `/rtabmap` node startup gate를 통과한 뒤에만 run directory에 `RTABMAP_STARTED` sentinel을 만든다.
+- wrapper는 sentinel이 있는 실행에서만 현재 DB를 run directory로 복사하고, manifest에 `rtabmap_started`와 `rtabmap_db_saved`를 기록한다.
+
+실패한 run directory에 들어 있는 `rtabmap.db`는 wrapper의 기존 무조건 복사 동작으로 보존된 이전 DB이며, 이 실행에서 생성된 DB가 아니다. 기존 실패 artifact는 장애 증거와 SHA-256 일관성을 위해 수정하거나 삭제하지 않는다. 수정 이후 최초 실주행 결과가 나오기 전까지 physical planar 3DoF 검증 상태는 여전히 미완료다.
