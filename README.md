@@ -113,38 +113,26 @@ graph TD
 
 ---
 
-## 📋 5. 민석 님 실하드웨어 젯슨 보드 Quick-Run 배포 가이드
+## 📋 5. 현재 사용 가능한 RTAB-Map 명령
 
-젯슨 보드에서 단 4개 터미널 명령어 세트로 실물 로봇 평가를 수행하는 매뉴얼입니다:
+사용자용 mapping 진입점은 두 개뿐이다.
 
-### 1단계: 최신 코드 동기화 & 호스트 RTAB-Map LIVO 실행 (Host Foxy)
 ```bash
 cd /home/unitree/go2_ws_antarctica
-source /opt/ros/foxy/setup.bash
-source install/setup.bash
-ros2 launch rtabmap_launch go2_rtabmap.launch.py localization:=true
+
+# Jetson 데스크톱 GUI mapping
+./run_map.sh
+
+# SSH/tmux headless mapping
+./map_headless.sh
+
+# 저장된 DB GUI 확인
+./run_map.sh --view
 ```
 
-### 2단계: 도커 컨테이너 가동 & VLM/S2E 정책 실행 (Docker Container)
-```bash
-# Docker Container 가동 (net=host 및 privileged 필수)
-docker start sdam_go2_container
-docker exec -it sdam_go2_container bash -c "cd /workspace/go2_ws_antarctica/s2e-vlm-async-framework && python3 src/vlm_s2e_async_node.py"
-```
+두 mapping 명령 모두 planar 3DoF graph, 3D L2/ICP, RGB global-place retrieval과 LiDAR ICP 검증을 사용한다. recorder, Docker/VLM, command bridge와 motor output은 시작하지 않는다.
 
-### 3단계: 소켓 통신 브릿지 가동 (Host Terminal)
-```bash
-python3 /home/unitree/go2_ws_antarctica/scratch/host_bridge.py
-```
-
-### 4단계: 1-Click 실험 녹화 및 정량 지표 자동 계산
-```bash
-# 주행 시작 시 (실험 녹화)
-bash /home/unitree/go2_ws_antarctica/scratch/record_experiment.sh Dead_end_room Full_ESCAPE_Nav Trial1
-
-# 5회 주행 완료 후 (ICRA 정량 비교표 자동 산출)
-python3 /home/unitree/go2_ws_antarctica/scratch/calculate_icra_metrics.py
-```
+`localization:=true`는 기존 DB에서 pose를 찾는 기능이지 planner/controller가 아니다. 최신 paper branch의 주 backend는 frozen PixNav이며 S2E는 별도 보조 실험이다. 공식 PixNav checkpoint hash는 확보했지만 Jetson runtime과 안전 command path가 미완료이므로 localization, Docker, bridge를 조합한 물리 자율주행은 아직 실행하지 않는다.
 
 ---
 
@@ -192,11 +180,9 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── 12_unitree_official_repositories_and_master_integration_plan.md <- 공식 6대 레포 생태계 및 마스터 통합 계획서
 │   ├── 13_end_to_end_data_and_control_pipeline_master.md <- [최신/권위] 4단계 전수 데이터 & 제어 파이프라인 마스터 가이드
 ├── 2dmap/                     <- [🗺️ 실물 실측 2D 점유격자지도] 787m² 복도 Occupancy Grid Map (0833.yaml/pgm/png)
-├── bringup_headless.sh        <- [⭐ 1-Click Headless] 무선 환경 비동기 자율주행 실행기
-├── mapping_headless.sh        <- [⭐ 1-Click Headless] 무선 환경 복도 3D LIVO 맵핑 실행기
-├── mapping_gui.sh             <- [⭐ 1-Click 3D GUI] 실시간 3D 점군/격자지도 시각화 맵핑기 (rtabmap_viz)
-├── mapping.sh                 <- [⭐ 1-Click 3D Mapping] 복도 3D SLAM 맵핑 실행기 (CLI)
-├── view_map.sh                <- [⭐ 1-Click 3D Viewer] rtabmap.db 3D 뷰어 팝업 실행기
+├── bringup_headless.sh        <- 과거 자율주행 wrapper; physical autonomy NO-GO
+├── map_headless.sh            <- [canonical] SSH/tmux planar 3DoF mapping
+├── run_map.sh                 <- [canonical] GUI mapping 및 `--view` DB viewer
 ├── run_test.sh                <- 실내 미세 모션(15cm 왕복) 검증기
 ├── scratch/                   <- 실물 연동 검증용 UDP 소켓/파이썬 드라이버 스크립트 폴더
 │   ├── bringup_all_escape_nav.sh <- [⭐ 1-Click Master] 4대 계층 일체형 브링업 & E-Stop 스크립트
@@ -207,7 +193,6 @@ go2_ws_antarctica/ (antarctica 브랜치)
 │   ├── test_docker_s2e_dryrun.py <- 도커 S2E 비동기 자율주행 풀 드라이런 검증기
 │   ├── test_docker_50hz_stress.py <- 도커 50Hz 고주파 UDP 스트리밍 스트레스 테스트 (500 패킷 0% Loss)
 │   ├── test_docker_real_image_vlm.py <- 도커 내 멀티모달 이미지 VLM 실시간 추론 테스트 (720p RGB)
-│   ├── start_rtabmap_livo.sh  <- 호스트 RTAB-Map LIVO 1-Click 실행기
 │   ├── start_docker_s2e.sh    <- 도커 S2E 자율주행 1-Click 실행기
 │   ├── host_bridge.py         <- 호스트 단(Foxy) UDP 통신 수신기 (Port 9090)
 │   ├── docker_bridge.py       <- 도커 내부(Jazzy) UDP 통신 송신기 (Port 9091)

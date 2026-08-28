@@ -8,3 +8,4 @@ __pycache__/
 *.swp
 2dmap/recordings/
 *.mp4
+.local-data/

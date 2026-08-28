@@ -1,5 +1,7 @@
 # 📡 [Jetson Plan 02] RTAB-Map LIVO 50Hz 인지 파이프라인, 저부하 빌드 및 1-Click 실행 가이드
 
+> **2026-08-28 개정**: 사용자용 mapping 진입점은 `run_map.sh`와 `map_headless.sh` 두 개뿐이다. 삭제된 `scratch/start_rtabmap_livo.sh` 명령과 `/rtabmap/odom` 50Hz 생성 설명은 사용하지 않는다. 실제 외부 odometry 입력은 `/livo/odom`이며 RTAB-Map은 mapping/localization graph를 제공한다.
+
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **상위 총괄 문서**: [`docs/jetson_plan/README.md`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/README.md)  
 > **최종 검증 일자**: 2026-08-20  
@@ -61,25 +63,20 @@ source install/setup.bash
 
 ---
 
-## 🚀 3. 1-Click 올인원 RTAB-Map LIVO 실행 가이드
+## 🚀 3. RTAB-Map mapping 실행 가이드
 
-전면 카메라, 4D 라이다 드라이버, IMU 센서 노드, 및 RTAB-Map LIVO를 단 1줄로 동시 기동하고 프로세스를 안전하게 라이프사이클 관리하는 공식 런처 스크립트입니다:
-
-* **스크립트 파일**: [`/home/unitree/go2_ws_antarctica/scratch/start_rtabmap_livo.sh`](file:///home/unitree/go2_ws_antarctica/scratch/start_rtabmap_livo.sh)
-
-### [실행 방법 A] S2E 온라인 자율주행용 순수 오도메트리 모드 (기본값)
+### [실행 방법 A] Jetson 데스크톱 GUI mapping
 ```bash
 cd /home/unitree/go2_ws_antarctica
-bash scratch/start_rtabmap_livo.sh
+./run_map.sh
 ```
-* `localization:=true` 모드로 가동되어 사전 맵 간섭 없이 순수 50Hz 오도메트리(`/rtabmap/odom`)를 생성합니다.
 
-### [실행 방법 B] 3D 복도 맵핑 모드
+### [실행 방법 B] SSH/tmux headless mapping
 ```bash
 cd /home/unitree/go2_ws_antarctica
-bash scratch/start_rtabmap_livo.sh mapping
+./map_headless.sh
 ```
-* `localization:=false` 모드로 가동되어 복도 주행 시 3D 점군 지도를 실시간 빌드하고 `~/.ros/rtabmap.db`에 영구 저장합니다.
+두 명령은 같은 planar 3DoF 설정과 증거 저장 경로를 사용한다. `localization:=true`는 기존 DB를 읽는 pose localization 모드이며 순수 odometry나 자율주행 명령 생성기가 아니다.
 
 ---
 

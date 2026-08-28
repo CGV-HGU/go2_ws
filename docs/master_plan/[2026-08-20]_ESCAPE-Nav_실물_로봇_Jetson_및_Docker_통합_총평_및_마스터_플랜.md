@@ -52,7 +52,7 @@ graph TD
    * NetBird P2P Direct VPN 터널링을 통해 Jetson ↔ RTX Pro 6000 서버 간 RTT를 $14\text{ms}$로 단축.
    * vLLM 기반 `qwen3.8-27b-instruct`의 실측 추론 응답 속도 **$126\text{ms} \sim 270\text{ms}$ 달성**.
 3. **1-Click 마스터 런처 체계 구축**:
-   * `start_rtabmap_livo.sh`와 `start_docker_s2e.sh` 2개의 스크립트로 복잡한 빌드/파라미터 설정 없이 즉시 기동 가능.
+   * **2026-08-28 정정**: 당시 localization/S2E wrapper는 제거 또는 미검증 상태다. 현재 mapping 진입점은 `run_map.sh`와 `map_headless.sh`뿐이며 physical autonomy는 NO-GO다.
 
 ---
 
@@ -102,8 +102,7 @@ graph TD
 ### [1단계] 호스트 LIVO 맵핑 가동 (호스트 터미널 1)
 ```bash
 # CycloneDDS, 전면 카메라(CameraInfo 동기화), RTAB-Map 50Hz 자동 1-Click 기동
-bash ~/go2_ws_antarctica/scratch/start_rtabmap_livo.sh
-```
+# REMOVED: no accepted physical-autonomy entry point```
 
 ### [2단계] 도커 S2E 자율주행 가동 (호스트 터미널 2)
 ```bash

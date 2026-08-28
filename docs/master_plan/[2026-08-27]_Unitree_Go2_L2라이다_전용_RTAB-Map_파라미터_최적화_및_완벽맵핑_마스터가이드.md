@@ -211,8 +211,7 @@ graph TD
 ### [1단계] 맵핑 런처 실행
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_with_screen_record.sh
-```
+./run_map.sh```
 
 ### [2단계] 주행 조종 3대 수칙
 1. **$0.2 \sim 0.3\text{ m/s}$의 일정한 저속 주행** (급가속/급회전 지양).

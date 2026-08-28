@@ -16,7 +16,7 @@
 
 ## 1. 🗄️ 개요 및 데이터베이스 구조
 
-Unitree Go2 ESCAPE-Nav 파이프라인에서 `bash scratch/bringup_all_escape_nav.sh --mapping`을 실행하면, RTAB-Map은 모든 센서 데이터(30fps RGB 전면 카메라 영상, 50Hz 고정밀 오도메트리, 3D 포인트, 루프 클로저 그래프)를 **`~/.ros/rtabmap.db` (SQLite3 기반 파일)**에 압축 저장합니다.
+Unitree Go2 ESCAPE-Nav 파이프라인에서 `./map_headless.sh`을 실행하면, RTAB-Map은 모든 센서 데이터(30fps RGB 전면 카메라 영상, 50Hz 고정밀 오도메트리, 3D 포인트, 루프 클로저 그래프)를 **`~/.ros/rtabmap.db` (SQLite3 기반 파일)**에 압축 저장합니다.
 
 ```mermaid
 graph LR

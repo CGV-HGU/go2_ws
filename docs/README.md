@@ -18,12 +18,24 @@
 | 구간 | 현재 상태 | 다음 게이트 |
 |---|---|---|
 | Go2/L2 | 과거 실제 cloud/IMU/LIO/RGB 수신 PASS | 각 실험일 전원 후 rate/timestamp preflight |
-| RTAB-Map | 3DoF Z 안정, Type-2 9개; Type-1 0, 종료 status 141 | 정상 저장→global loop→3회 반복→golden map |
+| RTAB-Map | 최신 short loop: Z 0.0235 m, Type-1 2개, start/end 0.0335 m; 반복성 1/3 | short loop 2회 추가→golden map→localization |
 | Jetson | Foxy sensor/RTAB 경로 존재 | full run 전 자원·thermal·network 재확인 |
 | Jetson↔Docker | 임시 비제어 포트 양방향 UDP PASS | production bridge 대신 command sink 시험 |
 | Docker/PixelNav | node executable은 mock runtime, 실제 `s2e.onnx` 없음 | real checkpoint와 실제 11-frame replay |
 | Docker↔Server | model 조회, text JSON, 보관 RGB vision 요청 PASS | live frame + 전체 navigation schema + provenance |
 | 물리 자율주행 | **NO-GO** | single authority·TTL·fault injection·safe-stop 10/10 |
+
+## 현재 mapping 명령
+
+```bash
+cd /home/unitree/go2_ws_antarctica
+
+./run_map.sh       # Jetson desktop GUI
+./map_headless.sh  # SSH/tmux
+./run_map.sh --view
+```
+
+사용자용 mapping 진입점은 위 두 파일뿐이다. 둘 다 planar 3DoF, 3D L2/ICP, RGB 장소 후보와 LiDAR ICP global-loop 검증을 사용하고 recorder·Docker/VLM·motor path는 시작하지 않는다.
 
 ## 폴더 지도
 

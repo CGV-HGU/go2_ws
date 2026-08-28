@@ -60,7 +60,7 @@ Loop closure는 다음 조건을 모두 만족하면 시작점과 종료점 사�
 
 - `scratch/go2_livo_sensor_bridge.py`
 - `src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`
-- `mapping_gui.sh`
+- `run_map.sh`
 - `scratch/bringup_all_escape_nav.sh`
 
 공식 근거:
@@ -333,7 +333,7 @@ rg -n "cannot interpolate imu transform" \
   /home/unitree/.ros/log/rtabmap_35212_1787809142102.log
 ```
 
-현재 mapping launch는 mapping mode에서 `-d`를 사용한다. 새 map을 시작할 때는 반드시 `mapping_gui.sh` 또는 backup이 보장된 wrapper를 사용하고 launch 파일을 직접 실행하지 않는다.
+현재 mapping launch는 mapping mode에서 `-d`를 사용한다. 새 map을 시작할 때는 반드시 `run_map.sh` 또는 backup이 보장된 wrapper를 사용하고 launch 파일을 직접 실행하지 않는다.
 
 ## 12. 현재 종료 상태
 
@@ -366,7 +366,7 @@ Recorder는 mapping 기본 경로에서 계속 비활성 상태다.
 디스플레이 없이 수동 mapping을 수행하면서 loop 결과를 보존할 수 있도록 다음을 적용했다.
 
 - `scratch/rtabmap_loop_logger.py` 추가
-- `mapping_headless.sh`가 사용하는 mapping mode에 logger 자동 통합
+- `map_headless.sh`가 사용하는 mapping mode에 logger 자동 통합
 - `Rtabmap/PublishStats=true` 명시
 - `RGBD/NeighborLinkRefining=false` 적용
 - recorder, Docker/VLM, host command bridge는 계속 비활성
@@ -392,10 +392,10 @@ Headless 실행:
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_planar_headless.sh
+./map_headless.sh
 ```
 
-이 planar wrapper는 기존 `mapping_headless.sh`의 4DoF 기본값을 보존하면서 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`, `Optimizer/Slam2D=true`를 함께 전달한다. DB, 전체 console, loop event, config snapshot과 SHA-256은 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 보존한다.
+현재 canonical `map_headless.sh`는 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`, `RGBD/LoopClosureIdentityGuess=true`를 사용한다. `Optimizer/Slam2D` legacy 표기는 제거했다. DB, 전체 console, loop event, config snapshot과 SHA-256은 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 보존한다.
 
 SSH 단절 가능성이 있으면 foreground mapping을 임의로 `nohup` 처리하기보다 `tmux` 안에서 실행하고, 종료 시 다시 attach하여 `Ctrl+C`로 RTAB-Map과 logger를 정상 종료한다.
 
@@ -470,7 +470,7 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 - 최종 raw LIO z: 약 0.310 m
 - 최종 RTAB-Map map pose z: 약 -6.068 m
 
-수직 변형은 첫 proximity closure 전부터 누적되어 있었으므로 5개 local closure만의 문제는 아니다. gravity-constrained 4DoF graph가 보행 중 roll/pitch를 반영하면서 긴 평면 경로를 z 방향으로 기울인 가능성이 크다. 단일층 2D navigation map이 목적이면 다음 A/B는 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`, `Optimizer/Slam2D=true`가 우선 후보다. 이 3DoF 변경은 당시 결과 기록 시점에는 적용되지 않았고, 현재는 별도 planar headless profile로 준비되어 실주행 검증을 기다린다.
+수직 변형은 첫 proximity closure 전부터 누적되어 있었으므로 5개 local closure만의 문제는 아니다. gravity-constrained 4DoF graph가 보행 중 roll/pitch를 반영하면서 긴 평면 경로를 z 방향으로 기울인 가능성이 크다. 당시 다음 A/B 후보는 planar graph였고, 이후 `Reg/Force3DoF=true`, `Icp/Force4DoF=false`로 Z 안정성이 확인됐다. 현재는 두 canonical mapping 진입점이 이 설정을 사용하며 global Type-1과 정상 종료 재검증을 기다린다.
 
 ### 15.5 Logger 정정
 
@@ -484,7 +484,7 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 
 ## 16. 2026-08-28 GUI 시작 중 RTAB-Map abort와 수정
 
-11:00~11:01 KST의 `mapping_gui.sh` 두 실행은 loop closure가 단순히 0건인 주행 결과가 아니다. 두 loop log 모두 `frames=0`, 기존 DB의 mtime도 2026-08-27 그대로였고, launch log에서 `/opt/ros/foxy/lib/rtabmap_slam/rtabmap`이 각각 `exit code -6`으로 종료됐다. GUI와 static TF만 남았으므로 지도나 loop 판정에 사용할 수 없는 시작 실패다.
+11:00~11:01 KST에 당시 사용하던 구형 GUI wrapper의 두 실행은 loop closure가 단순히 0건인 주행 결과가 아니다. 두 loop log 모두 `frames=0`, 기존 DB의 mtime도 2026-08-27 그대로였고, launch log에서 `/opt/ros/foxy/lib/rtabmap_slam/rtabmap`이 각각 `exit code -6`으로 종료됐다. GUI와 static TF만 남았으므로 지도나 loop 판정에 사용할 수 없는 시작 실패다.
 
 원인은 planar A/B를 위해 추가한 `LaunchConfiguration` 세 값이 Foxy launch의 YAML coercion을 거쳐 ROS boolean으로 전달된 것이다. 생성된 임시 YAML은 `Reg/Force3DoF: false`, `Icp/Force4DoF: true`, `Optimizer/Slam2D: false`였지만 RTAB-Map core parameter table은 이 값을 문자열로 선언한다. 실제 Apport core의 GDB backtrace도 `rclcpp::Node::declare_parameter<std::string>`에서 SIGABRT가 발생했음을 보였다. `ParameterValue(..., value_type=str)`로 세 값을 감싸 4DoF와 planar profile 모두 실제 `str`인 것을 정적 평가 시험으로 확인했다.
 
@@ -506,3 +506,207 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 - wrapper는 sentinel이 있는 실행에서만 현재 DB를 run directory로 복사하고, manifest에 `rtabmap_started`와 `rtabmap_db_saved`를 기록한다.
 
 실패한 run directory에 들어 있는 `rtabmap.db`는 wrapper의 기존 무조건 복사 동작으로 보존된 이전 DB이며, 이 실행에서 생성된 DB가 아니다. 기존 실패 artifact는 장애 증거와 SHA-256 일관성을 위해 수정하거나 삭제하지 않는다. 수정 이후 최초 실주행 결과가 나오기 전까지 physical planar 3DoF 검증 상태는 여전히 미완료다.
+
+## 18. planar 3DoF global-loop 자격 run (2026-08-28 12:46 KST)
+
+`20260828_124601_planar3dof_headless`는 planar 설정에서 실제 global visual loop가 수락되고 DB에
+저장되는 것을 처음 확인한 자격 run이다.
+
+| 항목 | 결과 |
+|---|---:|
+| 입력 node | 249 |
+| 주행 시간 | 130.894 s |
+| raw LIO path length | 41.142 m |
+| 평균 path speed | 약 0.314 m/s |
+| raw start/end XY gap | 0.312 m |
+| raw start/end yaw gap | 8.16° |
+| global type-1 link | 2 unique, DB 양방향 row 4 |
+| proximity type-2 link | 9 unique, DB 양방향 row 18 |
+| DB integrity | `ok` |
+
+이 결과는 내장 RGB의 장소 후보와 L2 ICP 검증을 함께 쓰는 global loop 경로가 실제로 작동함을
+증명한다. 다만 한 번의 짧은 run이므로 전체 주행구역 golden map의 정확도나 반복성까지 증명한
+것은 아니다.
+
+## 19. 빠른 전체 mapping 중 중첩 원인 (2026-08-28 13:38 KST)
+
+`20260828_133817_planar3dof_headless`는 약 한 바퀴 전체 주행 후 2D map에서 평행 복도와 벽이
+중복되어 golden map 후보에서 제외됐다. read-only DB/loop-log 분석 결과는 다음과 같다.
+
+| 항목 | 결과 |
+|---|---:|
+| 입력 node | 1,064 |
+| 주행 시간 | 568.435 s |
+| raw LIO path length | 395.883 m |
+| 평균 path speed | 약 0.697 m/s |
+| raw start/end XY gap | 10.961 m |
+| raw start/end yaw gap | 1.72° |
+| median node displacement | 0.426 m |
+| global visual accepted | **0** |
+| proximity accepted | 32 unique |
+| visual/global rejected | 19 |
+| odometry-lost log | 0 |
+
+출발점 node 1은 여러 번 visual 후보로 검색됐지만 최종 graph/ICP 검증에서 모두 거부됐다.
+
+- node 1037: ICP correspondence ratio `0.149470 < 0.15`
+- node 1049: graph error ratio `10.063 > 3.0`
+- node 1060: graph error ratio `6.394 > 3.0`
+- node 1062: graph error ratio `6.097 > 3.0`
+- node 1063: ICP correspondence ratio `0.118 < 0.15`
+- node 1064: graph error ratio `5.709 > 3.0`
+
+즉 카메라가 시작 장소를 전혀 찾지 못한 것이 아니다. 장거리·고속 보행에서 LIO 누적오차가 약
+10.96 m까지 커졌고, RTAB-Map 처리율 약 1.87 Hz에서 node 간격도 넓어져 올바른 후보가 현재
+graph와 기하학적으로 일관되지 않았다. 안전 검증이 잘못된 강제 loop를 막은 결과다.
+
+`Icp/CorrespondenceRatio`를 0.15 아래로 낮추거나 `RGBD/OptimizeMaxError`를 3보다 크게 만들어
+loop를 억지로 수락시키지 않는다. 잘못된 global loop 한 건은 맵 전체를 더 심하게 변형할 수 있다.
+현재 golden-map 시작 protocol은 직선 `0.2~0.3 m/s`, 회전 `15~25°/s`, 모서리에서 전진과 회전을
+분리하고, 출발점에 같은 방향으로 돌아와 약 3초 정지하는 것이다. 이 속도는 증거 기반 시작값이며
+golden map 동결 후 localization은 `0.2 → 0.35 → 0.5 m/s`의 별도 A/B로 검증한다.
+
+loop closure가 **수락되면** 과거 pose와 현재 pose 사이에 constraint가 추가되고 pose graph가
+재최적화된다. 그 결과 누적된 위치·방향 오차가 여러 node에 분산되고 각 pose에 붙은 2D/3D map도
+함께 재정렬된다. 후보 검색 또는 `REJECTED` 이벤트만으로는 이 보정이 실행되지 않는다.
+
+## 20. 느린 전체-map 재주행 결과 (2026-08-28 14:12~14:28 KST)
+
+`20260828_141247_planar3dof_headless`는 직전 빠른 run과 같은 planar 설정을 유지하고 속도를
+낮춰 수행한 전체-map 후보 run이다. wrapper는 operator `Ctrl+C`를 정상 처리해 status 0으로
+종료했고 DB copy, integrity, manifest와 전체 `SHA256SUMS` 검증이 모두 통과했다.
+
+```text
+DB: /home/unitree/.ros/rtabmap_runs/20260828_141247_planar3dof_headless/rtabmap.db
+size: 523153408 bytes
+sha256: c4862d88d98ba4a14e8e725bfd6879d688778cdfa591ecd7c694cc5f343bd953
+integrity: ok
+```
+
+| 항목 | 결과 |
+|---|---:|
+| DB node / logger frame | 1,707 / 1,706 |
+| 주행 시간 | 916.184 s |
+| raw LIO path length | 358.186 m |
+| 평균 path speed | 약 0.391 m/s |
+| median node displacement | 0.225 m |
+| logger accepted global / proximity | 81 / 156 |
+| DB unique Type-1 / Type-2 | **36 / 159** |
+| logger rejected | 183 |
+| odometry lost | 0 |
+| cannot-compute-transform | 25 |
+| negative-hessian covariance warning | 1,145 |
+| optimized Z span | **0.0318 m** |
+
+Logger 수와 DB unique link 수가 다른 것은 logger event가 같은 closure의 반복 승인 상태도 세는 반면,
+DB 판정은 최종 저장된 양방향 row를 unordered pair로 deduplicate하기 때문이다. 논문 artifact에는
+두 수치를 구분해 기록한다.
+
+DB에 남은 36개 global Type-1 pair를 저장된 optimized pose와 constraint로 직접 대조했다.
+
+- loop 양 끝의 optimized XY 거리: median 0.0501 m, maximum 0.1821 m
+- constraint translation: median 0.0569 m, maximum 0.1843 m
+- optimized graph translation residual: median 0.0129 m, maximum 0.0331 m
+- optimized graph yaw residual: median 0.023°, maximum 0.171°
+
+ID 간격은 351~1,237 node인 재방문을 포함하며, 강제로 멀리 떨어진 장소를 붙인 link는 이 검사에서
+보이지 않았다. 원본 DB를 건드리지 않고 `/tmp` copy에서 `rtabmap-export --scan --poses`로
+1,488 optimized pose와 687,067-point voxel cloud를 조립해 top-down으로 확인했다. 긴 주 복도는
+두 벽이 일관되게 정렬됐고 직전 `global=0` map의 큰 평행 복도 중복은 크게 줄었다. 상부의 여러
+분기·반복 구간에는 여전히 산란과 겹침이 있어 절대 정확도 PASS라고 부르지는 않는다.
+
+동일한 stored optimized subset의 node 1→1681에서 raw XY gap 1.653 m가 optimized 1.077 m로
+약 34.8% 감소했다. 종단 yaw 차이는 raw 7.10°에서 optimized 9.09°였고 독립 ground truth가 없으므로
+이 endpoint 하나만으로 전체 정확도를 평가하지 않는다. 358 m 경로 대비 남은 약 1.08 m 종단 gap은
+localization 속도·재시작 시험에서 별도로 확인할 항목이다.
+
+판정은 다음과 같다.
+
+- **global visual loop 기능: PASS**
+- **planar/Z 안정성: PASS**
+- **DB 저장/무결성: PASS**
+- **최종 golden-map 동결: CANDIDATE** — 표준 PGM/YAML export 육안 검사와 frozen-DB localization
+  cold-start를 통과한 뒤 동결
+
+현재는 같은 전체 경로를 즉시 다시 촬영할 필요가 없다. 이 DB를 보존한 채 2D export와 localization
+Gate로 넘어가고, 그 결과에서 실제 false relocalization이나 허용 불가한 맵 중첩이 확인될 때만
+targeted remap을 수행한다.
+
+## 21. 물리적 코너 불일치 제보와 link-type ablation 재판정 (2026-08-28, 재부팅 전후)
+
+20절의 마지막 판정은 **철회한다.** 사용자가 실제 환경에는 두 개의 90도 코너가 있어야 하지만
+export된 지도와 trajectory가 접히고 교차한다고 확인했다. 이는 독립적인 물리 ground truth이며,
+낮은 optimized graph residual보다 우선한다. 낮은 residual은 optimizer가 이미 삽입된 constraint를
+잘 만족했다는 뜻일 뿐, 그 constraint가 실제 같은 장소를 연결했다는 뜻은 아니다.
+
+원본 run DB는 읽기 전용 증거로 보존했다.
+
+```text
+path=/home/unitree/.ros/rtabmap_runs/20260828_141247_planar3dof_headless/rtabmap.db
+sha256=c4862d88d98ba4a14e8e725bfd6879d688778cdfa591ecd7c694cc5f343bd953
+integrity=ok
+```
+
+세 개의 `/tmp` 복사본을 만들고 SQLite `Link.type`만 선택적으로 제거한 뒤, 각 복사본에 동일한
+`rtabmap-export --scan --poses --voxel 0.10` 재최적화를 적용했다. 원본은 수정하지 않았다.
+
+| 재최적화 입력 | 제거 link | path / end gap | top-down trajectory 판정 |
+|---|---|---:|---|
+| original all loops | 없음 | 356.075 m / 1.077 m | 상부 구간이 교차하고 두 코너가 접힘 |
+| no global | Type-1만 제거 | 357.600 m / 1.240 m | 심한 접힘이 그대로 남음 |
+| no proximity | Type-2만 제거 | 356.607 m / 0.986 m | raw LIO와 유사한 직교 형상, 두 90도 코너 복구 |
+| no Type-1/Type-2 | 둘 다 제거 | 357.840 m / 1.949 m | raw LIO와 유사한 직교 형상 |
+| raw LIO reference | 최적화 전 odom | 357.879 m / 1.653 m | 물리적으로 타당한 직교 코너 형상 |
+
+`no global`이 실패하고 `no proximity`가 형상을 회복했으므로, 이번 왜곡의 주원인은 global
+visual Type-1이 아니라 spatial proximity Type-2다. 당시 canonical 설정은 다음처럼 반복 복도에서
+서로 다른 구간의 one-to-many ICP를 연쇄 승인하기 쉬운 상태였다.
+
+```text
+RGBD/ProximityBySpace=true
+RGBD/ProximityAngle=180
+RGBD/ProximityMaxGraphDepth=0
+RGBD/ProximityPathMaxNeighbors=10
+```
+
+Logger에서도 accepted event 다수가 `Loop/Optimization_max_error_ratio=2.95~2.96`으로 rejection
+기준 3.0 바로 아래에 몰렸고, 일부 `MapToOdom` 보정은 5~7.49 m에 달했다. 개별 링크를 넣은 뒤
+graph가 다시 휘면서 다음 잘못된 근접 후보까지 일관돼 보이는 closure cascade가 발생한 것으로
+판단한다. 이는 source/log/ablation을 결합한 인과 추론이며 독립 motion-capture ground truth는 없다.
+
+### 21.1 적용한 최소 수정
+
+canonical planar profile은 다음으로 변경한다.
+
+```text
+Reg/Force3DoF=true
+Icp/Force4DoF=false
+RGBD/NeighborLinkRefining=false
+RGBD/LoopClosureIdentityGuess=true
+RGBD/ProximityBySpace=false
+```
+
+Type-1 visual retrieval + 3D L2 ICP 검증은 유지한다. Type-2를 별도 진단에서 다시 켜더라도 설치된
+RTAB-Map 0.21.1의 보수적 기본값인 `Angle=45`, `MaxGraphDepth=50`,
+`PathMaxNeighbors=0`에서 시작한다. `Rtabmap/LoopThr=0.11`,
+`Icp/CorrespondenceRatio=0.15`, `RGBD/OptimizeMaxError=3.0`은 원인 변수를 섞지 않기 위해 이번
+수정에서 바꾸지 않았다. `Optimizer/Robust=false`도 유지한다. 설치된 parameter 문서상 robust
+optimizer와 `RGBD/OptimizeMaxError`는 동시에 쓰는 설정이 아니다.
+
+### 21.2 다음 합격 Gate
+
+1. `map_headless.sh --print-config`에서 `proximity_by_space:=false`를 확인한다.
+2. 실제 두 90도 코너를 포함하는 1~2분 짧은 loop를 한 번 수행한다.
+3. Type-2 accepted event와 DB Type-2 link가 0인지 확인한다.
+4. 올바른 Type-1이 하나 이상 생기고, 승인 직후 큰 map jump나 코너 접힘이 없는지 확인한다.
+5. 통과할 때만 전체 구역을 한 번 remap한다.
+6. 새 전체 map의 직선/평행 벽과 두 90도 코너를 확인한 뒤에만 PGM/YAML export와 cold-start
+   localization Gate로 넘어간다.
+
+따라서 `20260828_141247_planar3dof_headless`의 최종 판정은 다음과 같다.
+
+- sensor/LIO/3DoF Z 안정성: PASS
+- Type-1 global visual loop 기능: PASS
+- DB 저장/무결성: PASS
+- 물리적 map geometry: **FAIL**
+- golden/localization DB 사용: **금지**

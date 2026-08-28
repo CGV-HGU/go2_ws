@@ -1,5 +1,7 @@
 # 🏆 [Jetson Plan 04] 온보드 실증 런북, 자동 Rosbag 로깅 및 ICRA Table VIII 채점 가이드
 
+> **역사 문서 경고 (2026-08-28)**: 아래 4-terminal autonomy 명령은 삭제된 wrapper, 존재하지 않는 S2E entrypoint와 sample evaluator를 사용하므로 실행하지 않는다. mapping은 `./run_map.sh` 또는 `./map_headless.sh`만 사용하고, 전체 실험은 [`../experiments/00_real_robot_end_to_end_master_test_plan.md`](../experiments/00_real_robot_end_to_end_master_test_plan.md)를 따른다.
+
 > **문서 소유자**: **민석 (Minseok - Hardware, Sensor & Deployment Lead)**  
 > **상위 총괄 문서**: [`docs/jetson_plan/README.md`](file:///home/unitree/go2_ws_antarctica/docs/jetson_plan/README.md)  
 > **최종 검증 일자**: 2026-08-20  
@@ -12,7 +14,7 @@
 
 ```mermaid
 graph TD
-    T1["[터미널 1 - 호스트]<br/>bash scratch/start_rtabmap_livo.sh<br/>(카메라+라이다+IMU+50Hz LIVO 가동)"]
+    T1["[터미널 1 - 호스트]<br/>REMOVED legacy localization wrapper<br/>(현재 물리 autonomy 진입점 없음)"]
     T2["[터미널 2 - 호스트]<br/>python3 scratch/host_bridge.py<br/>(Host-Docker 소켓 브릿지 & 모터 연동)"]
     T3["[터미널 3 - 도커 컨테이너]<br/>docker exec -it sdam_go2_container ... vlm_s2e_async_node.py<br/>(S2E 50Hz 비동기 궤적 생성)"]
     T4["[터미널 4 - 호스트]<br/>bash scratch/record_experiment.sh ...<br/>python3 scratch/calculate_icra_metrics.py<br/>(Rosbag 자동 로깅 및 ICRA 채점)"]
@@ -23,8 +25,7 @@ graph TD
 ### [1단계] RTAB-Map LIVO 가동 (Host Terminal 1)
 ```bash
 cd /home/unitree/go2_ws_antarctica
-bash scratch/start_rtabmap_livo.sh
-```
+# REMOVED: no accepted physical-autonomy entry point```
 
 ### [2단계] Host-Docker UDP 브릿지 가동 (Host Terminal 2)
 ```bash

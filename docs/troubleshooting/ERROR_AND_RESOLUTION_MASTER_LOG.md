@@ -40,7 +40,7 @@
 
 * **발생 일시**: 2026년 8월 21일 13:23 KST
 * **보고자**: 민석 (Jetson & Hardware Lead)
-* **영향 범위**: `bash scratch/bringup_all_escape_nav.sh --mapping` 실행 시 RTAB-Map 3D 오프라인 맵핑 대기 지연
+* **영향 범위**: `./map_headless.sh` 실행 시 RTAB-Map 3D 오프라인 맵핑 대기 지연
 
 ### 1. ⚠️ 증상 및 원본 터미널 에러 로그
 ```text
@@ -178,7 +178,7 @@
 
 * **발생 일시**: 2026년 8월 21일 14:51 KST
 * **보고자**: 민석 (Jetson & Hardware Lead)
-* **영향 범위**: `./mapping.sh` 실행 시 라이다 드라이버 대기 상태에서 RTAB-Map이 `Did not receive data since 5 seconds!` 경고를 출력하며 멈추는 현상
+* **영향 범위**: `./map_headless.sh` 실행 시 라이다 드라이버 대기 상태에서 RTAB-Map이 `Did not receive data since 5 seconds!` 경고를 출력하며 멈추는 현상
 
 ### 1. ⚠️ 증상 및 원본 터미널 에러 로그
 ```text
@@ -376,3 +376,29 @@ $ ros2 launch go2_bringup go2.launch.py lidar:=True
 - **수정**: `rtabmap`과 `rtabmap_viz`의 정확한 process name 및 특정 `ros2 launch ... go2_rtabmap.launch.py` 명령만 종료하도록 범위를 축소함.
 - **증거 보호**: `/rtabmap` startup gate가 통과하면 `RTABMAP_STARTED`를 만들고, 이 sentinel이 있는 run에서만 DB를 복사하도록 wrapper를 변경함. 실패 run의 기존 DB 오인 보존을 방지하기 위해 manifest에 `rtabmap_started`, `rtabmap_db_saved`도 기록함.
 - **검증 상태**: shell syntax, Python compile, `git diff --check`, evidence 경로를 가진 모의 process 생존 회귀 시험은 통과. 수정 후 physical planar 3DoF 주행은 아직 재실행 전이므로 결과 검증은 미완료.
+
+## `[ERR-2026-08-28-02]` 정상 주행 후 operator `Ctrl+C`가 status 141로 기록됨
+
+- **발생 run**: `20260828_124601_planar3dof_headless`
+- **영향**: mapping/DB 자체는 정상이다. 249 nodes와 Type-1 global closure 2개가 저장됐고, DB integrity `ok`, 재최적화 164 poses, start/end 0.0335 m를 확인했다. 다만 console cleanup 후반과 wrapper status가 부정확하게 기록됐다.
+- **근본 원인**: terminal `Ctrl+C`가 foreground pipeline의 bringup과 `tee`에 함께 전달됐다. `tee`가 먼저 종료된 뒤 bringup cleanup이 출력하면서 SIGPIPE 141을 받아, 정상 operator stop이 wrapper failure처럼 보였다.
+- **수정**: `map_headless.sh`의 logger를 `tee --ignore-interrupts`로 바꿔 inner RTAB-Map cleanup이 pipe를 닫을 때까지 로그를 받는다. established run이 operator SIGINT 130으로 끝나면 `operator_stop=true`, wrapper status 0으로 정규화한다. pre-start interrupt나 다른 실패는 정상화하지 않는다.
+- **무결성 보강**: Jetson에 `sqlite3` CLI가 없을 때 Python 표준 sqlite3의 read-only `PRAGMA integrity_check`로 `database_integrity.txt`를 생성한다.
+- **검증 상태**: shell syntax, `--print-config`, `git diff --check` 통과. 다음 physical short-loop run에서 cleanup tail, `operator_stop=true`, `wrapper_exit_status=0`, `database_integrity.txt=ok`를 최종 확인한다.
+
+## `[ERR-2026-08-28-03]` 분석 CLI 실행 후 보관 DB SHA-256 변경
+
+- **발생 대상**: `/home/unitree/.ros/rtabmap_runs/20260828_124601_planar3dof_headless/rtabmap.db`
+- **근본 원인**: `rtabmap-export` 계열 CLI가 분석 중 SQLite bookkeeping을 갱신할 수 있는데 보관본을 직접 열었다.
+- **복구**: 원본 live DB `/home/unitree/.ros/rtabmap.db`의 SHA-256이 run manifest의 기대값 `29354bf3...c6926ed9`와 정확히 일치함을 먼저 확인한 뒤 보관 DB를 원본으로 복원했다. 복원 후 `sha256sum -c SHA256SUMS` 전 항목이 통과했다. CLI가 바꾼 사본은 `/tmp/rtabmap_cli_modified_20260828_124601.db`에 분리했다.
+- **예방**: integrity는 SQLite URI `mode=ro`로 확인하고, `rtabmap-info`, `rtabmap-export`, database viewer 등 RTAB-Map CLI 분석은 `mktemp`로 만든 DB 복사본에만 수행한다.
+
+## `[ERR-2026-08-28-04]` 전체 맵의 90도 코너 접힘과 자기교차
+
+- **발생 run**: `20260828_141247_planar3dof_headless`
+- **증상**: 실제 환경에는 두 개의 90도 코너가 있지만 optimized trajectory와 2D map이 상부에서 접히고 교차함. DB integrity, Z span, global-link residual은 정상 범위였음.
+- **잘못된 초기 판정**: 낮은 graph residual과 endpoint gap 개선을 물리적 지도 정확도로 해석해 golden-map candidate로 분류함. 이 수치는 optimizer가 삽입된 constraint를 만족했다는 내부 일관성일 뿐 물리적 정합의 증거가 아님.
+- **분리 실험**: 원본 hash `c4862d88...343bd953`를 유지한 채 `/tmp` 복사 DB에서 Type-1과 Type-2 link를 독립 제거하고 동일 재최적화를 수행함. Type-1만 제거하면 접힘이 남았고, Type-2만 제거하면 두 직교 코너가 복구됨.
+- **근본 원인**: `RGBD/ProximityBySpace=true`, `ProximityAngle=180`, `ProximityMaxGraphDepth=0`, `ProximityPathMaxNeighbors=10`이 반복 복도에서 Type-2 one-to-many ICP closure cascade를 만듦. accepted event 일부는 graph-error rejection 한계 3.0 바로 아래였고 map-to-odom 보정이 최대 7.49 m였음.
+- **수정**: canonical profile에서 `RGBD/ProximityBySpace=false`. Type-1 RGB retrieval + identity guess + 3D L2 ICP 검증은 유지. dormant proximity 값은 RTAB-Map 0.21.1 기본값 45°/depth 50/neighbors 0으로 복구.
+- **다음 검증**: 두 90도 코너를 포함한 1~2분 짧은 run에서 Type-2=0, 올바른 Type-1≥1, 접힘=0을 확인한 후에만 전체 remap. 실패 DB는 localization에 사용 금지.

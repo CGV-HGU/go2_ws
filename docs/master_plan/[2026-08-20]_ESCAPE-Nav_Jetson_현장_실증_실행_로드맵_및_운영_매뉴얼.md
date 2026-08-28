@@ -84,7 +84,7 @@ docker exec sdam_go2_container python3 /workspace/go2_ws_antarctica/scratch/test
 
 ### [2단계] 테스트 복도 3D 맵핑 (최초 1회 맵 생성)
 ```bash
-bash scratch/bringup_all_escape_nav.sh --mapping
+./map_headless.sh
 ```
 * **수동 주행**: 로봇을 조이스틱으로 복도 한 바퀴 천천히 주행(0.2~0.3 m/s)시킨 뒤 출발점으로 복귀.
 * **맵 저장**: 터미널에서 **`Ctrl + C`**를 누르면 `~/.ros/rtabmap.db`에 3D 맵이 자동 저장되고 안전 종료됩니다.

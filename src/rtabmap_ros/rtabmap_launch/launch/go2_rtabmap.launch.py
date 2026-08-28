@@ -26,9 +26,10 @@ def generate_launch_description():
     localization = LaunchConfiguration('localization', default='false')
     scan_cloud_topic = LaunchConfiguration('scan_cloud_topic', default='/livo/cloud')
     subscribe_scan_cloud = LaunchConfiguration('subscribe_scan_cloud', default='true')
-    reg_force_3dof = LaunchConfiguration('reg_force_3dof', default='false')
-    icp_force_4dof = LaunchConfiguration('icp_force_4dof', default='true')
-    optimizer_slam_2d = LaunchConfiguration('optimizer_slam_2d', default='false')
+    reg_force_3dof = LaunchConfiguration('reg_force_3dof', default='true')
+    icp_force_4dof = LaunchConfiguration('icp_force_4dof', default='false')
+    loop_closure_identity_guess = LaunchConfiguration('loop_closure_identity_guess', default='true')
+    proximity_by_space = LaunchConfiguration('proximity_by_space', default='false')
 
     # Common LIO mapping parameters for both modes.
     base_parameters = {
@@ -64,26 +65,35 @@ def generate_launch_description():
         'approx_sync_max_interval': 0.12,
         'queue_size': 30,
         
-        # 3D LiDAR registration and graph constraints. The default remains the
-        # measured 4DoF baseline. The dedicated planar wrapper overrides the
-        # three graph arguments together, while retaining the same 3D cloud.
+        # 3D LiDAR registration with a planar graph for the flat-floor campaign.
+        # RGB retrieves global candidates; 3D LiDAR ICP still verifies them.
         'Reg/Strategy': '1',                   # 1 = ICP; RGB still detects loop candidates
         # RTAB-Map's core parameter table is string-valued. Foxy otherwise
         # applies YAML coercion to LaunchConfiguration("true"/"false") and
         # passes ROS booleans, making the rtabmap process abort at startup.
         'Reg/Force3DoF': ParameterValue(reg_force_3dof, value_type=str),
         'Icp/Force4DoF': ParameterValue(icp_force_4dof, value_type=str),
-        'Optimizer/Slam2D': ParameterValue(optimizer_slam_2d, value_type=str),
+        'RGBD/LoopClosureIdentityGuess': ParameterValue(loop_closure_identity_guess, value_type=str),
         'Optimizer/GravitySigma': '0.3',
+        # Keep RTAB-Map's documented loop acceptance safeguards explicit. Do
+        # not enable Optimizer/Robust together with RGBD/OptimizeMaxError.
+        'Rtabmap/LoopThr': '0.11',
+        'RGBD/OptimizeMaxError': '3.0',
+        'Optimizer/Robust': 'false',
         'Rtabmap/DetectionRate': '2.0',
         'Rtabmap/PublishStats': 'true',        # Required by the headless loop-event logger
-        # Preserve the built-in Unitree LIO neighbor links. Visual/proximity
-        # loop candidates are still validated geometrically with LiDAR ICP.
+        # Preserve the built-in Unitree LIO neighbor links. The 2026-08-28
+        # full-map ablation showed that accepted spatial-proximity (Type-2)
+        # links caused the severe corridor folding, while Type-1 visual loops
+        # alone preserved the two physical 90-degree corners. Keep Type-2 off
+        # in the canonical profile; RGB retrieval + 3D LiDAR ICP remains on.
         'RGBD/NeighborLinkRefining': 'false',
-        'RGBD/ProximityBySpace': 'true',       # Proximity-based loop closure detection
-        'RGBD/ProximityAngle': '180',          # Enable 3D LiDAR loop closure from any approach angle (including reverse)
-        'RGBD/ProximityMaxGraphDepth': '0',    # 0 = Unlimited graph search depth (enables closing big full-corridor loops)
-        'RGBD/ProximityPathMaxNeighbors': '10',# Check up to 10 nearest candidate nodes
+        'RGBD/ProximityBySpace': ParameterValue(proximity_by_space, value_type=str),
+        # Restore RTAB-Map's conservative defaults as guardrails if proximity
+        # is ever enabled for a separate, explicitly labelled diagnostic.
+        'RGBD/ProximityAngle': '45',
+        'RGBD/ProximityMaxGraphDepth': '50',
+        'RGBD/ProximityPathMaxNeighbors': '0',
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
         'RGBD/OptimizeFromGraphEnd': 'false',
@@ -144,9 +154,10 @@ def generate_launch_description():
         DeclareLaunchArgument('scan_cloud_topic', default_value='/livo/cloud', description='Base-frame PointCloud2 topic prepared by go2_livo_sensor_bridge.py'),
         DeclareLaunchArgument('subscribe_scan_cloud', default_value='true', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
-        DeclareLaunchArgument('reg_force_3dof', default_value='false', description='Constrain registration transforms to x/y/yaw'),
-        DeclareLaunchArgument('icp_force_4dof', default_value='true', description='Allow ICP x/y/z/yaw correction for the 4DoF baseline'),
-        DeclareLaunchArgument('optimizer_slam_2d', default_value='false', description='Optimize the pose graph in planar x/y/yaw mode'),
+        DeclareLaunchArgument('reg_force_3dof', default_value='true', description='Constrain registration transforms to x/y/yaw'),
+        DeclareLaunchArgument('icp_force_4dof', default_value='false', description='Allow ICP x/y/z/yaw correction only for an explicit 4DoF diagnostic'),
+        DeclareLaunchArgument('loop_closure_identity_guess', default_value='true', description='Let RGB retrieval seed the 3D LiDAR ICP global-loop check'),
+        DeclareLaunchArgument('proximity_by_space', default_value='false', description='Enable Type-2 spatial proximity loops only for a separately labelled diagnostic'),
         
         # Camera mount is the existing project estimate. Calibrated camera
         # intrinsics/extrinsics are still required for reliable visual loops.

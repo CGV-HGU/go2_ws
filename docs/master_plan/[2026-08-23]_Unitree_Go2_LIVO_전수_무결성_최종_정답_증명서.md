@@ -115,7 +115,7 @@ $$|t_{\text{cam}} - t_{\text{lidar}}| \le \Delta t_{\text{sync}} = 0.1\text{ s} 
 ## 🏆 8. 최종 결론: 왜 우리가 구축한 시스템이 정답인가?
 
 1. **공식 깃허브 생태계 100% 통합**: `unitreerobotics/unitree_ros2`, `unilidar_sdk2`, `go2_robot` 공식 패키지만을 사용하여 호환성 결함이 없음.
-2. **스마트폰/외부 조작 의존성 0%**: 모든 라이다 기동, IP 에일리어스 바인딩, 포트 해제, ROS 2 서비스가 단 1줄의 스크립트(`mapping_gui.sh` / `mapping.sh`)로 자동 처리됨.
+2. **현재 mapping 진입점**: Jetson GUI는 `run_map.sh`, SSH/tmux는 `map_headless.sh`만 사용함.
 3. **실물 검증 데이터 확보**: 실제 Go2 전면 카메라 720p 영상 추출 및 24개 키프레임 `rtabmap.db`(5.29MB) 생성을 통해 동작 무결성이 물리적으로 입증됨.
 
 **슈퍼바이저 최종 판정: 우리가 구축한 Unitree Go2 ESCAPE-Nav 시스템은 100% 완전무결한 정답(Ground Truth)입니다! 🟢**

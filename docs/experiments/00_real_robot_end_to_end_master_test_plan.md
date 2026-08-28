@@ -2,8 +2,8 @@
 
 > 개정: 2026-08-28 KST
 > 대상: Unitree Go2 EDU Plus + 내장 4D LiDAR L2 + Jetson Orin NX + Docker Jazzy + 원격 VLM server
-> 범위: 센서, planar 3DoF RTAB-Map, localization, PixelNav/S2E, 4-Tier 통신, 안전 제어, 저속 pilot, 논문 campaign
-> 현재 종합 판정: **mapping qualification 진행 중 / physical autonomy NO-GO**
+> 범위: 센서, planar 3DoF RTAB-Map, localization, frozen PixNav, 4-Tier 통신, 안전 제어, 저속 pilot, 논문 campaign
+> 현재 종합 판정: **planar/global-loop 기능 PASS, 최신 전체-map geometry FAIL(Type-2 proximity 원인), remap/localization 미검증 / physical autonomy NO-GO**
 
 ## 1. 전체 시험의 목적
 
@@ -12,14 +12,14 @@
 ```text
 Tier 1 Go2 4D L2 + IMU + LIO + RGB
   → Tier 2 Jetson Foxy sensor bridge + planar RTAB-Map/localization
-  → Tier 3 Docker Jazzy VLM agent + PixelNav/S2E + controller
+  → Tier 3 Docker Jazzy VLM agent + frozen PixNav + controller
   → Tier 4 remote Qwen VLM server
   → Tier 3 trajectory/controller
   → Tier 2 single safety gateway
   → Tier 1 Go2 locomotion
 ```
 
-RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 잘 만들어졌다고 ESCAPE-Nav 실로봇 시스템이 완성된 것은 아니며, PixelNav/S2E와 4-Tier command path가 검증되지 않으면 로봇을 자율주행시키지 않는다.
+RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 잘 만들어졌다고 ESCAPE-Nav 실로봇 시스템이 완성된 것은 아니며, frozen PixNav와 4-Tier command path가 검증되지 않으면 로봇을 자율주행시키지 않는다. S2E는 현재 paper branch의 별도 NavBench-GS 보조 실험이며 이 실로봇 backend Gate에 포함하지 않는다.
 
 ## 2. 3DoF/4DoF 운용 결정
 
@@ -39,9 +39,9 @@ RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 
 | 계층 | 확인된 상태 | 남은 핵심 항목 | 판정 |
 |---|---|---|---|
 | Go2 센서 | 내장 L2 cloud/IMU/LIO odom, 전면 RGB 수신 | 다음 run rate/timestamp 반복 확인 | 센서 PASS |
-| Jetson LIVO/RTAB-Map | 3DoF Z 안정, 352 nodes, Type-2 9개 | 정상 종료 저장, Type-1 global loop, localization 반복성 | PARTIAL |
-| PixelNav/S2E | 11-frame/ONNX adapter와 unit test 골격 존재 | 실제 checkpoint 없음, 실 RGB 11-frame inference 없음 | **FAIL** |
-| Docker nodes | Jazzy package/executable과 mock graph 존재; 현재 container runtime은 active하지 않음 | `e2e_node`, `controller_node`가 실제 구현 대신 mock runtime 호출 | **FAIL** |
+| Jetson LIVO/RTAB-Map | 3DoF Z 안정, Type-1 기능, DB/hash 저장은 확인 | Type-2 OFF 두-코너 재자격, 전체 remap, frozen-DB localization | **MAP GEOMETRY FAIL** |
+| frozen PixNav | 논문 pin 구현·공식 Checkpoint_A hash 일치, Jetson CUDA에서 실제 Go2 RGB 11-frame replay 2회 및 결정론 확인 | 20개 실제 clip 확대, runtime warning 정리, Go2 action adapter | **FILE-ONLY PASS / ADAPTER 대기** |
+| Docker nodes | container와 Jazzy package/executable은 존재; 현재 container는 `tail -f /dev/null`만 실행 | `e2e_node`, `controller_node`를 frozen PixNav 실구현과 file sink에 연결 | **FAIL** |
 | Remote VLM | model 조회, text, 보관 RGB 1장 API 응답 | live frame, strict navigation schema, timing/provenance | PARTIAL |
 | Host↔Docker bridge | pose/cmd packet 골격과 CRC 존재 | sequence/timestamp/TTL 없음, legacy raw packet 허용 | **FAIL** |
 | Go2 command authority | 속도 clamp와 0.5 s watchdog 코드 존재 | `/cmd_vel`+Sport API 이중 발행, shutdown zero ACK 미검증 | **FAIL** |
@@ -56,10 +56,10 @@ RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 
 |---:|---|---|---|---|
 | 0 | 버전·안전 동결 | git/Docker/model/config hash, E-stop, 단일 operator, 통제 구역 | manifest 완성, motion path 기본 OFF, abort 절차 리허설 | 미통과 |
 | 1 | 실센서 preflight | L2 cloud, IMU, LIO odom, RGB, TF, clock, Jetson thermal/network | 정해진 rate 범위, timestamp 역행 0, TF 단절 0, 실제 frame 확인 | 부분 PASS |
-| 2 | planar 3DoF 지도 | 정상 종료, 짧은 loop, global Type-1, 3회 반복, 전체 map | Z span ≤0.05 m, odom loss/NaN 0, Type-1 ≥2/3 run, DB 정상 저장 | 진행 중 |
+| 2 | planar 3DoF 지도 | Type-2 OFF 두-코너 자격 후 전체 remap | Z span ≤0.05 m, Type-2=0, 올바른 Type-1, 두 90도 코너·직선·평행성 보존, DB 정상 저장 | **재매핑 필요** |
 | 3 | map localization | frozen DB cold start와 같은 pose 반복, 이동 후 재지역화 | 10회 시작 성공, false relocalization 0, pose jump 기준 이내 | 대기 |
-| 4 | PixelNav/S2E | 실제 RGB 11-frame + 실제 point goal + checkpoint 추론 | mock=OFF, hash 고정, CUDA/ONNX 실제 provider, finite 10×2 trajectory, command sink만 사용 | **FAIL** |
-| 5 | live 4-Tier 무구동 | live camera→VLM→S2E→controller→audit sink | 모든 event identity 연결, stale decision 차단, 모터 topic 발행 0 | 대기 |
+| 4 | frozen PixNav | 실제 저장 RGB history + capture-view pixel goal + Checkpoint_A 추론 | 구현 pin/model hash 고정, finite action logits, file sink만 사용 | **부분 PASS: 11-frame×2** |
+| 5 | live 4-Tier 무구동 | live camera→VLM grounding→PixNav→controller audit sink | 모든 event identity 연결, stale decision 차단, 모터 topic 발행 0 | 대기 |
 | 6 | fault injection | server/VPN/Docker loss, timeout, malformed/out-of-order, stale pose/image | 모든 경우 0 command/hold, watchdog stop ≤0.5 s, stale 적용 0 | 대기 |
 | 7 | actuator safety | 단일 gateway, E-stop, shutdown zero, 짧은 직진/회전 | 이중 authority 0, 10회 연속 safe-stop, command age/속도 clamp PASS | 대기 |
 | 8 | 저속 pilot | 5 m 직선→L-corner→T-junction 순으로 단계 확대 | collision/intervention 0, localization loss 0, 모든 provenance 완전 | 대기 |
@@ -73,7 +73,7 @@ RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 
 
 - host git HEAD와 dirty diff hash
 - Docker image digest와 package build hash
-- S2E checkpoint path와 SHA-256
+- PixNav Checkpoint_A path와 SHA-256
 - VLM endpoint/model ID, prompt/schema hash
 - RTAB-Map DB, PGM/YAML, launch/config hash
 - camera/L2 intrinsics/extrinsics version
@@ -99,11 +99,12 @@ synthetic/mock camera나 고정 흰 영상은 실센서 PASS로 인정하지 않
 
 세부 계획은 [`../07_real_robot_sensor_and_autonomy_verification_plan.md`](../07_real_robot_sensor_and_autonomy_verification_plan.md)를 따른다.
 
-1. wrapper 정상 종료와 optimized graph 저장을 먼저 해결한다.
-2. `RGBD/LoopClosureIdentityGuess=true` A/B로 Type-1 global loop를 확인한다.
-3. 같은 짧은 경로를 3회 반복한다.
-4. 3회 기준을 통과한 설정으로만 전체 map을 촬영한다.
-5. DB/PGM/YAML/3D map과 설정 hash를 동결한다.
+1. `20260828_124601_planar3dof_headless`에서 optimized graph 164 pose, DB integrity `ok`, 올바른 Type-1 2개를 확인했다.
+2. 전체 run `20260828_141247_planar3dof_headless`는 1,707 nodes, Type-1 36개, Z span 0.0318 m, DB/hash 저장에는 성공했지만 실제 두 90도 코너가 접혀 geometry FAIL이다.
+3. link-type ablation에서 Type-1만 제거하면 접힘이 남고 Type-2만 제거하면 직교 코너가 복구됐다. 낮은 graph residual은 물리 정확도 증거로 사용하지 않는다.
+4. canonical profile에서 `RGBD/ProximityBySpace=false`를 확인하고 두 코너를 포함한 1~2분 짧은 loop를 수행한다. Type-2=0, 올바른 Type-1≥1, 코너 접힘=0이어야 한다.
+5. 짧은 Gate가 통과할 때만 전체 map을 한 번 remap하고, 직선/평행 벽과 두 90도 코너를 확인한다.
+6. 그 뒤 표준 PGM/YAML export와 frozen-DB localization을 통과한 DB/PGM/YAML/3D map 및 설정 hash만 동결한다.
 
 mapping 중 recorder, Docker/VLM, host command bridge와 motor path는 OFF다.
 
@@ -119,34 +120,47 @@ mapping 중 recorder, Docker/VLM, host command bridge와 motor path는 OFF다.
 
 권장 engineering 기준은 시작 오차 ≤0.25 m/5°, 순간 correction jump ≤0.30 m/10°다. 이 값은 실제 측량 정밀도에 맞춰 campaign 전에 고정하며 결과를 본 뒤 바꾸지 않는다.
 
-### Gate 4 — PixelNav/S2E 독립 검증
+#### Localization과 Nav2의 역할
 
-프로젝트에서 말하는 PixNav는 현재 저장소의 **S2E/PixelNav-style fine navigation module**로 해석한다. 이 Gate는 VLM과 모터를 분리한 상태에서 검사한다.
+`localization:=true`는 frozen DB를 이용해 `map→odom` pose를 보정할 뿐 goal planning이나 Go2 속도 제어를 수행하지 않는다. 자율주행에는 localization 외에 planner/trajectory generator, controller, collision guard와 단일 actuator gateway가 필요하다.
+
+현재 논문의 main 비교는 같은 frozen PixNav backend를 사용하는 `Direct-goal PixNav`와 `Full ESCAPE-PixNav`이므로 **Nav2를 main 주행기에 넣지 않는다.** Full에만 Nav2를 넣거나 Direct-goal에만 다른 controller를 쓰면 비교하려는 VLM/async mechanism 외의 차이가 생긴다.
+
+이 campaign에서 RTAB-Map localization의 역할은 다음으로 제한한다.
+
+- 사전 등록한 start/goal의 map-frame 좌표 제공
+- controller에 전달되는 pose의 재지역화와 correction 기록
+- 반복 가능한 경로와 localization-loss 판정
+- trajectory/loop 로그의 공통 좌표계 제공
+
+실제 이동은 검증된 PixNav action adapter/controller와 safety gateway가 담당해야 한다. Nav2는 추후 `Classic Nav2` 선택 baseline이나 별도의 waypoint-navigation demo가 필요할 때 같은 map/localization 위에 추가하며, 현재 50-run main campaign의 필수 조건은 아니다. RTAB pose는 정책 입력 및 진단값이지 독립 ground truth는 아니다.
+
+### Gate 4 — frozen PixNav 독립 검증
+
+현재 paper branch의 주 backend를 공식 Pixel-Navigator `Checkpoint_A`와 논문이 고정한 연구실 구현으로 해석한다. S2E ONNX를 이 Gate의 대체 모델로 사용하지 않는다. 이 Gate는 VLM과 모터를 분리한 상태에서 검사한다.
 
 필수 입력과 출력:
 
 ```text
-실제 Go2 RGB 11 frames
-  + timestamp가 있는 goal_uv
-  + 검증된 camera geometry로 얻은 goal_xy/base_link
-  + 실제 S2E checkpoint
-  → 10×2 base_link trajectory
-  → controller
-  → audit command sink
+capture-view 실제 Go2 RGB + goal pixel mask
+  + 이후 실제 Go2 RGB history
+  + frozen PixNav Checkpoint_A
+  → 6-way discrete action logits
+  → file-only audit sink
 ```
 
 합격 조건:
 
-- `E2E_BACKEND=s2e`, mock planner 미사용
-- checkpoint 존재, SHA-256 고정, 실제 ONNX provider 기록
-- 입력 shape `(1,11,3,256,256)`와 goal preprocessing 기록
-- 출력 shape/scale/frame이 계약과 일치하고 NaN/Inf 0
-- 빈 이미지, stale frame, horizon 위 goal, projection 실패 시 trajectory를 만들지 않음
+- 연구실 구현 pin `6341a5d33903131ddfce74498c04e1c0ae04ec61`, mock policy 미사용
+- Checkpoint_A 존재, SHA-256 `0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3`
+- goal RGB/mask와 history의 224×224 preprocessing 및 입력 file hash 기록
+- `stop/forward/left/right/look_up/look_down` probability, distance, tracked goal에 NaN/Inf 0
+- 빈/stale image, history 초과, checkpoint mismatch 시 action을 만들지 않음
 - 동일 입력 replay에서 결정론 허용범위 내 재현
-- 최소 20개 실제 11-frame clip에서 trajectory가 audit를 통과
+- 최소 20개 실제 RGB clip에서 file-only policy output이 audit를 통과
 - 이 단계에서는 `/cmd_vel`과 Sport API에 어떤 motion command도 발행하지 않음
 
-내장 단안 카메라의 pixel을 단순 상수식으로 metric goal로 바꾸는 것은 합격이 아니다. 실측 calibration과 ground-plane projection 또는 모델 native goal encoding이 필요하다.
+PixNav pixel은 capture-view에 고정된다. 로봇이 이동한 뒤 동일 좌표를 현재 영상에 그대로 재사용하지 않고, capture viewpoint를 복원하거나 새 관측에서 다시 grounding해야 한다. 고정 카메라에서 `look_up/look_down`을 어떻게 처리할지와 Habitat 이산 action을 Go2 안전 macro-action으로 바꾸는 adapter는 별도 Gate다.
 
 ### Gate 5 — live 4-Tier 무구동 폐루프
 
@@ -157,7 +171,7 @@ frame_id/hash + capture_pose/time
   → VLM request_id
   → response_id/complete_time
   → admit/reject reason
-  → PixelNav/S2E input/output hash
+  → PixNav input/output hash
   → controller command sequence/age
   → sink result
 ```
@@ -229,7 +243,7 @@ pilot 도중 parameter를 수정하면 수정 전 run은 final campaign에 포�
 ```
 
 - 각 repetition을 두 방법의 paired block으로 묶고, pair별 선행 방법 수 차이가 최대 1이 되도록 AB/BA order를 사전 생성한다.
-- map/DB, localization, S2E checkpoint, controller, VLM model/prompt를 모두 고정한다.
+- map/DB, localization, PixNav checkpoint, action adapter/controller, VLM model/prompt를 모두 고정한다.
 - failure, timeout, E-stop과 intervention을 삭제하지 않는다.
 - Active-view recovery와 rolling/dynamic obstacle은 main paired table과 분리해 조건별 최소 5회 수행한다.
 - 사람이 움직이는 dynamic obstacle은 통제·안전 절차가 확보된 뒤에만 수행한다.
@@ -240,9 +254,9 @@ pilot 도중 parameter를 수정하면 수정 전 run은 final campaign에 포�
 
 | 작업일 | 목표 | 예상 run | 종료 조건 |
 |---|---|---:|---|
-| Day 1 | Gate 0~2: 정상 종료, global loop, 3DoF 반복 | 4~6 | golden DB 후보 생성 |
+| Day 1 | Gate 2: Type-2 OFF 두-코너 자격 + 전체 remap | 짧은 1 + 전체 1 | 물리 geometry가 맞는 golden DB 생성 |
 | Day 2 | Gate 3: localization 10회 + camera calibration | 10+ | frozen DB/calibration |
-| Day 3 | Gate 4: PixelNav/S2E real replay | ≥20 clips | mock 없는 trajectory evidence |
+| Day 3 | Gate 4: frozen PixNav real-RGB replay | ≥20 clips | hash 고정 file-only policy evidence |
 | Day 4 | Gate 5~6: 4-Tier sink와 fault injection | 정상 10분 + 고장 ≥70회 | stale/motion leakage 0 |
 | Day 5 | Gate 7: actuator/E-stop/stop 반복 | ≥15 | safe-stop 10/10 |
 | Day 6 | Gate 8: 저속 pilot | 12~17 | collision/intervention 0 |
@@ -269,7 +283,7 @@ experiments/real_robot_icra2027/<campaign_id>/<pair>/<method>/<rep>/
 ├── config_snapshot/
 ├── exact_vlm_inputs/
 ├── vlm_events.jsonl
-├── s2e_events.jsonl
+├── pixnav_events.jsonl
 ├── localization.csv
 ├── trajectory.csv
 ├── command_watchdog.csv
@@ -284,14 +298,15 @@ experiments/real_robot_icra2027/<campaign_id>/<pair>/<method>/<rep>/
 
 ## 8. 즉시 실행 우선순위
 
-현재는 전체 map을 바로 찍거나 `bringup_all_escape_nav.sh` autonomy mode를 실행할 단계가 아니다.
+최신 전체-map은 분석 증거로 저장됐지만 물리 geometry FAIL이다. `bringup_all_escape_nav.sh` autonomy mode는 아직 실행하지 않는다.
 
-1. RTAB-Map wrapper 정상 종료와 optimized graph 저장 해결
-2. identity-guess Type-1 global loop 자격시험
-3. golden map과 localization 반복성 확보
-4. 실제 S2E checkpoint 확보와 PixelNav real replay
-5. mock node를 실제 node로 교체하고 live 4-Tier command sink 통과
-6. host bridge 단일 authority/TTL/legacy 제거와 fault injection
-7. 그 후에만 저속 물리 pilot
+1. Type-2 OFF 두-코너 짧은 loop를 통과하고 전체 map을 한 번 remap
+2. 새 DB에서 표준 PGM/YAML를 export하고 코너·직선·평행성·hash 확인
+3. 같은 DB를 frozen 상태로 localization cold-start 10회 검증
+4. JetPack/CUDA와 맞는 PixNav torch runtime을 고정하고 저장 Go2 RGB file-only replay
+5. capture-view pixel 계약과 Go2 discrete-action adapter를 무구동 file sink로 검증
+6. mock node를 실제 node로 교체하고 live 4-Tier command sink 통과
+7. host bridge 단일 authority/TTL/legacy 제거와 fault injection
+8. 그 후에만 저속 물리 pilot
 
 이 순서를 모두 통과해야 “Go2–Jetson–Docker–Server 전체 시스템이 실로봇에서 동작한다”고 주장할 수 있다.

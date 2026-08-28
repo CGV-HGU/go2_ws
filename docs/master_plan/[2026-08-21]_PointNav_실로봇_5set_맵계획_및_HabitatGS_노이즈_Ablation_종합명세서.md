@@ -24,7 +24,7 @@
 ```mermaid
 graph TD
     subgraph "1. Offline Stage (사전 3D 맵핑 - 최초 1회)"
-        M1["복도 1바퀴 수동 주행<br/>(bash scratch/bringup_all_escape_nav.sh --mapping)"] --> M2["~/.ros/rtabmap.db 생성 완료 🗺️"]
+        M1["복도 1바퀴 수동 주행<br/>(./map_headless.sh)"] --> M2["~/.ros/rtabmap.db 생성 완료 🗺️"]
     end
 
     subgraph "2. Online Stage (단일 맵 다중 좌표 5-Set 실증 주행)"

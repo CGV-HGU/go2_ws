@@ -53,9 +53,9 @@
 | `src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py` | 외부 LIO 입력, LiDAR ICP + RGB place recognition, neighbor refinement 비활성, 3D grid, stats 발행 |
 | `scratch/rtabmap_loop_logger.py` | global/proximity/rejected/summary event 기록, ROS publisher 없음 |
 | `scratch/bringup_all_escape_nav.sh` | mapping에서 command bridge/Docker/recorder 제외, DB backup, loop logger 시작 |
-| `mapping_gui.sh` | GUI mapping wrapper |
-| `mapping_headless.sh` | 무디스플레이 mapping wrapper |
-| `mapping_planar_headless.sh` | 3D LiDAR ICP는 유지하고 graph만 x/y/yaw로 제한; run별 DB·console·loop·config/hash 보존 |
+| `run_map.sh` | GUI mapping wrapper |
+| `map_headless.sh` | 무디스플레이 mapping wrapper |
+| `map_headless.sh` | 3D LiDAR ICP는 유지하고 graph만 x/y/yaw로 제한; run별 DB·console·loop·config/hash 보존 |
 
 ## 4. 두 번의 실주행 비교
 
@@ -93,15 +93,14 @@
 
 `Icp/Force4DoF=true`는 x/y/z/yaw correction을 허용하며 gravity는 roll/pitch 정렬을 도와도 z translation을 고정하지 않는다. 평탄한 단층 복도에서는 보행 roll/pitch와 퇴화한 벽 기하가 z 방향 graph error로 누적될 수 있다.
 
-다음 A/B에서 한 번에 바꿀 후보는 다음 세 항목뿐이다.
+이후 planar A/B에서 검증한 canonical graph 설정은 다음 두 항목이다.
 
 ```python
 'Reg/Force3DoF': 'true'
 'Icp/Force4DoF': 'false'
-'Optimizer/Slam2D': 'true'
 ```
 
-launch 기본값은 기존 4DoF 결과 보존을 위해 그대로다. 별도 `mapping_planar_headless.sh`가 이 세 launch argument만 함께 덮어쓰며, 아직 물리 주행 결과는 없다.
+현재 launch와 두 mapping 진입점의 기본값은 planar 3DoF다. `Optimizer/Slam2D` legacy 표기는 제거했고 global visual 후보 검증을 위해 `RGBD/LoopClosureIdentityGuess=true`를 적용했다. 4DoF는 과거 비교 결과이며 현재 평면 campaign 진입점으로 제공하지 않는다.
 
 합격 기준:
 
@@ -133,17 +132,17 @@ planar SE(2) pose graph
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_gui.sh
+./run_map.sh
 ```
 
 디스플레이 없이 수동 주행할 때:
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_planar_headless.sh
+./map_headless.sh
 ```
 
-기존 `mapping_headless.sh`는 4DoF 비교 기준으로 남겨 두었다. planar wrapper의 결과는 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 self-contained evidence로 저장된다.
+두 명령은 같은 planar profile을 사용하며 결과는 `/home/unitree/.ros/rtabmap_runs/<run_id>/`에 self-contained evidence로 저장된다. GUI는 `run_map.sh`, SSH/tmux는 `map_headless.sh`만 사용한다.
 Go2 built-in DDS는 CycloneDDS에서 `192.168.123.99/eth0`에 고정하고, RTP camera는 GStreamer `multicast-iface=eth0`를 사용한다. 따라서 별도 privileged `230.0.0.0/8` route를 만들지 않으며, bringup은 Go2 direct eth0 path만 읽기 전용으로 검사한다.
 
 두 경로 모두 현재 mapping mode에서 다음을 실행하지 않는다.

@@ -1,5 +1,7 @@
 # 📋 [Jetson Runbook 07] 젯슨 AGY 전용 RTAB-Map 2D 클린맵 파라미터 튜닝 및 가시 제거 코드 수정 지침서
 
+> **Archived (2026-08-28)**: `mapping_with_screen_record.sh`는 mapping 진입점 단순화와 recorder OFF 원칙에 따라 제거했다. 현재 mapping은 `./run_map.sh` 또는 `./map_headless.sh`만 사용하며 자동 화면 녹화·자동 클리닝은 수행하지 않는다.
+
 > **작성 일자**: 2026년 8월 27일 (목요일) KST  
 > **발신**: **Antigravity Master Plan Architect (Local PC)**  
 > **수신**: **Jetson AGY (Jetson Orin NX Host OS Onboard Agent)**  
@@ -14,7 +16,7 @@
 graph TD
     subgraph "젯슨 AGY가 온보드에서 수정/검증할 3개 파일"
         F1["1. src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py<br/>• 2D 맵 가시 방어 & 지면 법선 9대 핵심 파라미터 세팅"]
-        F2["2. mapping_with_screen_record.sh<br/>• 맵 저장 완료 즉시 자동 모폴로지 클리닝 호출 연동"]
+        F2["2. 삭제된 legacy screen recorder<br/>• 현재 mapping 중 recorder는 OFF"]
         F3["3. scratch/clean_and_export_2d_map.py<br/>• 동적 CLI 인자 (sys.argv) 지원 확인"]
     end
 ```
@@ -93,7 +95,7 @@ graph TD
 
 ---
 
-## 💻 3. [파일 2] `mapping_with_screen_record.sh` 수정 지침
+## 💻 3. 삭제된 legacy screen recorder 기록
 
 * **수정 대상 블록**: `cleanup()` 함수 내부 (Line 55 ~ Line 68)
 
@@ -144,8 +146,8 @@ if __name__ == "__main__":
 # 1. 파일 문법 검증
 python3 -m py_compile src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py scratch/clean_and_export_2d_map.py
 
-# 2. 맵핑 및 1080p MP4 녹화 실행
-./mapping_with_screen_record.sh
+# 2. 현재 canonical headless mapping 실행(녹화 없음)
+./map_headless.sh
 
 # 3. 주행 수칙 준수
 # - 0.2 m/s 저속 트로팅 주행

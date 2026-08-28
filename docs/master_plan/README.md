@@ -1,8 +1,8 @@
 # 🏆 Unitree Go2 ESCAPE-Nav 마스터 플랜 및 총평 허브 (`docs/master_plan/`)
 
-> **현재 실행 순서**: 먼저 [`실로봇 전체 E2E 마스터 계획`](../experiments/00_real_robot_end_to_end_master_test_plan.md), [`docs/README.md`](../README.md), [`현재 상태와 다음 단계`](../00_CURRENT_STATUS_AND_NEXT_STEPS.md)를 확인한다. 아래의 긴 목록은 대부분 과거 계획 아카이브다.
+> **현재 실행 순서**: 먼저 [`최신 통합 진행 현황과 artifact 전수표`](./[2026-08-28]_Unitree_Go2_LIVO_SLAM_및_ESCAPE-Nav_실물실증_최고수준_완전무결_마스터플랜.md#11-2026-08-28-1522-kst-통합-진행-현황), [`실로봇 전체 E2E 마스터 계획`](../experiments/00_real_robot_end_to_end_master_test_plan.md), [`현재 상태와 다음 단계`](../00_CURRENT_STATUS_AND_NEXT_STEPS.md)를 확인한다. 아래의 긴 목록은 대부분 과거 계획 아카이브다.
 
-> **2026-08-28 현재 우선 문서**: 과거 문서의 “완성/100%/최종 승인” 표시는 acceptance 증거가 아니다. planar 3DoF의 Z 안정성은 확인됐지만 global Type-1과 정상 종료 저장은 미통과다. PixelNav/S2E는 실제 checkpoint가 없고 node가 mock runtime이며 command path 안전성도 미완료이므로 physical autonomy는 **NO-GO**다.
+> **2026-08-28 현재 우선 문서**: 과거 문서의 “완성/100%/최종 승인” 표시는 acceptance 증거가 아니다. planar 3DoF의 Z 안정성과 global Type-1 기능, frozen PixNav의 Jetson CUDA real-RGB file-only 추론은 확인됐지만 최신 전체-map은 aggressive Type-2 proximity link 때문에 물리적 90도 코너가 접힌 geometry FAIL이다. Type-2를 끈 짧은 재자격과 전체 remap, localization 및 command-path 안전성 검증 전까지 physical autonomy는 **NO-GO**다.
 
 > **폴더 목적**: `docs/jetson_plan/`(호스트 런북)과 `docs/docker_plan/`(도커 런북)의 성과를 집대성하여, **실시간 6대 시스템 진단 결과, 아키텍처 팩트체크, 장애물 회피 API/충돌 감지 설계서, PointNav 5-Set 맵 계획, Jetson & Docker 담당자별 2인 최종 탑재 SOP, 서버 통신 6대 잠재 이슈 가이드, RTAB-Map LIVO 아키텍처 해설서, 그리고 슈퍼바이저 전수 시스템 정밀 교차검증 보고서를 날짜별로 체계적으로 관리하는 중앙 총평 허브**입니다.
 

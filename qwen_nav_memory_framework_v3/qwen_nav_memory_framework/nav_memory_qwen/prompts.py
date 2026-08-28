@@ -56,7 +56,15 @@ Images are attached as multimodal inputs and referenced in JSON by placeholders.
 
 Rules for output:
 - Output JSON only.
-- Use selected_image_point only when action is go and the point is on visible navigable floor.
+- When action is go, selected_view_id, selected_view_type, and selected_image_point are REQUIRED.
+- selected_image_point must be [u_px, v_px] integer PIXEL coordinates inside the input image,
+  not normalized coordinates. The same values must also appear in fine_goal.point_px.
+- A go fine_goal must contain valid=true, view_id, view_type, point_px, point_norm,
+  projected_map_xy=null, and navigability. Do not substitute fine_goal.point or fine_goal.view.
+- Use an attached observation view_id/view_type exactly; for the current front-only input use
+  selected_view_id=0 and selected_view_type="front".
+- If no visible navigable floor pixel can satisfy that contract, do not output go; use
+  rotate, request_observation, or stop.
 - For rotate/request_observation/stop, fine_goal.valid must be false.
 - Preserve schema_version: nav_vlm_waypoint_v1.
 - Optional memory_ops are allowed, but only as requests; backend will verify them.

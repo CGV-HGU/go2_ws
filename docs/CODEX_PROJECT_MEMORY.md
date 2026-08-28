@@ -649,12 +649,12 @@ visual loop closure was accepted and the optimized graph still developed a
 6.452 m vertical range. The next mapping experiment should therefore be a
 single-variable planar-graph A/B run while retaining 3D LiDAR observations.
 The default launch remains the 4DoF baseline. A dedicated
-`mapping_planar_headless.sh` now selects the three planar arguments and stores
+`map_headless.sh` now selects the three planar arguments and stores
 the database, console, loop events, configuration snapshots and hashes under a
 single run ID. It has passed static/build validation but has no physical result
 yet.
 
-Two attempted `mapping_gui.sh` starts on 2026-08-28 produced zero `/info`
+Two attempted `run_map.sh` starts on 2026-08-28 produced zero `/info`
 frames because the rtabmap child aborted with exit code -6 before mapping. The
 new graph launch substitutions had been YAML-coerced into ROS booleans while
 RTAB-Map declares these core parameters as strings. All three overrides now use
@@ -725,8 +725,9 @@ All gates must be evidenced, not asserted:
 
 1. Pin a chosen canonical `main` commit and port robot adaptations as explicit,
    reviewable patches; do not deploy the July prototype implicitly.
-2. Install and hash-verify the native S2E checkpoint/runtime on a supported
-   compute target, or explicitly define a supported external inference service.
+2. Install and hash-verify the paper-selected frozen PixNav Checkpoint_A/runtime
+   on a supported compute target. Treat S2E as a separate NavBench-GS auxiliary
+   experiment, not the current real-robot backend.
 3. Make one real launch profile with no mock defaults and explicit ROS/RMW/domain
    settings; preflight must fail on missing model, topic, calibration, or VLM.
 4. Replace the UDP/driver command path with a safety gateway providing source
@@ -774,3 +775,137 @@ When the system changes:
 5. Never store secrets or personal credentials here.
 6. Keep volatile status separate from configured architecture.
 7. Update `AGENTS.md` only for durable rules; keep detailed evidence here.
+
+## 15. Canonical mapping entry points (2026-08-28)
+
+User-facing RTAB-Map mapping entry points are now exactly:
+
+- `./run_map.sh`: Jetson desktop GUI mapping; `--view [DB]` opens a saved DB.
+- `./map_headless.sh`: SSH/tmux headless mapping with per-run evidence.
+
+The redundant top-level/scratch mapping, GUI, screen-recording, viewer and
+compatibility wrappers were removed. They remain recoverable from Git history.
+Both canonical entries use the same flat-floor profile:
+
+```text
+Reg/Force3DoF=true
+Icp/Force4DoF=false
+RGBD/LoopClosureIdentityGuess=true
+RGBD/NeighborLinkRefining=false
+```
+
+The 4D L2 3D cloud, Unitree LIO/IMU and RGB place retrieval remain enabled.
+Mapping keeps recorder, Docker/VLM, the command bridge and motor output off.
+Shutdown now gives RTAB-Map up to 15 seconds to close the DB before fallback
+process cleanup.
+
+RTAB-Map localization is a pose/map service, not a navigation controller.
+The main Direct-goal PixNav versus Full ESCAPE-PixNav campaign uses the same
+frozen PixNav backend and does not require Nav2. Nav2 is optional for a separately validated
+classic baseline or waypoint demo; it must not be added to only one main method.
+
+## 16. Planar global-loop qualification result (2026-08-28 12:46 KST)
+
+Physical headless run `20260828_124601_planar3dof_headless` used the canonical
+planar profile with `RGBD/LoopClosureIdentityGuess=true`. It recorded 249
+nodes in a 73,879,552-byte DB. A read-only Python sqlite3 integrity check
+returned `ok`; `rtabmap-export --scan --poses` re-optimized and exported 164
+poses and 83,083 assembled scan points.
+
+The run accepted two Type-1 global visual closures, `174→61` (score 0.1255)
+and `211→1` (score 0.8717), plus eight proximity events in the logger. The DB
+contains nine unique Type-2 links and two unique Type-1 links (each stored in
+both directions). Six other visual hypotheses were rejected before graph
+insertion by `RGBD/OptimizeMaxError`; this is correct protection, not six
+accepted false loops. The two accepted Type-1 transforms had translation
+norms 0.1885 m and 0.0300 m. The optimized trajectory was 41.039 m long,
+spanned 13.796 m × 8.653 m in XY and 0.0235 m in Z, and ended 0.0335 m from
+its start. A top-down assembled-cloud/trajectory inspection showed no graph
+fold or discontinuous pose jump. Runtime counts for odometry loss, optimizer
+failure and NaN were all zero. There were 118 `negative hessian index (-1)`
+covariance warnings without an optimizer failure.
+
+This is direct evidence that the built-in RGB place retrieval → identity
+initial guess → 3D L2 ICP verification → planar graph optimization path can
+produce a correct global closure. It is one qualification run, not the golden
+map: perform two more independent short-loop runs and require correct Type-1
+closure in at least two of the three total runs before the full-area map.
+
+The archived manifest reports wrapper status 141 although the DB is valid.
+Operator Ctrl+C interrupted both sides of the foreground output pipeline;
+`tee` closed first and the inner cleanup then received SIGPIPE. The mapping
+wrapper now uses `tee --ignore-interrupts`, normalizes an established
+operator-stop status 130 to wrapper status 0, and falls back to Python's
+standard sqlite3 module to write `database_integrity.txt` when the sqlite3 CLI
+is absent. Confirm those three shutdown artifacts on the next short run.
+
+RTAB-Map CLI utilities such as `rtabmap-export` may update SQLite bookkeeping
+even when used for analysis. Never run them directly on a run artifact or a
+frozen golden DB: copy the DB to a fresh `/tmp` path first. During this audit a
+CLI analysis changed the archived DB hash; the archive was immediately restored
+from `/home/unitree/.ros/rtabmap.db`, whose SHA-256 exactly matched the original
+manifest value `29354bf3d8ff1f10e7098f8005efcda8c51e5287e22b255ef34d1604c6926ed9`.
+The complete run `SHA256SUMS` check passed after restoration.
+
+## 17. PixNav paper/runtime correction and fast-map diagnosis (2026-08-28)
+
+The latest canonical `paper` branch commit inspected on 2026-08-28 is
+`126f2f024c3cbbaa091734d0557e9d6f554adbde` (`updated paper`). Its real-robot
+primary comparison uses the same frozen Pixel-Navigator backend for Direct-goal
+and Full ESCAPE. S2E is a separate NavBench-GS auxiliary experiment and must not
+be reported as the current Go2 policy backend. The paper pins
+`reference/vlm-s2e-integration` at
+`6341a5d33903131ddfce74498c04e1c0ae04ec61`.
+
+Official Pixel-Navigator `Checkpoint_A` was downloaded to the ignored local-data
+path `.local-data/vlm-s2e/checkpoints/pixelnav_A.ckpt`. Direct measurement:
+
+```text
+size=217967433 bytes
+sha256=0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3
+```
+
+The size and hash match the lab repository's `LOCAL_DATA.md`. The Jetson host
+Python 3.8.10 has no `torch` or `torchvision`, so checkpoint inference is
+currently `BLOCKED_RUNTIME`, not PASS. `pixnav_check.py` is the canonical
+file-only qualification tool; it contains no ROS, socket, SDK or actuator
+publisher. A PASS from it proves only checkpoint/runtime and recorded-RGB input
+contract, not Go2 navigation.
+
+The full-area run `20260828_133817_planar3dof_headless` is not a golden map.
+It covered a 395.883 m raw path in 568.435 s (about 0.697 m/s), ended 10.961 m
+from its raw start, accepted 32 unique proximity links but no global visual
+link, and rejected 19 global candidates. Start-node candidates were retrieved
+but failed the 0.15 ICP correspondence or 3.0 graph-error gates. Do not loosen
+those gates to force a closure. Re-map the golden DB at an initial 0.2–0.3 m/s,
+then qualify localization speed separately at increasing tiers.
+
+An accepted RTAB-Map global or proximity closure adds a graph constraint and
+re-optimizes the pose graph, distributing accumulated pose error and realigning
+the attached 2D/3D observations. A retrieved or rejected candidate does not
+perform that correction.
+
+## 18. Full-map geometry failure and proximity-loop root cause (2026-08-28)
+
+The physical environment for run `20260828_141247_planar3dof_headless` has two
+90-degree corners. The exported all-loop trajectory instead folded and crossed,
+so the previous golden-candidate conclusion is withdrawn. Database integrity
+and low optimized constraint residuals proved only internal consistency, not
+physical correctness.
+
+On untouched-hash-preserving `/tmp` copies, removing Type-1 global links did
+not remove the fold. Removing only Type-2 spatial proximity links restored a
+raw-LIO-like orthogonal trajectory and the two physical corners. End gaps were
+1.077 m with all loops, 1.240 m without Type-1, 0.986 m without Type-2, and
+1.949 m without either Type-1/Type-2. This isolates the aggressive Type-2
+configuration (`Angle=180`, unlimited graph depth, ten path neighbors) as the
+main distortion source.
+
+The canonical flat-floor profile now keeps RGB Type-1 retrieval and 3D L2 ICP
+verification, but sets `RGBD/ProximityBySpace=false`. Its dormant proximity
+values are restored to the installed RTAB-Map 0.21.1 defaults: angle 45,
+maximum graph depth 50 and path max neighbors 0. Loop threshold, ICP ratio and
+optimization error gate are deliberately unchanged for a one-variable causal
+fix. The failed full DB remains analysis evidence and must not be used for
+localization. Next run is a 1–2 minute, two-corner Type-2-OFF qualification;
+only a pass authorizes one full remap.

@@ -32,7 +32,7 @@ def inspect_and_export_all(db_path="~/.ros/rtabmap.db", output_dir="/home/unitre
     db_path = os.path.expanduser(db_path)
     if not os.path.exists(db_path):
         print(f"❌ Error: Database not found at '{db_path}'")
-        print("👉 Run './mapping_gui.sh' or './mapping.sh' first to record a map!")
+        print("👉 Run './run_map.sh' or './map_headless.sh' first to record a map!")
         return
 
     os.makedirs(output_dir, exist_ok=True)

@@ -8,7 +8,7 @@
 
 | 터미널 에러 문자열 (Grep Keyword) | 해당 계층 | 핵심 원인 | 1줄 즉각 해결 명령어 |
 | :--- | :---: | :--- | :--- |
-| **`Did not receive data since 5 seconds!`** | RTAB-Map | 센서 토픽 중 1개 이상 0Hz | `bash scratch/start_rtabmap_livo.sh mapping` |
+| **`Did not receive data since 5 seconds!`** | RTAB-Map | 센서 토픽 중 1개 이상 0Hz | `./map_headless.sh` |
 | **`bind udp port failed`** | 라이다 드라이버 | 이전 라이다 프로세스 6201 포트 점유 | `fuser -k 6201/udp` (필요한 경우 터미널에서 명시적 `sudo`) |
 | **`ImportError: libopencv_hdf.so.4.5`** | 전면 카메라 | glibc 런타임 링커 경로 누락 | `sudo ldconfig /home/unitree/opencv_build/opencv/build/lib` |
 | **`0 Hz` on `/utlidar/cloud`** | 4D 라이다 | 메인보드 원시 점군 Mute 상태 | `smart app toggle` or `unitree_ros2 service request` |
@@ -31,7 +31,7 @@
 * **해결**:
   ```bash
   # 0Hz인 토픽 확인 후 브링업 재실행
-  bash scratch/bringup_all_escape_nav.sh --mapping
+  ./map_headless.sh
   ```
 
 ---

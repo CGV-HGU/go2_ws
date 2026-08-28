@@ -51,7 +51,7 @@ graph TD
 | :--- | :--- | :--- |
 | **운영 환경** | Jetson Orin NX Host OS (Ubuntu 20.04 / Foxy / CUDA 11.4) | Docker Container `sdam_go2_container` (Ubuntu 24.04 / Jazzy) |
 | **핵심 센서/인터페이스**| L1 라이다, IMU, 전면 카메라, CycloneDDS, Go2 모터 | UDP 소켓 브릿지, NetBird P2P VPN, Qwen3-VL API |
-| **핵심 실행 스크립트** | `start_rtabmap_livo.sh`, `host_bridge.py`, `record_experiment.sh` | `docker_bridge.py`, `vlm_s2e_async_node.py`, `test_docker_*.py` |
+| **현재 실행 상태** | mapping은 `run_map.sh` / `map_headless.sh`만 사용 | 실제 S2E/checkpoint 및 안전 command path 미완료로 physical autonomy NO-GO |
 | **최종 산출물** | `~/.ros/rtabmap.db`, Rosbag 주행 데이터 (`.db3`) | 50Hz 연속 속도 명령 (`/cmd_vel`), 의사결정 JSON 로그 |
 
 ---
@@ -67,7 +67,7 @@ graph TD
 - [ ] **4. 3D 복도 맵 생성 (최초 1회)**:
   ```bash
   # 복도 1바퀴 수동 주행 ➔ 루프 클로저 형성 ➔ Ctrl+C로 ~/.ros/rtabmap.db 저장
-  bash scratch/bringup_all_escape_nav.sh --mapping
+  ./map_headless.sh
   ```
 - [ ] **5. Host Bridge 준비**: `python3 scratch/host_bridge.py`가 포트 9090 수신 및 9091 송신 대기 상태 확인.
 

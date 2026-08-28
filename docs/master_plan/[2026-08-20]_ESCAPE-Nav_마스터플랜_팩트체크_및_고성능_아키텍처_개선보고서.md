@@ -138,7 +138,7 @@ graph LR
 ```
 
 1. **[Phase 1: 단기 - 현행 체계 100% 유지 주행 실증]**:
-   * 현재 100% 검증 완료된 `start_rtabmap_livo.sh` 및 `start_docker_s2e.sh`를 변경 없이 가동하여 **ICRA 2026 Table VIII 5대 시나리오 20회 실증 데이터($T^\dagger$, DRS, FBR)를 안전하게 수집 완료**합니다.
+   * **2026-08-28 정정**: 당시 두 wrapper의 “100% 검증 완료” 주장은 현재 소스/runtime으로 입증되지 않았으며 localization wrapper는 제거됐다. 이 절차로 물리 주행이나 논문 데이터를 수집하지 않는다.
 2. **[Phase 2: 중기 - 온보드 임베디드 컴퓨팅 가속]**:
    * OpenCV CUDA 소스 빌드 및 NVIDIA cuPCL을 통합하여 호스트 CPU 부하를 제거하고, 대용량 점군 전송을 위해 Iceoryx2 공유 메모리로 전환합니다.
 3. **[Phase 3: 장기 - 원격 VLM 서빙 백엔드 고도화]**:

@@ -167,6 +167,6 @@ graph LR
 ## 📋 5. 젯슨 관리자 1-Click 맵핑 실전 가이드 (Runbook)
 
 1. **launch 파일 수정**: 위 4번의 `base_parameters`를 `src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py`에 적용.
-2. **실행**: `./mapping_with_screen_record.sh`
+2. **현재 실행**: GUI는 `./run_map.sh`, headless는 `./map_headless.sh` (legacy 화면 녹화 wrapper 제거)
 3. **주행 수칙**: $0.2\text{ m/s}$ 저속 주행, 코너 1초 정지, 출발점으로 원점 복귀.
 4. **저장**: `ros2 run nav2_map_server map_saver_cli -f /home/unitree/go2_ws_antarctica/2dmap/golden_l2_corridor_map`

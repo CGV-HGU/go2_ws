@@ -1,32 +1,64 @@
 # 현재 상태와 다음 실행 순서 — RTAB-Map 3DoF 자격 검증
 
-> 최신 측정: 2026-08-28 11:35~11:39 KST
-> 실측 run: `20260828_113542_planar3dof_headless`
+> 최신 측정: 2026-08-28 14:12~14:28 KST
+> 실측 run: `20260828_141247_planar3dof_headless`
 > 안전 범위: recorder, Docker/VLM, 모터/`/cmd_vel`, Sport API, production bridge를 시작하지 않음
 
 ## 1. 결론
 
 지금은 **Jetson ↔ Docker ↔ 원격 서버의 무구동 통신과 계약 시험**을 진행할 수 있다. 실제로 네트워크, 임시 양방향 UDP, text JSON 추론, 보관된 실제 Go2 카메라 이미지의 vision 추론까지 통과했다.
 
-그러나 Docker의 실제 S2E model/checkpoint와 안전한 production command path는 없으므로, 이 결과를 4-Tier 자율주행 완료로 해석하면 안 된다.
+최신 paper branch의 실로봇 주 backend인 frozen PixNav는 Jetson CUDA에서 저장된 실제 Go2 RGB
+11-frame replay를 2회 통과했다. 하지만 PixNav action→Go2 adapter와 안전한 production command
+path는 아직 없으므로 이를 4-Tier 자율주행 완료로 해석하면 안 된다. S2E는 별도 NavBench-GS
+보조 실험이다.
 
 RTAB-Map 기본 운용은 **planar 3DoF로 확정한다.** 같은 층의 평평한 복도에서 3D LiDAR 입력과 3D map 생성은 유지하고, pose graph만 `x/y/yaw`로 구속한다. 4DoF는 실제 경사·고도 변화가 실험 범위일 때만 별도 DB로 비교한다.
 
-곧바로 전체 최종 맵을 찍지 말고 **정상 종료/DB 저장 검증 → planar 3DoF 반복 자격 주행 → global visual loop 검증 → 전체 맵** 순서로 진행한다.
+planar 3DoF와 global visual loop의 기능 자체는 확인됐다. 그러나 최신 전체-map은 실제로 존재해야 하는 두 90도 코너가 접히고 교차해 **geometry FAIL**이다. DB 무결성과 낮은 graph residual은 "입력된 링크를 내부적으로 만족했다"는 뜻일 뿐, 링크가 실제 같은 장소를 연결했다는 보증이 아니다.
 
-### 1.1 2026-08-28 실측 판정
+원본을 보존한 link-type ablation에서 Type-2 spatial proximity link만 제거하자 90도 코너 형태가 복구됐고, Type-1 global link만 제거한 경우에는 접힘이 남았다. 따라서 원인은 주로 기존의 공격적인 Type-2 설정(`Angle=180`, graph depth 무제한, 최대 10-neighbor)이며, canonical profile은 이제 **Type-1 visual loop 유지 + Type-2 proximity 비활성화**다. 이 DB는 원인 분석 증거로만 보존하고 localization/golden map에 사용하지 않는다.
+
+### 1.1 최신 전체-map 재판정
 
 | 항목 | 결과 | 판정 |
 |---|---:|---|
-| node / DB | 352 nodes, 95.7 MB, integrity OK | PASS |
-| raw LIO Z span | 0.0335 m | PASS |
-| sampled map-to-base Z span | 0.0175 m | PASS |
-| LiDAR proximity closure (Type-2) | 9 | PASS |
-| global visual closure (Type-1) | 0 | 미통과 |
-| odometry lost / optimizer failure / NaN | 0 / 0 / 0 | PASS |
-| 종료 / 최종 optimized graph | status 141 / 0 poses | 미통과 |
+| node / DB | 1,707 / 523,153,408 bytes, integrity `ok` | PASS |
+| raw path / 평균 속도 | 358.186 m / 약 0.391 m/s | 기록 |
+| optimized Z span | 0.0318 m | PASS |
+| DB unique global / proximity | **36 / 159** | 기록 |
+| global-link graph residual | 최대 0.0331 m / 0.171° | 내부 일관성만 확인 |
+| odometry lost | 0 | PASS |
+| wrapper / hash manifest | status 0 / 전체 OK | PASS |
+| 동일 subset 종단 XY gap | raw 1.653 m → optimized 1.077 m | localization에서 재확인 |
+| 물리적 두 90도 코너 | 접힘·교차로 불일치 | **FAIL** |
+| Type-2 제거 offline ablation | 코너/직교 형상 복구 | Type-2가 주원인 |
+| golden DB / localization | 사용 금지 | **FAIL** |
 
-따라서 이번 run은 **3DoF 선택 근거와 진단 자료로는 유효하지만, 최종 지도 또는 localization DB로는 사용하지 않는다.**
+상세 근거는 [`troubleshooting/06_rtabmap_livo_2026-08-27_runtime_diagnosis_and_loop_closure_log.md`](troubleshooting/06_rtabmap_livo_2026-08-27_runtime_diagnosis_and_loop_closure_log.md)의 20~21절을 따른다.
+
+### 1.2 12:46 짧은 자격 run 판정
+
+| 항목 | 최신 결과 | 판정 |
+|---|---:|---|
+| node / DB | 249 nodes, 73.9 MB, integrity `ok` | PASS |
+| optimized pose / 경로 | 164 poses / 41.04 m | PASS |
+| optimized Z span | 0.0235 m | PASS |
+| 출발–복귀 오차 | 0.0335 m | PASS |
+| LiDAR proximity closure (Type-2) | logger 8회, DB unique link 9개 | 기록; canonical에서는 OFF |
+| global visual closure (Type-1) | **2회: 174→61, 211→1** | **PASS** |
+| 잘못된 후보 | 6회 모두 graph 삽입 전 reject | PASS |
+| odometry lost / optimizer failure / NaN | 0 / 0 / 0 | PASS |
+| DB 저장 / 최적화 재로딩 | saved=true / 164 poses | PASS |
+| wrapper 종료 코드 | 141 (`Ctrl+C` 때 `tee`가 먼저 닫힌 logging bug) | 코드 수정, 다음 run 확인 |
+
+마지막 `211→1`은 visual score `0.8717`, DB의 기하 보정 0.030 m이며 최적화 후 출발–복귀 오차가 3.35 cm다. `174→61`도 0.189 m 범위의 실제 재방문 링크다. 위에서 본 3D 점군/궤적에는 그래프 접힘이나 비연속 jump가 보이지 않았다. 따라서 **global loop 기능은 통과**했지만, 이 DB는 짧은 자격 코스이므로 최종 localization용 골든 맵으로 쓰지 않는다.
+
+`map_headless.sh`는 전체 맵 전에 다음처럼 보강했다.
+
+- `tee --ignore-interrupts`로 inner RTAB-Map cleanup 로그와 DB 종료를 끝까지 수집
+- 정상적인 operator `Ctrl+C`(status 130)를 established run에서 status 0으로 기록
+- Jetson에 `sqlite3` CLI가 없어도 Python 표준 sqlite3로 `database_integrity.txt` 생성
 
 ## 2. 16:46 KST 무구동 실측 결과
 
@@ -45,6 +77,8 @@ RTAB-Map 기본 운용은 **planar 3DoF로 확정한다.** 같은 층의 평평�
 | advertised model | MEASURED | `qwen3.5-9b-instruct`, root `AxionML/Qwen3.5-9B-NVFP4` |
 | text JSON contract | PASS | `status=ok`, `action=stop`, `source=docker-server-preflight` 반환 |
 | archived RGB vision | PASS/제한적 | `scratch/live_camera_snapshot.jpg`에서 가까운 물체를 `office chair`로 반환하고 `action=stop` 유지 |
+| frozen PixNav CUDA replay | PASS/제한적 | 실제 Go2 RGB 11장, Checkpoint_A, action/distance/tracked-goal finite, 동일 입력 2회 prediction 일치, actuation 0 |
+| 현재 유선/서버 경로 | PASS | wlan0 disconnected, eth0 학교망+Go2 직결망, NetBird active, server HTTP 200(0.051 s) |
 | S2E core tests | PASS | isolated package: 43 passed |
 | bringup contract tests | PASS | isolated package: 3 passed |
 | live camera → VLM → S2E | NOT TESTED | 로봇 OFF이며 현재 ROS VLM node는 mock-first 구현 |
@@ -56,12 +90,13 @@ RTAB-Map 기본 운용은 **planar 3DoF로 확정한다.** 같은 층의 평평�
 
 ### 3.1 지금 안전하게 가능한 작업
 
-1. Docker에서 canonical S2E와 현재 local snapshot의 차이를 확정한다.
-2. 실제 checkpoint/runtime 배치 위치와 SHA-256 계약을 정한다.
-3. 보관된 Go2 RGB frame을 사용해 전체 VLM input/output schema를 검증한다.
-4. VLM submit/complete/apply/reject identity와 image hash를 남기는 event logger를 설계한다.
-5. 모터 대신 command sink를 연결해 trajectory/controller 출력을 파일로만 검증한다.
-6. timeout, malformed JSON, server loss, stale response를 주입하고 항상 `stop/zero`가 되는지 확인한다.
+1. ~~최신 `paper` commit과 연구실 PixNav 구현 pin 확정~~ — 완료.
+2. ~~공식 PixNav Checkpoint_A 배치와 SHA-256 계약~~ — 완료.
+3. ~~보관된 Go2 RGB 11-frame PixNav goal-mask/history CUDA replay와 재현성~~ — 완료.
+4. 서로 다른 실제 RGB clip을 최소 20개로 늘리고 runtime manifest를 동결한다.
+5. VLM submit/complete/apply/reject identity와 image hash를 남기는 event logger를 설계한다.
+6. 모터 대신 file sink에 PixNav discrete action과 안전 macro-action만 기록한다.
+7. timeout, malformed JSON, server loss, stale response를 주입하고 항상 `stop/zero`가 되는지 확인한다.
 
 ### 3.2 반복 가능한 읽기 전용 확인 명령
 
@@ -111,11 +146,12 @@ docker exec sdam_go2_container bash -lc '
 Reg/Force3DoF=true
 Icp/Force4DoF=false
 RGBD/NeighborLinkRefining=false
+RGBD/LoopClosureIdentityGuess=true
 ```
 
-`Optimizer/Slam2D`는 설치된 RTAB-Map 0.21.1에서 제거된 legacy 이름이다. manifest나 실행 배너에 남아 있더라도 독립적인 유효 파라미터로 간주하지 않으며, 실제 3DoF 판정은 `Reg/Force3DoF=true`와 `Icp/Force4DoF=false`로 한다.
+삭제된 기존 wrapper가 표시하던 `Optimizer/Slam2D`는 설치된 RTAB-Map 0.21.1에서 독립적인 canonical 설정으로 사용하지 않는다. 현재 두 진입점과 manifest에는 이 이름을 제거했으며 실제 3DoF 판정은 `Reg/Force3DoF=true`와 `Icp/Force4DoF=false`로 한다.
 
-2026-08-28 실제 planar 주행에서 Z 발산과 odometry loss는 없었다. 남은 자격 조건은 정상 종료와 global visual loop이다.
+최신 planar 주행에서 Z 발산과 odometry loss는 없었지만, aggressive Type-2 proximity link가 지도 전체를 물리적으로 잘못 접었다. 다음 자격 조건은 proximity를 끈 상태에서 두 90도 코너가 보존되고 올바른 Type-1 global loop만 승인되는지 확인하는 것이다.
 
 - RTAB graph z가 수 cm 수준으로 제한
 - raw LIO보다 endpoint gap이 악화되지 않음
@@ -126,7 +162,7 @@ RGBD/NeighborLinkRefining=false
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-./mapping_planar_headless.sh
+./map_headless.sh
 ```
 
 별도 `230.0.0.0/8` privileged route는 요구하지 않는다. CycloneDDS는 `192.168.123.99/eth0`에 고정되고 RTP camera도 `multicast-iface=eth0`를 사용한다. bringup은 권한 변경 대신 `192.168.123.161`의 direct eth0 route만 읽기 전용으로 검사한다.
@@ -158,7 +194,7 @@ Docker/motor=false
 
 ### Gate C — global visual loop closure
 
-현재 run은 visual hypothesis를 만들었지만, 단안 RGB에 metric depth가 없어 기본 PnP가 `Not enough features in images`로 기각했고 Type-1은 0개였다. 다음 A/B run에서는 `RGBD/LoopClosureIdentityGuess=true`를 별도 시험 프로파일에 추가해 같은 pose/heading 재방문 시 LiDAR ICP가 identity guess에서 검증하도록 한다.
+이전 run의 기본 PnP 경로는 단안 RGB에 metric depth가 없어 Type-1을 만들지 못했다. `RGBD/LoopClosureIdentityGuess=true`로 RGB 후보를 만들고 3D LiDAR ICP가 검증하는 경로는 짧은 run에서 Type-1 2개, 최신 전체 run에서 고유 Type-1 36개를 남겼다. 다만 link 수가 많다고 정확한 것은 아니다. 이제 Type-2를 끈 짧은 코스에서 올바른 Type-1과 코너 형상을 함께 다시 확인한다.
 
 1. 특징적인 시작 장면을 같은 방향으로 3~5초 관측한다.
 2. 급회전과 빠른 보행을 피하며 짧은 loop를 돈다.
@@ -171,10 +207,11 @@ type-1이 생성됐다는 사실만으로 합격하지 않는다. 올바른 장�
 
 ### Gate D — 전체 맵과 localization 동결
 
-Gate A~C 통과 후 실제 주행 구역 전체 맵을 촬영한다.
+최신 전체-map은 geometry FAIL로 폐기하지 않고 분석 증거로만 보존한다. Type-2 OFF 짧은 자격 run이 통과한 뒤 한 번만 전체 맵을 다시 촬영한다.
 
-- 주요 복도·교차로·출발 구역을 재방문
-- `mapping_planar_headless.sh` wrapper와 기존 DB backup 확인
+- 먼저 두 90도 코너를 포함한 1~2분 짧은 loop에서 접힘 없음과 올바른 Type-1을 확인
+- 통과할 때만 주요 복도·교차로·출발 구역 전체를 재촬영
+- `map_headless.sh` wrapper와 기존 DB backup 확인
 - recorder, Docker, VLM, command bridge는 계속 OFF
 - 종료 후 DB/PGM/YAML/loop log hash 보존
 - wrapper가 status 0 또는 의도된 130으로 종료되고 DB에 optimized pose가 저장됐는지 확인
@@ -183,12 +220,14 @@ Gate A~C 통과 후 실제 주행 구역 전체 맵을 촬영한다.
 
 ## 5. RTAB-Map 이후 4-Tier 진입 기준
 
+RTAB-Map localization만 켠다고 자율주행이 되지는 않는다. Nav2는 planner/controller를 제공하는 한 선택지지만 최신 paper branch의 `Direct-goal PixNav vs Full ESCAPE-PixNav` main 비교에서는 같은 frozen PixNav backend를 사용하므로 필수가 아니다. RTAB-Map은 map-frame pose와 재지역화를 제공하고, 실제 이동은 검증된 PixNav action adapter/controller/safety gateway가 담당한다. S2E는 별도 NavBench-GS 보조 실험이며 현재 실로봇 backend Gate가 아니다. Nav2는 선택적인 classic baseline 또는 별도 waypoint demo로만 추가한다.
+
 RTAB-Map 지도를 고정한 뒤 아래 순서로 진행한다.
 
 ```text
 archived/live sensor replay
         → Jetson localization/camera
-        → Docker VL-MAG + actual S2E
+        → Docker VL-MAG + frozen PixNav
         → remote VLM
         → trajectory/controller
         → command sink
@@ -197,7 +236,7 @@ archived/live sensor replay
         → supervised low-speed Go2
 ```
 
-현재는 `Docker ↔ server`의 text/archived-image inference까지 확인됐다. 다음 4-Tier 목표는 **실제 S2E를 포함한 no-actuation command-sink 폐루프**이며, 로봇 주행이 아니다.
+현재는 `Docker ↔ server`의 text/archived-image inference까지 확인됐다. 다음 4-Tier 목표는 **hash가 고정된 실제 PixNav를 포함한 no-actuation command-sink 폐루프**이며, 로봇 주행이 아니다.
 
 ## 6. 관련 문서
 

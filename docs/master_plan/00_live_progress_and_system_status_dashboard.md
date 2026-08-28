@@ -21,7 +21,7 @@
 | **Phase 3** | **Host ↔ Docker 초저지연 UDP 브릿지** | • Magic Header(`0x53324501`) & CRC16 무결성 검증<br/>• 62B Pose (Port 9091) / 54B CmdVel (Port 9090)<br/>• 500패킷 50Hz 스트레스 테스트 0.00% 유실, 지연 0.134ms | **100%** | **COMPLETE 🟢** |
 | **Phase 4** | **도커 S2E & 원격 Qwen VLM 연동** | • `sdam_go2_container` (Ubuntu 24.04 Jazzy) 구축<br/>• NetBird VPN(14ms) ➔ Qwen3-VL 32B 멀티모달 추론 검증<br/>• 50Hz 비동기 궤적 보상($T_{delta} = T_{curr}^{-1} \cdot T_{vlm}$) | **100%** | **COMPLETE 🟢** |
 | **Phase 5** | **실내 초안전 미세 구동 검증 (run_test)** | • ROS 2 `/cmd_vel` ➔ `go2_driver` ➔ Sport API 1008 연동<br/>• 전진 15cm ➔ 대기 1초 ➔ 후진 15cm 원위치 복귀 검증 | **100%** | **COMPLETE 🟢** |
-| **Phase 6** | **복도 3D 오프라인 맵핑 (`rtabmap.db`)** | • 1-Click 모니터 3D GUI 맵핑: `./mapping_gui.sh`<br/>• 1-Click 헤드리스 터미널 맵핑: `./mapping_headless.sh`<br/>• 787m² 복도 2D 점유격자지도 생성 완료 (`2dmap/0833.yaml`) | **100%** | **COMPLETE 🟢** |
+| **Phase 6** | **복도 3D 오프라인 맵핑 (`rtabmap.db`)** | • 1-Click 모니터 3D GUI 맵핑: `./run_map.sh`<br/>• 1-Click 헤드리스 터미널 맵핑: `./map_headless.sh`<br/>• 787m² 복도 2D 점유격자지도 생성 완료 (`2dmap/0833.yaml`) | **100%** | **COMPLETE 🟢** |
 | **Phase 7** | **ICRA Table VIII 실물 로봇 20회 실증** | • 5대 시나리오 $\times$ 4대 모델군 $\times$ 5회 반복 = 총 20회 주행<br/>• 100MB 큐 Rosbag 자동 로깅 및 1초 정량 채점기 구동 | **0%** | **READY TO RUN 🟢** |
 
 ---
@@ -54,12 +54,12 @@ graph LR
 * **모니터에 3D 실시간 GUI 화면을 띄우며 매핑할 때**:
   ```bash
   cd ~/go2_ws_antarctica
-  ./mapping_gui.sh
+  ./run_map.sh
   ```
 * **헤드리스 터미널로 매핑할 때**:
   ```bash
   cd ~/go2_ws_antarctica
-  ./mapping.sh
+  ./map_headless.sh
   ```
 * **매핑 후 Windows 노트북에서 사진/DB 확인**:
   ```bash

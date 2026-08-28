@@ -10,9 +10,8 @@
 #
 # Usage:
 #   bash scratch/bringup_all_escape_nav.sh             # Online Autonomy Mode (localization:=true)
-#   bash scratch/bringup_all_escape_nav.sh --mapping   # New 3D map (backs up DB, then uses -d)
-#   bash scratch/bringup_all_escape_nav.sh --mapping --planar
-#                                                     # Planar x/y/yaw graph with 3D LiDAR ICP
+#   ./run_map.sh                                      # Canonical GUI mapping entry
+#   ./map_headless.sh                                 # Canonical SSH/tmux mapping entry
 #   bash scratch/bringup_all_escape_nav.sh --record <Scenario> <Model> <Trial>
 # ==============================================================================
 
@@ -24,11 +23,12 @@ RECORD_MODE=false
 GUI_MODE=false
 GUI_ARG="rtabmap_viz:=false"
 PRINT_CONFIG=false
-GRAPH_PROFILE="4dof"
+GRAPH_PROFILE="planar3dof"
 GRAPH_ARGS=(
-    "reg_force_3dof:=false"
-    "icp_force_4dof:=true"
-    "optimizer_slam_2d:=false"
+    "reg_force_3dof:=true"
+    "icp_force_4dof:=false"
+    "loop_closure_identity_guess:=true"
+    "proximity_by_space:=false"
 )
 SCENARIO="Dead_end_room"
 MODEL="Full_ESCAPE_Nav"
@@ -52,7 +52,18 @@ while [[ $# -gt 0 ]]; do
             GRAPH_ARGS=(
                 "reg_force_3dof:=true"
                 "icp_force_4dof:=false"
-                "optimizer_slam_2d:=true"
+                "loop_closure_identity_guess:=true"
+                "proximity_by_space:=false"
+            )
+            shift
+            ;;
+        --4dof)
+            GRAPH_PROFILE="4dof_diagnostic"
+            GRAPH_ARGS=(
+                "reg_force_3dof:=false"
+                "icp_force_4dof:=true"
+                "loop_closure_identity_guess:=false"
+                "proximity_by_space:=false"
             )
             shift
             ;;
@@ -72,11 +83,6 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
-if [ "$GRAPH_PROFILE" = "planar3dof" ] && [ "$MAPPING_MODE" = false ]; then
-    echo "Error: --planar is accepted only together with --mapping."
-    exit 2
-fi
 
 if [ "$PRINT_CONFIG" = true ]; then
     echo "mapping_mode=$MAPPING_MODE"
@@ -115,8 +121,18 @@ cleanup() {
         docker exec sdam_go2_container pkill -f vlm_s2e_async_node.py 2>/dev/null || true
     fi
     
-    # 2. 백그라운드 프로세스 정리
-    echo -e "${CYAN}[2/4] Killing background host processes...${NC}"
+    # 2. In mapping mode, let RTAB-Map close the SQLite DB before stopping
+    # sensor publishers and the evidence logger.
+    echo -e "${CYAN}[2/4] Stopping background host processes...${NC}"
+    if [ "$MAPPING_MODE" = true ] && [ -n "${RTABMAP_LAUNCH_PID:-}" ] && \
+       kill -0 "$RTABMAP_LAUNCH_PID" 2>/dev/null; then
+        echo "  • Waiting up to 15 s for RTAB-Map to save the optimized graph..."
+        kill -SIGINT "$RTABMAP_LAUNCH_PID" 2>/dev/null || true
+        for _ in {1..150}; do
+            kill -0 "$RTABMAP_LAUNCH_PID" 2>/dev/null || break
+            sleep 0.1
+        done
+    fi
     for pid in "${PIDS[@]}"; do
         if kill -0 "$pid" 2>/dev/null; then
             kill -SIGINT "$pid" 2>/dev/null || kill -9 "$pid" 2>/dev/null || true

@@ -172,7 +172,7 @@ main paired trials = P pairs × 2 methods × 5 repetitions
 | 현재 4DoF ICP | 비평면/경사 대응 가능성 확인 | z error와 wall tilt가 independent reference 이내 |
 | 실내 planar 3DoF | 단층 평면 주행 안정화 | endpoint drift, wall straightness, repeat localization 향상 |
 
-기존 4DoF launch는 경사 코스 비교 자료로만 보존하고, `mapping_planar_headless.sh`가 평면 campaign의 run별 evidence를 저장한다. 2026-08-28 물리 주행에서 3DoF Z 안정성은 통과했지만 Type-1 global loop와 정상 종료 저장이 미완료이므로 deployment DB는 아직 고정하지 않는다.
+기존 4DoF launch는 경사 코스 비교 자료로만 보존하고, `map_headless.sh`가 평면 campaign의 run별 evidence를 저장한다. 2026-08-28 물리 주행에서 3DoF Z 안정성은 통과했지만 Type-1 global loop와 정상 종료 저장이 미완료이므로 deployment DB는 아직 고정하지 않는다.
 
 이 A/B는 ESCAPE-Nav의 알고리즘 ablation이 아니라 **평가 장비를 고정하기 위한 infrastructure qualification**이다. 더 좋은 설정 하나를 결과를 보기 전에 고정하고 모든 방법에 동일하게 사용한다.
 

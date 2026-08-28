@@ -1,13 +1,14 @@
 # 🏛️ [Master Plan & System Specification] Unitree Go2 고정밀 LIVO SLAM 및 ESCAPE-Nav 비동기 VLM 자율주행 완전무결 실물 실증 마스터플랜
 
 > **작성 일자**: 2026년 8월 27일 21:45 KST / **실측 개정**: 2026년 8월 28일
-> **문서 상태**: **검증 진행본 — 3DoF 선택 완료, global loop 및 정상 종료 미통과**
+> **문서 상태**: **검증 진행본 — 3DoF와 global Type-1 기능 PASS, 최신 전체-map geometry FAIL(Type-2 proximity 원인)**
 > **대상 기체**: Unitree Go2 EDU Plus (내장 4D LiDAR L2 + 50Hz DSP IMU/Odometry + 전면 단안 RGB 카메라)  
 > **온보드 호스트**: Jetson Orin NX 16GB (Ubuntu 20.04.6 LTS / ROS 2 Foxy / CycloneDDS / CUDA 11.4)  
 > **도커 샌드박스**: `sdam_go2_container` (Ubuntu 24.04 LTS / ROS 2 Jazzy ARM64 / Python 3.12)  
 > **원격 추론 서버**: RTX Pro 6000 Ada GPU Server (`100.96.60.15:8000`, `qwen3.5-9b-instruct` NVFP4)  
 > **공식 논문 명칭**: **`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation`**  
 > **문서 목적**: **"모든 가짜 성공(Mock/Synthetic)과 안이한 가정을 배제하고, 현장 실측 데이터와 순차 Gate를 기반으로 센서·지도·localization·PixelNav/S2E·4-Tier 안전 폐루프부터 논문 campaign까지 검증하는 엔지니어링 마스터 명세서."**
+> **판정 우선순위**: 아래 `1.1~1.8`의 2026-08-28 15:22 실측표가 이 문서의 현재 판정이다. 이후 절의 과거 설계·성공 표현과 충돌하면 `1.1~1.8`이 우선한다.
 
 ---
 
@@ -39,7 +40,7 @@ graph LR
     end
 
     subgraph "Tier 3: 도커 샌드박스 (Jazzy)"
-        D1["S2E 비동기 VLM 클라이언트<br/>50Hz Causal Pose Warping<br/>안전 게이트웨이 (0속도 인터록)"]
+        D1["논문 주 backend: frozen PixNav<br/>VLM 비동기/기억 모듈<br/>검증 예정 action adapter + safety gateway"]
     end
 
     subgraph "Tier 4: 원격 GPU 서버"
@@ -55,14 +56,311 @@ graph LR
 
 | 계층 (Tier) | 구성 요소 | 현재 실측 상태 (Status) | 엔지니어링 팩트 및 주의사항 |
 | :--- | :--- | :---: | :--- |
-| **Tier 1 (Go2 본체)** | 4D LiDAR L2 + IMU/Odom | 🟢 **정상 수신 (Live)** | 15.7Hz 점군 및 50Hz 오도메트리 정상 발행 확인. |
-| **Tier 1 (Go2 본체)** | 전면 단안 카메라 | 🟢 **정상 수신 (Live)** | 단안 RGB이며, 현재 카메라 내부 파라미터는 추정치 적용 상태. |
+| **Tier 1 (Go2 본체)** | 4D LiDAR L2 + IMU/Odom | 🟢 **실주행 수신 PASS** | 과거 물리 run에서 15.7Hz 점군 및 50Hz 오도메트리 정상 발행 확인. 현재 로봇 전원 상태와는 구분함. |
+| **Tier 1 (Go2 본체)** | 전면 단안 카메라 | 🟢 **실주행 수신 PASS** | 실제 RGB 저장까지 확인. 내부 파라미터/외부 변환은 아직 정식 calibration 미통과. |
 | **Tier 2 (Jetson)** | LIVO 센서 브릿지 | 🟢 **완전 검증 (PASS)** | 매 프레임 10,000개 제로패딩 제거 및 `base_link` 점군 정상 복원. |
-| **Tier 2 (Jetson)** | RTAB-Map 2D SLAM | 🟡 **개선 진행 (Progress)** | 2차 주행에서 5개 근접 루프 성공. Z축 $6.45\text{m}$ 발산은 평면 3DoF로 해결 확정. |
-| **Tier 3 (Docker)** | Jazzy 소프트웨어 패키지 | 🟢 **빌드 완료 (PASS)** | `s2e_vlm_core` 단위 테스트 43개 전수 PASS. |
-| **Tier 3 (Docker)** | S2E 체크포인트 배치 | 🟡 **배치 필요 (Pending)** | `/models/s2e/S2E/s2e.onnx` 파일 경로 체결 및 SHA-256 검증 필요. |
-| **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟢 **완전 검증 (PASS)** | 실제 Go2 사진 전송 시 `office chair` 인식 및 `action=stop` 계약 통과. |
-| **End-to-End** | 실로봇 paired campaign | 🔴 **미수행 (Pending)** | Gate 0~8, map/config freeze, 실제 artifact recorder/importer 통과 후 총 50회 수행. |
+| **Tier 2 (Jetson)** | RTAB-Map LIVO mapping | 🟡 **재매핑 필요 (Progress)** | 3DoF로 Z 발산은 해결했으나 최신 전체-map은 aggressive Type-2 proximity 때문에 90도 코너가 접힘. Type-2 OFF 짧은 재자격 후 전체 remap 필요. |
+| **Tier 3 (Docker)** | Jazzy 소프트웨어 패키지 | 🟡 **골격만 준비 (PARTIAL)** | 패키지와 unit test는 있으나 container 실제 프로세스는 `tail -f /dev/null`뿐이고 `e2e_node/controller_node`는 PixNav 실구현이 아님. |
+| **Tier 2/3 경계** | frozen PixNav runtime | 🟡 **GPU 추론 PASS / 통합 대기** | Jetson 격리 Python 3.8 runtime에서 Checkpoint_A와 실제 Go2 RGB 11장 CUDA replay를 2회 통과했다. Docker live chain과 Go2 action adapter는 아직 없다. S2E ONNX는 paper의 실로봇 주 backend가 아님. |
+| **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟡 **전송 PARTIAL** | 모델 endpoint와 text/보관 RGB 응답은 통과했지만 strict waypoint schema, live timing/provenance는 미통과. |
+| **End-to-End** | 실로봇 paired campaign | 🔴 **미수행 (Pending)** | Gate 0~9, map/config freeze, 실제 artifact recorder/importer 통과 후 총 50회 수행. |
+
+### 1.1 2026-08-28 15:22 KST 통합 진행 현황
+
+아래 표는 코드가 존재한다는 사실과 실제 artifact가 생성됐다는 사실을 구분한다. `PASS`는 해당
+행의 좁은 범위만 통과했다는 뜻이며, 다음 행이나 전체 자율주행의 통과를 의미하지 않는다.
+
+| 영역 | 실제로 완료된 것 | 아직 안 된 것 | 현재 판정 |
+|---|---|---|---|
+| Go2 센서/LIVO | 내장 4D L2 cloud, IMU, Unitree LIO odom, 전면 RGB 수신 및 `/livo/*` bridge | 다음 물리 run에서 rate/timestamp 반복 확인 | **PASS/재확인** |
+| RTAB-Map graph | planar 3DoF Z 안정, Type-1 visual loop 기능, 정상 DB/hash 저장 | Type-2 OFF 설정의 물리 재검증 | **기능 PASS** |
+| 최신 전체 map | 1,707 nodes, DB integrity/hash 정상, 원인 분리 ablation 완료 | 두 90도 코너가 접힌 실패 지도를 새 설정으로 다시 촬영 | **GEOMETRY FAIL** |
+| RTAB 궤적 export | DB 복사본에서 optimized pose 1,488개를 text로 export하고 top-down 비교 완료 | 물리적으로 맞는 golden DB에서 최종 CSV/pose artifact 생성 | **추출 기능 PASS, 최종본 없음** |
+| RTAB 3D map export | `rtabmap-export --scan --poses`로 Type-2 제거 분석본 219,640-point PLY 생성 확인 | golden DB의 최종 PLY/PCD/octomap 동결 | **추출 기능 PASS, 최종본 없음** |
+| 2D occupancy map | 과거 PGM/YAML 4세트와 clean 파생본 보존 | 2026-08-28 Type-2 OFF golden PGM/YAML 생성 | **과거본만 존재** |
+| PixNav 코드/모델 | paper commit, 연구실 pin, Checkpoint_A 217,967,433 bytes와 SHA-256 일치; Jetson CUDA에서 실제 action logits/distance/tracked-goal 계산 | optional `torchvision.io` ABI 경고 정리와 production runtime pin | **실추론 PASS** |
+| PixNav 실제 RGB 입력 | 저장된 Go2 RGB 11장을 동일 입력으로 2회 replay, 모든 출력 finite이며 예측 JSON 완전 일치 | 서로 다른 상황의 실제 clip을 최소 20개로 확대 | **file-only replay PASS** |
+| PixNav→Go2 궤적 | 없음. PixNav 원출력은 6-way discrete action이며 연속 10-waypoint trajectory가 아님 | discrete action→안전 macro-action/trajectory adapter, file sink, TTL/watchdog | **미구현** |
+| 4-Tier 네트워크 | 핫스팟 OFF, eth0 학교망+Go2 직결망 동시 유지, NetBird active, server `/v1/models` HTTP 200(0.051 s), Jetson↔Docker 비제어 UDP | live RGB→VLM→PixNav→controller를 하나의 identity로 연결 | **전송 PARTIAL** |
+| Docker runtime | `sdam_go2_container` 실행 중 | container 내부 실제 navigation process 없음(`tail -f /dev/null`만 실행) | **IDLE/PARTIAL** |
+| 원격 VLM | `qwen3.5-9b-instruct` 조회, text/보관 RGB 요청 성공 | strict waypoint schema, live timing, stale-response rejection | **PARTIAL** |
+| localization | 모드와 DB 로딩 경로는 존재 | 올바른 golden DB가 없어 cold-start/재지역화 미실행 | **대기** |
+| 제어/안전 | zero-hold file audit와 일부 watchdog 코드 존재 | 단일 command authority, 이중 `/cmd_vel`+Sport 제거, E-stop/ACK/fault injection | **NO-GO** |
+| 논문 실험 | 계획표와 checkpoint pin 존재 | 저속 pilot와 Direct-goal/Full paired campaign 전부 | **미수행** |
+
+### 1.2 2D 지도 artifact 전수 목록
+
+| 지도 | 크기 / 해상도 | 의미 | 사용 가능 여부 |
+|---|---|---|---|
+| `2dmap/0833.pgm` + YAML | 823×1442, 0.05 m/cell | 2026-08-23 과거 실험 지도 | historical only |
+| `2dmap/clean/0833_clean.pgm` + YAML/PNG | 823×1442, 0.05 m/cell | 위 지도의 후처리 clean 파생본 | 시각화용, golden 아님 |
+| `2dmap/2026-08-27/rtabmap0827.pgm` + YAML | 544×450, 0.05 m/cell | neighbor ICP 영향, loop 0, 벽 휨 | 사용 금지 |
+| `2dmap/2026-08-27/rtabmap0827_2.pgm` + YAML | 532×504, 0.05 m/cell | Type-2 5개, 4DoF graph Z 6.452 m 발산 | 사용 금지 |
+| 2026-08-28 최신 전체 run | PGM/YAML 미승격, DB만 보존 | Type-2 159개로 두 90도 코너 접힘 | geometry FAIL, 사용 금지 |
+| 다음 Type-2 OFF run | 아직 없음 | 짧은 두-코너 Gate 통과 후 전체 remap에서 생성 | **다음 목표** |
+
+따라서 현재 `2dmap/` 안에는 참고·비교용 과거 지도는 있지만 localization이나 논문 실험에 쓸
+golden 2D map은 없다. 실패한 2026-08-28 DB를 억지로 PGM으로 내보내 폴더에 승격하지 않는다.
+
+### 1.3 “trajectory가 됐다”의 정확한 구분
+
+1. **RTAB-Map robot trajectory export**: 됐다. DB 복사본에서 optimized pose와 PLY를 추출하고
+   Type-1/Type-2 ablation을 비교할 수 있다. 다만 최신 DB의 geometry가 틀렸으므로 최종 trajectory는 아니다.
+2. **PixNav policy output**: 됐다. JetPack 5.1.1용 NVIDIA PyTorch `2.0.0+nv23.05` 격리
+   runtime에서 Checkpoint_A와 실제 RGB 11장을 CUDA로 2회 실행했다. 두 run 모두
+   `PASS_FILE_ONLY_REPLAY`, 모든 출력 finite, 프레임별 prediction JSON 완전 일치, 구동 호출 0회다.
+   첫/재실행 latency는 각각 4.708 s/2.675 s다. 이는 policy smoke inference 증거이지 주행 증거는 아니다.
+3. **PixNav navigation trajectory**: 용어상 바로 나오지 않는다. 고정 PixNav는 각 시점에
+   `stop/forward/turn_left/turn_right/look_up/look_down` action logits와 distance/tracked goal을
+   출력한다. 이를 Go2용 시간·속도 제한 macro-action 또는 짧은 SE(2) trajectory로 변환하는
+   adapter는 별도로 구현하고 무구동 검증해야 한다.
+4. `scratch/v7_camera_trajectory_output.json`, `stationary_test_vlm_trajectory.png`,
+   `vlm_extracted_trajectory_result.png`, `live_front_camera_now_trajectory.png`는 과거의
+   heuristic camera projection 또는 S2E/VLM 시각화다. **실제 frozen PixNav trajectory 증거가 아니다.**
+
+### 1.4 가장 짧은 남은 critical path
+
+```text
+Type-2 OFF 두-코너 RTAB 자격(1~2분)
+  → 전체 golden remap 1회
+  → PGM/YAML + optimized poses + 3D PLY export/hash
+  → frozen DB localization cold-start 10회
+  → PixNav 실제 RGB clip replay를 최소 20개로 확대
+  → action→Go2 macro-trajectory adapter + zero-output sink
+  → live 4-Tier no-actuation + stale/timeout fault injection
+  → 단일 actuator gateway/E-stop
+  → supervised 저속 pilot
+  → Direct-goal PixNav vs Full ESCAPE-PixNav paired campaign
+```
+
+### 1.5 현재 evidence 위치
+
+| 증거 | 경로 |
+|---|---|
+| geometry FAIL 전체 RTAB DB/log/hash | `/home/unitree/.ros/rtabmap_runs/20260828_141247_planar3dof_headless/` |
+| Type-2 root-cause 분석 기록 | `docs/troubleshooting/06_rtabmap_livo_2026-08-27_runtime_diagnosis_and_loop_closure_log.md` 21절 |
+| 과거 2D map과 hash/판정 | `2dmap/2026-08-27/MANIFEST.md` 및 `2dmap/` |
+| PixNav 실제-RGB CUDA replay PASS #1 | `/home/unitree/.ros/pixnav_runs/20260828_152009_pixnav_file_only/report.json` |
+| PixNav 동일 입력 재현성 PASS #2 | `/home/unitree/.ros/pixnav_runs/20260828_152047_pixnav_file_only/report.json` |
+| PixNav 격리 runtime 자동발견 명령 PASS | `/home/unitree/.ros/pixnav_runs/20260828_152410_pixnav_file_only/report.json` |
+| S2E 보조 입력/VLM 무구동 보고서 | `/home/unitree/.ros/pixnav_s2e_runs/20260828_135901_pixnav_s2e_no_actuation/` |
+
+마지막 S2E 경로는 실제 RGB/VLM transport와 zero-hold 증거일 뿐, frozen PixNav inference 또는
+실로봇 trajectory 증거로 승격하지 않는다.
+
+### 1.6 단계별 남은 작업과 완료 조건
+
+아래 순서는 의존성 순서다. 앞 단계가 FAIL이면 다음 단계 결과를 최종 증거로 승격하지 않는다.
+
+#### Stage 0 — 버전·안전 기준선 동결
+
+현재: **부분 완료**. mapping은 command path 없이 분리됐고 checkpoint hash가 고정됐다.
+
+남은 작업:
+
+- host git commit/diff, RTAB launch, sensor bridge, PixNav code pin/checkpoint, VLM model/prompt hash 기록
+- 실험용 Wi-Fi/NetBird/eth0 route와 Docker image digest 기록
+- 단일 command authority 원칙, operator/spotter/E-stop 담당과 abort 절차 문서화
+- 기존 `host_bridge.py`의 `/cmd_vel`+Sport API 이중 발행 경로는 physical Gate 전까지 비활성 유지
+
+완료 증거: 하나의 configuration/safety manifest와 실제 E-stop 리허설 기록.
+
+#### Stage 1 — Type-2 OFF RTAB 짧은 자격
+
+현재: **코드 준비 완료, 물리 run 대기**.
+
+남은 작업:
+
+- 로봇 전원 후 L2/IMU/LIO/RGB rate·timestamp·TF preflight
+- `map_headless.sh --print-config`에서 `proximity_by_space:=false` 확인
+- 두 90도 코너가 포함된 1~2분 loop를 0.2~0.3 m/s로 주행
+- 시작 pose/heading에서 3~5초 관측 후 복귀 시 같은 view로 3~5초 정지
+- logger/DB에서 Type-2=0, 올바른 Type-1≥1, odom loss/NaN=0 확인
+- 2D/trajectory에서 두 코너 보존, 접힘·큰 correction jump 없음 확인
+
+완료 증거: run directory, DB/hash/integrity, loop JSONL, 두-코너 preview와 PASS 판정.
+
+#### Stage 2 — 전체 golden map 및 지도 artifact 동결
+
+현재: **미완료**. 기존 전체 DB는 geometry FAIL이다.
+
+남은 작업:
+
+- Stage 1과 같은 설정으로 전체 구역을 한 번 remap
+- 실제 직선·평행 벽과 두 90도 코너를 기준으로 geometry 검사
+- DB 복사본에서 PGM/YAML, optimized pose TXT/CSV, 3D PLY를 export
+- node/path/Z/end-gap/loop 수와 rejected 이유를 요약
+- DB, PGM/YAML, trajectory, PLY, config에 SHA-256 부여
+- 합격 artifact만 `2dmap/<date>/`와 golden-map 디렉터리에 승격
+
+완료 증거: `rtabmap.db + map.pgm + map.yaml + optimized_poses.csv + map_cloud.ply + manifest + SHA256SUMS`.
+
+#### Stage 3 — frozen-map localization과 좌표계 검증
+
+현재: **미시작**. 올바른 golden DB가 없어서 수행할 수 없다.
+
+남은 작업:
+
+- mapping DB를 수정하지 않는 `localization:=true` 전용 진입 경로 검증
+- 측량한 시작 marker 5개에서 각 2회, 총 10회 cold start
+- 시작 위치/heading 오차와 `map→odom` correction jump 측정
+- 짧은 이동·복귀 후 relocalization과 false match 검사
+- PointNav start/goal 좌표 5쌍을 map frame에 등록하고 독립 실측값 보존
+
+완료 조건: 10/10 초기화 성공, false relocalization 0, 사전 고정한 pose/jump 기준 이내.
+
+#### Stage 4 — frozen PixNav runtime과 file-only 실제 추론
+
+현재: **격리 runtime·checkpoint load·실제 RGB CUDA replay·2회 재현성 PASS**. 로봇 명령은 0회다.
+
+남은 작업:
+
+- 최소 20개 실제 RGB clip으로 file-only evidence 생성
+- 고정 카메라에서 `look_up/look_down`을 실행 금지·재관측 등으로 처리할 정책 결정
+- 현재 PixNav 경로는 OpenCV decoder를 써서 통과했지만 optional `torchvision.io/image.so` ABI
+  경고가 있으므로 production image-I/O 의존을 금지하거나 정확히 맞는 torchvision build로 동결
+
+완료 증거: `PASS_FILE_ONLY_REPLAY` report, 입력/모델/output hash, inference latency; ROS/UDP/SDK 호출 0.
+
+#### Stage 5 — PixNav action→Go2 안전 macro-trajectory adapter
+
+현재: **미구현**. 과거 10-waypoint 시각화는 이 단계의 증거가 아니다.
+
+남은 작업:
+
+- `forward/turn_left/turn_right/stop`을 짧은 시간 제한 SE(2) macro-action으로 정의
+- `look_up/look_down`은 고정 내장 카메라에서 직접 동작시키지 않도록 명시
+- 속도/각속도/가속도/동작시간 상한, sequence ID, timestamp, TTL 추가
+- stale PixNav/localization/VLM 입력은 무조건 zero-hold
+- RTAB pose로 macro-action 진행률을 추적하되 독립 ground truth로 사용하지 않음
+- 모터 대신 JSONL/file audit sink에서 action→trajectory 변환 반복 검증
+
+완료 조건: 정상·잘못된 입력 모두에서 결정론적 file output, stale/NaN/malformed가 command로 변환되는 경우 0.
+
+#### Stage 6 — live 4-Tier 무구동 폐루프
+
+현재: **통신 PARTIAL**. Docker/NetBird/server는 동작하지만 container navigation process는 없다.
+
+남은 작업:
+
+- 실제 `camera + localization → VLM → PixNav → adapter → file sink` process를 container/host에 배치
+- frame/request/response/PixNav/action/trajectory에 하나의 causal identity와 hash 연결
+- VLM strict waypoint schema를 sanitizer 보정 없이 통과
+- Docker의 `tail -f /dev/null` 상태를 실제 검증 node로 교체
+- 최소 10분 live run에서 `/cmd_vel`, Sport API, command UDP 송신이 0인지 감사
+
+완료 증거: live event JSONL, latency/age trace, process/config manifest, zero-actuation network/ROS audit.
+
+#### Stage 7 — fault injection과 watchdog
+
+현재: **미시작**.
+
+남은 작업:
+
+- server timeout/disconnect, NetBird/Wi-Fi loss, Docker restart/kill
+- malformed JSON, out-of-order/duplicate response, stale image/pose/PixNav output
+- localization loss/jump와 command sink block 시험
+- 모든 fault에서 zero-hold, recovery 후 오래된 decision 재적용 금지
+
+완료 조건: stale 적용 0, motion leakage 0, watchdog stop 목표 ≤0.5 s를 반복 시험에서 만족.
+
+#### Stage 8 — 단일 actuator gateway와 E-stop
+
+현재: **NO-GO**.
+
+남은 작업:
+
+- `/cmd_vel` 또는 Unitree Sport API 중 하나만 최종 authority로 선정
+- 기존 이중 발행 제거, sequence/TTL/clamp/watchdog를 단일 gateway에 적용
+- shutdown zero와 robot-side stop ACK 확인
+- 물리 E-stop, 통신 끊김, process crash에서 10회 연속 safe-stop
+- 로봇 주변 통제, operator/spotter 분리, 저속 상한 고정
+
+완료 조건: 이중 authority 0, 10/10 safe-stop, 비정상 종료 후 잔류 command 0.
+
+#### Stage 9 — supervised 저속 pilot
+
+현재: **미시작**.
+
+남은 작업:
+
+- 5 m 직선 → 단일 L-corner → T-junction 순으로 난이도 상승
+- 각 단계에서 localization, VLM/PixNav decision, macro-action, intervention 동시 기록
+- 충돌·near miss·localization loss·watchdog stop을 실패로 보존
+- 성공 후에만 속도를 0.2→0.35→0.5 m/s로 별도 A/B
+
+완료 조건: 정해진 반복에서 collision/intervention/localization loss 0, artifact 누락 0.
+
+#### Stage 10 — 논문 paired campaign
+
+현재: **미수행**.
+
+남은 작업:
+
+- golden map, calibration, checkpoint, adapter, safety config, VLM model/prompt 완전 동결
+- 5 fixed start-goal pairs × 2 methods × 5 repetitions = 50 main runs
+- Direct-goal PixNav와 Full ESCAPE-PixNav를 AB/BA balanced order로 수행
+- 실제 topic/provenance를 기록하는 recorder와 rosbag importer 수정
+- SR, intervention, timeout-normalized time, recovery, VLM latency, motion duty, decision yield 계산
+- failure/E-stop/timeout을 삭제하지 않고 video/log/hash와 함께 보존
+
+완료 증거: 50/50 완전 artifact, 사전 정의된 통계표, 누락·사후 선별 0.
+
+### 1.7 지금 병렬로 가능한 작업
+
+로봇 없이 Jetson만으로 가능한 항목:
+
+- Stage 0 manifest/safety 계약 작성
+- Stage 4 실제 RGB replay를 최소 20개 clip으로 확대하고 runtime manifest 동결
+- Stage 5 file-only macro-trajectory adapter 구현·시험
+- Stage 6 event identity/logger와 zero-actuation process 구성
+- Stage 7 fault-injection harness 준비
+- Stage 10 recorder/importer의 잘못된 topic/sample-data 제거
+
+로봇 전원이 반드시 필요한 항목:
+
+- Stage 1 센서 preflight/두-코너 자격
+- Stage 2 전체 remap
+- Stage 3 localization cold-start와 좌표 측량
+- Stage 6 live camera 포함 무구동 시험
+- Stage 8~10의 물리 안전/pilot/campaign
+
+### 1.8 완료율 추정과 남은 작업량
+
+완료율은 코드 파일 수가 아니라 **검증된 실물 artifact**를 기준으로 한다. 최종 목표인
+`golden map + localization + frozen PixNav + 안전한 4-Tier 폐루프 + 실로봇 paired campaign`을
+100점으로 두고 다음처럼 가중한다. 이 수치는 일정 추정을 위한 engineering estimate이며 논문
+성능 지표가 아니다.
+
+| 작업 묶음 | 전체 가중치 | 묶음 내 완료율 | 확보 점수 | 남은 핵심 작업 |
+|---|---:|---:|---:|---|
+| RTAB mapping·artifact·localization | 25 | 55% | 13.75 | Type-2 OFF 자격, 전체 remap, PGM/trajectory/PLY 동결, localization 10회 |
+| frozen PixNav·Go2 adapter | 20 | 55% | 11.00 | 20 clips 확대, runtime 경고 정리, discrete-action adapter |
+| live 4-Tier 무구동 통합 | 20 | 40% | 8.00 | 실제 container process, strict schema, causal identity, 10분 live sink |
+| actuator safety·fault·pilot | 20 | 10% | 2.00 | fault injection, 단일 authority, E-stop 10회, 저속 pilot |
+| recorder·평가·논문 campaign | 15 | 5% | 0.75 | recorder/importer 수정, 50 paired runs, 통계·영상·hash |
+| **합계** | **100** |  | **35.50** |  |
+
+따라서 2026-08-28 15:22 기준 보수적 전체 완료율은 **약 36%**, 남은 작업은 **약 64%**다.
+
+단계별 단순 진행률은 다음과 같다. 단계마다 규모가 달라 이 열의 평균을 전체 완료율로 사용하지 않는다.
+
+| Stage | 현재 진행률 | 남은 비율 | 바로 닫히는 조건 |
+|---:|---:|---:|---|
+| 0 버전·안전 동결 | 50% | 50% | manifest + 단일 authority/E-stop 계약 |
+| 1 짧은 RTAB 자격 | 75% | 25% | 물리 두-코너 run 1회 PASS |
+| 2 전체 golden map | 20% | 80% | 전체 remap + 5종 artifact/hash |
+| 3 localization | 0% | 100% | cold-start 10회와 false match 0 |
+| 4 PixNav runtime/replay | 75% | 25% | 실제 RGB 20 clips + runtime manifest/경고 정리 |
+| 5 PixNav→Go2 adapter | 10% | 90% | file-only macro-trajectory/TTL 검증 |
+| 6 live 4-Tier 무구동 | 35% | 65% | 실제 chain 10분 + motion output 0 |
+| 7 fault injection | 0% | 100% | 고장 매트릭스와 watchdog 통과 |
+| 8 actuator/E-stop | 10% | 90% | 단일 gateway + safe-stop 10/10 |
+| 9 저속 pilot | 0% | 100% | 직선/L/T 단계 통과 |
+| 10 논문 campaign | 5% | 95% | recorder 수정 + paired run 50/50 |
+
+가장 빨리 완료율을 높이는 순서는 `Stage 1 → Stage 2 → Stage 4 → Stage 5 → Stage 6`이다.
+Stage 1~2 동안 별도 작업자로 Stage 4~7의 무구동 소프트웨어를 병렬 준비할 수 있다.
 
 ---
 
@@ -125,6 +423,12 @@ $$\mathbf{p}_{\text{base}} = \mathbf{T}_{\text{base}\leftarrow\text{odom}} \cdot
 `20260828_113542_planar3dof_headless`에서 raw LIO Z span은 0.0335 m, sampled map-to-base Z span은 0.0175 m였고, 352개 node와 Type-2 LiDAR proximity closure 9개가 기록됐다. odometry lost, optimizer failure, NaN은 없었다. 이 결과는 4DoF의 6.452 m 수직 발산과 대비되어 **단층 평면 맵의 기본 프로파일을 3DoF로 확정**할 근거가 된다.
 
 단, Type-1 global visual closure는 0개였고 wrapper가 status 141로 종료되어 최종 optimized pose가 저장되지 않았다. 따라서 이 run은 3DoF 진단 PASS이지만 골든 맵/현장 localization DB로는 FAIL이다. 다음 순서는 정상 종료 저장 검증, Type-1 global loop 검증, 3회 반복성 검증이다.
+
+후속 `20260828_124601_planar3dof_headless`에서는 249 nodes, optimized 164 poses, 41.04 m 경로, Z span 0.0235 m를 기록했다. Type-1 global closure는 `174→61`과 `211→1` 두 개가 승인됐고, 마지막 시작점 closure score는 0.8717이었다. 최적화 후 start/end 거리는 0.0335 m, DB integrity는 `ok`, odometry lost/optimizer failure/NaN은 모두 0이었다. 따라서 **3DoF + 내장 RGB global retrieval + 3D LiDAR ICP 검증 기능은 단일-run PASS**다. 동일 짧은 loop 두 run을 더 수행해 Type-1 성공 `≥2/3`을 채운 뒤 전체 골든 맵으로 이동한다.
+
+그러나 후속 전체 run `20260828_141247_planar3dof_headless`는 실제 두 90도 코너가 접히고 교차해 geometry FAIL이다. 원본을 보존한 offline link-type ablation에서 Type-1만 제거하면 접힘이 남고 Type-2만 제거하면 직교 코너가 복구됐다. 따라서 최신 full DB의 낮은 graph residual과 36개 Type-1은 물리적 map 정확도 증거가 아니며, 해당 DB는 localization에 쓰지 않는다. canonical profile은 Type-1 visual loop를 유지하고 `RGBD/ProximityBySpace=false`로 바꾼다. 먼저 두 코너를 포함한 1~2분 짧은 자격 run을 통과한 뒤 전체 map을 한 번 다시 촬영한다.
+
+이 run의 wrapper status 141은 DB/RTAB-Map 실패가 아니라 operator `Ctrl+C`가 `tee`를 먼저 닫아 inner cleanup 출력이 SIGPIPE를 받은 logging-pipeline 문제였다. 저장 DB는 read-only 검사와 재최적화에서 정상이다. `map_headless.sh`는 `tee --ignore-interrupts`, established run의 operator stop 정규화, Python sqlite3 integrity fallback으로 보강했으며 다음 짧은 run에서 종료 status 0을 확인한다.
 
 4DoF는 삭제하지 않고 실제 경사로·고도 변화가 연구 범위에 포함될 때만 별도 DB/run ID로 수행한다. 3DoF에서도 4D L2의 3D point cloud, LIO, IMU와 3D occupancy 생성은 그대로 유지된다.
 
@@ -213,7 +517,7 @@ graph TD
 | Gate 1 실센서 | 부분 PASS | 다음 run에서 rate/timestamp/TF 반복 확인 |
 | Gate 2 planar 3DoF | 부분 PASS | 정상 종료, Type-1 ≥2/3, golden DB 저장 |
 | Gate 3 localization | 대기 | 독립 reference에서 cold start 10/10, false relocalization 0 |
-| Gate 4 PixelNav/S2E | **FAIL** | mock OFF, 실제 checkpoint와 real 11-frame trajectory |
+| Gate 4 PixelNav | **부분 PASS** | 11-frame CUDA action replay는 PASS; 20 clips와 고정카메라 action 정책 |
 | Gate 5 4-Tier sink | 대기 | live causal chain, actuator topic 발행 0 |
 | Gate 6 fault injection | 대기 | stale 적용 0, 모든 고장에서 stop ≤0.5 s |
 | Gate 7 actuator safety | 대기 | 단일 command authority, safe-stop 10/10 |
