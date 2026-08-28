@@ -40,3 +40,14 @@ must preserve this order:
 `CausalAdmissionLedger` rejects stale, duplicate, out-of-order, disconnected,
 or actuation-enabled events and reports a zero-target deadman hold when a stage
 times out. This is a software contract only, not measured physical stop latency.
+
+From the repository root, the robot-free regression entry point is:
+
+```bash
+./test_pixnav_offline.sh quick     # build, tests and saved evidence hashes
+./test_pixnav_offline.sh evidence  # regenerate file-only chain/fault/manifest
+./test_pixnav_offline.sh cuda      # saved-RGB CUDA replay plus downstream evidence
+```
+
+See `docs/experiments/06_pixnav_components_where_why_and_robot_free_tests.md`
+for where each component is used and what each PASS does or does not prove.
