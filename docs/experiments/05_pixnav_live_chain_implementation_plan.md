@@ -1,6 +1,6 @@
 # PixNav → live 4-Tier 구현 계획과 현재 완료 기록
 
-> 기준: 2026-08-28 17:51 KST
+> 기준: 2026-08-28 18:03 KST
 > 현재 허용 범위: live P6 1-cycle + read-only P7/no-actuation
 > 물리 판정: controller·actuator·자율주행 **NO-GO**
 
@@ -89,9 +89,9 @@ colcon test-result --verbose
 최종 source-frame age 0.250 s였다. L2는 유효 1,440 points, cloud–odom 차 0.078 s,
 전방/회전 clearance 1.334/0.506 m였다. 센서 조건은 통과했지만 PixNav가 `look_down`을 냈고
 operator-enable/E-stop이 연결되지 않아 gateway candidate는 정확히 false였다.
-P7이 adapter 이후 source/decision TTL도 재검사하도록 보강한 최종 `20260828_180030`은
-confidence 0.99, VLM 1.436 s, PixNav 0.091 s, P7 frame/decision age 0.274/0.004 s,
-L2 1,488 points로 동일한 fail-closed 결과를 냈고 working-tree와 source SHA-256를 동결했다.
+P7 source/decision TTL 재검사, 변조 차단과 cloud-nearest odom 선택을 포함한 최종
+`20260828_180327`은 confidence 0.95, VLM 1.484 s, PixNav 0.090 s, P7 frame/decision age
+0.271/0.004 s, L2 1,524 points와 cloud–odom 0.002 s로 fail-closed 결과와 source SHA를 동결했다.
 
 P6 전체 acceptance에서 1-cycle과 hash/zero-actuation은 통과했고 다음은 남았다.
 
@@ -130,7 +130,7 @@ operator-enable/E-stop과 필요 시 global localization freshness가 아직 없
 | low-confidence fail-closed | `~/.ros/pixnav_live_runs/20260828_174223_pixnav_live_no_actuation/` |
 | persistent P6 1-cycle | `~/.ros/pixnav_live_runs/20260828_174349_pixnav_live_no_actuation/` |
 | live L2/odom P7 결합 | `~/.ros/pixnav_live_runs/20260828_175109_pixnav_live_no_actuation/` |
-| P7 TTL+source manifest 최종 재실행 | `~/.ros/pixnav_live_runs/20260828_180030_pixnav_live_no_actuation/` |
+| nearest-stamp P7+source manifest 최종 | `~/.ros/pixnav_live_runs/20260828_180327_pixnav_live_no_actuation/` |
 
 초기 `152009/152047/152410` PixNav run은 goal/history pairing 오류가 있으므로 P1 acceptance에서
 사용하지 않는다. 새 live capture는 VLM 선택 시점 이후의 history를 반드시 추가로 수집한다.

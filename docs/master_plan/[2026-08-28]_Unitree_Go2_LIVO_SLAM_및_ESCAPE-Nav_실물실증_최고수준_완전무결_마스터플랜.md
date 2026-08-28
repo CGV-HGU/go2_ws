@@ -52,7 +52,7 @@ graph LR
     D1 <-->|NetBird VPN / wt0| S1
 ```
 
-### 📋 4대 계층 실측 현황 대조표 (2026-08-28 17:51 KST 기준)
+### 📋 4대 계층 실측 현황 대조표 (2026-08-28 18:03 KST 기준)
 
 | 계층 (Tier) | 구성 요소 | 현재 실측 상태 (Status) | 엔지니어링 팩트 및 주의사항 |
 | :--- | :--- | :---: | :--- |
@@ -61,7 +61,7 @@ graph LR
 | **Tier 2 (Jetson)** | LIVO 센서 브릿지 | 🟢 **완전 검증 (PASS)** | 매 프레임 10,000개 제로패딩 제거 및 `base_link` 점군 정상 복원. |
 | **Tier 2 (Jetson)** | RTAB-Map LIVO mapping | 🟡 **재매핑 필요 (Progress)** | 3DoF로 Z 발산은 해결했으나 최신 전체-map은 aggressive Type-2 proximity 때문에 90도 코너가 접힘. Type-2 OFF 짧은 재자격 후 전체 remap 필요. |
 | **Tier 3 (Docker)** | Jazzy 소프트웨어 패키지 | 🟡 **골격만 준비 (PARTIAL)** | 패키지와 unit test는 있으나 container 실제 프로세스는 `tail -f /dev/null`뿐이고 `e2e_node/controller_node`는 PixNav 실구현이 아님. |
-| **Tier 2/3 경계** | frozen PixNav runtime | 🟡 **persistent live 1-cycle PASS** | Checkpoint_A를 미리 적재한 뒤 최신 실제 5-frame CUDA 0.091 s, P7 source age 0.274 s를 확인했다. L2/odom P7까지 연결했지만 10분 soak·controller·actuator 권한은 없다. S2E ONNX는 주 backend가 아님. |
+| **Tier 2/3 경계** | frozen PixNav runtime | 🟡 **persistent live 1-cycle PASS** | Checkpoint_A를 미리 적재한 뒤 최신 5-frame CUDA 0.090 s, P7 source age 0.271 s, cloud-nearest odom 차 0.002 s를 확인했다. 10분 soak·controller·actuator 권한은 없다. S2E ONNX는 주 backend가 아님. |
 | **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟡 **live strict schema PASS / soak 대기** | 실제 capture-view에서 strict pixel/confidence response와 1.194 s timing/provenance를 확인했다. 반복·network fault는 미수행. |
 | **End-to-End** | 실로봇 paired campaign | 🔴 **미수행 (Pending)** | Gate 0~9, map/config freeze, 실제 artifact recorder/importer 통과 후 총 50회 수행. |
 
@@ -72,7 +72,7 @@ golden localization과 pilot을 포함한 자율주행 완료율로 사용하지
 따른다. 이후 17:51 KST에 ephemeral no-actuation 1-cycle은 통과했으며, 현재 병목은 10분
 상주 service/ fault 반복, 물리 operator-enable·E-stop과 golden localization 미검증이다.
 
-### 1.1 2026-08-28 17:51 KST 통합 진행 현황
+### 1.1 2026-08-28 18:03 KST 통합 진행 현황
 
 아래 표는 코드가 존재한다는 사실과 실제 artifact가 생성됐다는 사실을 구분한다. `PASS`는 해당
 행의 좁은 범위만 통과했다는 뜻이며, 다음 행이나 전체 자율주행의 통과를 의미하지 않는다.
@@ -86,7 +86,7 @@ golden localization과 pilot을 포함한 자율주행 완료율로 사용하지
 | RTAB 3D map export | `rtabmap-export --scan --poses`로 Type-2 제거 분석본 219,640-point PLY 생성 확인 | golden DB의 최종 PLY/PCD/octomap 동결 | **추출 기능 PASS, 최종본 없음** |
 | 2D occupancy map | 과거 PGM/YAML 4세트와 clean 파생본 보존 | 2026-08-28 Type-2 OFF golden PGM/YAML 생성 | **과거본만 존재** |
 | PixNav 코드/모델 | paper commit, 연구실 pin, Checkpoint_A 217,967,433 bytes와 SHA-256 일치; Jetson CUDA에서 실제 action logits/distance/tracked-goal 계산 | optional `torchvision.io` ABI 경고 정리와 production runtime pin | **실추론 PASS** |
-| PixNav 실제 RGB 입력 | live capture-view+4 post-capture history, persistent CUDA 0.091 s, P7 source age 0.274 s, finite, 구동 0 | 서로 다른 실제 clip 최소 20개와 10분 soak | **live 1-cycle PASS** |
+| PixNav 실제 RGB 입력 | live capture-view+4 post-capture history, persistent CUDA 0.090 s, P7 source age 0.271 s, finite, 구동 0 | 서로 다른 실제 clip 최소 20개와 10분 soak | **live 1-cycle PASS** |
 | PixNav→Go2 궤적 | bounded proposal과 live L2/odom P7 평가 연결. `look_down`은 reobserve/zero로 처리 | operator-enable/E-stop/P8 single gateway | **P7 PARTIAL / 구동 NO-GO** |
 | 4-Tier 네트워크 | 실제 Go2 RGB→Docker→server VLM→Jetson PixNav→file audit에 하나의 causal identity 연결 | 상주 container service, 10분 soak와 network fault | **1-cycle PASS** |
 | Docker runtime | `sdam_go2_container` 실행 중 | container 내부 실제 navigation process 없음(`tail -f /dev/null`만 실행) | **IDLE/PARTIAL** |
@@ -358,7 +358,7 @@ container 상주 navigation service와 production command authority는 아직 �
 | recorder·평가·논문 campaign | 15 | 5% | 0.75 | recorder/importer 수정, 50 paired runs, 통계·영상·hash |
 | **합계** | **100** |  | **45.00** |  |
 
-따라서 2026-08-28 17:51 기준 보수적 전체 완료율은 **약 45%**, 남은 작업은 **약 55%**다.
+따라서 2026-08-28 18:03 기준 보수적 전체 완료율은 **약 45%**, 남은 작업은 **약 55%**다.
 
 단계별 단순 진행률은 다음과 같다. 단계마다 규모가 달라 이 열의 평균을 전체 완료율로 사용하지 않는다.
 

@@ -83,8 +83,7 @@ class LiveL2OdomCollector(Node):
         self._lock = threading.Lock()
         self._cloud: Optional[PointCloud2] = None
         self._cloud_received_ns: Optional[int] = None
-        self._odom: Optional[Odometry] = None
-        self._odom_received_ns: Optional[int] = None
+        self._odom_samples: deque[tuple[int, int, Odometry]] = deque(maxlen=400)
         self._odom_history: deque[tuple[int, float, float, float]] = deque(maxlen=300)
         self._counts = {"cloud": 0, "odom": 0}
         self.create_subscription(
@@ -116,8 +115,7 @@ class LiveL2OdomCollector(Node):
         )
         received_ns = time.monotonic_ns()
         with self._lock:
-            self._odom = message
-            self._odom_received_ns = received_ns
+            self._odom_samples.append((_stamp_ns(message), received_ns, message))
             self._odom_history.append(
                 (received_ns, float(pose.position.x), float(pose.position.y), yaw)
             )
@@ -127,10 +125,17 @@ class LiveL2OdomCollector(Node):
         with self._lock:
             cloud = self._cloud
             cloud_received_ns = self._cloud_received_ns
-            odom = self._odom
-            odom_received_ns = self._odom_received_ns
+            odom_samples = list(self._odom_samples)
             history = list(self._odom_history)
             counts = dict(self._counts)
+        odom = None
+        odom_received_ns = None
+        if cloud is not None and odom_samples:
+            cloud_stamp_ns = _stamp_ns(cloud)
+            _, odom_received_ns, odom = min(
+                odom_samples,
+                key=lambda sample: abs(sample[0] - cloud_stamp_ns),
+            )
         base = {
             "schema_version": "go2_l2_odom_safety_snapshot_v1",
             "status": "BLOCKED_SENSOR_INPUT_MISSING",
@@ -174,8 +179,8 @@ class LiveL2OdomCollector(Node):
             )
             radius = np.hypot(points_base[:, 0], points_base[:, 1])
             rotation_zone = height & (radius >= 0.20) & (radius <= 1.5)
-            front_clearance = float(np.min(points_base[front, 0])) if np.any(front) else 2.0
-            rotation_clearance = float(np.min(radius[rotation_zone])) if np.any(rotation_zone) else 1.5
+            front_clearance = float(np.min(points_base[front, 0])) if np.any(front) else None
+            rotation_clearance = float(np.min(radius[rotation_zone])) if np.any(rotation_zone) else None
 
             max_step_m = 0.0
             max_yaw_step_deg = 0.0
@@ -205,8 +210,12 @@ class LiveL2OdomCollector(Node):
                     "valid_cloud_points": int(points_base.shape[0]),
                     "front_corridor_points": int(np.count_nonzero(front)),
                     "rotation_zone_points": int(np.count_nonzero(rotation_zone)),
-                    "front_clearance_m": round(front_clearance, 6),
-                    "rotation_clearance_m": round(rotation_clearance, 6),
+                    "front_clearance_m": (
+                        round(front_clearance, 6) if front_clearance is not None else None
+                    ),
+                    "rotation_clearance_m": (
+                        round(rotation_clearance, 6) if rotation_clearance is not None else None
+                    ),
                     "max_odom_step_m": round(max_step_m, 9),
                     "max_odom_yaw_step_deg": round(max_yaw_step_deg, 9),
                     "odom_pose": {

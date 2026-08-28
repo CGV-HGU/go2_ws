@@ -1,7 +1,7 @@
 # Robot–Jetson–Docker–Server 4-Tier 필요 요소·구현률·무구동 시험
 
-> 실측 시각: 2026-08-28 17:51 KST
-> 기준 commit: `a1eda05` + 아래 P7 working-tree source hash manifest
+> 실측 시각: 2026-08-28 18:03 KST
+> 기준 commit: `969029a` + nearest-stamp guard source hash manifest
 > 안전 범위: live RGB/L2/odom, Docker VLM, Jetson PixNav는 read-only/file-only; command bridge, `/cmd_vel`, Sport API는 시작하지 않음
 > 퍼센트 의미: 논문 실로봇 4-Tier deployment에 필요한 항목을 Tier별 100점으로 가중한
 > engineering readiness estimate. 논문 성능 수치가 아니며 코드 파일 개수로 계산하지 않음.
@@ -72,7 +72,7 @@ camera/L2 calibration, actuator ACK와 물리 safe-stop 증거는 아니다.
 | planar 3DoF/global loop 기능 | 15 | 11 | Z 안정·Type-1 PASS, Type-2 OFF 물리 재자격 필요 |
 | golden map과 artifact | 15 | 4 | export 기능은 있으나 최신 전체-map geometry FAIL |
 | frozen DB localization | 15 | 0 | golden DB 부재로 cold-start 10회 미실행 |
-| frozen PixNav v2 CUDA | 15 | 15 | persistent Checkpoint_A, 최신 5-frame CUDA 0.091 s, P7 source age 0.274 s |
+| frozen PixNav v2 CUDA | 15 | 15 | persistent Checkpoint_A, 최신 5-frame CUDA 0.090 s, P7 source age 0.271 s |
 | adapter/audit/causal/fault | 15 | 15 | 72 tests, fault 22/22, no-actuation qualification PASS |
 | live admission/recorder/gateway 전단 | 10 | 7 | live L2/odom freshness·clearance P7 평가 PASS; operator/E-stop pending |
 | **합계** | **100** | **65** | |

@@ -1,6 +1,6 @@
 # 현재 상태와 다음 실행 순서 — 4-Tier PixNav와 RTAB-Map
 
-> 최신 측정: 2026-08-28 17:51 KST
+> 최신 측정: 2026-08-28 18:03 KST
 > 실측 run: `20260828_141247_planar3dof_headless`
 > 안전 범위: Docker/VLM/PixNav/L2는 read-only/file-only; recorder, 모터/`/cmd_vel`, Sport API, production bridge는 시작하지 않음
 
@@ -93,7 +93,7 @@ End-to-End 64%다. 이는 live safe file sink까지의 배치 readiness이며 �
 | S2E core tests | PASS | isolated package: 43 passed |
 | bringup contract tests | PASS | isolated package: 3 passed |
 | live camera acquisition | PASS | 정상 기립·정지 Go2에서 RTP→`/camera/front/image_raw` 1280×720 BGR8, 실수신 14.33 Hz |
-| live camera → PixNav P6 | 1-CYCLE PASS | 실제 RGB→Docker→server VLM→persistent CUDA PixNav→file sink, 최신 P7 source age 0.274 s; 10분 soak pending |
+| live camera → PixNav P6 | 1-CYCLE PASS | 실제 RGB→Docker→server VLM→persistent CUDA PixNav→file sink, 최신 P7 source age 0.271 s; 10분 soak pending |
 | live L2/odom P7 | PARTIAL PASS | read-only L2/odom clearance/freshness 실평가 PASS; operator-enable/E-stop/P8 미연결로 gateway=false |
 | production command path | NOT STARTED | 9090/9091 bridge와 motor sink를 실행하지 않음 |
 
@@ -120,21 +120,21 @@ camera/LIVO probe, RTAB-Map, host command bridge, PixNav/S2E live process가 남
 Foxy의 `ros2 topic info --verbose`는 최신 Unitree DDS type-hash를 XML-RPC로 표시하는 과정에서
 호환 예외가 발생했지만, 각 토픽 publisher 1개와 위 실제 sample 수신은 별도로 확인됐다.
 
-### 2.2 17:51 live PixNav + L2/odom P7 무구동 결합
+### 2.2 18:03 live PixNav + L2/odom P7 무구동 결합
 
 `pixnav_live_check.py`를 정상 기립·정지 Go2에서 실행했고 ROS publisher, Unitree SDK client,
 command UDP sender와 controller를 한 개도 만들지 않았다.
 
 | 항목 | 실측 | 판정 |
 |---|---:|---|
-| Docker→remote VLM | confidence 0.99, 1.436 s, strict pixel 계약 | PASS |
-| persistent PixNav | live CUDA 0.091 s | PASS |
-| 최종 관측 / P7 age | 0.269 / 0.274 s (`source TTL=1.0 s`) | PASS |
-| L2/odom | 1,488 valid points, stamp delta 0.059 s | PASS |
-| clearance | 전방 1.725 m, 회전 0.543 m | sensor gate PASS |
-| PixNav output | `look_down`, probability 0.893 | fixed camera `reobserve`, 이동 0 |
+| Docker→remote VLM | confidence 0.95, 1.484 s, strict pixel 계약 | PASS |
+| persistent PixNav | live CUDA 0.090 s | PASS |
+| 최종 관측 / P7 age | 0.267 / 0.271 s (`source TTL=1.0 s`) | PASS |
+| L2/odom | 1,524 valid points, nearest stamp delta 0.002 s | PASS |
+| clearance | 전방 0.921 m, 회전 0.532 m | sensor gate PASS |
+| PixNav output | `look_down`, probability 0.892 | fixed camera `reobserve`, 이동 0 |
 | P7 최종 | operator-enable=false, E-stop clear 미연결 | gateway candidate=false, fail-closed |
-| artifact | `~/.ros/pixnav_live_runs/20260828_180030_pixnav_live_no_actuation/` | P7 TTL + source manifest + SHA256 전부 OK |
+| artifact | `~/.ros/pixnav_live_runs/20260828_180327_pixnav_live_no_actuation/` | nearest-stamp P7 + source manifest + SHA256 전부 OK |
 
 따라서 현재 빠른 우선순위는 RTAB remap이 아니라 P6 10분 soak/fault와 P8 이전의 물리
 operator-enable/E-stop 계약이다. RTAB 골든맵·localization은 실제 이동량/궤적 평가를 시작하기
