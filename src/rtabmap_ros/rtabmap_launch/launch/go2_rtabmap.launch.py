@@ -3,6 +3,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
     """
@@ -67,9 +68,12 @@ def generate_launch_description():
         # measured 4DoF baseline. The dedicated planar wrapper overrides the
         # three graph arguments together, while retaining the same 3D cloud.
         'Reg/Strategy': '1',                   # 1 = ICP; RGB still detects loop candidates
-        'Reg/Force3DoF': reg_force_3dof,
-        'Icp/Force4DoF': icp_force_4dof,
-        'Optimizer/Slam2D': optimizer_slam_2d,
+        # RTAB-Map's core parameter table is string-valued. Foxy otherwise
+        # applies YAML coercion to LaunchConfiguration("true"/"false") and
+        # passes ROS booleans, making the rtabmap process abort at startup.
+        'Reg/Force3DoF': ParameterValue(reg_force_3dof, value_type=str),
+        'Icp/Force4DoF': ParameterValue(icp_force_4dof, value_type=str),
+        'Optimizer/Slam2D': ParameterValue(optimizer_slam_2d, value_type=str),
         'Optimizer/GravitySigma': '0.3',
         'Rtabmap/DetectionRate': '2.0',
         'Rtabmap/PublishStats': 'true',        # Required by the headless loop-event logger

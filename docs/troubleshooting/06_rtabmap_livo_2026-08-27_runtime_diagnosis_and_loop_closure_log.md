@@ -481,3 +481,13 @@ RGB 카메라 기반 appearance retrieval은 강하게 동작했다. 예를 들�
 - SIGINT/SIGTERM 수신 시 `SUMMARY`를 먼저 fsync한 뒤 종료
 
 수정 후 모의 입력에서 node 239 후보 139, score 0.844551의 `REJECTED`와 최종 `SUMMARY rejected=1` 기록을 확인했다. 실제 다음 mapping run에서 다시 검증해야 한다.
+
+## 16. 2026-08-28 GUI 시작 중 RTAB-Map abort와 수정
+
+11:00~11:01 KST의 `mapping_gui.sh` 두 실행은 loop closure가 단순히 0건인 주행 결과가 아니다. 두 loop log 모두 `frames=0`, 기존 DB의 mtime도 2026-08-27 그대로였고, launch log에서 `/opt/ros/foxy/lib/rtabmap_slam/rtabmap`이 각각 `exit code -6`으로 종료됐다. GUI와 static TF만 남았으므로 지도나 loop 판정에 사용할 수 없는 시작 실패다.
+
+원인은 planar A/B를 위해 추가한 `LaunchConfiguration` 세 값이 Foxy launch의 YAML coercion을 거쳐 ROS boolean으로 전달된 것이다. 생성된 임시 YAML은 `Reg/Force3DoF: false`, `Icp/Force4DoF: true`, `Optimizer/Slam2D: false`였지만 RTAB-Map core parameter table은 이 값을 문자열로 선언한다. 실제 Apport core의 GDB backtrace도 `rclcpp::Node::declare_parameter<std::string>`에서 SIGABRT가 발생했음을 보였다. `ParameterValue(..., value_type=str)`로 세 값을 감싸 4DoF와 planar profile 모두 실제 `str`인 것을 정적 평가 시험으로 확인했다.
+
+수정된 4DoF string parameter YAML은 동일한 Foxy/CycloneDDS 환경에서 별도 `/tmp` DB를 사용해 SLAM mode, callback setup, RGB/scan-cloud subscription까지 완료했고 12초 probe 제한시간까지 생존했다(`timeout` status 124). 이 probe는 파라미터 초기화만 검증하며 센서 처리나 실제 loop closure 증거는 아니다.
+
+또한 GUI나 launch parent만 살아 있어도 LIVE banner가 표시되던 문제를 막기 위해, bringup은 parameter 초기화 시간을 기다린 뒤 실제 `/rtabmap` 노드가 발견될 때만 startup gate를 통과한다. 실패하면 mapping 시작 전 종료되며 motor/command 경로는 생성하지 않는다. 이 수정은 build/static/startup-probe 검증을 통과했지만 2026-08-28 physical planar 결과는 아직 없다.

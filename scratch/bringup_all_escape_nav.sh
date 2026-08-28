@@ -299,8 +299,20 @@ fi
 echo "  • [MASTER] Starting RTAB-Map LIO + visual-place mapping (${MODE_ARG}, ${GUI_ARG})..."
 ros2 launch rtabmap_launch go2_rtabmap.launch.py \
     ${MODE_ARG} ${GUI_ARG} "${GRAPH_ARGS[@]}" &
-PIDS+=($!)
-sleep 3
+RTABMAP_LAUNCH_PID=$!
+PIDS+=("$RTABMAP_LAUNCH_PID")
+
+# A GUI window and the ros2 launch parent can remain alive after the rtabmap
+# child has aborted. Do not print a false LIVE banner: wait through parameter
+# initialization, then require the actual /rtabmap node to be discoverable.
+sleep 10
+if ! kill -0 "$RTABMAP_LAUNCH_PID" 2>/dev/null || \
+   ! timeout 5 ros2 node list --no-daemon --spin-time 2 2>/dev/null | grep -qx '/rtabmap'; then
+    echo -e "${RED}ERROR: the RTAB-Map node did not survive startup.${NC}"
+    echo "Do not begin mapping. Check this terminal and the newest ~/.ros/log/*/launch.log."
+    exit 1
+fi
+echo "  • RTAB-Map startup gate passed: /rtabmap is alive."
 
 # ------------------------------------------------------------------------------
 # Phase 3: 도커 샌드박스 S2E 비동기 자율주행 가동

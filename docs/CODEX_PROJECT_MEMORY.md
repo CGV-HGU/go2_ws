@@ -647,6 +647,18 @@ the database, console, loop events, configuration snapshots and hashes under a
 single run ID. It has passed static/build validation but has no physical result
 yet.
 
+Two attempted `mapping_gui.sh` starts on 2026-08-28 produced zero `/info`
+frames because the rtabmap child aborted with exit code -6 before mapping. The
+new graph launch substitutions had been YAML-coerced into ROS booleans while
+RTAB-Map declares these core parameters as strings. All three overrides now use
+`ParameterValue(..., value_type=str)`, and static evaluation confirmed string
+types for both 4DoF and planar profiles. The actual crash core ended in
+`rclcpp::Node::declare_parameter<std::string>`; a corrected Foxy/CycloneDDS
+probe with an isolated `/tmp` database reached SLAM/callback/subscription setup
+and survived until its 12-second timeout. Bringup now also requires the actual
+`/rtabmap` node to survive initialization before printing its LIVE banner. No
+physical planar result has been collected after this correction yet.
+
 The physical-autonomy status remains **NO-GO** until the acceptance gates in
 section 12 and the experiment-plan safety gates are satisfied.
 

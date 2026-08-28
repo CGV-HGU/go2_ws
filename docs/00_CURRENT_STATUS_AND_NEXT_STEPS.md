@@ -107,6 +107,8 @@ Optimizer/Slam2D=true
 
 별도 `mapping_planar_headless.sh`는 아래 세 launch argument를 함께 전달한다. 따라서 다른 4DoF 실행기를 덮어쓰지 않고 동일 경로 한 바퀴를 비교할 수 있다.
 
+2026-08-28의 첫 GUI 재시도 두 번은 Foxy가 세 argument를 boolean으로 변환해 RTAB-Map이 시작 중 abort했고 `/info` frame이 0개였다. 현재는 `ParameterValue(..., value_type=str)`로 수정했으며, bringup도 실제 `/rtabmap` 노드가 살아 있을 때만 LIVE를 표시한다. 수정 후 별도 `/tmp` DB startup probe는 통과했지만 실제 planar 주행 결과는 아직 없다.
+
 - RTAB graph z가 수 cm 수준으로 제한
 - raw LIO보다 endpoint gap이 악화되지 않음
 - 벽 직선성과 평행성이 map2 이상
