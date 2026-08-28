@@ -8,10 +8,11 @@
 
 지금은 **Jetson ↔ Docker ↔ 원격 서버의 무구동 통신과 계약 시험**을 진행할 수 있다. 실제로 네트워크, 임시 양방향 UDP, text JSON 추론, 보관된 실제 Go2 카메라 이미지의 vision 추론까지 통과했다.
 
-최신 paper branch의 실로봇 주 backend인 frozen PixNav는 Jetson CUDA에서 저장된 실제 Go2 RGB
-11-frame replay를 2회 통과했다. 하지만 PixNav action→Go2 adapter와 안전한 production command
-path는 아직 없으므로 이를 4-Tier 자율주행 완료로 해석하면 안 된다. S2E는 별도 NavBench-GS
-보조 실험이다.
+최신 paper branch의 실로봇 주 backend인 frozen PixNav는 Jetson CUDA에서 VLM이 실제 pixel을
+고른 `frame_10`을 capture-view로 사용한 수정 v2 replay를 통과했다. 초기 11-frame 세 run은
+`frame_00`을 goal로 쓴 input-pairing 오류 때문에 forward 진단 자료로만 남기고 acceptance에서는
+제외한다. bounded macro proposal/file sink는 구현됐지만 안전한 production command path는 아직
+없으므로 이를 4-Tier 자율주행 완료로 해석하면 안 된다. S2E는 별도 NavBench-GS 보조 실험이다.
 
 RTAB-Map 기본 운용은 **planar 3DoF로 확정한다.** 같은 층의 평평한 복도에서 3D LiDAR 입력과 3D map 생성은 유지하고, pose graph만 `x/y/yaw`로 구속한다. 4DoF는 실제 경사·고도 변화가 실험 범위일 때만 별도 DB로 비교한다.
 
@@ -77,7 +78,9 @@ planar 3DoF와 global visual loop의 기능 자체는 확인됐다. 그러나 �
 | advertised model | MEASURED | `qwen3.5-9b-instruct`, root `AxionML/Qwen3.5-9B-NVFP4` |
 | text JSON contract | PASS | `status=ok`, `action=stop`, `source=docker-server-preflight` 반환 |
 | archived RGB vision | PASS/제한적 | `scratch/live_camera_snapshot.jpg`에서 가까운 물체를 `office chair`로 반환하고 `action=stop` 유지 |
-| frozen PixNav CUDA replay | PASS/제한적 | 실제 Go2 RGB 11장, Checkpoint_A, action/distance/tracked-goal finite, 동일 입력 2회 prediction 일치, actuation 0 |
+| frozen PixNav CUDA replay | PASS/제한적 | 수정 v2에서 `frame_10` capture-view+1-step observation, Checkpoint_A, finite, actuation 0; post-capture multi-step history는 없음 |
+| PixNav file adapter | PASS/제한적 | bounded proposal, hash-chain JSONL, causal ledger, 56 tests; ROS/socket/SDK/actuation 권한 없음 |
+| offline causal/fault | PASS/제한적 | VLM→PixNav→macro identity PASS, pure/file-copy fault 22/22; live timeout·physical stop latency 증거 아님 |
 | 현재 유선/서버 경로 | PASS | wlan0 disconnected, eth0 학교망+Go2 직결망, NetBird active, server HTTP 200(0.051 s) |
 | S2E core tests | PASS | isolated package: 43 passed |
 | bringup contract tests | PASS | isolated package: 3 passed |
@@ -92,11 +95,12 @@ planar 3DoF와 global visual loop의 기능 자체는 확인됐다. 그러나 �
 
 1. ~~최신 `paper` commit과 연구실 PixNav 구현 pin 확정~~ — 완료.
 2. ~~공식 PixNav Checkpoint_A 배치와 SHA-256 계약~~ — 완료.
-3. ~~보관된 Go2 RGB 11-frame PixNav goal-mask/history CUDA replay와 재현성~~ — 완료.
-4. 서로 다른 실제 RGB clip을 최소 20개로 늘리고 runtime manifest를 동결한다.
-5. VLM submit/complete/apply/reject identity와 image hash를 남기는 event logger를 설계한다.
-6. 모터 대신 file sink에 PixNav discrete action과 안전 macro-action만 기록한다.
-7. timeout, malformed JSON, server loss, stale response를 주입하고 항상 `stop/zero`가 되는지 확인한다.
+3. ~~VLM capture-view를 정확히 사용한 v2 1-step CUDA replay~~ — 완료.
+4. ~~bounded macro proposal, hash-chain sink, causal ledger, pure fault harness~~ — 56 tests와 22/22 완료.
+5. ~~checkpoint/reference/adapter/evidence file-only manifest 동결~~ — 완료.
+6. capture 이후 history가 있는 서로 다른 실제 RGB clip을 최소 20개로 늘린다.
+7. event logger를 live VLM submit/complete/PixNav/sink process에 연결한다.
+8. live timeout, server loss, stale pose/image를 주입하고 항상 zero-hold인지 확인한다.
 
 ### 3.2 반복 가능한 읽기 전용 확인 명령
 
@@ -236,7 +240,9 @@ archived/live sensor replay
         → supervised low-speed Go2
 ```
 
-현재는 `Docker ↔ server`의 text/archived-image inference까지 확인됐다. 다음 4-Tier 목표는 **hash가 고정된 실제 PixNav를 포함한 no-actuation command-sink 폐루프**이며, 로봇 주행이 아니다.
+현재는 `Docker ↔ server`의 text/archived-image inference와 offline VLM→PixNav→macro artifact
+연결까지 확인됐다. 다음 4-Tier 목표는 **live capture와 localization을 포함한 10분 no-actuation
+command-sink 폐루프**이며, 로봇 주행이 아니다.
 
 ## 6. 관련 문서
 

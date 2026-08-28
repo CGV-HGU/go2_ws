@@ -42,10 +42,11 @@ VLM이 선택한 capture-view RGB pixel goal
 
 모델 파일이 존재한다는 것만으로 PASS가 아니다. 위 hash와 구현 pin을 모두 확인한다.
 
-2026-08-28 15:20 KST 기준 구현 pin과 217,967,433-byte checkpoint hash뿐 아니라 실제 CUDA
-inference도 PASS했다. 저장된 실제 Go2 RGB 11장을 동일 입력으로 2회 replay했고 모든 action/distance/
-tracked-goal 출력이 finite였으며 두 run의 prediction JSON이 완전히 같았다. ROS, socket, Unitree SDK,
-command publisher 호출은 0회였다.
+2026-08-28 16:28 KST 기준 구현 pin과 217,967,433-byte checkpoint hash뿐 아니라 실제 CUDA
+inference도 PASS했다. 단, 최초 세 run은 VLM이 pixel을 선택한 `frame_10`이 아니라 `frame_00`을
+goal image로 잘못 사용했다. 이 결과들은 checkpoint forward/결정론 진단 증거일 뿐 capture-view
+계약 합격 증거에서는 철회한다. 수정된 v2 run은 `frame_10`을 goal image이자 첫 observation으로
+사용했고 모든 출력이 finite였다. ROS, socket, Unitree SDK, command publisher 호출은 0회였다.
 
 ### 2.1 Jetson runtime 선택
 
@@ -103,11 +104,13 @@ preflight PASS 조건:
 - `torch`, `torchvision`, `cv2`, `numpy` import 가능
 - 파일 전용 interlock 활성
 
-그 다음, 이미 저장된 실제 Go2 RGB 11장으로만 replay한다.
+그 다음, 이미 저장된 실제 Go2 RGB에서 VLM 선택 당시의 capture-view를 명시해 replay한다.
 
 ```bash
 ./pixnav_check.py --device cuda \
-  --frames-dir /home/unitree/.ros/pixnav_s2e_runs/20260828_135901_pixnav_s2e_no_actuation/frames
+  --frames-dir /home/unitree/.ros/pixnav_s2e_runs/20260828_135901_pixnav_s2e_no_actuation/frames \
+  --goal-frame-index 10 \
+  --history-start-index 10
 ```
 
 기본 `(u,v)=(640,600)`은 앞선 실 RGB/VLM 연결 시험에서 얻은 pixel을 재사용하는 **runtime
@@ -115,15 +118,23 @@ smoke input**이다. 카메라 calibration이나 목표 의미·도달 성공을
 
 2026-08-28 실측 evidence:
 
-- 첫 CUDA replay: `/home/unitree/.ros/pixnav_runs/20260828_152009_pixnav_file_only/report.json`
-  (`PASS_FILE_ONLY_REPLAY`, 4.708 s)
-- 동일 입력 재현 replay: `/home/unitree/.ros/pixnav_runs/20260828_152047_pixnav_file_only/report.json`
-  (`PASS_FILE_ONLY_REPLAY`, 2.675 s)
-- 환경변수 없는 최종 명령 검증: `/home/unitree/.ros/pixnav_runs/20260828_152410_pixnav_file_only/report.json`
-  (`PASS_FILE_ONLY_REPLAY`, 2.791 s; 격리 runtime 자동 발견)
-- 두 report에서 `published=false`, `actuation_calls=0`; `run_id`와 latency를 제외한 내용은 동일
-- 출력은 frame 0~9에서 `look_down`, frame 10에서 `stop`이었다. 이는 smoke goal/input에 대한
-  policy 출력이며 행동의 물리적 정답이나 navigation 성공으로 채점하지 않는다.
+- `152009`, `152047`, `152410` 세 run: Checkpoint_A 실제 CUDA forward와 동일 잘못된 입력에 대한
+  결정론만 확인. goal/history pairing 오류 때문에 capture-view acceptance에서는 **사용 금지**.
+- 수정된 v2 CUDA replay:
+  `/home/unitree/.ros/pixnav_runs/20260828_162002_pixnav_file_only/report.json`
+  (`PASS_FILE_ONLY_REPLAY`, 2.889 s, goal=`frame_10`, history=`frame_10` 한 장).
+- file-only macro audit:
+  `/home/unitree/.ros/pixnav_macro_runs/20260828_162023_pixnav_macro_file_only/`.
+  출력 `look_down`은 고정 카메라에서 실행하지 않고 `reobserve + zero hold`로 차단됐다.
+- offline causal chain:
+  `/home/unitree/.ros/pixnav_chain_runs/20260828_162122_pixnav_offline_chain/`.
+- pure/file-copy 고장 주입 22/22:
+  `/home/unitree/.ros/pixnav_fault_runs/20260828_163454_pixnav_fault_injection/`.
+- 최종 Jetson file-only manifest:
+  `/home/unitree/.ros/pixnav_qualification_runs/20260828_163514_pixnav_qualification/`.
+
+기존 자료에는 `frame_10` 이후 영상이 없으므로, 여러 시점 history의 정상 추론은 아직 검증하지
+못했다. 이후 clip은 VLM capture-view와 그 뒤의 관측 프레임을 함께 수집해야 한다.
 
 ## 5. 검사기가 하는 일과 하지 않는 일
 
@@ -131,8 +142,9 @@ smoke input**이다. 카메라 calibration이나 목표 의미·도달 성공을
 
 1. 논문 commit, 연구실 구현 pin, checkpoint hash를 evidence에 기록한다.
 2. 실제 Go2 저장 RGB의 파일 hash를 기록한다.
-3. 첫 capture image에 pixel mask를 만들고 이후 RGB history와 함께 224×224로 전처리한다.
-4. frozen PixNav를 한 번 실행해 각 frame의 action probability, distance, tracked goal을 기록한다.
+3. VLM이 pixel을 선택한 정확한 capture-view에 mask를 만들고, 같은 시각 또는 이후 RGB만
+   history로 허용해 224×224로 전처리한다.
+4. frozen PixNav를 실행해 각 유효 history frame의 action probability, distance, tracked goal을 기록한다.
 5. NaN/Inf와 shape를 검사하고 `~/.ros/pixnav_runs/<RUN_ID>/report.json`을 남긴다.
 
 검사기에는 ROS import, socket, SDK, command publisher가 없다. 따라서 다음을 증명하지 않는다.
@@ -153,12 +165,19 @@ grounding해야 한다.
 
 추가로 다음이 필요하다.
 
-1. `forward/left/right/stop`을 Go2 macro-action으로 변환하는 단일 command adapter
-2. `look_up/look_down` 처리 방침: 고정 내장 카메라에서는 직접 실행 불가
-3. RTAB-Map localization stale/lost 시 zero-hold
-4. RGB stale, VLM timeout, PixNav timeout 시 zero-hold
-5. 저속 무부하 command audit와 E-stop/watchdog 검증
-6. 별도 승인 후 짧은 저속 pilot
+1. ~~`forward/left/right/stop`을 bounded macro-action **proposal**로 변환하는 file-only adapter~~
+2. ~~`look_up/look_down`을 고정 내장 카메라에서 `reobserve + zero hold`로 차단~~
+3. live RTAB-Map localization stale/lost를 실제 event chain에서 zero-hold로 연결
+4. live RGB stale, VLM timeout, PixNav timeout을 watchdog과 file sink에서 검증
+5. strict VLM schema와 capture 이후 history를 최소 20개 clip으로 검증
+6. 단일 actuator gateway, 장애물 guard, E-stop과 실제 stop latency 검증
+7. 별도 승인 후 짧은 저속 pilot
+
+구현된 `src/escape_nav_pixnav`는 ROS/DDS/socket/Unitree SDK를 직접 import하지 않는다. 0.25 m
+translation, ±30° rotation, 속도·가속도·TTL 상한을 갖는 proposal만 hash-chain JSONL에 남기며,
+항상 `actuation_permitted=false`다. `frame_captured → vlm_submitted → vlm_completed →
+pixnav_completed → macro_audited` 순서를 검사하는 event ledger도 구현됐지만 아직 live process와
+물리 controller에는 연결하지 않았다. 단위/패키지 시험은 56개 모두 통과했다.
 
 논문 기준 실로봇 평가는 하나의 고정 map에서 같은 start-goal pair에 대해 Direct-goal PixNav와
 전체 ESCAPE-PixNav를 각각 5회 반복하고, intervention은 failure로 기록하며 RGB·trajectory·event·

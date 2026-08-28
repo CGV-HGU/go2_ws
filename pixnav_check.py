@@ -65,6 +65,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--goal-v", type=int, default=600)
     parser.add_argument("--goal-radius", type=int, default=8)
     parser.add_argument("--max-frames", type=int, default=11)
+    parser.add_argument(
+        "--goal-frame-index",
+        type=int,
+        default=-1,
+        help="capture-view frame containing the selected pixel (default: last frame)",
+    )
+    parser.add_argument(
+        "--history-start-index",
+        type=int,
+        help="first observation at/after goal capture (default: goal frame index)",
+    )
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument(
@@ -136,6 +147,13 @@ def module_status(name: str) -> bool:
     return importlib.util.find_spec(name) is not None
 
 
+def resolve_frame_index(index: int, count: int, label: str) -> int:
+    resolved = index if index >= 0 else count + index
+    if resolved < 0 or resolved >= count:
+        raise ValueError(f"{label} {index} is outside {count} collected frames")
+    return resolved
+
+
 def install_python38_settings_shim(reference: Path) -> dict[str, Any]:
     """Load pinned settings with deferred annotations on Python 3.8 only.
 
@@ -185,10 +203,38 @@ def main() -> int:
     runtime_site = args.runtime_site.expanduser().resolve()
     if runtime_site.is_dir() and str(runtime_site) not in sys.path:
         sys.path.insert(0, str(runtime_site))
-    frames = collect_frames(
+    source_frames = collect_frames(
         args.frames_dir.expanduser().resolve() if args.frames_dir else None,
         args.max_frames,
     )
+    selection_error = None
+    goal_frame_index = None
+    history_start_index = None
+    history_frames: list[Path] = []
+    if source_frames:
+        try:
+            goal_frame_index = resolve_frame_index(
+                args.goal_frame_index,
+                len(source_frames),
+                "goal-frame-index",
+            )
+            requested_history_start = (
+                args.history_start_index
+                if args.history_start_index is not None
+                else goal_frame_index
+            )
+            history_start_index = resolve_frame_index(
+                requested_history_start,
+                len(source_frames),
+                "history-start-index",
+            )
+            if history_start_index < goal_frame_index:
+                raise ValueError(
+                    "history-start-index must be at or after the capture-view goal frame"
+                )
+            history_frames = source_frames[history_start_index:]
+        except ValueError as error:
+            selection_error = str(error)
     mapping = running_mapping_processes()
     checkpoint_hash = sha256_file(checkpoint) if checkpoint.is_file() else None
     reference_head = git_head(reference) if reference.is_dir() else None
@@ -200,12 +246,13 @@ def main() -> int:
         "checkpoint_exists": checkpoint.is_file(),
         "checkpoint_hash_matches": checkpoint_hash == CHECKPOINT_SHA256,
         "runtime_modules_present": all(modules.values()),
-        "recorded_frames_present": bool(frames),
+        "recorded_frames_present": bool(source_frames),
+        "capture_view_history_order_valid": selection_error is None and bool(history_frames),
         "mapping_inactive": not mapping,
         "file_only_interlock": True,
     }
     report: dict[str, Any] = {
-        "schema_version": "go2_pixnav_file_only_v1",
+        "schema_version": "go2_pixnav_file_only_v2",
         "run_id": run_id,
         "paper_commit": PAPER_COMMIT,
         "reference_commit_expected": REFERENCE_COMMIT,
@@ -214,10 +261,35 @@ def main() -> int:
         "checkpoint_sha256_expected": CHECKPOINT_SHA256,
         "checkpoint_sha256_actual": checkpoint_hash,
         "runtime_site": str(runtime_site),
+        "source_frames": [
+            {"index": index, "path": str(path), "sha256": sha256_file(path)}
+            for index, path in enumerate(source_frames)
+        ],
+        "goal_frame": (
+            {
+                "index": goal_frame_index,
+                "path": str(source_frames[goal_frame_index]),
+                "sha256": sha256_file(source_frames[goal_frame_index]),
+            }
+            if goal_frame_index is not None
+            else None
+        ),
         "frames": [
-            {"path": str(path), "sha256": sha256_file(path)} for path in frames
+            {
+                "index": history_start_index + offset,
+                "path": str(path),
+                "sha256": sha256_file(path),
+            }
+            for offset, path in enumerate(history_frames)
         ],
         "goal_pixel": {"u": args.goal_u, "v": args.goal_v, "radius": args.goal_radius},
+        "input_contract": {
+            "goal_frame_role": "vlm_capture_view_containing_selected_pixel",
+            "goal_frame_index": goal_frame_index,
+            "history_start_index": history_start_index,
+            "history_rule": "observations_must_be_at_or_after_goal_capture",
+            "selection_error": selection_error,
+        },
         "modules": modules,
         "mapping_processes": mapping,
         "checks": checks,
@@ -250,7 +322,7 @@ def main() -> int:
         print("PixNav replay blocked: mapping is active; run it after map_headless.sh exits.")
         print(f"Evidence: {run_dir}")
         return 3
-    if not preflight_required or not frames:
+    if not preflight_required or not history_frames or selection_error:
         report["overall"] = "BLOCKED_PREREQUISITE"
         report["inference_executed"] = False
         write_json(run_dir / "report.json", report)
@@ -286,10 +358,15 @@ def main() -> int:
     model.load_state_dict(state_dict)
     model.eval()
 
-    decoded = [cv2.imread(str(path), cv2.IMREAD_COLOR) for path in frames]
-    if any(image is None or image.size == 0 for image in decoded):
+    goal_bgr = cv2.imread(str(source_frames[goal_frame_index]), cv2.IMREAD_COLOR)
+    decoded = [cv2.imread(str(path), cv2.IMREAD_COLOR) for path in history_frames]
+    if goal_bgr is None or goal_bgr.size == 0 or any(
+        image is None or image.size == 0 for image in decoded
+    ):
         raise RuntimeError("one or more recorded RGB frames could not be decoded")
-    height, width = decoded[0].shape[:2]
+    height, width = goal_bgr.shape[:2]
+    if any(image.shape[:2] != (height, width) for image in decoded):
+        raise RuntimeError("goal and history frame dimensions do not match")
     u = max(0, min(width - 1, args.goal_u))
     v = max(0, min(height - 1, args.goal_v))
     radius = max(1, args.goal_radius)
@@ -302,7 +379,7 @@ def main() -> int:
         -1,
     )
     goal_image = cv2.resize(
-        cv2.cvtColor(decoded[0], cv2.COLOR_BGR2RGB), (224, 224)
+        cv2.cvtColor(goal_bgr, cv2.COLOR_BGR2RGB), (224, 224)
     )[np.newaxis, :, :, :]
     goal_mask = cv2.resize(mask, (224, 224), cv2.INTER_NEAREST)[
         np.newaxis, :, :, np.newaxis
@@ -324,13 +401,14 @@ def main() -> int:
     latency_s = time.perf_counter() - started
 
     predictions = []
-    for index, (probability, distance_raw, tracked_goal) in enumerate(
+    for history_offset, (probability, distance_raw, tracked_goal) in enumerate(
         zip(probabilities, distances, tracked_goals)
     ):
         action_id = int(np.argmax(probability))
         predictions.append(
             {
-                "frame_index": index,
+                "frame_index": history_start_index + history_offset,
+                "history_offset": history_offset,
                 "action_id": action_id,
                 "action": ACTION_NAMES[action_id],
                 "action_probabilities": {

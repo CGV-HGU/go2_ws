@@ -40,7 +40,7 @@ RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 
 |---|---|---|---|
 | Go2 센서 | 내장 L2 cloud/IMU/LIO odom, 전면 RGB 수신 | 다음 run rate/timestamp 반복 확인 | 센서 PASS |
 | Jetson LIVO/RTAB-Map | 3DoF Z 안정, Type-1 기능, DB/hash 저장은 확인 | Type-2 OFF 두-코너 재자격, 전체 remap, frozen-DB localization | **MAP GEOMETRY FAIL** |
-| frozen PixNav | 논문 pin 구현·공식 Checkpoint_A hash 일치, Jetson CUDA에서 실제 Go2 RGB 11-frame replay 2회 및 결정론 확인 | 20개 실제 clip 확대, runtime warning 정리, Go2 action adapter | **FILE-ONLY PASS / ADAPTER 대기** |
+| frozen PixNav | 논문 pin·Checkpoint_A hash 일치, 정확한 VLM capture-view를 사용한 v2 CUDA 1-step replay, bounded proposal/hash-chain sink, pure fault 22/22 | post-capture history가 있는 20개 실제 clip, live localization/obstacle/controller 연결 | **FILE-ONLY PASS / LIVE 대기** |
 | Docker nodes | container와 Jazzy package/executable은 존재; 현재 container는 `tail -f /dev/null`만 실행 | `e2e_node`, `controller_node`를 frozen PixNav 실구현과 file sink에 연결 | **FAIL** |
 | Remote VLM | model 조회, text, 보관 RGB 1장 API 응답 | live frame, strict navigation schema, timing/provenance | PARTIAL |
 | Host↔Docker bridge | pose/cmd packet 골격과 CRC 존재 | sequence/timestamp/TTL 없음, legacy raw packet 허용 | **FAIL** |
@@ -54,13 +54,13 @@ RTAB-Map은 전체 시스템의 첫 번째 기반 자격시험이다. 지도만 
 
 | Gate | 범위 | 핵심 시험 | 합격 기준 | 현재 |
 |---:|---|---|---|---|
-| 0 | 버전·안전 동결 | git/Docker/model/config hash, E-stop, 단일 operator, 통제 구역 | manifest 완성, motion path 기본 OFF, abort 절차 리허설 | 미통과 |
+| 0 | 버전·안전 동결 | git/Docker/model/config hash, E-stop, 단일 operator, 통제 구역 | manifest 완성, motion path 기본 OFF, abort 절차 리허설 | file-only manifest PASS / physical 부분 |
 | 1 | 실센서 preflight | L2 cloud, IMU, LIO odom, RGB, TF, clock, Jetson thermal/network | 정해진 rate 범위, timestamp 역행 0, TF 단절 0, 실제 frame 확인 | 부분 PASS |
 | 2 | planar 3DoF 지도 | Type-2 OFF 두-코너 자격 후 전체 remap | Z span ≤0.05 m, Type-2=0, 올바른 Type-1, 두 90도 코너·직선·평행성 보존, DB 정상 저장 | **재매핑 필요** |
 | 3 | map localization | frozen DB cold start와 같은 pose 반복, 이동 후 재지역화 | 10회 시작 성공, false relocalization 0, pose jump 기준 이내 | 대기 |
-| 4 | frozen PixNav | 실제 저장 RGB history + capture-view pixel goal + Checkpoint_A 추론 | 구현 pin/model hash 고정, finite action logits, file sink만 사용 | **부분 PASS: 11-frame×2** |
-| 5 | live 4-Tier 무구동 | live camera→VLM grounding→PixNav→controller audit sink | 모든 event identity 연결, stale decision 차단, 모터 topic 발행 0 | 대기 |
-| 6 | fault injection | server/VPN/Docker loss, timeout, malformed/out-of-order, stale pose/image | 모든 경우 0 command/hold, watchdog stop ≤0.5 s, stale 적용 0 | 대기 |
+| 4 | frozen PixNav | 실제 저장 RGB history + capture-view pixel goal + Checkpoint_A 추론 | 구현 pin/model hash 고정, finite action logits, file sink만 사용 | **v2 1-step PASS / 20 clips 대기** |
+| 5 | live 4-Tier 무구동 | live camera→VLM grounding→PixNav→controller audit sink | 모든 event identity 연결, stale decision 차단, 모터 topic 발행 0 | offline chain PASS / live 대기 |
+| 6 | fault injection | server/VPN/Docker loss, timeout, malformed/out-of-order, stale pose/image | 모든 경우 0 command/hold, watchdog stop ≤0.5 s, stale 적용 0 | pure/file-copy 22/22 / live 대기 |
 | 7 | actuator safety | 단일 gateway, E-stop, shutdown zero, 짧은 직진/회전 | 이중 authority 0, 10회 연속 safe-stop, command age/속도 clamp PASS | 대기 |
 | 8 | 저속 pilot | 5 m 직선→L-corner→T-junction 순으로 단계 확대 | collision/intervention 0, localization loss 0, 모든 provenance 완전 | 대기 |
 | 9 | 논문 campaign | frozen pairs, balanced order, Direct-goal vs Full | 총 50 main runs와 별도 deployment runs, 누락 artifact 0 | 대기 |
@@ -160,7 +160,18 @@ capture-view 실제 Go2 RGB + goal pixel mask
 - 최소 20개 실제 RGB clip에서 file-only policy output이 audit를 통과
 - 이 단계에서는 `/cmd_vel`과 Sport API에 어떤 motion command도 발행하지 않음
 
-PixNav pixel은 capture-view에 고정된다. 로봇이 이동한 뒤 동일 좌표를 현재 영상에 그대로 재사용하지 않고, capture viewpoint를 복원하거나 새 관측에서 다시 grounding해야 한다. 고정 카메라에서 `look_up/look_down`을 어떻게 처리할지와 Habitat 이산 action을 Go2 안전 macro-action으로 바꾸는 adapter는 별도 Gate다.
+PixNav pixel은 capture-view에 고정된다. 로봇이 이동한 뒤 동일 좌표를 현재 영상에 그대로 재사용하지 않고, capture viewpoint를 복원하거나 새 관측에서 다시 grounding해야 한다. 고정 카메라의 `look_up/look_down` zero-hold와 Habitat 이산 action의 bounded proposal 변환은 file-only로 구현됐으며, live localization/controller 연결은 별도 Gate다.
+
+2026-08-28 수정 판정: 초기 `152009/152047/152410` 실행은 VLM이 pixel을 고른 `frame_10` 대신
+`frame_00`을 goal image로 사용했으므로 capture-view acceptance에서 제외한다. 수정된
+`20260828_162002` v2 run은 `frame_10`을 goal과 첫 observation으로 사용해 실제 CUDA inference를
+통과했다. 기존 자료에는 그 이후 frame이 없어 아직 multi-step history 증거는 아니다.
+
+`src/escape_nav_pixnav`에는 discrete action을 0.25 m/±30° bounded macro proposal로 변환하는
+file-only adapter가 추가됐다. 고정 카메라의 `look_up/look_down`은 reobserve/zero-hold이며 모든
+record가 `actuation_permitted=false`다. 56개 package test, offline causal chain, pure/file-copy
+fault 22/22를 통과했지만 이는 Gate 5의 live 10분 시험이나 Gate 6의 실제 watchdog stop latency를
+대체하지 않는다.
 
 ### Gate 5 — live 4-Tier 무구동 폐루프
 
@@ -256,7 +267,7 @@ pilot 도중 parameter를 수정하면 수정 전 run은 final campaign에 포�
 |---|---|---:|---|
 | Day 1 | Gate 2: Type-2 OFF 두-코너 자격 + 전체 remap | 짧은 1 + 전체 1 | 물리 geometry가 맞는 golden DB 생성 |
 | Day 2 | Gate 3: localization 10회 + camera calibration | 10+ | frozen DB/calibration |
-| Day 3 | Gate 4: frozen PixNav real-RGB replay | ≥20 clips | hash 고정 file-only policy evidence |
+| Day 3 | Gate 4: capture-view/post-capture PixNav replay | ≥20 clips | hash 고정 file-only policy evidence |
 | Day 4 | Gate 5~6: 4-Tier sink와 fault injection | 정상 10분 + 고장 ≥70회 | stale/motion leakage 0 |
 | Day 5 | Gate 7: actuator/E-stop/stop 반복 | ≥15 | safe-stop 10/10 |
 | Day 6 | Gate 8: 저속 pilot | 12~17 | collision/intervention 0 |
@@ -303,10 +314,10 @@ experiments/real_robot_icra2027/<campaign_id>/<pair>/<method>/<rep>/
 1. Type-2 OFF 두-코너 짧은 loop를 통과하고 전체 map을 한 번 remap
 2. 새 DB에서 표준 PGM/YAML를 export하고 코너·직선·평행성·hash 확인
 3. 같은 DB를 frozen 상태로 localization cold-start 10회 검증
-4. JetPack/CUDA와 맞는 PixNav torch runtime을 고정하고 저장 Go2 RGB file-only replay
-5. capture-view pixel 계약과 Go2 discrete-action adapter를 무구동 file sink로 검증
-6. mock node를 실제 node로 교체하고 live 4-Tier command sink 통과
-7. host bridge 단일 authority/TTL/legacy 제거와 fault injection
+4. post-capture history가 있는 실제 Go2 RGB clip을 최소 20개 수집해 v2 replay
+5. 구현된 file-only adapter/causal ledger를 live localization·obstacle 입력과 연결
+6. mock node를 실제 node로 교체하고 live 4-Tier command sink 10분 통과
+7. host bridge 단일 authority/TTL/legacy 제거와 live fault injection
 8. 그 후에만 저속 물리 pilot
 
 이 순서를 모두 통과해야 “Go2–Jetson–Docker–Server 전체 시스템이 실로봇에서 동작한다”고 주장할 수 있다.

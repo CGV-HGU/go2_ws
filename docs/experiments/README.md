@@ -1,7 +1,7 @@
 # 실로봇 End-to-End 실험 계획 허브
 
 > 실측 개정: 2026-08-28 KST
-> 현재 판정: planar/global-loop 기능 PASS, 최신 전체-map geometry FAIL(Type-2 proximity가 주원인) / remap·localization 미검증 / physical autonomy NO-GO
+> 현재 판정: planar/global-loop 기능 PASS, 최신 전체-map geometry FAIL(Type-2 proximity가 주원인) / PixNav v2 file-only·adapter·offline fault PASS / remap·localization·live chain 미검증 / physical autonomy NO-GO
 > 판정 원칙: 실제 소스·checkpoint·runtime artifact가 과거 문서의 “완성/Final” 표현보다 우선함
 
 ## 문서 우선순위
@@ -10,6 +10,7 @@
 |---:|---|---|---|
 | 1 | [실로봇 전체 E2E 마스터 계획](00_real_robot_end_to_end_master_test_plan.md) | 센서→3DoF map→localization→frozen PixNav→4-Tier→안전→pilot→50-run campaign | **Authoritative / Active** |
 | 2 | [매핑 복귀 직후 PixNav 무구동 자격시험](04_post_mapping_pixnav_zero_actuation_qualification.md) | 논문 고정 PixNav 구현+Checkpoint_A→실 RGB replay→파일 evidence | **Authoritative / Active** |
+| 2.5 | [PixNav→live 4-Tier 구현 계획](05_pixnav_live_chain_implementation_plan.md) | 완료된 file-only 계층과 다음 live/safety 구현 Gate | **Implementation active** |
 | 3 | [4-Tier 실측 감사 및 ICRA 2027 프로토콜](../master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md) | 현재 구현 준비도와 paired campaign 원칙 | **Authoritative audit** |
 | 4 | [RTAB-Map 실물 검증계획](../07_real_robot_sensor_and_autonomy_verification_plan.md) | 센서·map·global loop 세부 기준 | **Active** |
 | 5 | [실로봇 정량 테이블 규격](01_table1_table2_quantitative_experiment_master_protocol.md) | Direct-goal vs Full, 25회/method, main/deployment/safety table | **Schema active / 값 미측정** |
@@ -24,7 +25,7 @@
   → 실센서 preflight
   → planar 3DoF golden map
   → map localization
-  → frozen PixNav real-RGB file-only replay
+  → frozen PixNav capture-view/post-capture real-RGB file-only replay
   → live 4-Tier command sink
   → fault injection
   → actuator/E-stop

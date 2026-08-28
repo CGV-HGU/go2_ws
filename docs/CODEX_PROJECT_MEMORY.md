@@ -909,3 +909,54 @@ optimization error gate are deliberately unchanged for a one-variable causal
 fix. The failed full DB remains analysis evidence and must not be used for
 localization. Next run is a 1–2 minute, two-corner Type-2-OFF qualification;
 only a pass authorizes one full remap.
+
+## 19. PixNav v2 input correction and Jetson file-only adapter (2026-08-28 16:30 KST)
+
+Section 17's `BLOCKED_RUNTIME` statement is superseded. A JetPack 5.1.1
+isolated runtime now exists at `.local-data/pixnav_runtime/site-packages` with
+NVIDIA PyTorch `2.0.0+nv23.05`; the official Checkpoint_A performed a real
+CUDA forward on recorded Go2 RGB.
+
+An input-contract error was discovered after the first three runs. The VLM
+selected pixel `(640,600)` on `frame_10`, but the original tool used
+`frame_00` as the goal image and frames 0–10 as history. Runs `152009`,
+`152047`, and `152410` therefore prove checkpoint forward execution and
+determinism only; they are withdrawn from capture-view acceptance. The fixed
+`pixnav_check.py` schema v2 records `goal_frame`, `source_frames`, and
+history-only `frames`, and rejects observations that predate goal capture.
+
+Corrected evidence is:
+
+```text
+PixNav CUDA v2:
+  ~/.ros/pixnav_runs/20260828_162002_pixnav_file_only/report.json
+  goal=frame_10, history=[frame_10], latency=2.889 s, action=look_down
+Macro audit:
+  ~/.ros/pixnav_macro_runs/20260828_162023_pixnav_macro_file_only/
+Offline VLM→PixNav→macro chain:
+  ~/.ros/pixnav_chain_runs/20260828_162122_pixnav_offline_chain/
+Pure/file-copy fault injection:
+  ~/.ros/pixnav_fault_runs/20260828_163454_pixnav_fault_injection/ (22/22)
+Jetson qualification manifest:
+  ~/.ros/pixnav_qualification_runs/20260828_163514_pixnav_qualification/
+```
+
+The new pure-Python ament package `src/escape_nav_pixnav` implements:
+
+- the pinned 6-way action contract;
+- bounded file-only proposals (0.25 m forward and ±30 degree turns, with
+  speed, acceleration, probability, age and timeout limits);
+- fixed-camera `look_up/look_down` as reobserve plus zero hold;
+- a mode-0600 hash-chained JSONL audit sink;
+- offline causal artifact validation;
+- an ordered live-event contract
+  `frame_captured→vlm_submitted→vlm_completed→pixnav_completed→macro_audited`;
+- stale, duplicate, out-of-order, disconnected and actuation-enabled rejection;
+- a qualification manifest with source/config/checkpoint/evidence hashes.
+
+All proposals and events keep `actuation_permitted=false`. The runtime modules
+directly import no ROS, socket, Unitree SDK, geometry/navigation message or ROS
+launch package. `colcon test` passed 56 tests with zero failures. This is not a
+controller, live camera/history, localization, obstacle safety, E-stop, actual
+watchdog stop-latency or robot-motion proof. Existing data has no frames after
+`frame_10`, so multi-step PixNav history still requires newly recorded clips.

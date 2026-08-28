@@ -47,7 +47,7 @@ main 실로봇 표에는 구현·안전·logging이 동일한 두 방법만 넣�
 | S2E gait-only | 실제 정책 node 미확인 | 실제 S2E 없음 | 미검증 | **NO** |
 | VLM+S2E Sync | method switch/실행 artifact 없음 | 실제 S2E 없음 | 미검증 | **NO** |
 | ViNT/NoMAD | source 후보만 존재 | Go2용 checkpoint/config 미검증 | 없음 | **NO** |
-| Full ESCAPE-PixNav | mock graph와 설계 골격 존재 | 공식 checkpoint hash 및 Jetson CUDA 11-frame file-only replay PASS | adapter/통합/안전 미검증 | main 후보, 현재 NO-GO |
+| Full ESCAPE-PixNav | mock graph와 설계 골격 존재 | 공식 checkpoint hash 및 올바른 capture-view의 Jetson CUDA v2 1-step replay PASS | file-only adapter는 PASS, live 통합/안전 미검증 | main 후보, 현재 NO-GO |
 
 과거 문서에 있던 ViNT/NoMAD의 `80/80/60/60`, `SPL 58.2%`, `38.5s`, `0.75 collision`, `65.4ms` 값은 이 Go2, 이 map, 이 goal과 같은 조건에서 측정된 값이 아니므로 삭제했다.
 
