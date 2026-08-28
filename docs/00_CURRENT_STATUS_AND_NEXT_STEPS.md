@@ -1,6 +1,6 @@
 # 현재 상태와 다음 실행 순서 — RTAB-Map 3DoF 자격 검증
 
-> 최신 측정: 2026-08-28 14:12~14:28 KST
+> 최신 측정: 2026-08-28 17:19 KST
 > 실측 run: `20260828_141247_planar3dof_headless`
 > 안전 범위: recorder, Docker/VLM, 모터/`/cmd_vel`, Sport API, production bridge를 시작하지 않음
 
@@ -89,10 +89,32 @@ End-to-End 37%다. 상세 점수와 `status/full` 재검증 명령은
 | 현재 유선/서버 경로 | PASS | wlan0 disconnected, eth0 학교망+Go2 직결망, NetBird active, server HTTP 200(0.051 s) |
 | S2E core tests | PASS | isolated package: 43 passed |
 | bringup contract tests | PASS | isolated package: 3 passed |
-| live camera → VLM → S2E | NOT TESTED | 로봇 OFF이며 현재 ROS VLM node는 mock-first 구현 |
+| live camera acquisition | PASS | 정상 기립·정지 Go2에서 RTP→`/camera/front/image_raw` 1280×720 BGR8, 실수신 14.33 Hz |
+| live camera → PixNav P6 | NOT IMPLEMENTED | 실카메라 입력은 PASS지만 capture/VLM/PixNav/file-sink causal process는 아직 없음 |
 | production command path | NOT STARTED | 9090/9091 bridge와 motor sink를 실행하지 않음 |
 
 보관 RGB 한 장의 성공은 서버가 OpenAI-compatible image payload를 받을 수 있다는 증거다. 실시간 camera timestamp, full VL-MAG schema, memory, S2E trajectory, stale response rejection 또는 navigation 품질의 증거는 아니다.
+
+### 2.1 17:19 정상 기립·정지 실센서 preflight
+
+사용자가 Go2를 정상 기립 상태로 두고 움직이지 않은 조건에서 command publisher, SDK client,
+mapping, Docker controller를 시작하지 않고 실제 입력만 구독했다.
+
+| 입력/변환 | 6초 실측 | 판정 |
+|---|---:|---|
+| Go2 mainboard | ping 3/3, 평균 0.199 ms | PASS |
+| `/utlidar/cloud_deskewed` | 15.49 Hz, 11,461 records/frame | PASS |
+| `/utlidar/imu` | 247.03 Hz, accel norm 9.715 m/s² | PASS |
+| `/utlidar/robot_odom` | 149.92 Hz, `odom→base_link`, Z=0.3159 m | PASS |
+| RTP→`/camera/front/image_raw` | 14.33 Hz, 1280×720 BGR8 | PASS |
+| `go2_livo_sensor_bridge.py` | cloud rx/pub/drop=77/77/0 | PASS |
+| IMU order correction | `wxyz`, gravity residual 0.12° | PASS |
+| valid cloud records | 12.0% after finite/non-zero filtering | transport PASS; mapping geometry에서 재평가 |
+
+재사용 가능한 읽기 전용 프로브는 `scratch/probe_live_sensors_no_actuation.py`다. 측정 종료 후
+camera/LIVO probe, RTAB-Map, host command bridge, PixNav/S2E live process가 남아 있지 않음을 확인했다.
+Foxy의 `ros2 topic info --verbose`는 최신 Unitree DDS type-hash를 XML-RPC로 표시하는 과정에서
+호환 예외가 발생했지만, 각 토픽 publisher 1개와 위 실제 sample 수신은 별도로 확인됐다.
 
 ## 3. 충전 중 할 수 있는 일
 
@@ -138,6 +160,9 @@ docker exec sdam_go2_container bash -lc '
 ## 4. 충전 후 RTAB-Map 실행 순서
 
 ### Gate A — 전원 후 센서 preflight
+
+**2026-08-28 17:19 정상 기립·정지 조건 PASS.** 아래 입력과 변환은 모두 실수신됐다. 다만
+이 합격은 점군 전송/시간/프레임 파이프라인 판정이며 코너 형상과 map 정확도 판정은 Gate B에서 한다.
 
 로봇을 움직이지 않은 상태에서 다음을 먼저 확인한다.
 
