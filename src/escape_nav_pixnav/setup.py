@@ -24,6 +24,7 @@ setup(
             "pixnav_chain_validate = escape_nav_pixnav.causal_chain:main",
             "pixnav_fault_injection = escape_nav_pixnav.fault_injection:main",
             "pixnav_qualification = escape_nav_pixnav.qualification:main",
+            "pixnav_vlm_grounding = escape_nav_pixnav.vlm_grounding:main",
         ],
     },
 )

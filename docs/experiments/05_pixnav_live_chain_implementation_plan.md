@@ -6,16 +6,29 @@
 
 ## 1. 구현 경계
 
-실제 목표 경로는 다음과 같다.
+실제 **주행 정책 경로**는 다음과 같다. RTAB-Map이나 Nav2가 목표 경로를 생성하지 않는다.
 
 ```text
-Go2 RGB capture + RTAB localization
-  → remote VLM pixel grounding
+Go2 RGB capture
+  → remote VLM capture-view pixel grounding
   → frozen PixNav Checkpoint_A
   → bounded macro proposal
-  → localization/obstacle/safety admission
+  → obstacle/freshness/E-stop safety admission
   → single actuator gateway
 ```
+
+RTAB localization과 L2 odometry는 아래의 별도 side-channel이다.
+
+```text
+RTAB map pose + L2 odometry/clearance
+  → pose freshness/loss, 실제 translation, collision/stall, experiment trajectory
+  → safety admission + execution evidence + evaluation log
+```
+
+RTAB pose는 PixNav pixel/action을 생성하거나 Nav2 global path를 만드는 입력이 아니다. 최신 paper
+계약처럼 localization을 명시적으로 선언한 경우에만 상대 실행 증거와 graph geometry에 사용하며,
+숨겨진 target geometry를 유도하지 않는다. main 비교는 동일 frozen PixNav backend를 사용하는
+Direct-goal PixNav와 Full ESCAPE-PixNav이므로 Nav2는 main 주행기에 포함하지 않는다.
 
 현재 구현은 `bounded macro proposal`까지 파일과 메모리 계약으로만 도달한다. ROS publisher,
 socket, Unitree SDK와 actuator authority는 의도적으로 포함하지 않았다.
@@ -64,7 +77,8 @@ colcon test-result --verbose
 
 로봇 전원을 켜되 모터 command path를 시작하지 않고 다음 node/process를 만든다.
 
-1. `capture_adapter`: `/camera/front/image_raw`와 해당 시각 RTAB pose를 하나의 `causal_id`로 저장
+1. `capture_adapter`: `/camera/front/image_raw`를 goal/history 계약으로 저장하고, 해당 시각 RTAB
+   pose는 정책 입력이 아닌 별도 execution-evidence sidecar로 같은 `causal_id`에 연결
 2. `vlm_client`: request/response body hash, submit/complete monotonic timestamp 기록
 3. `pixnav_worker`: capture frame을 goal로, 그 시각 이후 frame만 history로 투입
 4. `proposal_sink`: 기존 adapter와 `AuditJsonlSink`만 호출
@@ -77,6 +91,10 @@ P6 acceptance:
 - capture 이전 frame이 PixNav history에 들어간 횟수 0
 - `/cmd_vel`, Sport API, production command UDP 발행 0
 - process kill 또는 server timeout에서 event ledger가 zero-target deadman hold 기록
+
+P6에서 RTAB pose가 아직 없더라도 RGB→VLM→PixNav→file sink의 무구동 정책 체인은 시험할 수
+있다. 다만 pose freshness/loss와 실제 이동량을 사용하는 execution-grounded 판정은 골든맵 기반
+localization 또는 명시적으로 선언한 odometry source를 연결한 뒤에만 합격시킨다.
 
 ## 5. P7/P8 진입 전 금지 사항
 
