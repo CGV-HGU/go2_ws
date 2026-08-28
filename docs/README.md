@@ -27,6 +27,7 @@
 
 ## 폴더 지도
 
+- [`experiments/`](./experiments/): Table 1 & Table 2 실물 실증 정량 실험 계획 및 평가 매트릭스
 - [`master_plan/`](./master_plan/): 현재 총괄 계획과 과거 계획 아카이브
 - [`troubleshooting/`](./troubleshooting/): 문제 증거, 원인, 해결 및 재검증
 - [`jetson_plan/`](./jetson_plan/): Foxy host·DDS·RTAB-Map·host bridge 관련 문서
