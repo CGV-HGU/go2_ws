@@ -65,6 +65,13 @@ graph LR
 | **Tier 4 (Server)** | Qwen3.5-9B VLM 서빙 | 🟡 **전송 PARTIAL** | 모델 endpoint와 text/보관 RGB 응답은 통과했지만 strict waypoint schema, live timing/provenance는 미통과. |
 | **End-to-End** | 실로봇 paired campaign | 🔴 **미수행 (Pending)** | Gate 0~9, map/config freeze, 실제 artifact recorder/importer 통과 후 총 50회 수행. |
 
+2026-08-28 16:47 KST의 4-Tier 전용 가중 평가는 `Robot 45% / Jetson 58% / Docker 28% /
+Server 66%`, 실제 cross-tier End-to-End는 **37%**다. 구성요소 단순 평균 49%는 자율주행
+완료율로 사용하지 않는다. 상세 배점, 현재 실측과 재실행 명령은
+[`Robot–Jetson–Docker–Server 4-Tier 구현률`](../experiments/07_4tier_robot_jetson_docker_server_readiness.md)을
+따른다. 현재 병목은 Tier 3의 실제 no-actuation process 부재와 Tier 1 offline/golden
+localization 미검증이다.
+
 ### 1.1 2026-08-28 16:30 KST 통합 진행 현황
 
 아래 표는 코드가 존재한다는 사실과 실제 artifact가 생성됐다는 사실을 구분한다. `PASS`는 해당

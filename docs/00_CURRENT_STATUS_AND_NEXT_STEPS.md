@@ -63,6 +63,11 @@ planar 3DoF와 global visual loop의 기능 자체는 확인됐다. 그러나 �
 
 ## 2. 16:46 KST 무구동 실측 결과
 
+4-Tier의 최신 가중 평가는 Robot 45%, Jetson 58%, Docker 28%, Server 66%, 실제 cross-tier
+End-to-End 37%다. 상세 점수와 `status/full` 재검증 명령은
+[`Robot–Jetson–Docker–Server 4-Tier 구현률`](./experiments/07_4tier_robot_jetson_docker_server_readiness.md)을
+따른다. 이 퍼센트는 engineering readiness estimate이며 논문 성능 지표가 아니다.
+
 | 항목 | 결과 | 증거와 해석 |
 |---|---|---|
 | Jetson 자원 | PASS | 15 GiB RAM 중 약 11 GiB available, NVMe 약 388 GiB available |
