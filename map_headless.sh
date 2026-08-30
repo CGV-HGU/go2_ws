@@ -34,7 +34,16 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --print-config)
-            exec bash "$EXEC_SCRIPT" --mapping --planar --print-config
+            bash "$EXEC_SCRIPT" --mapping --planar --print-config
+            config_status=$?
+            if [ "$config_status" -eq 0 ]; then
+                echo "RGBD/NeighborLinkRefining=false"
+                echo "RGBD/ProximityBySpace=false"
+                echo "Rtabmap/DetectionRate=2.0"
+                echo "Icp/VoxelSize=0.05"
+                echo "Grid/3D=true"
+            fi
+            exit "$config_status"
             ;;
         -h|--help)
             usage
@@ -80,6 +89,8 @@ cp -a "$LOGGER_SOURCE" "$RUN_DIR/config/rtabmap_loop_logger.py"
     echo "RGBD/OptimizeMaxError=3.0"
     echo "Optimizer/Robust=false"
     echo "Rtabmap/DetectionRate=2.0"
+    echo "Icp/VoxelSize=0.05"
+    echo "Grid/3D=true"
     echo "recorder=false"
     echo "docker_vlm=false"
     echo "host_command_bridge=false"

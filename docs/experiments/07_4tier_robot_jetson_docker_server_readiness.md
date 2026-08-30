@@ -1,8 +1,8 @@
 # Robot–Jetson–Docker–Server 4-Tier 필요 요소·구현률·무구동 시험
 
-> 실측 시각: 2026-08-28 18:03 KST
-> 기준 commit: `969029a` + nearest-stamp guard source hash manifest
-> 안전 범위: live RGB/L2/odom, Docker VLM, Jetson PixNav는 read-only/file-only; command bridge, `/cmd_vel`, Sport API는 시작하지 않음
+> 최신 Jetson-only 재검증: 2026-08-30 09:51 KST
+> 기준 commit: `2af04e5` + 현재 P8-A no-actuation working tree
+> 안전 범위: 저장 RGB/evidence와 pure Python만 사용; command bridge, `/cmd_vel`, Sport API는 시작하지 않음
 > 퍼센트 의미: 논문 실로봇 4-Tier deployment에 필요한 항목을 Tier별 100점으로 가중한
 > engineering readiness estimate. 논문 성능 수치가 아니며 코드 파일 개수로 계산하지 않음.
 
@@ -11,15 +11,23 @@
 | 범위 | 진행률 | 현재 판정 |
 |---|---:|---|
 | Tier 1 Robot | **58%** | L2/IMU/odom/RGB live PASS, calibration·actuator safety 미완료 |
-| Tier 2 Jetson | **65%** | persistent PixNav와 L2/odom P7 입구 PASS, golden map·localization 미완료 |
+| Tier 2 Jetson | **66%** | P7 입구와 P8-A pure gateway PASS, golden map·localization·P8-B 미완료 |
 | Tier 3 Docker | **45%** | 실제 VLM transport process 1-cycle PASS, 상주 service·fault/soak 미완료 |
 | Tier 4 Server | **84%** | live RGB strict pixel/confidence PASS, retry/load/failure campaign 미완료 |
 | 네 Tier 구성요소 단순 평균 | **63%** | 구성요소 평균일 뿐 자율주행 판정에 사용 금지 |
-| 실제 4-Tier End-to-End Gate | **64%** | live safe file sink/P7까지 PASS, P8 actuator와 10분 soak 없음 |
+| 실제 4-Tier End-to-End 부품 준비도 | **68%** | live safe file sink/P7 + P8-A 계약, P8-B actuator와 10분 soak 없음 |
+| Gate 0~9 실증 완료도 | **약 34%** | 물리 map/localization/fault/actuator/pilot/campaign이 남은 보수적 추정 |
 
 전체 프로젝트 마스터플랜의 약 45%와 숫자가 다른 이유는 이 문서가 4-Tier 통신·배치만 별도로
-평가하기 때문이다. E2E 64%는 물리 자율주행 준비율이 아니다. P8 단일 actuator/E-stop, golden
+평가하기 때문이다. E2E 68%는 물리 자율주행 준비율이 아니다. P8-B 단일 actuator/E-stop, golden
 localization, pilot와 논문 campaign은 여전히 NO-GO/미수행이다.
+
+### 퍼센트를 읽는 법
+
+- Tier 퍼센트는 해당 컴퓨터/서비스에 필요한 부품이 얼마나 준비됐는지 나타낸다.
+- E2E 68%는 데이터를 safe file sink와 P8-A 순수 계약까지 연결한 **부품 준비도**다.
+- Gate 완료도 약 34%가 실제 자율주행 실험에 더 가까운 숫자다. Gate 2 이후의 물리 검증이
+  대부분 남아 있으므로 Tier 평균을 “로봇이 63% 자율주행 가능”으로 해석하면 안 된다.
 
 ## 2. Tier 1 — Go2 Robot: 58/100
 
@@ -53,7 +61,7 @@ camera/L2 calibration, actuator ACK와 물리 safe-stop 증거는 아니다.
 3. mapping/localization 동안 sensor dropout 기준 동결
 4. Tier 2~4 무구동 Gate 뒤 단일 actuator와 E-stop 시험
 
-## 3. Tier 2 — Jetson Orin NX/Foxy: 65/100
+## 3. Tier 2 — Jetson Orin NX/Foxy: 66/100
 
 ### 이 Tier에서 필요한 것
 
@@ -73,9 +81,9 @@ camera/L2 calibration, actuator ACK와 물리 safe-stop 증거는 아니다.
 | golden map과 artifact | 15 | 4 | export 기능은 있으나 최신 전체-map geometry FAIL |
 | frozen DB localization | 15 | 0 | golden DB 부재로 cold-start 10회 미실행 |
 | frozen PixNav v2 CUDA | 15 | 15 | persistent Checkpoint_A, 최신 5-frame CUDA 0.090 s, P7 source age 0.271 s |
-| adapter/audit/causal/fault | 15 | 15 | 72 tests, fault 22/22, no-actuation qualification PASS |
-| live admission/recorder/gateway 전단 | 10 | 7 | live L2/odom freshness·clearance P7 평가 PASS; operator/E-stop pending |
-| **합계** | **100** | **65** | |
+| adapter/audit/causal/fault | 15 | 15 | 86 tests, fault 22/22, no-actuation qualification PASS |
+| live admission/recorder/gateway 전단 | 10 | 8 | live P7 + pure P8-A PASS; recorder·operator/E-stop·P8-B pending |
+| **합계** | **100** | **66** | |
 
 현재 Docker/NetBird/NetworkManager service는 active, eth0에는 campus와 Go2 direct subnet이 동시에
 있고 NetBird `wt0`도 존재한다. mapping, sensor bridge, PixNav worker와 command bridge process는
@@ -87,7 +95,7 @@ camera/L2 calibration, actuator ACK와 물리 safe-stop 증거는 아니다.
 2. golden DB localization cold-start 10회
 3. live event source와 file sink 10분 및 fault 반복
 4. capture 이후 history를 포함한 PixNav 20 clips
-5. operator-enable/E-stop admission과 recorder
+5. operator-enable/E-stop admission, recorder와 P8-B physical dispatcher
 
 ## 4. Tier 3 — Docker/Jazzy: 45/100
 
@@ -163,7 +171,7 @@ confidence를 로컬에서 재검사하고 실패 또는 confidence 0.55 미만�
 3. request/response causal ID와 timeout·late response rejection
 4. Host/Docker 각각 장시간 latency와 server loss 반복
 
-## 6. 실제 4-Tier End-to-End: 64/100
+## 6. 실제 4-Tier End-to-End 부품 준비도: 68/100
 
 | 연결 Gate | 가중치 | 확보 | 현재 |
 |---|---:|---:|---|
@@ -171,8 +179,26 @@ confidence를 로컬에서 재검사하고 실패 또는 confidence 0.55 미만�
 | Jetson→Docker real protocol | 20 | 12 | 실제 capture hash/causal identity 전달; 상주 service pending |
 | Docker→Server inference | 20 | 20 | live strict multimodal inference PASS |
 | 단일 live causal chain | 20 | 12 | 1-cycle P6+P7 artifact PASS; 10분/fault pending |
-| safe sink→single actuator | 20 | 0 | file-only까지만, physical gateway NO-GO |
-| **합계** | **100** | **64** | |
+| P7 safe sink→P8 gateway | 20 | 4 | P8-A pure contract PASS; P8-B dispatcher/ACK/stop latency 없음 |
+| **합계** | **100** | **68** | |
+
+### 6.1 Gate 0~9 실증 진행률
+
+| Gate | 진행률 | 현재 증거 | 남은 핵심 |
+|---:|---:|---|---|
+| 0 버전·안전 동결 | 65% | file-only manifest/hash, motion 기본 OFF | 물리 E-stop/abort/operator manifest |
+| 1 실센서 preflight | 65% | 8월 28일 RGB/L2/IMU/odom 짧은 실측 | 재부팅·장시간·현재 run 반복 |
+| 2 planar map | 45% | 3DoF/Type-1 기능, Type-2 원인 offline 재현 | Type-2 OFF 실주행과 golden remap |
+| 3 localization | 10% | localization launch 경로 존재 | golden DB cold start 10회와 pose 기준점 |
+| 4 frozen PixNav | 70% | Checkpoint_A/pin, live 1-cycle, 86 tests | 서로 다른 실제 post-capture clip 20개 |
+| 5 live 4-Tier sink | 40% | live 1-cycle causal artifact | 10분 상주 service/sequence soak |
+| 6 live fault injection | 35% | pure/file-copy 22/22 | server/network/process/sensor live fault 반복 |
+| 7 actuator safety | 10% | P8-A pure gateway 13/13 | P8-B, ACK, E-stop, physical stop 10/10 |
+| 8 저속 pilot | 0% | 없음 | Gate 0~7 통과 후 직선부터 시작 |
+| 9 논문 campaign | 0% | schema/계획만 존재 | 50 main runs와 실제 evaluator |
+
+위 수치는 engineering estimate이며 `(65+65+45+10+70+40+35+10+0+0)/10 = 34%`의
+동일가중 스냅샷이다. 논문 성능이나 성공률이 아니다.
 
 ## 7. 지금 로봇 없이 할 수 있는 시험
 
@@ -182,7 +208,7 @@ cd /home/unitree/go2_ws_antarctica
 # 약 2초: 현재 process와 연결 상태만 확인
 ./test_4tier_no_actuation.sh status
 
-# Jetson 72 tests + Docker 63 pass/6 skip + Server structured text inference
+# Jetson 86 tests + Docker/source tests + Server structured text inference
 ./test_4tier_no_actuation.sh full
 
 # 저장 RGB 실제 PixNav CUDA와 downstream evidence
@@ -199,7 +225,32 @@ cd /home/unitree/go2_ws_antarctica
 3. server/network/Docker kill과 stale camera/odom fault
 4. Type-2 OFF RTAB 두-코너 자격, 전체 golden map과 localization
 5. 물리 operator-enable/E-stop 입력 연결
-6. 위가 모두 PASS한 뒤 별도 승인으로 P8 single actuator gateway
+6. 위가 모두 PASS한 뒤 별도 승인으로 P8-B single actuator dispatcher
 
-현재 바로 진행할 software 작업은 10분 P6 soak/fault와 Tier 3 **no-actuation 상주 service**다.
-Tier 4 strict semantic validator는 완료됐고, 물리 이동은 여전히 승인 범위 밖이다.
+2026-08-30 Jetson-only 범위에서 P8-A 순수 gateway 계약까지 구현했다. 현재 바로 진행할 software
+작업은 10분 P6 soak/fault와 Tier 3 **no-actuation 상주 service**지만 실제 live camera/Docker/server
+runtime 또는 관련 권한이 필요하다. Tier 4 strict semantic validator는 완료됐고, 물리 이동은
+여전히 승인 범위 밖이다.
+
+## 9. 2026-08-30 Jetson-only 실측 로그
+
+| 검사 | 결과 | 해석 |
+|---|---|---|
+| PixNav isolated package | **86/86 PASS** | P0~P5 + P8-A pure contract 회귀 |
+| current-source evidence | causal PASS, fault 22/22, qualification PASS | ROS/socket/SDK/actuation 없이 재생성 |
+| RTAB read-only analyzer | 2/2 unit PASS, 기존 실패 DB 재판정 PASS | source hash 불변, Type-2 159를 검출해 자동 Gate FAIL |
+| S2E core | **43/43 PASS** | pure core 계약만 증명 |
+| S2E bringup | **3/3 PASS** | launch static contract만 증명 |
+| S2E nodes host-pure | **17 PASS, 6 SKIP** | ROS/Jazzy mock graph 6개는 이 host 실행에서 미검증 |
+| CUDA 재실행 | `BLOCKED_CUDA_UNAVAILABLE` | 관리형 세션 device 미노출; CPU fallback 안 함 |
+| systemd/Docker 현재 상태 | 권한으로 조회 불가 | 과거 PASS를 현재 live PASS로 승격하지 않음 |
+| 저장공간/RAM | NVMe 384 GiB available, RAM 약 12 GiB available | Jetson-only 작업 여유 있음 |
+
+새 evidence:
+
+```text
+~/.ros/pixnav_chain_runs/20260830_095116_pixnav_offline_chain/
+~/.ros/pixnav_fault_runs/20260830_095116_pixnav_fault_injection/
+~/.ros/pixnav_qualification_runs/20260830_095117_pixnav_qualification/
+~/.ros/rtabmap_analysis_runs/20260830_100133_20260828_141247_planar3dof_headless_readonly_analysis/
+```

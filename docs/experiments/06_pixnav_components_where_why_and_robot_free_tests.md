@@ -1,6 +1,6 @@
 # PixNav 구현 요소별 위치·필요 이유와 로봇 없는 시험 안내
 
-> 기준 commit: `fd63800` 이후 작업  
+> 기준: 2026-08-30 Jetson-only 재검증
 > 대상: Go2 EDU Plus + Jetson Orin NX, Foxy, frozen Pixel-Navigator  
 > 이 문서의 모든 시험은 로봇 이동, ROS publisher, command bridge, Unitree SDK를 사용하지 않는다.
 
@@ -19,15 +19,19 @@
 [D. append-only audit + causal ledger]
         │  file evidence only, actuation_permitted=false
         ▼
-[E. future live safety admission]
-        │  localization/obstacle/E-stop 검증 — 아직 미구현
+[E. P7 live safety admission]
+        │  L2/odom freshness·clearance 구현, 물리 E-stop 미연결
         ▼
-[F. future single actuator gateway]
-           실제 Go2 command — 아직 NO-GO
+[F. P8-A pure gateway contract]
+        │  authority/TTL/envelope/latch/deadman, no-actuation
+        ▼
+[G. future P8-B physical dispatcher]
+           실제 Go2 command/ACK — 아직 NO-GO
 ```
 
-현재 구현 완료 범위는 A의 저장 artifact를 입력으로 받아 D까지다. E와 F는 로봇·실센서·안전
-시험이 필요하므로 이번 file-only 구현에 일부러 포함하지 않았다.
+현재 구현 완료 범위는 A~D, 실제 L2/odom을 읽는 E의 일부와 순수 소프트웨어 F까지다. E의 물리
+operator-enable/E-stop과 G의 실제 dispatcher/ACK는 로봇·실센서·안전 시험이 필요하므로
+no-actuation 범위에 포함하지 않는다.
 
 ## 2. 단계별로 왜 필요했는가
 
@@ -133,7 +137,7 @@ VLM input/raw/sanitized
 필수 VLM artifact가 `SHA256SUMS`에서 빠지거나 frame/pixel/hash가 다르면 차단한다. 현재 VLM 응답은
 sanitized schema였으므로 strict live schema 합격으로 확대 해석하지 않는다.
 
-### 단계 F — 미래 live event admission 계약
+### 단계 F — live event admission 계약
 
 사용 위치: P6 live 4-Tier no-actuation process에서 각 비동기 event가 도착할 때.
 
@@ -155,7 +159,21 @@ frame_captured
 ```
 
 중복, 역순, parent hash 불일치, 만료와 누락 stage를 차단하고 zero-target deadman hold를 기록한다.
-아직 live ROS/camera/VLM process에 연결하지 않았으므로 실제 시간 지연 증거는 아니다.
+이 ledger는 live 1-cycle에 연결됐지만 10분 soak과 process-kill 반복은 아직 필요하다.
+
+### 단계 F-2 — P7 safety와 P8-A pure gateway
+
+구현 파일:
+
+- `safety_admission.py`: frame/decision/L2/odom freshness, clearance, operator/E-stop 입력 검증
+- `gateway_core.py`: 단일 authority, sequence, P7 proposal hash/TTL, motion envelope, 수동 reset,
+  E-stop latch, deadman과 shutdown 검증
+
+`gateway_core.py`는 startup을 disarmed/E-stop-latched 상태로 시작하며 외부 E-stop이 clear가 되어도
+operator-enable을 포함한 수동 reset 없이는 candidate를 받지 않는다. 잘못된 authority, 중복 순서,
+stale P7, hash 불일치와 제한 초과는 clamp하여 진행하지 않고 zero-hold로 거부한다. 13개 전용
+테스트를 포함한 package 전체 86개 테스트가 통과했다. 모든 출력은
+`physical_dispatch_permitted=false`이고 실제 Go2 명령은 생성하지 않는다.
 
 ### 단계 G — fault injection
 
@@ -200,7 +218,7 @@ cd /home/unitree/go2_ws_antarctica
 
 - Python 문법 검사
 - `escape_nav_pixnav`만 colcon build/test
-- 56 unit tests
+- 현재 package unit tests 86개
 - 저장된 VLM/causal/fault/qualification `SHA256SUMS`
 
 CPU와 로컬 파일만 사용한다. 로봇, 카메라, LiDAR, RTAB-Map, Docker, 서버, 네트워크를 쓰지 않는다.
@@ -241,8 +259,8 @@ GPU device 접근 권한을 확인한다. `quick`과 `evidence`는 GPU 접근과
 | actuator watchdog ≤0.5 s | 실제 gateway→Go2 stop 도달 시간을 측정해야 함 |
 | E-stop·safe-stop 10/10과 pilot | 통제 구역, operator/spotter, 물리 승인 필요 |
 
-따라서 로봇 없는 PASS는 P0~P5의 software/evidence 범위다. 이것을 P6 live chain이나 P8 physical
-safety PASS로 승격하지 않는다.
+따라서 로봇 없는 PASS는 P0~P5와 P8-A의 순수 계약 범위다. 이것을 P6 10분 live chain이나 P8-B
+physical safety PASS로 승격하지 않는다.
 
 ## 5. 2026-08-28 실제 무구동 실행 결과
 

@@ -1,6 +1,6 @@
 # 현재 상태와 다음 실행 순서 — 4-Tier PixNav와 RTAB-Map
 
-> 최신 측정: 2026-08-28 18:03 KST
+> 최신 Jetson-only 재검증: 2026-08-30 09:51 KST
 > 실측 run: `20260828_141247_planar3dof_headless`
 > 안전 범위: Docker/VLM/PixNav/L2는 read-only/file-only; recorder, 모터/`/cmd_vel`, Sport API, production bridge는 시작하지 않음
 
@@ -13,7 +13,7 @@
 `frame_00`을 goal로 쓴 input-pairing 오류 때문에 forward 진단 자료로만 남기고 acceptance에서는
 제외한다. bounded macro proposal/file sink에 이어 실제 Go2 RGB→Docker→server VLM→Jetson
 persistent PixNav→L2/odom P7 평가까지 1-cycle로 연결됐다. 다만 operator-enable, 물리 E-stop,
-P8 단일 gateway와 production command path는 없으므로 이를 4-Tier 자율주행 완료로 해석하면
+P8-A 순수 gateway 계약은 추가됐지만 P8-B physical dispatcher와 production command path는 없으므로 이를 4-Tier 자율주행 완료로 해석하면
 안 된다. S2E는 별도 NavBench-GS 보조 실험이다.
 
 RTAB-Map 기본 운용은 **planar 3DoF로 확정한다.** 같은 층의 평평한 복도에서 3D LiDAR 입력과 3D map 생성은 유지하고, pose graph만 `x/y/yaw`로 구속한다. 4DoF는 실제 경사·고도 변화가 실험 범위일 때만 별도 DB로 비교한다.
@@ -65,8 +65,9 @@ planar 3DoF와 global visual loop의 기능 자체는 확인됐다. 그러나 �
 
 ## 2. 16:46 KST 무구동 실측 결과
 
-4-Tier의 최신 가중 평가는 Robot 58%, Jetson 65%, Docker 45%, Server 84%, 실제 cross-tier
-End-to-End 64%다. 이는 live safe file sink까지의 배치 readiness이며 물리 자율주행률이 아니다.
+4-Tier의 최신 가중 평가는 Robot 58%, Jetson 66%, Docker 45%, Server 84%, 실제 cross-tier
+부품 준비도 68%다. Gate 0~9 실증 완료도의 동일가중 추정은 약 34%다. 전자는 safe file sink와
+P8-A까지의 배치 readiness이고 후자가 실제 실로봇 campaign에 더 가까우며, 둘 다 논문 성능 수치가 아니다.
 상세 점수와 `status/full` 재검증 명령은
 [`Robot–Jetson–Docker–Server 4-Tier 구현률`](./experiments/07_4tier_robot_jetson_docker_server_readiness.md)을
 따른다. 이 퍼센트는 engineering readiness estimate이며 논문 성능 지표가 아니다.
@@ -87,14 +88,14 @@ End-to-End 64%다. 이는 live safe file sink까지의 배치 readiness이며 �
 | text JSON contract | PASS | `status=ok`, `action=stop`, `source=docker-server-preflight` 반환 |
 | archived RGB vision | PASS/제한적 | `scratch/live_camera_snapshot.jpg`에서 가까운 물체를 `office chair`로 반환하고 `action=stop` 유지 |
 | frozen PixNav CUDA replay | PASS/제한적 | Checkpoint_A persistent runtime 실제 5-frame CUDA 0.106 s, finite, actuation 0; 20 clips/soak은 없음 |
-| PixNav file adapter | PASS/제한적 | bounded proposal, hash-chain JSONL, causal ledger, 72 tests; 핵심 package에 ROS/socket/SDK/actuation 권한 없음 |
+| PixNav file adapter | PASS/제한적 | bounded proposal, hash-chain JSONL, causal ledger, P8-A gateway core 포함 86 tests; 핵심 package에 ROS/socket/SDK/actuation 권한 없음 |
 | offline causal/fault | PASS/제한적 | VLM→PixNav→macro identity PASS, pure/file-copy fault 22/22; live timeout·physical stop latency 증거 아님 |
 | 현재 유선/서버 경로 | PASS | wlan0 disconnected, eth0 학교망+Go2 직결망, NetBird active, server HTTP 200(0.051 s) |
 | S2E core tests | PASS | isolated package: 43 passed |
 | bringup contract tests | PASS | isolated package: 3 passed |
 | live camera acquisition | PASS | 정상 기립·정지 Go2에서 RTP→`/camera/front/image_raw` 1280×720 BGR8, 실수신 14.33 Hz |
 | live camera → PixNav P6 | 1-CYCLE PASS | 실제 RGB→Docker→server VLM→persistent CUDA PixNav→file sink, 최신 P7 source age 0.271 s; 10분 soak pending |
-| live L2/odom P7 | PARTIAL PASS | read-only L2/odom clearance/freshness 실평가 PASS; operator-enable/E-stop/P8 미연결로 gateway=false |
+| live L2/odom P7 | PARTIAL PASS | read-only L2/odom clearance/freshness 실평가 PASS; operator-enable/E-stop/P8-B 미연결로 gateway=false |
 | production command path | NOT STARTED | 9090/9091 bridge와 motor sink를 실행하지 않음 |
 
 보관 RGB 한 장의 성공은 서버가 OpenAI-compatible image payload를 받을 수 있다는 증거다. 실시간 camera timestamp, full VL-MAG schema, memory, S2E trajectory, stale response rejection 또는 navigation 품질의 증거는 아니다.
@@ -136,9 +137,28 @@ command UDP sender와 controller를 한 개도 만들지 않았다.
 | P7 최종 | operator-enable=false, E-stop clear 미연결 | gateway candidate=false, fail-closed |
 | artifact | `~/.ros/pixnav_live_runs/20260828_180327_pixnav_live_no_actuation/` | nearest-stamp P7 + source manifest + SHA256 전부 OK |
 
-따라서 현재 빠른 우선순위는 RTAB remap이 아니라 P6 10분 soak/fault와 P8 이전의 물리
+따라서 현재 빠른 우선순위는 RTAB remap이 아니라 P6 10분 soak/fault와 P8-B 이전의 물리
 operator-enable/E-stop 계약이다. RTAB 골든맵·localization은 실제 이동량/궤적 평가를 시작하기
 전에 다시 합류시키면 된다.
+
+### 2.3 2026-08-30 Jetson-only 재검증과 P8-A
+
+- PixNav isolated package: **86/86 PASS**
+- current-source evidence: causal PASS, pure/file-copy fault **22/22**, qualification PASS
+- S2E source: core **43/43**, bringup **3/3**, host-pure nodes **17 PASS/6 SKIP**
+- `gateway_core.py`: 단일 authority, sequence, P7 hash/TTL, envelope, manual reset,
+  E-stop latch, deadman, shutdown 전용 테스트 **13/13 PASS**
+- 결과는 항상 `physical_dispatch_permitted=false`; ROS/socket/SDK dispatcher는 만들지 않음
+- 오늘 CUDA 재실행은 관리형 세션에서 GPU device가 노출되지 않아 fail-closed됐으며 CPU로 대체하지 않음
+- 오늘 systemd/Docker 상태도 권한상 재측정하지 못했으므로 8월 28일 실측을 현재 live PASS로 승격하지 않음
+
+최신 qualification은
+`~/.ros/pixnav_qualification_runs/20260830_095117_pixnav_qualification/`에 저장됐다.
+
+같은 Jetson-only 작업으로 `analyze_map_run.py` read-only RTAB 판정기를 추가했다. 기존 geometry
+실패 DB에서 Type-1 36/Type-2 159와 처리 p95 0.3973 s를 자동 복원했고 source DB hash가 분석 전후
+동일함을 확인했다. 결과는
+`~/.ros/rtabmap_analysis_runs/20260830_100133_20260828_141247_planar3dof_headless_readonly_analysis/`다.
 
 ## 3. 충전 중 할 수 있는 일
 
@@ -147,12 +167,12 @@ operator-enable/E-stop 계약이다. RTAB 골든맵·localization은 실제 이�
 1. ~~최신 `paper` commit과 연구실 PixNav 구현 pin 확정~~ — 완료.
 2. ~~공식 PixNav Checkpoint_A 배치와 SHA-256 계약~~ — 완료.
 3. ~~VLM capture-view를 정확히 사용한 v2 1-step CUDA replay~~ — 완료.
-4. ~~bounded macro proposal, hash-chain sink, causal ledger, pure fault harness~~ — 72 tests와 22/22 완료.
+4. ~~bounded macro proposal, hash-chain sink, causal ledger, pure fault harness~~ — 86 tests와 22/22 완료.
 5. ~~checkpoint/reference/adapter/evidence file-only manifest 동결~~ — 완료.
 6. ~~live RGB→Docker VLM→persistent PixNav→file sink 1-cycle 연결~~ — 완료.
 7. ~~L2/odom read-only clearance/freshness를 P7 입구에 연결~~ — 완료.
 8. 10분 P6 soak과 live timeout/server loss/camera·odom stale/process kill을 주입한다.
-9. 물리 operator-enable/E-stop 입력과 P8 single gateway를 별도 승인 후 구현한다.
+9. 물리 operator-enable/E-stop 입력과 P8-B single dispatcher를 별도 승인 후 구현한다. P8-A 순수 계약은 완료됐다.
 10. capture 이후 history가 있는 서로 다른 실제 RGB clip을 최소 20개로 늘린다.
 
 ### 3.2 반복 가능한 읽기 전용 확인 명령

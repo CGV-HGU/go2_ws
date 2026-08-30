@@ -28,7 +28,9 @@ RUNTIME_MODULES = (
     "contracts.py",
     "event_ledger.py",
     "fault_injection.py",
+    "gateway_core.py",
     "replay.py",
+    "safety_admission.py",
 )
 BANNED_IMPORT_ROOTS = {
     "geometry_msgs",

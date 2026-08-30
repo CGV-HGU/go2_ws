@@ -7,7 +7,14 @@
 > 안전 범위: 저장 파일과 로그의 read-only 진단. 로봇 구동 명령은 발행하지 않음.  
 > 문서 상태: 이번 실행의 직접 측정값은 `실측`, 아직 재주행하지 않은 변경은 `권장/미검증`으로 표시함.
 
-> **최종 상태 안내 (15:22 KST 재주행 반영)**: 1~13절은 첫 번째 `rtabmap0827` 주행의 원인 분석이고, 14~15절은 수정 후 `rtabmap0827_2` 재검증이다. 현재 최종 판정은 `NeighborLinkRefining=false` 적용으로 2D 형상은 개선되었고 type-2 근접 폐쇄 5개가 승인됐지만, type-1 전역 시각 폐쇄는 0개이며 3D z 발산은 미해결이라는 것이다. 한눈에 보는 최신 문제→해결 표는 [`master_plan/[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md`](../master_plan/[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md)를 우선 참조한다.
+> **최신 상태 안내 (2026-08-28 18:50 KST)**: 이 문서는 누적 진단 기록이다. 1~20절의 중간 판정은
+> 이후 실측으로 일부 철회됐으며, 현재 판정은 **21~22절이 우선**한다. planar 3DoF는 Z 발산을
+> 막았고 맵 접힘의 원인이 아니었다. 느린 전체 주행의 심한 접힘은 Type-2 spatial proximity
+> constraint가 원인이었으며, 현재 canonical profile은 `RGBD/ProximityBySpace=false`다. 동일 DB
+> 전체 재처리에서 Type-2 0건, Type-1 41건과 물리적으로 타당한 코너 형상을 확인했다. 5 cm ICP
+> voxel은 유지하고 8 cm 후보는 오프라인 A/B 실패로 기각했다. 수정 후 짧은 실로봇 자격 loop는
+> 아직 필요하다. 한눈에 보는 과거 문제→해결 표는
+> [`master_plan/[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md`](../master_plan/[2026-08-27]_RTAB-Map_LIVO_문제_원인_해결_및_재검증_총정리.md)도 참조한다.
 
 ## 1. 결론
 
@@ -710,3 +717,206 @@ optimizer와 `RGBD/OptimizeMaxError`는 동시에 쓰는 설정이 아니다.
 - DB 저장/무결성: PASS
 - 물리적 map geometry: **FAIL**
 - golden/localization DB 사용: **금지**
+
+## 22. Jetson-only 전체 재처리, 처리율 감사 및 다른 에이전트 인계 (2026-08-28 18:50 KST)
+
+이 절은 로봇 전원을 끄고 Jetson만 켠 상태에서 수행했다. 하드웨어, motor topic, 네트워크 설정,
+sudo를 사용하지 않았다. 원본 DB는 SQLite immutable/read-only 입력으로 보존했고, RTAB-Map 재처리
+출력은 `/tmp`에만 만들었다. 따라서 이 절은 저장된 센서 데이터에 대한 소프트웨어 검증이며 새
+실시간 센서 상태나 수정 후 물리 map을 대신 증명하지 않는다.
+
+### 22.1 현재 실행 설정과 LIVO 경계
+
+`./map_headless.sh --print-config` 실측 출력:
+
+```text
+mapping_mode=true
+gui_mode=false
+graph_profile=planar3dof
+graph_arg=reg_force_3dof:=true
+graph_arg=icp_force_4dof:=false
+graph_arg=loop_closure_identity_guess:=true
+graph_arg=proximity_by_space:=false
+recorder=false
+```
+
+현재 launch source와 설치본의 SHA-256은 모두
+`7acb4a720aeb65b3f2db7d8df17ec2dd24640608694b4d28c74adb18841b85b0`로 같았다. 따라서 Type-2
+비활성화가 source에만 있고 설치본에는 빠진 상태가 아니다.
+
+이 프로젝트에서 `LIVO`라고 부르는 경계는 다음과 같다.
+
+- Unitree 내장 L2가 `/utlidar/robot_odom`, `/utlidar/imu`,
+  `/utlidar/cloud_deskewed`를 발행한다.
+- `go2_livo_sensor_bridge.py`가 공통 clock offset을 적용하고 deskewed odom-frame cloud를
+  `base_link`로 역변환해 `/livo/odom`, `/livo/imu`, `/livo/cloud`를 발행한다.
+- RTAB-Map은 외부 Unitree LIO odometry를 연속 자세로 사용하고 3D L2 ICP로 loop를 검증한다.
+- 전방 단안 RGB는 visual place retrieval용이다. metric visual odometry는 아니다.
+
+마지막 robot-on 무동작 스냅샷은 cloud 65개, odom 629개, cloud/odom stamp 차이
+`0.000573 s`, 최대 정지 odom step `0.0000428 m`였다. 세 전체/자격 run의 bridge clock offset은
+`241.123~241.218 s`로 일관됐고, IMU auto-order는 모두 `wxyz`를 선택했다. gravity residual은
+`0.35~0.73 deg`, 잘못된 `xyzw` 해석은 `114.68~144.96 deg`였다. bridge error, clock jump,
+odometry lost/reset은 검출되지 않았다. 이것은 공개되지 않은 Unitree firmware 내부 알고리즘의
+정확도를 증명하지는 않지만, 우리 bridge의 입력·시간·quaternion 처리에는 현재 반증이 없다는
+직접 실측 증거다.
+
+### 22.2 Type-2 OFF 전체 재처리 결과
+
+원본은 다음 경로와 checksum으로 고정했다.
+
+```text
+/home/unitree/.ros/rtabmap_runs/20260828_141247_planar3dof_headless/rtabmap.db
+sha256=c4862d88d98ba4a14e8e725bfd6879d688778cdfa591ecd7c694cc5f343bd953
+integrity=ok
+```
+
+1707개 저장 node를 현재 핵심 설정으로 처음부터 다시 처리했다. 입력 DB를 수정하지 않고 새 출력
+DB를 만든 명령의 핵심 파라미터는 다음과 같다.
+
+```bash
+QT_QPA_PLATFORM=offscreen rtabmap-reprocess \
+  --RGBD/ProximityBySpace false \
+  --RGBD/NeighborLinkRefining false \
+  --RGBD/LoopClosureIdentityGuess true \
+  --RGBD/ProximityAngle 45 \
+  --RGBD/ProximityMaxGraphDepth 50 \
+  --RGBD/ProximityPathMaxNeighbors 0 \
+  --Reg/Force3DoF true \
+  --Icp/Force4DoF false \
+  INPUT.db /tmp/OUTPUT.db
+```
+
+| 항목 | 원본: Type-1+Type-2 | 현재 설정 재처리: Type-1 only |
+|---|---:|---:|
+| 처리 node | 1707 | 1707 |
+| unique Type-1 | 36 | **41** |
+| unique Type-2 | 159 | **0** |
+| optimized pose | 1488 | 1488 |
+| optimized path | 356.168 m | 356.258 m |
+| optimized endpoint gap | 1.077 m | **0.711 m** |
+| optimized Z span | 0.0318 m | 0.0318 m |
+| raw LIO 대비 XY correction p95 | 17.092 m | **4.294 m** |
+| raw LIO 대비 XY correction max | 22.043 m | **4.431 m** |
+| trajectory 형상 | 상부 교차/접힘 | raw LIO와 같은 직교 코너/왕복 구조 |
+
+Type-2를 꺼도 global visual+ICP loop는 36건에서 41건으로 유지됐다. 반복 복도에서 생성된 많은
+visual 후보는 `Icp/CorrespondenceRatio=0.15`, `Icp/MaxTranslation=0.2 m`,
+`RGBD/OptimizeMaxError=3`에 의해 거절됐고, 올바른 장거리 Type-1만 최종 DB에 남았다. 이는 21절의
+link 삭제 ablation보다 강한 재현 증거다. 단순히 기존 링크를 지운 것이 아니라 저장 sensor data를
+현재 설정으로 전체 재실행했기 때문이다.
+
+### 22.3 입력률과 Jetson 처리 여유 실측
+
+bridge 누적 통계와 RTAB-Map runtime line 3020개를 다시 계산했다.
+
+| run | cloud publish | RTAB-Map mean | p95 | max | `>0.5 s` |
+|---|---:|---:|---:|---:|---:|
+| 짧은 자격 `124601` | 15.03 Hz | 0.141 s | 0.225 s | 0.702 s | 1 |
+| 빠른 전체 `133817` | 15.24 Hz | 0.191 s | 0.277 s | 5.332 s | 4 |
+| 느린 전체 `141247` | 15.30 Hz | 0.247 s | 0.397 s | 11.076 s | 5 |
+
+느린 전체 run의 graph 성장 구간별 처리시간은 다음처럼 증가했다.
+
+| node 구간 | mean | p95 |
+|---|---:|---:|
+| 1~500 | 0.162 s | 0.215 s |
+| 501~1000 | 0.241 s | 0.319 s |
+| 1001~1500 | 0.267 s | 0.352 s |
+| 1501~1707 | 0.422 s | 0.451 s |
+
+즉 L2 cloud 자체는 이미 약 15 Hz로 충분히 빠르며 현재 RTAB-Map keyframe rate는 2 Hz다.
+3 Hz는 프레임당 `0.333 s` 예산인데 전체 map 후반 p95가 이미 `0.397~0.451 s`다. 현 상태에서
+rate만 3 Hz로 올리면 callback backlog와 오래된 synchronized frame 처리 위험이 있다. 또한 빠른
+run의 raw Unitree LIO endpoint gap `10.961 m`는 upstream LIO 오차이므로 RTAB-Map detection rate를
+높여도 직접 고쳐지지 않는다. 더 많은 visual 후보를 제공할 가능성은 있지만 별도 live A/B 없이는
+안정성 개선으로 간주하지 않는다.
+
+저장 scan 1707개를 zlib 해제해 XYZ/I 16-byte point record로 계측했다.
+
+| 단계 | 평균 점 수/scan | raw 대비 |
+|---|---:|---:|
+| bridge가 넘긴 유효 scan | 1553 | 100% |
+| 현재 `Icp/VoxelSize=0.05` 근사 | 974 | 62.7% |
+| 후보 `Icp/VoxelSize=0.08` 근사 | 652 | 42.0% |
+| 후보 `Icp/VoxelSize=0.10` 근사 | 527 | 33.9% |
+
+현재 RTAB-Map은 이미 ICP 직전에 5 cm voxel filtering을 한다. 따라서 bridge에서 같은 크기의
+downsample을 또 넣어도 ICP 기하에는 새 정보가 생기지 않으며, DDS/메모리 절약 이득은 실제 CPU
+profile로 따로 증명해야 한다.
+
+### 22.4 8 cm voxel A/B: 기각
+
+설정을 바꾸기 전에 같은 1707-node DB를 `Icp/VoxelSize=0.08`만 다르게 전체 재처리했다.
+
+| 항목 | 5 cm 현재값 | 8 cm 후보 |
+|---|---:|---:|
+| 재처리 wall time | 약 5분 | 5분 8초 |
+| unique Type-1 / Type-2 | 41 / 0 | 36 / 0 |
+| endpoint gap | **0.711 m** | **82.783 m** |
+| raw 대비 XY correction p95 | 4.294 m | 49.541 m |
+| raw 대비 XY correction max | 4.431 m | 83.162 m |
+| 후반 graph error ratio | 정상 gate 범위 | 150 이상 반복 |
+| 형상 | raw와 일치 | 긴 단일 방향 발산/접힘 |
+
+8 cm는 처리시간을 의미 있게 줄이지 못했고, accept/reject되는 Type-1 집합을 크게 바꿨다. 결과적으로
+global graph가 발산했다. 공식 RTAB-Map 구현의 corridor low-complexity 보호가 PointToPoint 전환과
+제약 축 투영을 수행하는 로그도 확인됐지만, 652점 수준에서는 그것만으로 잘못된 전역 결과를 막지
+못했다. 따라서 **현재 5 cm를 유지하고 8/10 cm와 upstream point drop은 적용하지 않는다.**
+
+### 22.5 공식 문서와 일치하는 해석
+
+- [`Rtabmap/DetectionRate`](https://github.com/introlab/rtabmap/blob/master/corelib/include/rtabmap/core/Parameters.h)는
+  입력 이미지를 해당 Hz로 필터링하는 값이다. L2 odometry 발행률을 높이는 값이 아니다.
+- [`Icp/VoxelSize`](https://github.com/introlab/rtabmap/blob/master/corelib/include/rtabmap/core/Parameters.h)는
+  ICP용 uniform sampling이고, `Mem/LaserScanVoxelSize`는 signature 생성 전에 scan 자체를
+  voxel-filter한다. 후자는 기존 normal을 제거하므로 normal 재계산 설정도 함께 검증해야 한다.
+- 같은 공식 소스는 corridor-like low complexity에서 PointToPoint로 바꾸고 관측 가능한 축만
+  보정하는 보호 로직을 설명한다. 현재 설치본 `rtabmap-info`에도
+  `PointToPlaneMinComplexity=0.02`, `LowComplexityStrategy=1`이 확인됐다.
+- [RTAB-Map robust graph 공식 문서](https://github.com/introlab/rtabmap/wiki/Robust-Graph-Optimization)는
+  잘못된 loop 하나도 큰 map error를 만들 수 있다고 설명한다.
+- [Unitree ROS 2 공식 README](https://github.com/unitreerobotics/unitree_ros2/blob/master/README.md)는
+  Go2/Foxy/CycloneDDS와 `/utlidar/cloud`는 설명하지만 firmware의
+  `/utlidar/cloud_deskewed`, `/utlidar/robot_odom` 좌표 의미는 공개하지 않는다. 이 두 topic의
+  의미는 우리 runtime header/pose 비교와 저장 run으로 검증한 범위를 넘어 추정하지 않는다.
+
+### 22.6 다른 에이전트가 이어받을 때의 고정 사실
+
+다음 항목은 같은 증거를 다시 조사할 필요가 없다.
+
+1. `4DoF -> 3DoF`가 최신 맵 접힘의 원인이 아니다. 3DoF는 Z 발산을 해결했다.
+2. 빠른 run은 raw LIO 자체의 10.961 m loop gap이 있었고, 느린 run의 raw LIO는 직교 코너와
+   1.653 m gap을 유지했다. 두 run은 실패 층이 다르다.
+3. 느린 run의 심한 접힘 원인은 Type-1이 아니라 old Type-2 spatial proximity cascade다.
+4. 현재 source와 설치본은 Type-2 OFF이며 `map_headless.sh --print-config`도 이를 확인한다.
+5. Type-2 OFF 전체 재처리는 Type-1 41건과 정상 형상을 보존했다.
+6. `Icp/VoxelSize=0.08`은 오프라인 A/B에서 실패했다. 5 cm를 바꾸지 않는다.
+7. 기존 `20260828_141247` DB는 원인 분석용 증거이며 golden/localization map으로 사용하지 않는다.
+8. 이 절의 결과는 수정 후 실로봇 map의 물리 합격을 대신하지 않는다.
+
+### 22.7 다음 조사 순서와 합격 기준
+
+설정을 한꺼번에 바꾸지 않는다. 권장 순서는 다음과 같다.
+
+1. **현재값 고정 실로봇 자격시험**: 5 cm, 2 Hz, Type-2 OFF로 실제 90도 코너 두 개와 출발점
+   재방문을 포함해 1~2분 주행한다. 먼저 이 baseline을 통과시킨다.
+2. **자격시험 합격 조건**: DB Type-2 0, 올바른 Type-1 1개 이상, odometry lost 0, 승인 직후 큰
+   `MapToOdom` jump 없음, 두 코너와 평행 벽 유지, raw보다 optimized loop gap이 악화되지 않음.
+3. **전체 golden map**: baseline 자격시험 통과 뒤 `0.2~0.3 m/s`, 회전 `15~25 deg/s`, 코너에서
+   전진/회전 분리, 시작점 같은 heading으로 3~5초 정지한다.
+4. **처리율 연구가 꼭 필요할 때만**: 전체 map이 먼저 안정된 뒤 짧은 동일 경로에서 2.0 Hz와
+   2.5 Hz를 한 변수 A/B한다. 3 Hz부터 시작하지 않는다. node 간격, RTAB-Map p95/max,
+   sync drop, Type-1 accept/reject, raw/optimized gap과 코너 형상을 모두 비교한다.
+5. **Jetson 장기 처리시간 후보**: point drop보다 `Rtabmap/TimeThr` 또는 `MemoryThr`로 WM 크기를
+   제한하는 A/B가 현재 병목 증거에는 더 직접적이다. 다만 LTM retrieval과 global loop 수를 바꿀
+   수 있으므로 `/tmp` 전체 재처리에서 Type-1 수, endpoint gap, 최대 graph correction이 5 cm
+   baseline보다 나빠지지 않을 때만 live 후보로 올린다.
+6. **절대 정확도**: 최종 논문 수치는 RTAB-Map endpoint gap만 쓰지 말고 AprilTag/측정 기준점,
+   PixNav waypoint 오차 또는 독립 reference trajectory와 비교한다.
+
+다음 agent는 설정 변경보다 먼저 위 Gate를 자동 산출하는 read-only DB report를 재사용 가능하게
+만드는 것이 좋다. 최소 출력은 DB checksum/integrity, raw path/gap/Z, optimized path/gap/Z,
+link type별 unique count, Type-1 pair, raw 대비 optimized correction p95/max, RTAB-Map 처리시간
+p95/max다. 원본 DB에서 `rtabmap-export`를 직접 실행하면 Admin cache가 갱신될 수 있으므로 반드시
+복사본 또는 `/tmp` 재처리 출력에만 실행한다.

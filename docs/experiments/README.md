@@ -1,7 +1,7 @@
 # 실로봇 End-to-End 실험 계획 허브
 
-> 실측 개정: 2026-08-28 KST
-> 현재 판정: planar/global-loop 기능 PASS, 최신 전체-map geometry FAIL(Type-2 proximity가 주원인) / PixNav v2 file-only·adapter·offline fault PASS / remap·localization·live chain 미검증 / physical autonomy NO-GO
+> 실측 개정: 2026-08-30 KST
+> 현재 판정: RTAB Type-2 OFF 실주행 remap·localization 대기 / PixNav 86 tests와 P8-A pure gateway PASS / live 10분·P8-B·physical autonomy NO-GO
 > 판정 원칙: 실제 소스·checkpoint·runtime artifact가 과거 문서의 “완성/Final” 표현보다 우선함
 
 ## 문서 우선순위
@@ -13,6 +13,7 @@
 | 2.5 | [PixNav→live 4-Tier 구현 계획](05_pixnav_live_chain_implementation_plan.md) | 완료된 file-only 계층과 다음 live/safety 구현 Gate | **Implementation active** |
 | 2.6 | [PixNav 구성요소별 위치·필요 이유와 무구동 시험](06_pixnav_components_where_why_and_robot_free_tests.md) | 파일별 역할, 단계별 필요성, quick/evidence/CUDA 실행법 | **Operator guide** |
 | 2.7 | [Robot–Jetson–Docker–Server 4-Tier 구현률](07_4tier_robot_jetson_docker_server_readiness.md) | Tier별 100점 체크리스트, 현재 실측, 다음 Gate와 무구동 시험 | **Authoritative readiness** |
+| 2.8 | [RTAB-Map LIVO fact-first 검증 계획](08_rtabmap_livo_fact_first_validation_plan.md) | 3DoF·2 Hz·5 cm·Type-2 OFF baseline과 실패 원인 분기 | **Active validation plan** |
 | 3 | [4-Tier 실측 감사 및 ICRA 2027 프로토콜](../master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md) | 현재 구현 준비도와 paired campaign 원칙 | **Authoritative audit** |
 | 4 | [RTAB-Map 실물 검증계획](../07_real_robot_sensor_and_autonomy_verification_plan.md) | 센서·map·global loop 세부 기준 | **Active** |
 | 5 | [실로봇 정량 테이블 규격](01_table1_table2_quantitative_experiment_master_protocol.md) | Direct-goal vs Full, 25회/method, main/deployment/safety table | **Schema active / 값 미측정** |

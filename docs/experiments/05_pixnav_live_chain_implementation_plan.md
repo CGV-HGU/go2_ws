@@ -1,7 +1,7 @@
 # PixNav → live 4-Tier 구현 계획과 현재 완료 기록
 
-> 기준: 2026-08-28 18:03 KST
-> 현재 허용 범위: live P6 1-cycle + read-only P7/no-actuation
+> 기준: 2026-08-30 09:51 KST
+> 현재 허용 범위: live P6 1-cycle + read-only P7 + pure P8-A/no-actuation
 > 물리 판정: controller·actuator·자율주행 **NO-GO**
 
 ## 1. 구현 경계
@@ -46,7 +46,8 @@ ROS/socket/Unitree SDK를 직접 import하지 않는다. actuator authority는 �
 | P5 | pure fault harness | malformed/missing/stale/duplicate/tamper를 fail-closed | **22/22 PASS** |
 | P6 | live no-actuation source | camera/VLM/PixNav event를 10분 연결 | **1-cycle PASS / 10분 pending** |
 | P7 | live safety admission | odom/obstacle/E-stop/clock stale에서 zero-hold | **L2+odom 실입력 PASS / operator·E-stop pending** |
-| P8 | single actuator gateway | 한 authority, ACK, clamp, deadman, safe-stop 10/10 | **미구현** |
+| P8-A | pure gateway contract | 한 authority, sequence/TTL, envelope, manual reset, E-stop latch, deadman | **86-test suite 안에서 13/13 PASS; no-actuation** |
+| P8-B | physical dispatcher | 단일 ROS/SDK authority, ACK, shutdown zero, safe-stop 10/10 | **미구현 / NO-GO** |
 | P9 | supervised pilot | 직선→L-corner→T-junction 순차 통과 | **미수행** |
 
 ## 3. 완료된 package
@@ -72,7 +73,10 @@ colcon test --packages-select escape_nav_pixnav --event-handlers console_direct+
 colcon test-result --verbose
 ```
 
-현재 결과는 72 tests, 0 errors, 0 failures다.
+2026-08-30 현재 결과는 86 tests, 0 errors, 0 failures다. 이 중 13개는
+`gateway_core.py`의 단일 authority, sequence, P7 hash/TTL, command envelope, 수동 reset,
+E-stop latch, deadman과 shutdown fail-closed 계약을 검증한다. 결과는 항상
+`physical_dispatch_permitted=false`이며 실제 dispatcher/ACK 증거가 아니다.
 
 ## 4. P6/P7 현재 구현과 남은 acceptance
 
@@ -115,8 +119,16 @@ localization 또는 명시적으로 선언한 odometry source를 연결한 뒤�
 
 P7에서 L2 local clearance, odometry jump/freshness와 camera age는 실제 입력에 연결됐다. 물리
 operator-enable/E-stop과 필요 시 global localization freshness가 아직 없으므로 P7 전체 합격은
-아니다. P8은 별도 물리 승인, 통제 구역, operator/spotter와 제조사 리모컨 E-stop을 준비한 뒤
-진행한다.
+아니다. P8-A 순수 계약은 로봇 없이 구현·시험했지만 P8-B dispatcher는 별도 물리 승인, 통제 구역,
+operator/spotter와 제조사 리모컨 E-stop을 준비한 뒤 진행한다.
+
+## 5.1 2026-08-30 Jetson-only 재검증
+
+- `./test_pixnav_offline.sh quick`: **86/86 PASS**, 저장 evidence hash 전부 OK
+- `./test_pixnav_offline.sh evidence`: causal PASS, fault **22/22**, qualification PASS
+- 새 qualification: `~/.ros/pixnav_qualification_runs/20260830_095117_pixnav_qualification/`
+- CUDA 재실행: 관리형 세션의 GPU device 미노출로 `BLOCKED_CUDA_UNAVAILABLE`; CPU 대체 안 함
+- 기존 실제 Jetson CUDA PASS evidence는 보존하지만 위 blocked run을 새 CUDA PASS로 세지 않음
 
 ## 6. 현재 evidence
 

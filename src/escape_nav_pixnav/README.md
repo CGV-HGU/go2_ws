@@ -15,9 +15,12 @@ The action contract follows the paper-pinned Pixel-Navigator implementation:
 | 4 | `look_up` | zero hold and request re-observation |
 | 5 | `look_down` | zero hold and request re-observation |
 
-All outputs contain `actuation_permitted=false`. A separate, future safety
-gateway must validate localization, obstacles, E-stop state and live freshness
-before any physical command path can be considered.
+All outputs contain `actuation_permitted=false`. P7 now validates freshness,
+L2/odometry clearance and interlock inputs, while `gateway_core.py` implements
+the robot-free P8-A single-authority/TTL/envelope/E-stop/deadman contract. Both
+layers remain non-actuating. A separately reviewed P8-B ROS/SDK dispatcher,
+physical E-stop and measured safe-stop test are still required before any
+physical command path can be considered.
 
 Replay a completed `pixnav_check.py` report:
 

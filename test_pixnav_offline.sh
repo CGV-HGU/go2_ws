@@ -21,7 +21,7 @@ FRAMES_DIR="$VLM_RUN/frames"
 
 usage() {
     echo "Usage: ./test_pixnav_offline.sh [quick|evidence|cuda]"
-    echo "  quick    : build, 56 unit tests, syntax and saved-evidence hash checks"
+    echo "  quick    : build, package unit tests, syntax and saved-evidence hash checks"
     echo "  evidence : quick + regenerate causal/fault/qualification evidence"
     echo "  cuda     : quick + rerun frozen PixNav on saved RGB + downstream evidence"
 }

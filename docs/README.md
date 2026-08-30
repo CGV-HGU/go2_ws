@@ -1,6 +1,6 @@
 # ESCAPE-Nav 문서 시작점
 
-> 최종 상태 갱신: 2026-08-28 KST
+> 최종 상태 갱신: 2026-08-30 KST
 > 판정 기준: 현재 런타임 → 현재 소스/설정 → canonical repository → 실제 경로를 통과한 시험 → 과거 문서 순으로 신뢰한다.
 
 ## 지금 가장 먼저 볼 문서
@@ -9,9 +9,10 @@
 |---:|---|---|
 | 1 | [`실로봇 전체 E2E 마스터 계획`](./experiments/00_real_robot_end_to_end_master_test_plan.md) | 센서→3DoF map→localization→PixelNav/S2E→4-Tier→안전→pilot→논문 campaign |
 | 2 | [`00_CURRENT_STATUS_AND_NEXT_STEPS.md`](./00_CURRENT_STATUS_AND_NEXT_STEPS.md) | RTAB-Map 최신 실측과 바로 다음 작업 |
-| 3 | [`4-Tier 실측 감사 및 ICRA 2027 실험 프로토콜`](./master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md) | Robot–Jetson–Docker–Server 구현 준비도와 paired campaign |
-| 4 | [`RTAB-Map 서브시스템 검증 계획`](./07_real_robot_sensor_and_autonomy_verification_plan.md) | 3DoF/global loop/golden DB 세부 기준 |
-| 5 | [`CODEX_PROJECT_MEMORY.md`](./CODEX_PROJECT_MEMORY.md) | 장기 프로젝트 사실·안전·acceptance 기준 |
+| 3 | [`4-Tier 최신 구현률`](./experiments/07_4tier_robot_jetson_docker_server_readiness.md) | Tier별 준비도, Gate 완료도, 8월 30일 Jetson-only 검증 |
+| 4 | [`RTAB-Map fact-first 검증 계획`](./experiments/08_rtabmap_livo_fact_first_validation_plan.md) | 현재값 고정→짧은 loop→원인별 단일변수 A/B |
+| 5 | [`4-Tier 실측 감사 및 ICRA 2027 실험 프로토콜`](./master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md) | paired campaign 원칙 |
+| 6 | [`CODEX_PROJECT_MEMORY.md`](./CODEX_PROJECT_MEMORY.md) | 장기 프로젝트 사실·안전·acceptance 기준 |
 
 ## 현재 한눈에 보기
 
@@ -19,11 +20,11 @@
 |---|---|---|
 | Go2/L2 | 과거 실제 cloud/IMU/LIO/RGB 수신 PASS | 각 실험일 전원 후 rate/timestamp preflight |
 | RTAB-Map | 최신 short loop: Z 0.0235 m, Type-1 2개, start/end 0.0335 m; 반복성 1/3 | short loop 2회 추가→golden map→localization |
-| Jetson | Foxy sensor/RTAB 경로 존재 | full run 전 자원·thermal·network 재확인 |
+| Jetson | PixNav/P7/P8-A no-actuation 86 tests PASS; RTAB 경로 존재 | golden map/localization, live 10분, P8-B |
 | Jetson↔Docker | 임시 비제어 포트 양방향 UDP PASS | production bridge 대신 command sink 시험 |
-| Docker/PixelNav | node executable은 mock runtime, 실제 `s2e.onnx` 없음 | real checkpoint와 실제 11-frame replay |
+| Docker/PixelNav | Docker node는 mock; frozen PixNav는 Jetson Checkpoint_A로 live 1-cycle PASS | 실제 clip 20개와 10분 상주 service |
 | Docker↔Server | model 조회, text JSON, 보관 RGB vision 요청 PASS | live frame + 전체 navigation schema + provenance |
-| 물리 자율주행 | **NO-GO** | single authority·TTL·fault injection·safe-stop 10/10 |
+| 물리 자율주행 | **NO-GO** | P8-B 단일 dispatcher·physical E-stop·safe-stop 10/10 |
 
 ## 현재 mapping 명령
 
@@ -33,6 +34,7 @@ cd /home/unitree/go2_ws_antarctica
 ./run_map.sh       # Jetson desktop GUI
 ./map_headless.sh  # SSH/tmux
 ./run_map.sh --view
+./analyze_map_run.py  # latest run의 read-only DB/log 자동 판정
 ```
 
 사용자용 mapping 진입점은 위 두 파일뿐이다. 둘 다 planar 3DoF, 3D L2/ICP, RGB 장소 후보와 LiDAR ICP global-loop 검증을 사용하고 recorder·Docker/VLM·motor path는 시작하지 않는다.

@@ -11,15 +11,18 @@ from .contracts import (
     ProposalKind,
     TimeBasis,
 )
+from .gateway_core import GatewayConfig, NoActuationGatewayCore
 
 __all__ = [
     "ACTION_NAMES",
     "AdapterConfig",
     "AuditJsonlSink",
+    "GatewayConfig",
     "MacroActionProposal",
     "PixNavAction",
     "PixNavDecision",
     "PixNavMacroAdapter",
+    "NoActuationGatewayCore",
     "ProposalKind",
     "TimeBasis",
     "verify_audit_chain",
