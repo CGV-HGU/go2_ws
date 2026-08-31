@@ -6,7 +6,7 @@
 # Automatically brings up front camera, Unitree LIO bridge, RTAB-Map, and live HUD monitor.
 # ==============================================================================
 
-set -Eeuo pipefail
+set -e
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 RTABMAP_DB="/home/unitree/.ros/rtabmap.db"
