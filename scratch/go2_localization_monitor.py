@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-Real-Time Planar 3DoF Localization HUD & Pose Logger for Unitree Go2.
+Real-Time Planar 3DoF Localization HUD & Auto-File Logger for Unitree Go2.
 Subscribes to /rtabmap/localization_pose, /map -> /base_link TF, and /rtabmap/info,
-printing clean, formatted (X, Y, Z, Yaw) and localization status logs to console.
+printing clean (X, Y, Z, Yaw) to console AND automatically logging to CSV and text files.
 """
 
+import os
+import sys
 import math
 import time
+from datetime import datetime
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
@@ -21,16 +24,39 @@ BOLD = '\033[1m'
 NC = '\033[0m'
 
 class LocalizationMonitor(Node):
-    def __init__(self):
+    def __init__(self, log_dir=None):
         super().__init__('go2_localization_monitor')
 
         self.last_pose_time = time.time()
         self.pose_count = 0
-        self.last_x = 0.0
-        self.last_y = 0.0
-        self.last_z = 0.0
-        self.last_yaw = 0.0
         self.is_localized = False
+
+        # Automatic Log Directory Setup
+        if not log_dir:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            log_dir = os.path.expanduser(f"~/.ros/localization_runs/{timestamp}")
+        
+        os.makedirs(log_dir, exist_ok=True)
+        self.csv_path = os.path.join(log_dir, "localization_poses.csv")
+        self.log_path = os.path.join(log_dir, "localization.log")
+
+        # Symlink latest
+        runs_root = os.path.expanduser("~/.ros/localization_runs")
+        latest_link = os.path.join(runs_root, "latest")
+        if os.path.lexists(latest_link):
+            os.remove(latest_link)
+        try:
+            os.symlink(log_dir, latest_link)
+        except Exception:
+            pass
+
+        # Initialize CSV Header
+        self.csv_file = open(self.csv_path, "w")
+        self.csv_file.write("timestamp_iso,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cov_x,status\n")
+        self.csv_file.flush()
+
+        self.log_file = open(self.log_path, "w")
+        self.start_time = time.time()
 
         qos = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -54,7 +80,9 @@ class LocalizationMonitor(Node):
         self.create_timer(0.5, self.status_timer_callback)
 
         print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-        print(f"{BOLD}{CYAN} 🎯 [Go2 Real-Time Localization HUD] Monitoring Map Frame Coordinates...{NC}")
+        print(f"{BOLD}{CYAN} 🎯 [Go2 Real-Time Localization HUD & Auto-Logger]{NC}")
+        print(f" 📂 Log Dir : {log_dir}")
+        print(f" 📄 CSV Log : {self.csv_path}")
         print(f"{BOLD}{CYAN}========================================================================{NC}\n")
 
     def pose_callback(self, msg: PoseWithCovarianceStamped):
@@ -67,13 +95,22 @@ class LocalizationMonitor(Node):
         yaw_rad = math.atan2(siny_cosp, cosy_cosp)
         yaw_deg = math.degrees(yaw_rad)
 
-        self.last_x = pos.x
-        self.last_y = pos.y
-        self.last_z = pos.z
-        self.last_yaw = yaw_deg
-        self.last_pose_time = time.time()
+        now = time.time()
+        elapsed = now - self.start_time
+        iso_ts = datetime.now().isoformat()
+        self.last_pose_time = now
         self.pose_count += 1
         self.is_localized = True
+
+        cov_x = float(msg.pose.covariance[0])
+
+        # Write to CSV
+        self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},{cov_x:.6f},LOCALIZED\n")
+        self.csv_file.flush()
+
+        log_line = f"[{iso_ts}] LOCALIZED #{self.pose_count:04d} X:{pos.x:+7.3f} Y:{pos.y:+7.3f} Z:{pos.z:+6.3f} Yaw:{yaw_deg:+6.1f} cov:{cov_x:.4f}\n"
+        self.log_file.write(log_line)
+        self.log_file.flush()
 
         print(
             f"{GREEN}🎯 [LOCALIZED #{self.pose_count:04d}]{NC} "
@@ -81,13 +118,15 @@ class LocalizationMonitor(Node):
             f"{BOLD}Y:{NC} {pos.y:+7.3f}m | "
             f"{BOLD}Z:{NC} {pos.z:+6.3f}m | "
             f"{BOLD}Yaw:{NC} {yaw_deg:+6.1f}° "
-            f"{CYAN}(cov_x={msg.pose.covariance[0]:.4f}){NC}"
+            f"{CYAN}(cov_x={cov_x:.4f}){NC}"
         )
 
     def status_timer_callback(self):
         now = time.time()
         # If no pose received for > 2.0 seconds, check TF or report searching
         if now - self.last_pose_time > 2.0:
+            iso_ts = datetime.now().isoformat()
+            elapsed = now - self.start_time
             try:
                 t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
                 pos = t.transform.translation
@@ -95,6 +134,9 @@ class LocalizationMonitor(Node):
                 siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
                 cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
                 yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
+
+                self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},0.0,TF_TRACKING\n")
+                self.csv_file.flush()
 
                 print(
                     f"{CYAN}📍 [TF TRACKING]{NC} "
@@ -105,6 +147,13 @@ class LocalizationMonitor(Node):
                 )
             except Exception:
                 print(f"{YELLOW}🔍 [SEARCHING] Looking for visual/LiDAR landmarks in map... (Stand in known corridor area){NC}")
+
+    def destroy_node(self):
+        if hasattr(self, 'csv_file') and not self.csv_file.closed:
+            self.csv_file.close()
+        if hasattr(self, 'log_file') and not self.log_file.closed:
+            self.log_file.close()
+        super().destroy_node()
 
 def main():
     rclpy.init()
