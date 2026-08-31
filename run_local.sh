@@ -1,9 +1,13 @@
 #!/bin/bash
 # ==============================================================================
-# Canonical 1-Click Localization Launcher for Unitree Go2 Planar 3DoF SLAM
+# Canonical 1-Click Localization & Interactive Goal Manager for Unitree Go2
 # ==============================================================================
-# Localizes the robot in real-time against ~/.ros/rtabmap.db without modifying it.
-# Automatically brings up front camera, Unitree LIO bridge, RTAB-Map, and live HUD monitor.
+# Features:
+#   1. Real-time (X, Y, Z, Yaw) localization HUD
+#   2. Automatic CSV & TXT log saving to ~/.ros/localization_runs/latest/
+#   3. Press [ENTER] anytime to record Goal #1, Goal #2, etc.
+#   4. Press 'd' / 'del' to delete last goal (with confirmation)
+#   5. 100% SSH & Headless compatible
 # ==============================================================================
 
 set -e
@@ -16,8 +20,8 @@ GUI_ARG="rtabmap_viz:=false"
 usage() {
     cat <<'USAGE_EOF'
 Usage:
-  ./run_local.sh            Start planar 3DoF localization with live console HUD (auto-detects display)
-  ./run_local.sh --gui      Force GUI with 3D rtabmap_viz visualizer + console HUD
+  ./run_local.sh            Start localization HUD & goal recorder (SSH/GUI auto-detect)
+  ./run_local.sh --gui      Force GUI with 3D rtabmap_viz visualizer
   ./run_local.sh --headless Force headless localization (SSH/tmux)
   ./run_local.sh --help     Show this help
 USAGE_EOF
@@ -75,10 +79,10 @@ if [ ! -f "$RTABMAP_DB" ]; then
 fi
 
 echo "========================================================================"
-echo " 🐕 [Unitree Go2] Planar 3DoF Real-Time Localization HUD"
+echo " 🐕 [Unitree Go2] Planar 3DoF Real-Time Localization & Goal Manager"
 echo " Map DB  : $RTABMAP_DB ($(du -h "$RTABMAP_DB" | cut -f1))"
 echo " Mode    : Read-only localization (localization:=true)"
-echo " Display : $([ "$GUI_MODE" = true ] && echo "GUI (rtabmap_viz active on $DISPLAY)" || echo "Headless (Console HUD)")"
+echo " Display : $([ "$GUI_MODE" = true ] && echo "GUI (rtabmap_viz active on $DISPLAY)" || echo "Headless (Console only over SSH)")"
 echo "========================================================================"
 
 PIDS=()
@@ -93,7 +97,7 @@ cleanup() {
             kill "$pid" 2>/dev/null || true
         fi
     done
-    pkill -f go2_localization_monitor.py 2>/dev/null || true
+    pkill -f go2_localization_and_goal_recorder.py 2>/dev/null || true
     pkill -f go2_front_camera_publisher.py 2>/dev/null || true
     pkill -f go2_livo_sensor_bridge.py 2>/dev/null || true
     pkill -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
@@ -117,7 +121,7 @@ export ROS_DOMAIN_ID=0
 export LD_LIBRARY_PATH=/home/unitree/opencv_build/opencv/build/lib:/usr/local/lib:${LD_LIBRARY_PATH:-}
 
 # 1. Clean up background nodes
-pkill -9 -f go2_localization_monitor 2>/dev/null || true
+pkill -9 -f go2_localization_and_goal_recorder 2>/dev/null || true
 pkill -9 -f go2_front_camera 2>/dev/null || true
 pkill -9 -f go2_livo_sensor_bridge 2>/dev/null || true
 pkill -9 -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
@@ -138,7 +142,7 @@ python3 "$WORKSPACE_DIR/scratch/go2_livo_sensor_bridge.py" \
 PIDS+=($!)
 sleep 1
 
-# 4. Launch RTAB-Map in Localization Mode (background output redirected so console HUD is crisp)
+# 4. Launch RTAB-Map in Localization Mode (Headless background)
 echo "🗺️ [3/4] Launching RTAB-Map Localization Engine (localization:=true)..."
 ros2 launch rtabmap_launch go2_rtabmap.launch.py \
     localization:=true \
@@ -150,6 +154,6 @@ ros2 launch rtabmap_launch go2_rtabmap.launch.py \
 PIDS+=($!)
 sleep 3
 
-# 5. Start Real-Time Live HUD Logger (Front Console)
-echo "🎯 [4/4] Starting Real-Time (X, Y, Z, Yaw) Live HUD Logger..."
-exec python3 "$WORKSPACE_DIR/scratch/go2_localization_monitor.py"
+# 5. Start Unified Real-Time HUD & Interactive Goal Recorder (Front Console)
+echo "🎯 [4/4] Starting Real-Time Localization HUD & Goal Manager..."
+exec python3 "$WORKSPACE_DIR/scratch/go2_localization_and_goal_recorder.py"
