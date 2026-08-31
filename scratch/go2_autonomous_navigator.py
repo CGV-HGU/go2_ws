@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 """
-Goal-Directed Autonomous Navigation Controller & Raw Experimental Data Logger for Unitree Go2.
-Saves raw, unprocessed experimental data for scientific record-keeping:
-  1. trajectory_raw.csv  - High-frequency (10Hz) raw localization poses & velocity commands
-  2. vlm_decisions.jsonl - Full raw VLM queries, responses, subgoals [u,v], and latencies
-  3. camera_snapshots/   - Decision keyframe JPEG images (Start, Subgoals, Arrival)
-  4. run_metadata.json   - Run setup, initial & target poses, timestamps, and termination status
+Goal-Directed Autonomous Navigation Controller & Structured Experiment Trial Logger for Unitree Go2.
+Hierarchical Experiment Directory Structure:
+  experiments/
+  ├── ours/
+  │   └── goal_{ID}_{NAME}/
+  │       ├── trial_01_{TIMESTAMP}/
+  │       │   ├── trajectory_raw.csv
+  │       │   ├── vlm_decisions.jsonl
+  │       │   ├── camera_snapshots/
+  │       │   └── trial_metadata.json
+  │       └── trial_02_{TIMESTAMP}/
+  └── pixnav/
+      └── goal_{ID}_{NAME}/
+          └── trial_01_{TIMESTAMP}/
 """
 
 import os
 import sys
 import math
 import time
+import glob
 import json
 import yaml
 import base64
@@ -36,14 +45,16 @@ try:
 except ImportError:
     HAS_UNITREE_API = False
 
-GREEN = '[0;32m'
-CYAN = '[0;36m'
-YELLOW = '[1;33m'
-RED = '[0;31m'
-BOLD = '[1m'
-NC = '[0m'
+GREEN = '\033[0;32m'
+CYAN = '\033[0;36m'
+YELLOW = '\033[1;33m'
+RED = '\033[0;31m'
+BOLD = '\033[1m'
+NC = '\033[0m'
 
-GOALS_YAML = "/home/unitree/go2_ws_antarctica/config/navigation_goals.yaml"
+WORKSPACE_DIR = "/home/unitree/go2_ws_antarctica"
+GOALS_YAML = os.path.join(WORKSPACE_DIR, "config/navigation_goals.yaml")
+EXP_ROOT = os.path.join(WORKSPACE_DIR, "experiments")
 VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
 
@@ -71,7 +82,6 @@ class AutonomousNavigator(Node):
         self.is_goal_reached = False
         self.is_stopped = False
 
-        # Current Command State
         self.cmd_vx = 0.0
         self.cmd_wz = 0.0
 
@@ -81,30 +91,36 @@ class AutonomousNavigator(Node):
             self.get_logger().error(f"Goal ID {target_goal_id} not found in {GOALS_YAML}")
             sys.exit(1)
 
-        # 2. Setup Dedicated Raw Data Run Directory
+        # 2. Setup Hierarchical Experiment & Trial Directory
+        goal_folder_name = f"goal_{self.goal['id']}_{self.goal['name']}"
+        self.mode_goal_dir = os.path.join(EXP_ROOT, self.mode, goal_folder_name)
+        os.makedirs(self.mode_goal_dir, exist_ok=True)
+
+        # Auto-increment trial number
+        existing_trials = glob.glob(os.path.join(self.mode_goal_dir, "trial_*"))
+        trial_num = len(existing_trials) + 1
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.run_dir = os.path.expanduser(f"~/.ros/navigation_runs/{timestamp}_{self.mode}_{self.goal['name']}")
-        self.snapshots_dir = os.path.join(self.run_dir, "camera_snapshots")
+        trial_folder_name = f"trial_{trial_num:02d}_{timestamp}"
+        self.trial_dir = os.path.join(self.mode_goal_dir, trial_folder_name)
+        self.snapshots_dir = os.path.join(self.trial_dir, "camera_snapshots")
         os.makedirs(self.snapshots_dir, exist_ok=True)
 
-        # Symlink latest run
-        runs_root = os.path.expanduser("~/.ros/navigation_runs")
-        latest_link = os.path.join(runs_root, "latest")
-        if os.path.lexists(latest_link):
-            os.remove(latest_link)
+        # Update symlinks
+        latest_exp_link = os.path.join(EXP_ROOT, "latest")
+        if os.path.lexists(latest_exp_link):
+            os.remove(latest_exp_link)
         try:
-            os.symlink(self.run_dir, latest_link)
+            os.symlink(self.trial_dir, latest_exp_link)
         except Exception:
             pass
 
-        # Raw Files
-        self.csv_path = os.path.join(self.run_dir, "trajectory_raw.csv")
+        # Raw Data Log Files
+        self.csv_path = os.path.join(self.trial_dir, "trajectory_raw.csv")
         self.csv_file = open(self.csv_path, "w")
-        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,status
-")
+        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,status\n")
         self.csv_file.flush()
 
-        self.vlm_log_path = os.path.join(self.run_dir, "vlm_decisions.jsonl")
+        self.vlm_log_path = os.path.join(self.trial_dir, "vlm_decisions.jsonl")
         self.vlm_log_file = open(self.vlm_log_path, "w")
 
         # 3. ROS 2 Subscriptions & Publishers
@@ -115,7 +131,6 @@ class AutonomousNavigator(Node):
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
-        # Velocity Publishers
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         if HAS_UNITREE_API:
             self.sport_pub = self.create_publisher(Request, '/api/sport/request', 10)
@@ -129,20 +144,20 @@ class AutonomousNavigator(Node):
         self.subgoal_v = 500
         self.create_timer(0.7, self.vlm_decision_loop)
 
-        print(f"
-{BOLD}{CYAN}========================================================================{NC}")
-        print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Raw Experimental Data Collector]{NC}")
-        print(f" • Mode        : {self.mode.upper()} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
+        print(f"\n{BOLD}{CYAN}========================================================================{NC}")
+        print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Structured Experiment Runner & Raw Logger]{NC}")
+        print(f" • Method/Mode : {BOLD}{self.mode.upper()}{NC} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
         print(f" • Target Goal : #{self.goal['id']} - {self.goal['name']}")
-        print(f" • Target Pose : X={self.goal['x_m']:+.3f}m, Y={self.goal['y_m']:+.3f}m, Yaw={self.goal['yaw_deg']:+.1f}°")
+        print(f" • Trial Number: {BOLD}Trial #{trial_num:02d}{NC}")
         print(f"------------------------------------------------------------------------")
-        print(f"{BOLD} 💾 [Raw Data Storage Directory]:{NC}")
-        print(f"   📂 Run Folder : {self.run_dir}")
-        print(f"   📄 Poses CSV  : {self.csv_path}")
-        print(f"   🧠 VLM Log    : {self.vlm_log_path}")
-        print(f"   📸 Snapshots  : {self.snapshots_dir}/")
-        print(f"{BOLD}{CYAN}========================================================================{NC}
-")
+        print(f"{BOLD} 💾 [Trial Directory Structure]:{NC}")
+        print(f"   📂 Mode Folder   : {os.path.join(EXP_ROOT, self.mode)}/")
+        print(f"   📂 Goal Group    : {goal_folder_name}/")
+        print(f"   📂 Trial Folder  : {self.trial_dir}/")
+        print(f"   📄 Poses CSV     : trajectory_raw.csv")
+        print(f"   🧠 VLM Decisions : vlm_decisions.jsonl")
+        print(f"   📸 Snapshots     : camera_snapshots/")
+        print(f"{BOLD}{CYAN}========================================================================{NC}\n")
 
     def load_target_goal(self, goal_id):
         if not os.path.exists(GOALS_YAML):
@@ -320,8 +335,7 @@ Output JSON:
                 "subgoal_uv": [self.subgoal_u, self.subgoal_v],
                 "snapshot_image": snapshot_fn
             }
-            self.vlm_log_file.write(json.dumps(vlm_record) + "
-")
+            self.vlm_log_file.write(json.dumps(vlm_record) + "\n")
             self.vlm_log_file.flush()
 
         except Exception:
@@ -350,15 +364,13 @@ Output JSON:
         rel_heading_deg = math.degrees(rel_heading)
 
         if dist_to_goal <= self.tolerance_m:
-            print(f"
-{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.goal['id']} ({self.goal['name']})!{NC}")
+            print(f"\n{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.goal['id']} ({self.goal['name']})!{NC}")
             self.save_snapshot("arrival")
             self.finish_run(success=True, reason="ARRIVED", final_dist=dist_to_goal)
             return
 
         if elapsed > self.timeout_s:
-            print(f"
-{RED}⏱️ [TIMEOUT] Exceeded maximum duration of {self.timeout_s}s. Halting robot.{NC}")
+            print(f"\n{RED}⏱️ [TIMEOUT] Exceeded maximum duration of {self.timeout_s}s. Halting robot.{NC}")
             self.save_snapshot("timeout")
             self.finish_run(success=False, reason="TIMEOUT", final_dist=dist_to_goal)
             return
@@ -382,18 +394,17 @@ Output JSON:
         self.csv_file.write(
             f"{iso_ts},{elapsed:.3f},{self.pose_sample_count},"
             f"{pose['x']:.4f},{pose['y']:.4f},{pose['z']:.4f},{pose['yaw']:.2f},"
-            f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},NAVIGATING
-"
+            f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},NAVIGATING\n"
         )
         self.csv_file.flush()
 
         sys.stdout.write(
-            f"🚀 [{self.mode.upper()}] "
+            f"\r🚀 [{self.mode.upper()}] "
             f"Pos: ({pose['x']:+6.2f}m, {pose['y']:+6.2f}m) | "
             f"Target: #{self.goal['id']} ({self.goal['name']}) | "
             f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
             f"Cmd: (vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}) | "
-            f"Raw Poses: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
+            f"Raw Samples: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
         )
         sys.stdout.flush()
 
@@ -403,7 +414,7 @@ Output JSON:
         elapsed = time.time() - self.start_time
 
         metadata = {
-            "run_id": os.path.basename(self.run_dir),
+            "trial_dir": self.trial_dir,
             "created_at": datetime.now().isoformat(),
             "mode": self.mode,
             "goal": self.goal,
@@ -417,33 +428,31 @@ Output JSON:
                 "total_vlm_queries": self.vlm_query_count,
                 "total_camera_snapshots": self.snapshot_count
             },
-            "saved_raw_files": {
-                "poses_csv": "trajectory_raw.csv",
+            "raw_log_files": {
+                "trajectory_raw_csv": "trajectory_raw.csv",
                 "vlm_decisions_jsonl": "vlm_decisions.jsonl",
                 "camera_snapshots_dir": "camera_snapshots/"
             }
         }
 
-        meta_path = os.path.join(self.run_dir, "run_metadata.json")
+        meta_path = os.path.join(self.trial_dir, "trial_metadata.json")
         with open(meta_path, "w") as f:
             json.dump(metadata, f, indent=2)
 
         self.csv_file.close()
         self.vlm_log_file.close()
 
-        print(f"
-
-========================================================================")
-        print(f"{GREEN}{BOLD} 💾 [RAW DATA LOGGING COMPLETE - 100% SAVED TO DISK]{NC}")
+        print(f"\n\n========================================================================")
+        print(f"{GREEN}{BOLD} 💾 [TRIAL RAW DATA SAVED - EXPERIMENT ARCHIVED]{NC}")
         print(f"========================================================================")
-        print(f" • Run Directory       : {self.run_dir}")
-        print(f" • Raw Trajectory CSV  : {self.csv_path} ({self.pose_sample_count} samples)")
+        print(f" • Mode & Goal Group   : experiments/{self.mode}/goal_{self.goal['id']}_{self.goal['name']}/")
+        print(f" • Exact Trial Folder  : {self.trial_dir}")
+        print(f" • Raw Trajectory CSV  : {self.csv_path} ({self.pose_sample_count} poses)")
         print(f" • Raw VLM JSONL Log   : {self.vlm_log_path} ({self.vlm_query_count} decisions)")
         print(f" • Camera Snapshots    : {self.snapshots_dir}/ ({self.snapshot_count} images)")
-        print(f" • Run Metadata File   : {meta_path}")
-        print(f" • Symlinked Access    : ~/.ros/navigation_runs/latest/")
-        print(f"========================================================================
-")
+        print(f" • Trial Metadata      : {meta_path}")
+        print(f" • Quick Access Link   : experiments/latest/")
+        print(f"========================================================================\n")
         rclpy.shutdown()
 
 def select_goal_interactively():
@@ -458,8 +467,7 @@ def select_goal_interactively():
         print(f"{RED}Error: No candidate goals registered in {GOALS_YAML}.{NC}")
         sys.exit(1)
 
-    print(f"
-{BOLD}{CYAN}========================================================================{NC}")
+    print(f"\n{BOLD}{CYAN}========================================================================{NC}")
     print(f"{BOLD}{CYAN} 🎯 Select Destination Goal Pose for Autonomous Navigation{NC}")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
     for g in goals:
@@ -468,8 +476,7 @@ def select_goal_interactively():
 
     while True:
         try:
-            choice = input(f"
-Enter Goal Choice [1-{len(goals)}] (Default: 1): ").strip()
+            choice = input(f"\nEnter Goal Choice [1-{len(goals)}] (Default: 1): ").strip()
             if not choice:
                 return goals[0]['id']
             for g in goals:
@@ -480,7 +487,7 @@ Enter Goal Choice [1-{len(goals)}] (Default: 1): ").strip()
             sys.exit(0)
 
 def main():
-    parser = argparse.ArgumentParser(description="Goal-Directed Autonomous Navigator for Unitree Go2")
+    parser = argparse.ArgumentParser(description="Structured Goal-Directed Experiment Runner for Unitree Go2")
     parser.add_argument('--mode', choices=['ours', 'pixnav'], default='ours', help="Navigation mode (ours = ESCAPE-Nav, pixnav = PointNav)")
     parser.add_argument('--goal', type=str, default=None, help="Goal ID (1-5) or Goal Name")
     parser.add_argument('--tolerance', type=float, default=0.50, help="Goal arrival tolerance in meters")
