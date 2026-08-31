@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-Goal-Directed Autonomous Navigation Controller for Unitree Go2 (ESCAPE-Nav / PixNav).
-Evaluates paper-standard metrics:
-  - Success Rate (SR)
-  - Success weighted by Path Length (SPL)
-  - Trajectory Length (TL)
-  - Navigation Duration / Time-to-Goal (TTG)
-  - Average Speed (m/s)
-  - VLM Decision Latency (ms) & Query Count
-  - Collision Detection & Distance to Obstacles
-Outputs structured JSON, CSV trajectory, and ready-to-publish LaTeX Table 2 snippet.
+Goal-Directed Autonomous Navigation Controller & Rigorous Benchmark Evaluator for Unitree Go2.
+Implements standard embodied AI metrics (Anderson et al., Habitat, ICRA):
+  1. Success Rate (SR, %) - Arrival within threshold without timeout
+  2. Geodesic SPL (Success weighted by Path Length, %) - Using A* shortest path on 2D occupancy grid
+  3. SoftSPL (%) - Factoring in partial progress for challenging/timeout episodes
+  4. Trajectory Length (TL, m) - With stationary jitter deadband filter (>= 1.5cm)
+  5. Geodesic Shortest Path Length (m) - Ground-truth optimal path through corridor
+  6. Time-to-Goal (TTG, s) & Average Speed (m/s)
+  7. Idle Time Ratio (%) - Time spent waiting for VLM inference vs active locomotion
+  8. VLM Decision Latency (p50 / p95, ms) & Query Count
+  9. Automatic JSON report, CSV trajectory, and ready-to-publish LaTeX Table 2 exporter.
 """
 
 import os
@@ -19,6 +20,7 @@ import time
 import json
 import yaml
 import base64
+import heapq
 import argparse
 from datetime import datetime
 import threading
@@ -48,8 +50,65 @@ BOLD = '\033[1m'
 NC = '\033[0m'
 
 GOALS_YAML = "/home/unitree/go2_ws_antarctica/config/navigation_goals.yaml"
+MAP_2D_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d.png"
 VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
+
+def compute_astar_geodesic_distance(start_xy, goal_xy, map_path=MAP_2D_PNG, res=0.05):
+    """Computes true obstacle-aware geodesic shortest path on the 2D occupancy grid map."""
+    sx, sy = start_xy
+    gx, gy = goal_xy
+    euclidean_dist = math.hypot(gx - sx, gy - sy)
+
+    if not os.path.exists(map_path):
+        return euclidean_dist
+
+    img = cv2.imread(map_path, cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        return euclidean_dist
+
+    h, w = img.shape
+    free_mask = (img > 128).astype(np.uint8)
+
+    # Convert metric (X, Y) to image pixel (PX, PY) relative to map center
+    spx = int(w / 2 + (sx + 14.0) / res)
+    spy = int(h / 2 - (sy - 27.5) / res)
+    gpx = int(w / 2 + (gx + 14.0) / res)
+    gpy = int(h / 2 - (gy - 27.5) / res)
+
+    spx = max(0, min(w - 1, spx))
+    spy = max(0, min(h - 1, spy))
+    gpx = max(0, min(w - 1, gpx))
+    gpy = max(0, min(h - 1, gpy))
+
+    # A* Search
+    h0 = math.hypot(gpx - spx, gpy - spy)
+    pq = [(h0, 0.0, spx, spy)]
+    visited = {(spx, spy): 0.0}
+    dirs = [(-1, 0, 1.0), (1, 0, 1.0), (0, -1, 1.0), (0, 1, 1.0),
+            (-1, -1, 1.414), (-1, 1, 1.414), (1, -1, 1.414), (1, 1, 1.414)]
+
+    max_steps = 50000
+    steps = 0
+    while pq and steps < max_steps:
+        steps += 1
+        f, cost, x, y = heapq.heappop(pq)
+        if math.hypot(x - gpx, y - gpy) <= 2:
+            return cost * res
+
+        if cost > visited.get((x, y), float('inf')):
+            continue
+
+        for dx, dy, step_cost in dirs:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < w and 0 <= ny < h and free_mask[ny, nx] > 0:
+                new_cost = cost + step_cost
+                if new_cost < visited.get((nx, ny), float('inf')):
+                    visited[(nx, ny)] = new_cost
+                    h_score = math.hypot(gpx - nx, gpy - ny)
+                    heapq.heappush(pq, (new_cost + h_score, new_cost, nx, ny))
+
+    return euclidean_dist
 
 class AutonomousNavigator(Node):
     def __init__(self, mode="ours", target_goal_id=1, max_vx=0.30, max_wz=0.50, tolerance_m=0.50, timeout_s=120):
@@ -69,7 +128,10 @@ class AutonomousNavigator(Node):
 
         self.start_time = time.time()
         self.trajectory_history = []
+        self.filtered_trajectory = []
         self.vlm_latencies = []
+        self.idle_time_s = 0.0
+        self.last_control_time = time.time()
         self.is_goal_reached = False
         self.is_stopped = False
 
@@ -155,6 +217,16 @@ class AutonomousNavigator(Node):
             }
             if self.start_pose is None:
                 self.start_pose = self.current_pose
+
+            # Stationary Noise Filter (only add to filtered path if displacement >= 1.5cm)
+            if not self.filtered_trajectory:
+                self.filtered_trajectory.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
+            else:
+                last_p = self.filtered_trajectory[-1]
+                disp = math.hypot(self.current_pose['x'] - last_p[0], self.current_pose['y'] - last_p[1])
+                if disp >= 0.015:
+                    self.filtered_trajectory.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
+
             self.trajectory_history.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
 
     def image_callback(self, msg: Image):
@@ -278,13 +350,18 @@ Output JSON:
             self.stop_robot()
             return
 
+        now = time.time()
+        dt = now - self.last_control_time
+        self.last_control_time = now
+
         pose = self.get_current_pose()
         if not pose:
+            self.idle_time_s += dt
             self.get_logger().warn("Waiting for live localization pose...", throttle_duration_sec=2.0)
             self.stop_robot()
             return
 
-        elapsed = time.time() - self.start_time
+        elapsed = now - self.start_time
         if elapsed > self.timeout_s:
             print(f"\n{RED}⏱️ [TIMEOUT] Exceeded maximum duration of {self.timeout_s}s. Halting robot.{NC}")
             self.finish_run(success=False, reason="TIMEOUT")
@@ -317,6 +394,9 @@ Output JSON:
                 target_vx = self.max_vx * (1.0 - abs(rel_heading) / math.pi)
                 target_wz = rel_heading * 0.50
 
+        if target_vx < 0.03:
+            self.idle_time_s += dt
+
         self.publish_cmd(target_vx, target_wz)
 
         # Real-Time Telemetry HUD
@@ -335,22 +415,34 @@ Output JSON:
         self.stop_robot()
 
         elapsed = time.time() - self.start_time
+
+        # 1. Compute Path Length with Filtered Trajectory (zero-jitter)
         path_length = 0.0
-        for i in range(1, len(self.trajectory_history)):
-            p1 = self.trajectory_history[i-1]
-            p2 = self.trajectory_history[i]
+        active_list = self.filtered_trajectory if len(self.filtered_trajectory) > 1 else self.trajectory_history
+        for i in range(1, len(active_list)):
+            p1 = active_list[i-1]
+            p2 = active_list[i]
             path_length += math.hypot(p2[0] - p1[0], p2[1] - p1[1])
 
-        # Shortest Geodesic / Euclidean Distance from Start to Goal
-        if self.start_pose:
-            d_shortest = math.hypot(self.goal['x_m'] - self.start_pose['x'], self.goal['y_m'] - self.start_pose['y'])
-        else:
-            d_shortest = path_length
+        # 2. Compute Geodesic Shortest Path Length (A* on 2D Occupancy Grid)
+        start_pt = (self.start_pose['x'], self.start_pose['y']) if self.start_pose else (0.0, 0.0)
+        goal_pt = (self.goal['x_m'], self.goal['y_m'])
+        d_geodesic = compute_astar_geodesic_distance(start_pt, goal_pt)
+        d_euclidean = math.hypot(goal_pt[0] - start_pt[0], goal_pt[1] - start_pt[1])
 
-        # Compute SPL (Success weighted by Path Length)
+        # 3. Final Remaining Distance to Goal
+        last_pos = active_list[-1] if active_list else (0.0, 0.0)
+        d_final = math.hypot(goal_pt[0] - last_pos[0], goal_pt[1] - last_pos[1])
+        d_initial = max(d_geodesic, 0.5)
+
+        # 4. Standard SPL & SoftSPL
         s_binary = 1.0 if success else 0.0
-        spl = s_binary * (d_shortest / max(path_length, d_shortest, 0.01))
+        spl = s_binary * (d_geodesic / max(path_length, d_geodesic, 0.01))
+        soft_progress = max(0.0, min(1.0, 1.0 - (d_final / d_initial)))
+        soft_spl = soft_progress * (d_geodesic / max(path_length, d_geodesic, 0.01))
+
         avg_speed = path_length / max(elapsed, 0.01)
+        idle_ratio = (self.idle_time_s / max(elapsed, 0.01)) * 100.0
 
         vlm_p50 = float(np.percentile(self.vlm_latencies, 50)) if self.vlm_latencies else 0.0
         vlm_p95 = float(np.percentile(self.vlm_latencies, 95)) if self.vlm_latencies else 0.0
@@ -362,36 +454,43 @@ Output JSON:
             "metrics": {
                 "success_rate_sr": 1.0 if success else 0.0,
                 "spl": round(spl, 4),
+                "soft_spl": round(soft_spl, 4),
                 "trajectory_length_m": round(path_length, 3),
-                "shortest_path_m": round(d_shortest, 3),
+                "geodesic_shortest_path_m": round(d_geodesic, 3),
+                "euclidean_shortest_path_m": round(d_euclidean, 3),
                 "duration_seconds": round(elapsed, 2),
+                "idle_time_seconds": round(self.idle_time_s, 2),
+                "idle_ratio_percent": round(idle_ratio, 1),
                 "average_speed_mps": round(avg_speed, 3),
                 "vlm_query_count": len(self.vlm_latencies),
                 "vlm_latency_p50_ms": round(vlm_p50, 1),
                 "vlm_latency_p95_ms": round(vlm_p95, 1)
             },
             "reason": reason,
-            "pose_samples": len(self.trajectory_history)
+            "pose_samples_raw": len(self.trajectory_history),
+            "pose_samples_filtered": len(self.filtered_trajectory)
         }
 
-        # 1. Save JSON Report
+        # Save JSON Report
         summary_path = os.path.join(self.run_dir, "metrics_report.json")
         with open(summary_path, "w") as f:
             json.dump(summary, f, indent=2)
 
-        # 2. Save Trajectory CSV
+        # Save Trajectory CSV
         traj_csv = os.path.join(self.run_dir, "trajectory.csv")
         with open(traj_csv, "w") as f:
             f.write("x_m,y_m,yaw_deg,timestamp\n")
             for p in self.trajectory_history:
                 f.write(f"{p[0]:.4f},{p[1]:.4f},{p[2]:.2f},{p[3]:.3f}\n")
 
-        # 3. Generate LaTeX Table 2 Row
+        # Generate LaTeX Table 2 Formatted Row
         latex_row = (
             f"{self.mode.upper():16s} & "
-            f"{'100\\%' if success else '0.0\\%'} & "
+            f"{'100.0\\%' if success else '0.0\\%'} & "
             f"{spl*100:.1f}\\% & "
+            f"{soft_spl*100:.1f}\\% & "
             f"{path_length:.2f}\\,\\text{{m}} & "
+            f"{d_geodesic:.2f}\\,\\text{{m}} & "
             f"{elapsed:.1f}\\,\\text{{s}} & "
             f"{avg_speed:.2f}\\,\\text{{m/s}} & "
             f"{vlm_p50:.1f}\\,\\text{{ms}} \\\\\n"
@@ -401,17 +500,19 @@ Output JSON:
             f.write(latex_row)
 
         print(f"\n\n========================================================================")
-        print(f" 📊 [ICRA 2026 Paper Evaluation Summary]")
+        print(f" 📊 [ICRA 2026 Paper Rigorous Benchmark Summary]")
         print(f" • Run Mode        : {self.mode.upper()}")
-        print(f" • Goal Target     : #{self.goal['id']} - {self.goal['name']}")
-        print(f" • Success (SR)    : {'✅ SUCCESS (100%)' if success else '❌ FAILED (0%)'}")
-        print(f" • SPL Metric      : {spl*100:.1f}%")
-        print(f" • Trajectory (TL) : {path_length:.2f} m (Shortest: {d_shortest:.2f} m)")
-        print(f" • Duration (TTG)  : {elapsed:.2f} s")
+        print(f" • Target Goal     : #{self.goal['id']} - {self.goal['name']}")
+        print(f" • Success (SR)    : {'✅ SUCCESS (100.0%)' if success else '❌ FAILED (0.0%)'}")
+        print(f" • Geodesic SPL    : {spl*100:.1f}% (Standard Obstacle-Aware Path Efficiency)")
+        print(f" • SoftSPL         : {soft_spl*100:.1f}% (Factoring Partial Progress)")
+        print(f" • Trajectory (TL) : {path_length:.2f} m (A* Geodesic Optimal: {d_geodesic:.2f} m)")
+        print(f" • Duration (TTG)  : {elapsed:.2f} s (Idle Time: {self.idle_time_s:.2f}s, {idle_ratio:.1f}%)")
         print(f" • Average Speed   : {avg_speed:.2f} m/s")
         if self.mode == "ours":
-            print(f" • VLM Latency     : p50={vlm_p50:.1f}ms, p95={vlm_p95:.1f}ms (Queries: {len(self.vlm_latencies)})")
-        print(f" • Reports Saved   : {summary_path}")
+            print(f" • VLM Latency     : p50={vlm_p50:.1f}ms, p95={vlm_p95:.1f}ms (Total Queries: {len(self.vlm_latencies)})")
+        print(f" • JSON Report     : {summary_path}")
+        print(f" • LaTeX Table Row : {latex_path}")
         print(f"========================================================================\n")
         rclpy.shutdown()
 
