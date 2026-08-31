@@ -1,26 +1,18 @@
 #!/usr/bin/env python3
 """
-Goal-Directed Autonomous Navigation Controller & Structured Experiment Trial Logger for Unitree Go2.
-Hierarchical Experiment Directory Structure:
-  experiments/
-  ├── ours/
-  │   └── goal_{ID}_{NAME}/
-  │       ├── trial_01_{TIMESTAMP}/
-  │       │   ├── trajectory_raw.csv
-  │       │   ├── vlm_decisions.jsonl
-  │       │   ├── camera_snapshots/
-  │       │   └── trial_metadata.json
-  │       └── trial_02_{TIMESTAMP}/
-  └── pixnav/
-      └── goal_{ID}_{NAME}/
-          └── trial_01_{TIMESTAMP}/
+Goal-Directed Autonomous Navigation Controller, VLM Visual Logger & Trajectory Map Exporter for Unitree Go2.
+Saves:
+  1. Exact communicated VLM raw frames & decision overlay frames (with [u,v] sub-goal pins)
+  2. Complete 2D Map Trajectory Overlays (trial_trajectory_on_2d_map.png & trajectory_plot_bev.png)
+  3. High-frequency 10Hz raw poses (trajectory_raw.csv) & VLM JSONL decision logs
+  4. Trial summary metadata (trial_metadata.json)
 """
 
 import os
 import sys
 import math
-import time
 import glob
+import time
 import json
 import yaml
 import base64
@@ -30,6 +22,9 @@ import threading
 import requests
 import numpy as np
 import cv2
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 import rclpy
 from rclpy.node import Node
@@ -54,6 +49,7 @@ NC = '\033[0m'
 
 WORKSPACE_DIR = "/home/unitree/go2_ws_antarctica"
 GOALS_YAML = os.path.join(WORKSPACE_DIR, "config/navigation_goals.yaml")
+MAP_2D_PNG = os.path.join(WORKSPACE_DIR, "2dmap/2d.png")
 EXP_ROOT = os.path.join(WORKSPACE_DIR, "experiments")
 VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
@@ -75,6 +71,8 @@ class AutonomousNavigator(Node):
         self.lock = threading.Lock()
 
         self.start_time = time.time()
+        self.trajectory_history = []
+        self.vlm_decision_history = []
         self.vlm_latencies = []
         self.pose_sample_count = 0
         self.vlm_query_count = 0
@@ -96,7 +94,6 @@ class AutonomousNavigator(Node):
         self.mode_goal_dir = os.path.join(EXP_ROOT, self.mode, goal_folder_name)
         os.makedirs(self.mode_goal_dir, exist_ok=True)
 
-        # Auto-increment trial number
         existing_trials = glob.glob(os.path.join(self.mode_goal_dir, "trial_*"))
         trial_num = len(existing_trials) + 1
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -114,7 +111,7 @@ class AutonomousNavigator(Node):
         except Exception:
             pass
 
-        # Raw Data Log Files
+        # Raw Data Files
         self.csv_path = os.path.join(self.trial_dir, "trajectory_raw.csv")
         self.csv_file = open(self.csv_path, "w")
         self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,status\n")
@@ -145,18 +142,17 @@ class AutonomousNavigator(Node):
         self.create_timer(0.7, self.vlm_decision_loop)
 
         print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-        print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Structured Experiment Runner & Raw Logger]{NC}")
-        print(f" • Method/Mode : {BOLD}{self.mode.upper()}{NC} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
+        print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Full Visual & Trajectory Experiment Logger]{NC}")
+        print(f" • Mode        : {BOLD}{self.mode.upper()}{NC} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
         print(f" • Target Goal : #{self.goal['id']} - {self.goal['name']}")
         print(f" • Trial Number: {BOLD}Trial #{trial_num:02d}{NC}")
         print(f"------------------------------------------------------------------------")
-        print(f"{BOLD} 💾 [Trial Directory Structure]:{NC}")
-        print(f"   📂 Mode Folder   : {os.path.join(EXP_ROOT, self.mode)}/")
-        print(f"   📂 Goal Group    : {goal_folder_name}/")
-        print(f"   📂 Trial Folder  : {self.trial_dir}/")
-        print(f"   📄 Poses CSV     : trajectory_raw.csv")
-        print(f"   🧠 VLM Decisions : vlm_decisions.jsonl")
-        print(f"   📸 Snapshots     : camera_snapshots/")
+        print(f"{BOLD} 💾 [Trial Storage Directory]:{NC}")
+        print(f"   📂 Trial Folder   : {self.trial_dir}/")
+        print(f"   📄 Poses CSV      : trajectory_raw.csv")
+        print(f"   🧠 VLM Log        : vlm_decisions.jsonl")
+        print(f"   📸 Image Snapshots: camera_snapshots/ (Communicated raw frames & subgoals)")
+        print(f"   🗺️ Trajectory Map : trial_trajectory_on_2d_map.png (Rendered upon finish)")
         print(f"{BOLD}{CYAN}========================================================================{NC}\n")
 
     def load_target_goal(self, goal_id):
@@ -187,6 +183,7 @@ class AutonomousNavigator(Node):
             }
             if self.start_pose is None:
                 self.start_pose = self.current_pose
+            self.trajectory_history.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
 
     def image_callback(self, msg: Image):
         try:
@@ -217,6 +214,7 @@ class AutonomousNavigator(Node):
             }
             if self.start_pose is None:
                 self.start_pose = pose_dict
+            self.trajectory_history.append((pose_dict['x'], pose_dict['y'], pose_dict['yaw'], time.time()))
             return pose_dict
         except Exception:
             return None
@@ -232,18 +230,6 @@ class AutonomousNavigator(Node):
 
     def stop_robot(self):
         self.publish_cmd(0.0, 0.0)
-
-    def save_snapshot(self, label="frame"):
-        with self.lock:
-            if self.latest_frame is None:
-                return None
-            frame = self.latest_frame.copy()
-
-        self.snapshot_count += 1
-        fn = f"{self.snapshot_count:04d}_{label}.jpg"
-        path = os.path.join(self.snapshots_dir, fn)
-        cv2.imwrite(path, frame)
-        return fn
 
     def vlm_decision_loop(self):
         if self.is_goal_reached or self.mode != "ours":
@@ -272,6 +258,11 @@ class AutonomousNavigator(Node):
         self.vlm_query_count += 1
         q_idx = self.vlm_query_count
         t0 = time.time()
+
+        # 1. Save Exact Communicated Raw JPEG Frame
+        raw_frame_name = f"query_{q_idx:03d}_raw.jpg"
+        raw_frame_path = os.path.join(self.snapshots_dir, raw_frame_name)
+        cv2.imwrite(raw_frame_path, frame)
 
         try:
             ret, buf = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
@@ -304,8 +295,8 @@ Output JSON:
             latency_ms = (time.time() - t0) * 1000.0
             self.vlm_latencies.append(latency_ms)
 
-            action = "unknown"
-            reasoning = "none"
+            action = "move_forward"
+            reasoning = "default forward"
             pt_dict = {"x": 0.5, "y": 0.72}
 
             if resp.status_code == 200:
@@ -321,8 +312,28 @@ Output JSON:
                     self.subgoal_u = int(pt_dict.get('x', 0.5) * 1280)
                     self.subgoal_v = int(pt_dict.get('y', 0.72) * 720)
 
-            snapshot_fn = self.save_snapshot(f"query_{q_idx:03d}") if (q_idx % 3 == 1) else None
+            # 2. Save Decision Overlay Image (with [u,v] pin and text annotation)
+            overlay = frame.copy()
+            u, v = self.subgoal_u, self.subgoal_v
+            cv2.circle(overlay, (u, v), 16, (0, 255, 0), 3, cv2.LINE_AA)
+            cv2.circle(overlay, (u, v), 6, (0, 0, 255), -1, cv2.LINE_AA)
+            cv2.putText(overlay, f"VLM Subgoal #{q_idx}: [{u},{v}] ({action})", (30, 50),
+                        cv2.FONT_HERSHEY_DUPLEX, 1.0, (0, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(overlay, f"Dist: {dist_to_goal:.1f}m | Latency: {latency_ms:.0f}ms | {reasoning[:40]}", (30, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+            decision_frame_name = f"query_{q_idx:03d}_vlm_decision.jpg"
+            decision_frame_path = os.path.join(self.snapshots_dir, decision_frame_name)
+            cv2.imwrite(decision_frame_path, overlay)
 
+            # Record Decision History
+            self.vlm_decision_history.append({
+                "query_id": q_idx,
+                "pose": (pose['x'], pose['y']),
+                "subgoal_uv": [u, v],
+                "action": action
+            })
+
+            # Append Raw JSONL
             vlm_record = {
                 "query_id": q_idx,
                 "iso_timestamp": datetime.now().isoformat(),
@@ -332,8 +343,9 @@ Output JSON:
                 "rel_heading_deg": round(rel_heading_deg, 1),
                 "action": action,
                 "reasoning": reasoning,
-                "subgoal_uv": [self.subgoal_u, self.subgoal_v],
-                "snapshot_image": snapshot_fn
+                "subgoal_uv": [u, v],
+                "raw_image_file": raw_frame_name,
+                "decision_overlay_image": decision_frame_name
             }
             self.vlm_log_file.write(json.dumps(vlm_record) + "\n")
             self.vlm_log_file.flush()
@@ -365,13 +377,13 @@ Output JSON:
 
         if dist_to_goal <= self.tolerance_m:
             print(f"\n{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.goal['id']} ({self.goal['name']})!{NC}")
-            self.save_snapshot("arrival")
+            self.save_final_snapshot("arrival")
             self.finish_run(success=True, reason="ARRIVED", final_dist=dist_to_goal)
             return
 
         if elapsed > self.timeout_s:
             print(f"\n{RED}⏱️ [TIMEOUT] Exceeded maximum duration of {self.timeout_s}s. Halting robot.{NC}")
-            self.save_snapshot("timeout")
+            self.save_final_snapshot("timeout")
             self.finish_run(success=False, reason="TIMEOUT", final_dist=dist_to_goal)
             return
 
@@ -404,14 +416,93 @@ Output JSON:
             f"Target: #{self.goal['id']} ({self.goal['name']}) | "
             f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
             f"Cmd: (vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}) | "
-            f"Raw Samples: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
+            f"Frames: #{self.vlm_query_count:02d} | "
+            f"Poses: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
         )
         sys.stdout.flush()
+
+    def save_final_snapshot(self, label):
+        with self.lock:
+            if self.latest_frame is None:
+                return
+            frame = self.latest_frame.copy()
+        path = os.path.join(self.snapshots_dir, f"{label}_frame.jpg")
+        cv2.imwrite(path, frame)
+
+    def render_trajectory_on_2d_map(self):
+        """Renders the exact driven trajectory directly on the 2D floor plan map."""
+        if not os.path.exists(MAP_2D_PNG) or not self.trajectory_history:
+            return None
+
+        map_img = cv2.imread(MAP_2D_PNG)
+        if map_img is None:
+            return None
+
+        h, w = map_img.shape[:2]
+        res = 0.05
+        overlay = map_img.copy()
+
+        # 1. Convert Trajectory to Pixel Coordinates
+        pts = []
+        for p in self.trajectory_history:
+            px = int(w / 2 + (p[0] + 14.0) / res)
+            py = int(h / 2 - (p[1] - 27.5) / res)
+            pts.append((px, py))
+
+        # 2. Draw Smooth Driven Path
+        for i in range(1, len(pts)):
+            cv2.line(overlay, pts[i-1], pts[i], (255, 120, 0), 3, cv2.LINE_AA)
+
+        # 3. Draw VLM Decision Points (if available)
+        for dec in self.vlm_decision_history:
+            dpx = int(w / 2 + (dec['pose'][0] + 14.0) / res)
+            dpy = int(h / 2 - (dec['pose'][1] - 27.5) / res)
+            cv2.circle(overlay, (dpx, dpy), 5, (0, 220, 255), -1, cv2.LINE_AA)
+
+        # 4. Draw Start & Goal Pins
+        start_px = pts[0]
+        goal_px = (int(w / 2 + (self.goal['x_m'] + 14.0) / res), int(h / 2 - (self.goal['y_m'] - 27.5) / res))
+
+        cv2.circle(overlay, start_px, 10, (0, 220, 0), -1, cv2.LINE_AA)
+        cv2.circle(overlay, start_px, 12, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(overlay, "START", (start_px[0] + 15, start_px[1] + 5), cv2.FONT_HERSHEY_DUPLEX, 0.6, (0, 200, 0), 1, cv2.LINE_AA)
+
+        cv2.circle(overlay, goal_px, 12, (0, 0, 240), -1, cv2.LINE_AA)
+        cv2.circle(overlay, goal_px, 14, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(overlay, f"GOAL: {self.goal['name']}", (goal_px[0] + 18, goal_px[1] + 5), cv2.FONT_HERSHEY_DUPLEX, 0.6, (0, 0, 220), 1, cv2.LINE_AA)
+
+        out_map_path = os.path.join(self.trial_dir, "trial_trajectory_on_2d_map.png")
+        cv2.imwrite(out_map_path, overlay)
+
+        # Also generate high-res Matplotlib BEV Plot
+        try:
+            fig, ax = plt.subplots(figsize=(8, 8), dpi=150)
+            xs = [p[0] for p in self.trajectory_history]
+            ys = [p[1] for p in self.trajectory_history]
+            ax.plot(xs, ys, color='#1f77b4', linewidth=2.5, label='Driven Path')
+            ax.scatter(xs[0], ys[0], color='green', s=120, zorder=5, label='Start')
+            ax.scatter(self.goal['x_m'], self.goal['y_m'], color='red', s=140, marker='*', zorder=5, label=f"Goal: {self.goal['name']}")
+            ax.set_title(f"Trial Trajectory: {self.mode.upper()} to {self.goal['name']}", fontsize=14, fontweight='bold')
+            ax.set_xlabel("Map X (meters)", fontsize=12)
+            ax.set_ylabel("Map Y (meters)", fontsize=12)
+            ax.grid(True, linestyle='--', alpha=0.6)
+            ax.legend(loc='best')
+            plt.tight_layout()
+            plot_path = os.path.join(self.trial_dir, "trajectory_plot_bev.png")
+            plt.savefig(plot_path)
+            plt.close()
+        except Exception:
+            pass
+
+        return out_map_path
 
     def finish_run(self, success: bool, reason: str, final_dist: float = 0.0):
         self.is_goal_reached = True
         self.stop_robot()
         elapsed = time.time() - self.start_time
+
+        # Render Trajectory Overlay on 2D Map
+        map_artifact = self.render_trajectory_on_2d_map()
 
         metadata = {
             "trial_dir": self.trial_dir,
@@ -425,10 +516,11 @@ Output JSON:
                 "duration_seconds": round(elapsed, 2),
                 "final_distance_to_goal_m": round(final_dist, 3),
                 "total_pose_samples": self.pose_sample_count,
-                "total_vlm_queries": self.vlm_query_count,
-                "total_camera_snapshots": self.snapshot_count
+                "total_vlm_queries": self.vlm_query_count
             },
-            "raw_log_files": {
+            "saved_artifacts": {
+                "trajectory_map_overlay": "trial_trajectory_on_2d_map.png",
+                "trajectory_plot_bev": "trajectory_plot_bev.png",
                 "trajectory_raw_csv": "trajectory_raw.csv",
                 "vlm_decisions_jsonl": "vlm_decisions.jsonl",
                 "camera_snapshots_dir": "camera_snapshots/"
@@ -443,15 +535,17 @@ Output JSON:
         self.vlm_log_file.close()
 
         print(f"\n\n========================================================================")
-        print(f"{GREEN}{BOLD} 💾 [TRIAL RAW DATA SAVED - EXPERIMENT ARCHIVED]{NC}")
+        print(f"{GREEN}{BOLD} 💾 [TRIAL DATA & VISUAL ARTIFACTS SAVED SUCCESSFULLY]{NC}")
         print(f"========================================================================")
         print(f" • Mode & Goal Group   : experiments/{self.mode}/goal_{self.goal['id']}_{self.goal['name']}/")
         print(f" • Exact Trial Folder  : {self.trial_dir}")
-        print(f" • Raw Trajectory CSV  : {self.csv_path} ({self.pose_sample_count} poses)")
-        print(f" • Raw VLM JSONL Log   : {self.vlm_log_path} ({self.vlm_query_count} decisions)")
-        print(f" • Camera Snapshots    : {self.snapshots_dir}/ ({self.snapshot_count} images)")
-        print(f" • Trial Metadata      : {meta_path}")
-        print(f" • Quick Access Link   : experiments/latest/")
+        print(f" • 🗺️ 2D Map Trajectory : trial_trajectory_on_2d_map.png ⭐")
+        print(f" • 📈 BEV Plot PNG     : trajectory_plot_bev.png")
+        print(f" • 📸 VLM Raw & Decision: camera_snapshots/ (query_XXX_raw.jpg & decision.jpg) ⭐")
+        print(f" • 📄 Raw Trajectory CSV: trajectory_raw.csv ({self.pose_sample_count} poses)")
+        print(f" • 🧠 VLM JSONL Log    : vlm_decisions.jsonl ({self.vlm_query_count} queries)")
+        print(f" • 📋 Trial Metadata   : trial_metadata.json")
+        print(f" • 🔗 Quick Symlink    : experiments/latest/")
         print(f"========================================================================\n")
         rclpy.shutdown()
 
