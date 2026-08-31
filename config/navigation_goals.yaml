@@ -1,0 +1,52 @@
+# ==============================================================================
+# Unitree Go2 Navigation Goal Candidates
+# ==============================================================================
+# Registered candidate destinations for autonomous navigation experiments.
+# Coordinate frame: map (Planar 3DoF SLAM frame)
+# ==============================================================================
+
+goals:
+  - id: 1
+    name: "Dead_end_exit"
+    description: "Doorway exit of the dead-end room leading into the main hallway"
+    x_m: -10.32
+    y_m: 28.22
+    z_m: 0.31
+    yaw_deg: -178.1
+    tolerance_m: 0.50
+
+  - id: 2
+    name: "Corridor_straight_mid"
+    description: "Midway point along the straight corridor section"
+    x_m: -14.50
+    y_m: 27.50
+    z_m: 0.32
+    yaw_deg: -178.0
+    tolerance_m: 0.50
+
+  - id: 3
+    name: "Corridor_corner_1"
+    description: "First 90-degree corner turn intersection in the corridor"
+    x_m: -18.21
+    y_m: 27.51
+    z_m: 0.32
+    yaw_deg: -177.2
+    tolerance_m: 0.50
+
+  - id: 4
+    name: "Corridor_turn_far"
+    description: "Far wing hallway corridor destination"
+    x_m: -22.50
+    y_m: 35.00
+    z_m: 0.30
+    yaw_deg: 90.0
+    tolerance_m: 0.50
+
+  - id: 5
+    name: "Final_destination_lobby"
+    description: "Elevator lobby / final navigation benchmark goal"
+    x_m: -27.00
+    y_m: 20.00
+    z_m: 0.30
+    yaw_deg: -90.0
+    tolerance_m: 0.50
