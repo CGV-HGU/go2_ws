@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 """
-Goal-Directed Autonomous Navigation Controller & Rigorous Benchmark Evaluator for Unitree Go2.
-Implements standard embodied AI metrics (Anderson et al., Habitat, ICRA):
-  1. Success Rate (SR, %) - Arrival within threshold without timeout
-  2. Geodesic SPL (Success weighted by Path Length, %) - Using A* shortest path on 2D occupancy grid
-  3. SoftSPL (%) - Factoring in partial progress for challenging/timeout episodes
-  4. Trajectory Length (TL, m) - With stationary jitter deadband filter (>= 1.5cm)
-  5. Geodesic Shortest Path Length (m) - Ground-truth optimal path through corridor
-  6. Time-to-Goal (TTG, s) & Average Speed (m/s)
-  7. Idle Time Ratio (%) - Time spent waiting for VLM inference vs active locomotion
-  8. VLM Decision Latency (p50 / p95, ms) & Query Count
-  9. Automatic JSON report, CSV trajectory, and ready-to-publish LaTeX Table 2 exporter.
+Goal-Directed Autonomous Navigation Controller & Raw Experimental Data Logger for Unitree Go2.
+Saves raw, unprocessed experimental data for scientific record-keeping:
+  1. trajectory_raw.csv  - High-frequency (10Hz) raw localization poses & velocity commands
+  2. vlm_decisions.jsonl - Full raw VLM queries, responses, subgoals [u,v], and latencies
+  3. camera_snapshots/   - Decision keyframe JPEG images (Start, Subgoals, Arrival)
+  4. run_metadata.json   - Run setup, initial & target poses, timestamps, and termination status
 """
 
 import os
@@ -20,7 +15,6 @@ import time
 import json
 import yaml
 import base64
-import heapq
 import argparse
 from datetime import datetime
 import threading
@@ -42,73 +36,16 @@ try:
 except ImportError:
     HAS_UNITREE_API = False
 
-GREEN = '\033[0;32m'
-CYAN = '\033[0;36m'
-YELLOW = '\033[1;33m'
-RED = '\033[0;31m'
-BOLD = '\033[1m'
-NC = '\033[0m'
+GREEN = '[0;32m'
+CYAN = '[0;36m'
+YELLOW = '[1;33m'
+RED = '[0;31m'
+BOLD = '[1m'
+NC = '[0m'
 
 GOALS_YAML = "/home/unitree/go2_ws_antarctica/config/navigation_goals.yaml"
-MAP_2D_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d.png"
 VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
-
-def compute_astar_geodesic_distance(start_xy, goal_xy, map_path=MAP_2D_PNG, res=0.05):
-    """Computes true obstacle-aware geodesic shortest path on the 2D occupancy grid map."""
-    sx, sy = start_xy
-    gx, gy = goal_xy
-    euclidean_dist = math.hypot(gx - sx, gy - sy)
-
-    if not os.path.exists(map_path):
-        return euclidean_dist
-
-    img = cv2.imread(map_path, cv2.IMREAD_GRAYSCALE)
-    if img is None:
-        return euclidean_dist
-
-    h, w = img.shape
-    free_mask = (img > 128).astype(np.uint8)
-
-    # Convert metric (X, Y) to image pixel (PX, PY) relative to map center
-    spx = int(w / 2 + (sx + 14.0) / res)
-    spy = int(h / 2 - (sy - 27.5) / res)
-    gpx = int(w / 2 + (gx + 14.0) / res)
-    gpy = int(h / 2 - (gy - 27.5) / res)
-
-    spx = max(0, min(w - 1, spx))
-    spy = max(0, min(h - 1, spy))
-    gpx = max(0, min(w - 1, gpx))
-    gpy = max(0, min(h - 1, gpy))
-
-    # A* Search
-    h0 = math.hypot(gpx - spx, gpy - spy)
-    pq = [(h0, 0.0, spx, spy)]
-    visited = {(spx, spy): 0.0}
-    dirs = [(-1, 0, 1.0), (1, 0, 1.0), (0, -1, 1.0), (0, 1, 1.0),
-            (-1, -1, 1.414), (-1, 1, 1.414), (1, -1, 1.414), (1, 1, 1.414)]
-
-    max_steps = 50000
-    steps = 0
-    while pq and steps < max_steps:
-        steps += 1
-        f, cost, x, y = heapq.heappop(pq)
-        if math.hypot(x - gpx, y - gpy) <= 2:
-            return cost * res
-
-        if cost > visited.get((x, y), float('inf')):
-            continue
-
-        for dx, dy, step_cost in dirs:
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < w and 0 <= ny < h and free_mask[ny, nx] > 0:
-                new_cost = cost + step_cost
-                if new_cost < visited.get((nx, ny), float('inf')):
-                    visited[(nx, ny)] = new_cost
-                    h_score = math.hypot(gpx - nx, gpy - ny)
-                    heapq.heappush(pq, (new_cost + h_score, new_cost, nx, ny))
-
-    return euclidean_dist
 
 class AutonomousNavigator(Node):
     def __init__(self, mode="ours", target_goal_id=1, max_vx=0.30, max_wz=0.50, tolerance_m=0.50, timeout_s=120):
@@ -127,13 +64,16 @@ class AutonomousNavigator(Node):
         self.lock = threading.Lock()
 
         self.start_time = time.time()
-        self.trajectory_history = []
-        self.filtered_trajectory = []
         self.vlm_latencies = []
-        self.idle_time_s = 0.0
-        self.last_control_time = time.time()
+        self.pose_sample_count = 0
+        self.vlm_query_count = 0
+        self.snapshot_count = 0
         self.is_goal_reached = False
         self.is_stopped = False
+
+        # Current Command State
+        self.cmd_vx = 0.0
+        self.cmd_wz = 0.0
 
         # 1. Load Goal Definition
         self.goal = self.load_target_goal(target_goal_id)
@@ -141,11 +81,11 @@ class AutonomousNavigator(Node):
             self.get_logger().error(f"Goal ID {target_goal_id} not found in {GOALS_YAML}")
             sys.exit(1)
 
-        # 2. Setup Run Directory & Logging
+        # 2. Setup Dedicated Raw Data Run Directory
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.run_dir = os.path.expanduser(f"~/.ros/navigation_runs/{timestamp}_{self.mode}_{self.goal['name']}")
-        os.makedirs(self.run_dir, exist_ok=True)
-        self.log_file = open(os.path.join(self.run_dir, "navigation.log"), "w")
+        self.snapshots_dir = os.path.join(self.run_dir, "camera_snapshots")
+        os.makedirs(self.snapshots_dir, exist_ok=True)
 
         # Symlink latest run
         runs_root = os.path.expanduser("~/.ros/navigation_runs")
@@ -156,6 +96,16 @@ class AutonomousNavigator(Node):
             os.symlink(self.run_dir, latest_link)
         except Exception:
             pass
+
+        # Raw Files
+        self.csv_path = os.path.join(self.run_dir, "trajectory_raw.csv")
+        self.csv_file = open(self.csv_path, "w")
+        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,status
+")
+        self.csv_file.flush()
+
+        self.vlm_log_path = os.path.join(self.run_dir, "vlm_decisions.jsonl")
+        self.vlm_log_file = open(self.vlm_log_path, "w")
 
         # 3. ROS 2 Subscriptions & Publishers
         qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT, history=HistoryPolicy.KEEP_LAST, depth=10)
@@ -172,22 +122,27 @@ class AutonomousNavigator(Node):
         else:
             self.sport_pub = None
 
-        # Navigation Control Loop (10Hz)
+        # Control Loop (10Hz) & VLM Loop (1.5Hz)
         self.create_timer(0.1, self.control_loop)
-        # VLM Decision Loop (1.5Hz)
         self.vlm_active = False
         self.subgoal_u = 640
         self.subgoal_v = 500
         self.create_timer(0.7, self.vlm_decision_loop)
 
-        print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-        print(f"{BOLD}{CYAN} 🚀 [Unitree Go2 ICRA Benchmark Autonomous Navigator]{NC}")
+        print(f"
+{BOLD}{CYAN}========================================================================{NC}")
+        print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Raw Experimental Data Collector]{NC}")
         print(f" • Mode        : {self.mode.upper()} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
         print(f" • Target Goal : #{self.goal['id']} - {self.goal['name']}")
         print(f" • Target Pose : X={self.goal['x_m']:+.3f}m, Y={self.goal['y_m']:+.3f}m, Yaw={self.goal['yaw_deg']:+.1f}°")
-        print(f" • Tolerance   : {self.tolerance_m:.2f}m | Timeout: {self.timeout_s}s")
-        print(f" • Log Dir     : {self.run_dir}")
-        print(f"{BOLD}{CYAN}========================================================================{NC}\n")
+        print(f"------------------------------------------------------------------------")
+        print(f"{BOLD} 💾 [Raw Data Storage Directory]:{NC}")
+        print(f"   📂 Run Folder : {self.run_dir}")
+        print(f"   📄 Poses CSV  : {self.csv_path}")
+        print(f"   🧠 VLM Log    : {self.vlm_log_path}")
+        print(f"   📸 Snapshots  : {self.snapshots_dir}/")
+        print(f"{BOLD}{CYAN}========================================================================{NC}
+")
 
     def load_target_goal(self, goal_id):
         if not os.path.exists(GOALS_YAML):
@@ -217,17 +172,6 @@ class AutonomousNavigator(Node):
             }
             if self.start_pose is None:
                 self.start_pose = self.current_pose
-
-            # Stationary Noise Filter (only add to filtered path if displacement >= 1.5cm)
-            if not self.filtered_trajectory:
-                self.filtered_trajectory.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
-            else:
-                last_p = self.filtered_trajectory[-1]
-                disp = math.hypot(self.current_pose['x'] - last_p[0], self.current_pose['y'] - last_p[1])
-                if disp >= 0.015:
-                    self.filtered_trajectory.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
-
-            self.trajectory_history.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
 
     def image_callback(self, msg: Image):
         try:
@@ -263,16 +207,28 @@ class AutonomousNavigator(Node):
             return None
 
     def publish_cmd(self, vx: float, wz: float):
-        vx = max(-self.max_vx, min(self.max_vx, vx))
-        wz = max(-self.max_wz, min(self.max_wz, wz))
+        self.cmd_vx = max(-self.max_vx, min(self.max_vx, vx))
+        self.cmd_wz = max(-self.max_wz, min(self.max_wz, wz))
 
         cmd = Twist()
-        cmd.linear.x = float(vx)
-        cmd.angular.z = float(wz)
+        cmd.linear.x = float(self.cmd_vx)
+        cmd.angular.z = float(self.cmd_wz)
         self.cmd_vel_pub.publish(cmd)
 
     def stop_robot(self):
         self.publish_cmd(0.0, 0.0)
+
+    def save_snapshot(self, label="frame"):
+        with self.lock:
+            if self.latest_frame is None:
+                return None
+            frame = self.latest_frame.copy()
+
+        self.snapshot_count += 1
+        fn = f"{self.snapshot_count:04d}_{label}.jpg"
+        path = os.path.join(self.snapshots_dir, fn)
+        cv2.imwrite(path, frame)
+        return fn
 
     def vlm_decision_loop(self):
         if self.is_goal_reached or self.mode != "ours":
@@ -292,13 +248,16 @@ class AutonomousNavigator(Node):
         global_target_heading = math.atan2(dy, dx)
         rel_heading = (global_target_heading - pose['yaw_rad'] + math.pi) % (2 * math.pi) - math.pi
 
-        threading.Thread(target=self._query_vlm_async, args=(frame, dist, math.degrees(rel_heading)), daemon=True).start()
+        threading.Thread(target=self._query_vlm_async, args=(frame, dist, math.degrees(rel_heading), pose), daemon=True).start()
 
-    def _query_vlm_async(self, frame, dist_to_goal, rel_heading_deg):
+    def _query_vlm_async(self, frame, dist_to_goal, rel_heading_deg, pose):
         if self.vlm_active:
             return
         self.vlm_active = True
+        self.vlm_query_count += 1
+        q_idx = self.vlm_query_count
         t0 = time.time()
+
         try:
             ret, buf = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
             b64_img = base64.b64encode(buf).decode('utf-8')
@@ -330,6 +289,10 @@ Output JSON:
             latency_ms = (time.time() - t0) * 1000.0
             self.vlm_latencies.append(latency_ms)
 
+            action = "unknown"
+            reasoning = "none"
+            pt_dict = {"x": 0.5, "y": 0.72}
+
             if resp.status_code == 200:
                 data = resp.json()
                 content = data['choices'][0]['message']['content']
@@ -337,9 +300,30 @@ Output JSON:
                 m = re.search(r'\{.*\}', content, re.DOTALL)
                 if m:
                     res_json = json.loads(m.group(0))
-                    pt = res_json.get('selected_image_point', {'x': 0.5, 'y': 0.72})
-                    self.subgoal_u = int(pt.get('x', 0.5) * 1280)
-                    self.subgoal_v = int(pt.get('y', 0.72) * 720)
+                    action = res_json.get('action', 'move_forward')
+                    reasoning = res_json.get('reasoning', '')
+                    pt_dict = res_json.get('selected_image_point', {'x': 0.5, 'y': 0.72})
+                    self.subgoal_u = int(pt_dict.get('x', 0.5) * 1280)
+                    self.subgoal_v = int(pt_dict.get('y', 0.72) * 720)
+
+            snapshot_fn = self.save_snapshot(f"query_{q_idx:03d}") if (q_idx % 3 == 1) else None
+
+            vlm_record = {
+                "query_id": q_idx,
+                "iso_timestamp": datetime.now().isoformat(),
+                "latency_ms": round(latency_ms, 1),
+                "robot_pose": {"x": round(pose['x'], 3), "y": round(pose['y'], 3), "yaw_deg": round(pose['yaw'], 1)},
+                "dist_to_goal_m": round(dist_to_goal, 3),
+                "rel_heading_deg": round(rel_heading_deg, 1),
+                "action": action,
+                "reasoning": reasoning,
+                "subgoal_uv": [self.subgoal_u, self.subgoal_v],
+                "snapshot_image": snapshot_fn
+            }
+            self.vlm_log_file.write(json.dumps(vlm_record) + "
+")
+            self.vlm_log_file.flush()
+
         except Exception:
             pass
         finally:
@@ -351,23 +335,13 @@ Output JSON:
             return
 
         now = time.time()
-        dt = now - self.last_control_time
-        self.last_control_time = now
-
+        elapsed = now - self.start_time
         pose = self.get_current_pose()
+
         if not pose:
-            self.idle_time_s += dt
-            self.get_logger().warn("Waiting for live localization pose...", throttle_duration_sec=2.0)
             self.stop_robot()
             return
 
-        elapsed = now - self.start_time
-        if elapsed > self.timeout_s:
-            print(f"\n{RED}⏱️ [TIMEOUT] Exceeded maximum duration of {self.timeout_s}s. Halting robot.{NC}")
-            self.finish_run(success=False, reason="TIMEOUT")
-            return
-
-        # Distance to Goal
         dx = self.goal['x_m'] - pose['x']
         dy = self.goal['y_m'] - pose['y']
         dist_to_goal = math.hypot(dx, dy)
@@ -375,13 +349,20 @@ Output JSON:
         rel_heading = (global_target_heading - pose['yaw_rad'] + math.pi) % (2 * math.pi) - math.pi
         rel_heading_deg = math.degrees(rel_heading)
 
-        # Arrival Check
         if dist_to_goal <= self.tolerance_m:
-            print(f"\n{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.goal['id']} ({self.goal['name']})!{NC}")
-            self.finish_run(success=True, reason="ARRIVED")
+            print(f"
+{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.goal['id']} ({self.goal['name']})!{NC}")
+            self.save_snapshot("arrival")
+            self.finish_run(success=True, reason="ARRIVED", final_dist=dist_to_goal)
             return
 
-        # Control Law
+        if elapsed > self.timeout_s:
+            print(f"
+{RED}⏱️ [TIMEOUT] Exceeded maximum duration of {self.timeout_s}s. Halting robot.{NC}")
+            self.save_snapshot("timeout")
+            self.finish_run(success=False, reason="TIMEOUT", final_dist=dist_to_goal)
+            return
+
         if self.mode == "ours":
             norm_u = (self.subgoal_u - 640) / 640.0
             target_wz = -norm_u * 0.45 + (rel_heading * 0.20)
@@ -394,126 +375,75 @@ Output JSON:
                 target_vx = self.max_vx * (1.0 - abs(rel_heading) / math.pi)
                 target_wz = rel_heading * 0.50
 
-        if target_vx < 0.03:
-            self.idle_time_s += dt
-
         self.publish_cmd(target_vx, target_wz)
 
-        # Real-Time Telemetry HUD
+        self.pose_sample_count += 1
+        iso_ts = datetime.now().isoformat()
+        self.csv_file.write(
+            f"{iso_ts},{elapsed:.3f},{self.pose_sample_count},"
+            f"{pose['x']:.4f},{pose['y']:.4f},{pose['z']:.4f},{pose['yaw']:.2f},"
+            f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},NAVIGATING
+"
+        )
+        self.csv_file.flush()
+
         sys.stdout.write(
-            f"\r🚀 [{self.mode.upper()}] "
+            f"🚀 [{self.mode.upper()}] "
             f"Pos: ({pose['x']:+6.2f}m, {pose['y']:+6.2f}m) | "
             f"Target: #{self.goal['id']} ({self.goal['name']}) | "
             f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
-            f"Cmd: (vx={target_vx:.2f}, wz={target_wz:+.2f}) | "
-            f"Time: {elapsed:4.1f}s"
+            f"Cmd: (vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}) | "
+            f"Raw Poses: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
         )
         sys.stdout.flush()
 
-    def finish_run(self, success: bool, reason: str):
+    def finish_run(self, success: bool, reason: str, final_dist: float = 0.0):
         self.is_goal_reached = True
         self.stop_robot()
-
         elapsed = time.time() - self.start_time
 
-        # 1. Compute Path Length with Filtered Trajectory (zero-jitter)
-        path_length = 0.0
-        active_list = self.filtered_trajectory if len(self.filtered_trajectory) > 1 else self.trajectory_history
-        for i in range(1, len(active_list)):
-            p1 = active_list[i-1]
-            p2 = active_list[i]
-            path_length += math.hypot(p2[0] - p1[0], p2[1] - p1[1])
-
-        # 2. Compute Geodesic Shortest Path Length (A* on 2D Occupancy Grid)
-        start_pt = (self.start_pose['x'], self.start_pose['y']) if self.start_pose else (0.0, 0.0)
-        goal_pt = (self.goal['x_m'], self.goal['y_m'])
-        d_geodesic = compute_astar_geodesic_distance(start_pt, goal_pt)
-        d_euclidean = math.hypot(goal_pt[0] - start_pt[0], goal_pt[1] - start_pt[1])
-
-        # 3. Final Remaining Distance to Goal
-        last_pos = active_list[-1] if active_list else (0.0, 0.0)
-        d_final = math.hypot(goal_pt[0] - last_pos[0], goal_pt[1] - last_pos[1])
-        d_initial = max(d_geodesic, 0.5)
-
-        # 4. Standard SPL & SoftSPL
-        s_binary = 1.0 if success else 0.0
-        spl = s_binary * (d_geodesic / max(path_length, d_geodesic, 0.01))
-        soft_progress = max(0.0, min(1.0, 1.0 - (d_final / d_initial)))
-        soft_spl = soft_progress * (d_geodesic / max(path_length, d_geodesic, 0.01))
-
-        avg_speed = path_length / max(elapsed, 0.01)
-        idle_ratio = (self.idle_time_s / max(elapsed, 0.01)) * 100.0
-
-        vlm_p50 = float(np.percentile(self.vlm_latencies, 50)) if self.vlm_latencies else 0.0
-        vlm_p95 = float(np.percentile(self.vlm_latencies, 95)) if self.vlm_latencies else 0.0
-
-        summary = {
-            "timestamp": datetime.now().isoformat(),
+        metadata = {
+            "run_id": os.path.basename(self.run_dir),
+            "created_at": datetime.now().isoformat(),
             "mode": self.mode,
             "goal": self.goal,
-            "metrics": {
-                "success_rate_sr": 1.0 if success else 0.0,
-                "spl": round(spl, 4),
-                "soft_spl": round(soft_spl, 4),
-                "trajectory_length_m": round(path_length, 3),
-                "geodesic_shortest_path_m": round(d_geodesic, 3),
-                "euclidean_shortest_path_m": round(d_euclidean, 3),
+            "initial_pose": self.start_pose,
+            "final_status": {
+                "success": success,
+                "reason": reason,
                 "duration_seconds": round(elapsed, 2),
-                "idle_time_seconds": round(self.idle_time_s, 2),
-                "idle_ratio_percent": round(idle_ratio, 1),
-                "average_speed_mps": round(avg_speed, 3),
-                "vlm_query_count": len(self.vlm_latencies),
-                "vlm_latency_p50_ms": round(vlm_p50, 1),
-                "vlm_latency_p95_ms": round(vlm_p95, 1)
+                "final_distance_to_goal_m": round(final_dist, 3),
+                "total_pose_samples": self.pose_sample_count,
+                "total_vlm_queries": self.vlm_query_count,
+                "total_camera_snapshots": self.snapshot_count
             },
-            "reason": reason,
-            "pose_samples_raw": len(self.trajectory_history),
-            "pose_samples_filtered": len(self.filtered_trajectory)
+            "saved_raw_files": {
+                "poses_csv": "trajectory_raw.csv",
+                "vlm_decisions_jsonl": "vlm_decisions.jsonl",
+                "camera_snapshots_dir": "camera_snapshots/"
+            }
         }
 
-        # Save JSON Report
-        summary_path = os.path.join(self.run_dir, "metrics_report.json")
-        with open(summary_path, "w") as f:
-            json.dump(summary, f, indent=2)
+        meta_path = os.path.join(self.run_dir, "run_metadata.json")
+        with open(meta_path, "w") as f:
+            json.dump(metadata, f, indent=2)
 
-        # Save Trajectory CSV
-        traj_csv = os.path.join(self.run_dir, "trajectory.csv")
-        with open(traj_csv, "w") as f:
-            f.write("x_m,y_m,yaw_deg,timestamp\n")
-            for p in self.trajectory_history:
-                f.write(f"{p[0]:.4f},{p[1]:.4f},{p[2]:.2f},{p[3]:.3f}\n")
+        self.csv_file.close()
+        self.vlm_log_file.close()
 
-        # Generate LaTeX Table 2 Formatted Row
-        latex_row = (
-            f"{self.mode.upper():16s} & "
-            f"{'100.0\\%' if success else '0.0\\%'} & "
-            f"{spl*100:.1f}\\% & "
-            f"{soft_spl*100:.1f}\\% & "
-            f"{path_length:.2f}\\,\\text{{m}} & "
-            f"{d_geodesic:.2f}\\,\\text{{m}} & "
-            f"{elapsed:.1f}\\,\\text{{s}} & "
-            f"{avg_speed:.2f}\\,\\text{{m/s}} & "
-            f"{vlm_p50:.1f}\\,\\text{{ms}} \\\\\n"
-        )
-        latex_path = os.path.join(self.run_dir, "metrics_table.tex")
-        with open(latex_path, "w") as f:
-            f.write(latex_row)
+        print(f"
 
-        print(f"\n\n========================================================================")
-        print(f" 📊 [ICRA 2026 Paper Rigorous Benchmark Summary]")
-        print(f" • Run Mode        : {self.mode.upper()}")
-        print(f" • Target Goal     : #{self.goal['id']} - {self.goal['name']}")
-        print(f" • Success (SR)    : {'✅ SUCCESS (100.0%)' if success else '❌ FAILED (0.0%)'}")
-        print(f" • Geodesic SPL    : {spl*100:.1f}% (Standard Obstacle-Aware Path Efficiency)")
-        print(f" • SoftSPL         : {soft_spl*100:.1f}% (Factoring Partial Progress)")
-        print(f" • Trajectory (TL) : {path_length:.2f} m (A* Geodesic Optimal: {d_geodesic:.2f} m)")
-        print(f" • Duration (TTG)  : {elapsed:.2f} s (Idle Time: {self.idle_time_s:.2f}s, {idle_ratio:.1f}%)")
-        print(f" • Average Speed   : {avg_speed:.2f} m/s")
-        if self.mode == "ours":
-            print(f" • VLM Latency     : p50={vlm_p50:.1f}ms, p95={vlm_p95:.1f}ms (Total Queries: {len(self.vlm_latencies)})")
-        print(f" • JSON Report     : {summary_path}")
-        print(f" • LaTeX Table Row : {latex_path}")
-        print(f"========================================================================\n")
+========================================================================")
+        print(f"{GREEN}{BOLD} 💾 [RAW DATA LOGGING COMPLETE - 100% SAVED TO DISK]{NC}")
+        print(f"========================================================================")
+        print(f" • Run Directory       : {self.run_dir}")
+        print(f" • Raw Trajectory CSV  : {self.csv_path} ({self.pose_sample_count} samples)")
+        print(f" • Raw VLM JSONL Log   : {self.vlm_log_path} ({self.vlm_query_count} decisions)")
+        print(f" • Camera Snapshots    : {self.snapshots_dir}/ ({self.snapshot_count} images)")
+        print(f" • Run Metadata File   : {meta_path}")
+        print(f" • Symlinked Access    : ~/.ros/navigation_runs/latest/")
+        print(f"========================================================================
+")
         rclpy.shutdown()
 
 def select_goal_interactively():
@@ -528,7 +458,8 @@ def select_goal_interactively():
         print(f"{RED}Error: No candidate goals registered in {GOALS_YAML}.{NC}")
         sys.exit(1)
 
-    print(f"\n{BOLD}{CYAN}========================================================================{NC}")
+    print(f"
+{BOLD}{CYAN}========================================================================{NC}")
     print(f"{BOLD}{CYAN} 🎯 Select Destination Goal Pose for Autonomous Navigation{NC}")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
     for g in goals:
@@ -537,7 +468,8 @@ def select_goal_interactively():
 
     while True:
         try:
-            choice = input(f"\nEnter Goal Choice [1-{len(goals)}] (Default: 1): ").strip()
+            choice = input(f"
+Enter Goal Choice [1-{len(goals)}] (Default: 1): ").strip()
             if not choice:
                 return goals[0]['id']
             for g in goals:
