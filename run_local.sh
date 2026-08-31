@@ -3,7 +3,7 @@
 # Canonical 1-Click Localization Launcher for Unitree Go2 Planar 3DoF SLAM
 # ==============================================================================
 # Localizes the robot in real-time against ~/.ros/rtabmap.db without modifying it.
-# Automatically brings up front camera, Unitree LIO bridge, and RTAB-Map in localization mode.
+# Automatically brings up front camera, Unitree LIO bridge, RTAB-Map, and live HUD monitor.
 # ==============================================================================
 
 set -Eeuo pipefail
@@ -16,8 +16,8 @@ GUI_ARG="rtabmap_viz:=false"
 usage() {
     cat <<'USAGE_EOF'
 Usage:
-  ./run_local.sh            Start planar 3DoF localization (auto-detects display)
-  ./run_local.sh --gui      Force GUI with 3D rtabmap_viz visualizer
+  ./run_local.sh            Start planar 3DoF localization with live console HUD (auto-detects display)
+  ./run_local.sh --gui      Force GUI with 3D rtabmap_viz visualizer + console HUD
   ./run_local.sh --headless Force headless localization (SSH/tmux)
   ./run_local.sh --help     Show this help
 USAGE_EOF
@@ -75,10 +75,10 @@ if [ ! -f "$RTABMAP_DB" ]; then
 fi
 
 echo "========================================================================"
-echo " 🐕 [Unitree Go2] Planar 3DoF Localization Mode"
+echo " 🐕 [Unitree Go2] Planar 3DoF Real-Time Localization HUD"
 echo " Map DB  : $RTABMAP_DB ($(du -h "$RTABMAP_DB" | cut -f1))"
 echo " Mode    : Read-only localization (localization:=true)"
-echo " Display : $([ "$GUI_MODE" = true ] && echo "GUI (rtabmap_viz active on $DISPLAY)" || echo "Headless (Console only)")"
+echo " Display : $([ "$GUI_MODE" = true ] && echo "GUI (rtabmap_viz active on $DISPLAY)" || echo "Headless (Console HUD)")"
 echo "========================================================================"
 
 PIDS=()
@@ -93,6 +93,7 @@ cleanup() {
             kill "$pid" 2>/dev/null || true
         fi
     done
+    pkill -f go2_localization_monitor.py 2>/dev/null || true
     pkill -f go2_front_camera_publisher.py 2>/dev/null || true
     pkill -f go2_livo_sensor_bridge.py 2>/dev/null || true
     pkill -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
@@ -116,6 +117,7 @@ export ROS_DOMAIN_ID=0
 export LD_LIBRARY_PATH=/home/unitree/opencv_build/opencv/build/lib:/usr/local/lib:${LD_LIBRARY_PATH:-}
 
 # 1. Clean up background nodes
+pkill -9 -f go2_localization_monitor 2>/dev/null || true
 pkill -9 -f go2_front_camera 2>/dev/null || true
 pkill -9 -f go2_livo_sensor_bridge 2>/dev/null || true
 pkill -9 -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
@@ -124,34 +126,30 @@ pkill -9 -x rtabmap_viz 2>/dev/null || true
 sleep 1
 
 # 2. Start Front Camera Publisher
-echo "📷 [1/3] Starting Front Camera Publisher (30fps)..."
-python3 "$WORKSPACE_DIR/scratch/go2_front_camera_publisher.py" &
+echo "📷 [1/4] Starting Front Camera Publisher (30fps)..."
+python3 "$WORKSPACE_DIR/scratch/go2_front_camera_publisher.py" >/dev/null 2>&1 &
 PIDS+=($!)
 sleep 1
 
 # 3. Start LIVO Sensor Bridge
-echo "🛰️ [2/3] Starting Unitree LIO Bridge (/livo/*)..."
+echo "🛰️ [2/4] Starting Unitree LIO Bridge (/livo/*)..."
 python3 "$WORKSPACE_DIR/scratch/go2_livo_sensor_bridge.py" \
-    --ros-args -p cloud_mode:=deskewed -p imu_quaternion_order:=auto &
+    --ros-args -p cloud_mode:=deskewed -p imu_quaternion_order:=auto >/dev/null 2>&1 &
 PIDS+=($!)
 sleep 1
 
-# 4. Launch RTAB-Map in Localization Mode
-echo "🗺️ [3/3] Launching RTAB-Map Localization (localization:=true)..."
+# 4. Launch RTAB-Map in Localization Mode (background output redirected so console HUD is crisp)
+echo "🗺️ [3/4] Launching RTAB-Map Localization Engine (localization:=true)..."
 ros2 launch rtabmap_launch go2_rtabmap.launch.py \
     localization:=true \
     $GUI_ARG \
     reg_force_3dof:=true \
     icp_force_4dof:=false \
     loop_closure_identity_guess:=true \
-    proximity_by_space:=false &
+    proximity_by_space:=false >/dev/null 2>&1 &
 PIDS+=($!)
+sleep 3
 
-echo ""
-echo "🚀 [READY] Robot is now localizing against $RTABMAP_DB!"
-echo "   • Pose Topic : /rtabmap/localization_pose"
-echo "   • Frame TF   : map -> odom -> base_link"
-echo "   • Press Ctrl+C to stop."
-echo ""
-
-wait
+# 5. Start Real-Time Live HUD Logger (Front Console)
+echo "🎯 [4/4] Starting Real-Time (X, Y, Z, Yaw) Live HUD Logger..."
+exec python3 "$WORKSPACE_DIR/scratch/go2_localization_monitor.py"
