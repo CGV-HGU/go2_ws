@@ -1,0 +1,14 @@
+{
+  "goals": [
+    {
+      "id": 1,
+      "name": "Waypoint_1",
+      "description": "Candidate goal #1",
+      "x_m": -18.693,
+      "y_m": 26.875,
+      "z_m": 0.308,
+      "yaw_deg": -172.0,
+      "tolerance_m": 0.5
+    }
+  ]
+}
