@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """
 Goal-Directed Autonomous Navigation Controller, VLM Visual Logger & Trajectory Map Exporter for Unitree Go2.
-Saves:
-  1. Exact communicated VLM raw frames & decision overlay frames (with [u,v] sub-goal pins)
-  2. Complete 2D Map Trajectory Overlays (trial_trajectory_on_2d_map.png & trajectory_plot_bev.png)
-  3. High-frequency 10Hz raw poses (trajectory_raw.csv) & VLM JSONL decision logs
-  4. Trial summary metadata (trial_metadata.json)
+Dual-Layer Actuation: Direct Unitree Sport API (1008) + ROS 2 /cmd_vel.
+Uses 2D 1-자 corridor map metadata for exact pixel alignment.
 """
 
 import os
@@ -50,6 +47,7 @@ NC = '\033[0m'
 WORKSPACE_DIR = "/home/unitree/go2_ws_antarctica"
 GOALS_YAML = os.path.join(WORKSPACE_DIR, "config/navigation_goals.yaml")
 MAP_2D_PNG = os.path.join(WORKSPACE_DIR, "2dmap/2d.png")
+MAP_METADATA_JSON = os.path.join(WORKSPACE_DIR, "2dmap/2d_metadata.json")
 EXP_ROOT = os.path.join(WORKSPACE_DIR, "experiments")
 VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
@@ -128,6 +126,7 @@ class AutonomousNavigator(Node):
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
+        # Dual-Layer Velocity Publishers (Sport API 1008 + ROS 2 cmd_vel)
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         if HAS_UNITREE_API:
             self.sport_pub = self.create_publisher(Request, '/api/sport/request', 10)
@@ -145,14 +144,16 @@ class AutonomousNavigator(Node):
         print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Full Visual & Trajectory Experiment Logger]{NC}")
         print(f" • Mode        : {BOLD}{self.mode.upper()}{NC} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
         print(f" • Target Goal : #{self.goal['id']} - {self.goal['name']}")
+        print(f" • Target Pose : X={self.goal['x_m']:+.3f}m, Y={self.goal['y_m']:+.3f}m, Yaw={self.goal['yaw_deg']:+.1f}°")
         print(f" • Trial Number: {BOLD}Trial #{trial_num:02d}{NC}")
+        print(f" • Actuation   : Dual-Layer (Direct CycloneDDS Sport API 1008 + /cmd_vel)")
         print(f"------------------------------------------------------------------------")
         print(f"{BOLD} 💾 [Trial Storage Directory]:{NC}")
         print(f"   📂 Trial Folder   : {self.trial_dir}/")
         print(f"   📄 Poses CSV      : trajectory_raw.csv")
         print(f"   🧠 VLM Log        : vlm_decisions.jsonl")
         print(f"   📸 Image Snapshots: camera_snapshots/ (Communicated raw frames & subgoals)")
-        print(f"   🗺️ Trajectory Map : trial_trajectory_on_2d_map.png (Rendered upon finish)")
+        print(f"   🗺️ Trajectory Map : trial_trajectory_on_2d_map.png")
         print(f"{BOLD}{CYAN}========================================================================{NC}\n")
 
     def load_target_goal(self, goal_id):
@@ -223,6 +224,18 @@ class AutonomousNavigator(Node):
         self.cmd_vx = max(-self.max_vx, min(self.max_vx, vx))
         self.cmd_wz = max(-self.max_wz, min(self.max_wz, wz))
 
+        # Layer 1: Direct Unitree Sport API (API ID 1008 = Move)
+        if self.sport_pub:
+            try:
+                req = Request()
+                req.header.identity.api_id = 1008
+                param = {"x": float(self.cmd_vx), "y": 0.0, "z": float(self.cmd_wz)}
+                req.parameter = json.dumps(param)
+                self.sport_pub.publish(req)
+            except Exception:
+                pass
+
+        # Layer 2: Standard ROS 2 /cmd_vel
         cmd = Twist()
         cmd.linear.x = float(self.cmd_vx)
         cmd.angular.z = float(self.cmd_wz)
@@ -312,7 +325,7 @@ Output JSON:
                     self.subgoal_u = int(pt_dict.get('x', 0.5) * 1280)
                     self.subgoal_v = int(pt_dict.get('y', 0.72) * 720)
 
-            # 2. Save Decision Overlay Image (with [u,v] pin and text annotation)
+            # 2. Save Decision Overlay Image
             overlay = frame.copy()
             u, v = self.subgoal_u, self.subgoal_v
             cv2.circle(overlay, (u, v), 16, (0, 255, 0), 3, cv2.LINE_AA)
@@ -325,7 +338,6 @@ Output JSON:
             decision_frame_path = os.path.join(self.snapshots_dir, decision_frame_name)
             cv2.imwrite(decision_frame_path, overlay)
 
-            # Record Decision History
             self.vlm_decision_history.append({
                 "query_id": q_idx,
                 "pose": (pose['x'], pose['y']),
@@ -333,7 +345,6 @@ Output JSON:
                 "action": action
             })
 
-            # Append Raw JSONL
             vlm_record = {
                 "query_id": q_idx,
                 "iso_timestamp": datetime.now().isoformat(),
@@ -430,7 +441,6 @@ Output JSON:
         cv2.imwrite(path, frame)
 
     def render_trajectory_on_2d_map(self):
-        """Renders the exact driven trajectory directly on the 2D floor plan map."""
         if not os.path.exists(MAP_2D_PNG) or not self.trajectory_history:
             return None
 
@@ -440,28 +450,36 @@ Output JSON:
 
         h, w = map_img.shape[:2]
         res = 0.05
+        min_x, min_y = -35.0, 10.0
+
+        if os.path.exists(MAP_METADATA_JSON):
+            try:
+                with open(MAP_METADATA_JSON, 'r') as mf:
+                    meta = json.load(mf)
+                    min_x = meta.get('min_x', min_x)
+                    min_y = meta.get('min_y', min_y)
+                    res = meta.get('resolution', res)
+            except Exception:
+                pass
+
         overlay = map_img.copy()
 
-        # 1. Convert Trajectory to Pixel Coordinates
         pts = []
         for p in self.trajectory_history:
-            px = int(w / 2 + (p[0] + 14.0) / res)
-            py = int(h / 2 - (p[1] - 27.5) / res)
+            px = int((p[0] - min_x) / res)
+            py = int(h - 1 - (p[1] - min_y) / res)
             pts.append((px, py))
 
-        # 2. Draw Smooth Driven Path
         for i in range(1, len(pts)):
             cv2.line(overlay, pts[i-1], pts[i], (255, 120, 0), 3, cv2.LINE_AA)
 
-        # 3. Draw VLM Decision Points (if available)
         for dec in self.vlm_decision_history:
-            dpx = int(w / 2 + (dec['pose'][0] + 14.0) / res)
-            dpy = int(h / 2 - (dec['pose'][1] - 27.5) / res)
+            dpx = int((dec['pose'][0] - min_x) / res)
+            dpy = int(h - 1 - (dec['pose'][1] - min_y) / res)
             cv2.circle(overlay, (dpx, dpy), 5, (0, 220, 255), -1, cv2.LINE_AA)
 
-        # 4. Draw Start & Goal Pins
         start_px = pts[0]
-        goal_px = (int(w / 2 + (self.goal['x_m'] + 14.0) / res), int(h / 2 - (self.goal['y_m'] - 27.5) / res))
+        goal_px = (int((self.goal['x_m'] - min_x) / res), int(h - 1 - (self.goal['y_m'] - min_y) / res))
 
         cv2.circle(overlay, start_px, 10, (0, 220, 0), -1, cv2.LINE_AA)
         cv2.circle(overlay, start_px, 12, (255, 255, 255), 2, cv2.LINE_AA)
@@ -474,9 +492,8 @@ Output JSON:
         out_map_path = os.path.join(self.trial_dir, "trial_trajectory_on_2d_map.png")
         cv2.imwrite(out_map_path, overlay)
 
-        # Also generate high-res Matplotlib BEV Plot
         try:
-            fig, ax = plt.subplots(figsize=(8, 8), dpi=150)
+            fig, ax = plt.subplots(figsize=(8, 6), dpi=150)
             xs = [p[0] for p in self.trajectory_history]
             ys = [p[1] for p in self.trajectory_history]
             ax.plot(xs, ys, color='#1f77b4', linewidth=2.5, label='Driven Path')
@@ -501,7 +518,6 @@ Output JSON:
         self.stop_robot()
         elapsed = time.time() - self.start_time
 
-        # Render Trajectory Overlay on 2D Map
         map_artifact = self.render_trajectory_on_2d_map()
 
         metadata = {
