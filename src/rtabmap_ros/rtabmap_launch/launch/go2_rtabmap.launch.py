@@ -77,8 +77,8 @@ def generate_launch_description():
         'Optimizer/GravitySigma': '0.3',
         # Keep RTAB-Map's documented loop acceptance safeguards explicit. Do
         # not enable Optimizer/Robust together with RGBD/OptimizeMaxError.
-        'Rtabmap/LoopThr': '0.08',
-        'RGBD/OptimizeMaxError': '15.0',
+        'Rtabmap/LoopThr': '0.11',
+        'RGBD/OptimizeMaxError': '3.0',
         'Optimizer/Robust': 'false',
         'Rtabmap/DetectionRate': '2.0',
         'Rtabmap/PublishStats': 'true',        # Required by the headless loop-event logger
@@ -98,18 +98,18 @@ def generate_launch_description():
         'RGBD/LinearUpdate': '0.1',
         'RGBD/OptimizeFromGraphEnd': 'false',
         'Mem/UseOdomGravity': 'false',         # Use /livo/imu for gravity links, not odometry attitude
-        'Icp/CorrespondenceRatio': '0.08',     # Robust 8% overlap threshold for reliable loop closure acceptance
+        'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold for reliable loop closure acceptance
         'Icp/PointToPlane': 'true',            # 3D Point-to-Plane ICP
         'Icp/PointToPlaneK': '15',             # 15 nearest neighbors for accurate normal calculation
         'Icp/PointToPlaneGroundNormalsUp': '0.9',# Force ground normals upward during quadruped gait pitch wobbles
         'Icp/VoxelSize': '0.05',               # 5cm Voxelization for ICP
-        'Icp/MaxCorrespondenceDistance': '1.50',# 1.5m correspondence distance absorbs 180m loop drift
-        
+        'Icp/MaxCorrespondenceDistance': '0.20',# 20cm correspondence distance for fast convergence
+
         # Local 3D occupancy data generated directly from the scan cloud.
         'gen_depth': False,
         'gen_scan': False,
         'Grid/Sensor': '0',                    # 0 = laser scan / scan_cloud
-        'Grid/RangeMax': '10.0',               # 10.0m long-range corridor laser coverage
+        'Grid/RangeMax': '6.0',                # 6.0m high-confidence indoor range (eliminates glass multipath)
         'Grid/RangeMin': '0.35',               # 35cm near-body blind zone (cuts off front nose & antenna reflection)
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
