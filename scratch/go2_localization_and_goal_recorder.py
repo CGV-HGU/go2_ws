@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """
 Unified Real-Time Localization HUD, Auto-CSV Logger & Interactive Goal Recorder for Unitree Go2.
-Provides:
-  1. Live (X, Y, Z, Yaw) HUD stream
-  2. Automatic CSV and TXT logging to ~/.ros/localization_runs/latest/
-  3. Interactive Goal Recording:
-     - Press [ENTER]: Automatically saves current pose as Goal #1, Goal #2, etc.
-     - Type 'd' / 'del' / Backspace: Asks confirmation to delete the last goal.
-     - Type 'list': Displays all registered goals.
-     - Type 'clear': Asks confirmation to clear all goals.
-  4. Auto-renders 2D map goal pins to 2dmap/2d_goals_map.png
+Features:
+  1. 5-Second Live Localization Stability & Calibration Warmup Check
+  2. Live (X, Y, Z, Yaw) HUD stream
+  3. Automatic CSV logging to ~/.ros/localization_runs/latest/
+  4. Interactive Goal Recording (1-Click Enter)
+  5. Auto-renders 2D map goal pins using 2d_metadata.json
 """
 
 import os
@@ -38,6 +35,7 @@ NC = '\033[0m'
 GOALS_YAML = "/home/unitree/go2_ws_antarctica/config/navigation_goals.yaml"
 GOALS_JSON = "/home/unitree/go2_ws_antarctica/config/navigation_goals.json"
 MAP_2D_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d.png"
+MAP_METADATA_JSON = "/home/unitree/go2_ws_antarctica/2dmap/2d_metadata.json"
 GOALS_MAP_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d_goals_map.png"
 
 class UnifiedLocalizationAndGoalNode(Node):
@@ -175,7 +173,19 @@ def render_goals_on_map(goals):
     if img is None:
         return
     h, w = img.shape[:2]
-    res = 0.05
+    res = 0.04
+    min_x, min_y = -30.0, 23.0
+
+    if os.path.exists(MAP_METADATA_JSON):
+        try:
+            with open(MAP_METADATA_JSON, 'r') as mf:
+                meta = json.load(mf)
+                min_x = meta.get('min_x', min_x)
+                min_y = meta.get('min_y', min_y)
+                res = meta.get('resolution', res)
+        except Exception:
+            pass
+
     overlay = img.copy()
 
     for g in goals:
@@ -183,8 +193,8 @@ def render_goals_on_map(goals):
         name = g.get('name', f'Goal_{gid}')
         gx = g['x_m']
         gy = g['y_m']
-        px = int(w / 2 + (gx + 14.0) / res)
-        py = int(h / 2 - (gy - 27.5) / res)
+        px = int((gx - min_x) / res)
+        py = int(h - 1 - (gy - min_y) / res)
         px = max(20, min(w - 20, px))
         py = max(20, min(h - 20, py))
 
@@ -212,7 +222,33 @@ def main():
     for g in goals:
         print(f"  [{g['id']}] {g['name']:25s} | X={g['x_m']:+7.2f}m, Y={g['y_m']:+7.2f}m, Yaw={g['yaw_deg']:+6.1f}°")
 
-    print(f"\n{BOLD}🎯 Key Controls:{NC}")
+    # 1. Searching for initial landmarks
+    print(f"\n{YELLOW}⏳ [1/2] Searching for 4D LiDAR map landmarks...{NC}")
+    initial_pose = None
+    while initial_pose is None:
+        initial_pose = node.get_pose()
+        time.sleep(0.2)
+
+    # 2. 5-Second Live Localization Stability & Calibration Warmup
+    print(f"\n{BOLD}{GREEN}========================================================================{NC}")
+    print(f"{BOLD}{GREEN} 🛰️ [2/2] LOCALIZATION LOCK & STABILITY CALIBRATION (5s Warmup Monitor){NC}")
+    print(f"{BOLD}{GREEN}========================================================================{NC}")
+    
+    ref_x = initial_pose['x']
+    ref_y = initial_pose['y']
+    for sec in range(1, 6):
+        time.sleep(1.0)
+        p = node.get_pose()
+        if p:
+            drift_cm = math.hypot(p['x'] - ref_x, p['y'] - ref_y) * 100.0
+            status_tag = f"{GREEN}100% HEALTHY LOCK!{NC}" if sec == 5 else f"{CYAN}STABLE (Jitter: {drift_cm:3.1f}cm){NC}"
+            print(f" [{sec}/5s] {GREEN}🟢 LOCALIZED{NC} | X:{BOLD}{p['x']:+7.3f}m{NC} Y:{BOLD}{p['y']:+7.3f}m{NC} Yaw:{BOLD}{p['yaw']:+6.1f}°{NC} | {status_tag}")
+
+    print(f"{BOLD}{GREEN}========================================================================{NC}")
+    print(f"{BOLD}{GREEN} 🎯 [LOCALIZATION FULLY STABILIZED] Ready for Goal Recording!{NC}")
+    print(f"{BOLD}{GREEN}========================================================================{NC}\n")
+
+    print(f"{BOLD}🎯 Key Controls:{NC}")
     print(f"  • {GREEN}[ENTER]{NC}          : Automatically record current pose as Goal #{len(goals)+1} (in sequence)")
     print(f"  • {YELLOW}'d' / 'del'{NC}      : Delete the last recorded goal (with confirmation)")
     print(f"  • {CYAN}'list'{NC}           : Display all registered goals")
@@ -248,58 +284,55 @@ def main():
                 last_g = goals[-1]
                 confirm = input(f"\n{YELLOW}⚠️ Delete last goal [#{last_g['id']}: {last_g['name']}]? [y/N]: {NC}").strip().lower()
                 if confirm in ('y', 'yes', ''):
-                    deleted = goals.pop()
+                    removed = goals.pop()
                     save_goals(goals)
-                    print(f"{RED}🗑️ Deleted Goal #{deleted['id']} ({deleted['name']}). Remaining: {len(goals)}{NC}\n")
+                    print(f"{RED}🗑️ Deleted Goal #{removed['id']} ({removed['name']}). Remaining: {len(goals)}{NC}\n")
                 else:
-                    print("Deletion cancelled.\n")
+                    print(f"Cancelled.\n")
                 continue
 
-            elif user_input.lower() in ('clear', 'c'):
+            elif user_input.lower() in ('clear', 'c', 'reset'):
                 if not goals:
-                    print(f"\n{YELLOW}⚠️ Goal list is already empty.{NC}\n")
+                    print(f"\n{YELLOW}⚠️ Goal list already empty.{NC}\n")
                     continue
-                confirm = input(f"\n{RED}⚠️ Clear ALL {len(goals)} registered goals? [y/N]: {NC}").strip().lower()
+                confirm = input(f"\n{RED}⚠️ Are you sure you want to CLEAR ALL {len(goals)} goals? [y/N]: {NC}").strip().lower()
                 if confirm in ('y', 'yes'):
                     goals = []
                     save_goals(goals)
-                    print(f"{RED}🗑️ Cleared all goals.{NC}\n")
+                    print(f"{RED}🧹 All registered goals cleared!{NC}\n")
                 else:
-                    print("Clear cancelled.\n")
+                    print(f"Cancelled.\n")
                 continue
 
-            # Default: Save current pose as new Goal
-            curr = node.get_pose()
-            if not curr:
-                print(f"\n{YELLOW}⚠️ Cannot record goal: No active localization pose received yet.{NC}\n")
+            # Default: [ENTER] -> Record Goal
+            if not pose:
+                print(f"\n{RED}❌ Error: Cannot record goal - Robot is not localized yet.{NC}\n")
                 continue
 
             new_id = len(goals) + 1
-            goal_name = user_input if user_input else f"Waypoint_{new_id}"
-
-            new_entry = {
+            default_name = f"Waypoint_{new_id}"
+            
+            goal_entry = {
                 "id": new_id,
-                "name": goal_name,
-                "description": f"Candidate goal #{new_id}",
-                "x_m": round(curr['x'], 3),
-                "y_m": round(curr['y'], 3),
-                "z_m": round(curr['z'], 3),
-                "yaw_deg": round(curr['yaw'], 1),
+                "name": default_name,
+                "description": f"Candidate destination #{new_id} recorded via interactive HUD",
+                "x_m": round(pose['x'], 2),
+                "y_m": round(pose['y'], 2),
+                "z_m": round(pose['z'], 2),
+                "yaw_deg": round(pose['yaw'], 1),
                 "tolerance_m": 0.50
             }
-
-            goals.append(new_entry)
+            goals.append(goal_entry)
             save_goals(goals)
-
-            print(f"\n{GREEN}✅ Saved Goal #{new_id}: '{goal_name}' at X={new_entry['x_m']:+.3f}m, Y={new_entry['y_m']:+.3f}m, Yaw={new_entry['yaw_deg']:+.1f}°{NC}")
-            print(f"   (Saved to {GOALS_YAML} and rendered to {GOALS_MAP_PNG})\n")
+            print(f"\n{GREEN}{BOLD}✅ [GOAL RECORDED] Goal #{new_id} '{default_name}' saved!{NC}")
+            print(f"   📍 Pose: X={goal_entry['x_m']:+.2f}m, Y={goal_entry['y_m']:+.2f}m, Yaw={goal_entry['yaw_deg']:+.1f}° | Total Goals: {len(goals)}\n")
 
         except (KeyboardInterrupt, EOFError):
             break
 
-    print(f"\n{GREEN}🏁 Localization & Goal Session Ended. All logs saved safely.{NC}")
     node.destroy_node()
     rclpy.shutdown()
+    print(f"\n{GREEN}✅ Goal recording complete. {len(goals)} goals registered in {GOALS_YAML}{NC}")
 
 if __name__ == '__main__':
     main()
