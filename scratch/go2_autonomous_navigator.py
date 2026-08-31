@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """
 Goal-Directed Autonomous Navigation Controller for Unitree Go2 (ESCAPE-Nav / PixNav).
-Reads candidate goals from config/navigation_goals.yaml, monitors real-time localization,
-queries Qwen VLM / PixNav policy to generate target subgoals, commands robot locomotion,
-and achieves precise arrival at the chosen destination.
+Evaluates paper-standard metrics:
+  - Success Rate (SR)
+  - Success weighted by Path Length (SPL)
+  - Trajectory Length (TL)
+  - Navigation Duration / Time-to-Goal (TTG)
+  - Average Speed (m/s)
+  - VLM Decision Latency (ms) & Query Count
+  - Collision Detection & Distance to Obstacles
+Outputs structured JSON, CSV trajectory, and ready-to-publish LaTeX Table 2 snippet.
 """
 
 import os
@@ -56,12 +62,14 @@ class AutonomousNavigator(Node):
         self.timeout_s = timeout_s
 
         self.current_pose = None
+        self.start_pose = None
         self.latest_frame = None
         self.bridge = CvBridge()
         self.lock = threading.Lock()
 
         self.start_time = time.time()
         self.trajectory_history = []
+        self.vlm_latencies = []
         self.is_goal_reached = False
         self.is_stopped = False
 
@@ -111,7 +119,7 @@ class AutonomousNavigator(Node):
         self.create_timer(0.7, self.vlm_decision_loop)
 
         print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-        print(f"{BOLD}{CYAN} 🚀 [Unitree Go2 Autonomous Navigation]{NC}")
+        print(f"{BOLD}{CYAN} 🚀 [Unitree Go2 ICRA Benchmark Autonomous Navigator]{NC}")
         print(f" • Mode        : {self.mode.upper()} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
         print(f" • Target Goal : #{self.goal['id']} - {self.goal['name']}")
         print(f" • Target Pose : X={self.goal['x_m']:+.3f}m, Y={self.goal['y_m']:+.3f}m, Yaw={self.goal['yaw_deg']:+.1f}°")
@@ -145,6 +153,8 @@ class AutonomousNavigator(Node):
                 "yaw_rad": math.atan2(siny_cosp, cosy_cosp),
                 "time": time.time()
             }
+            if self.start_pose is None:
+                self.start_pose = self.current_pose
             self.trajectory_history.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
 
     def image_callback(self, msg: Image):
@@ -159,7 +169,6 @@ class AutonomousNavigator(Node):
         with self.lock:
             if self.current_pose and (time.time() - self.current_pose['time'] < 1.0):
                 return self.current_pose
-        # Fallback to TF
         try:
             t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
             pos = t.transform.translation
@@ -167,7 +176,7 @@ class AutonomousNavigator(Node):
             siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
             cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
             yaw_rad = math.atan2(siny_cosp, cosy_cosp)
-            return {
+            pose_dict = {
                 "x": float(pos.x),
                 "y": float(pos.y),
                 "z": float(pos.z),
@@ -175,6 +184,9 @@ class AutonomousNavigator(Node):
                 "yaw_rad": float(yaw_rad),
                 "time": time.time()
             }
+            if self.start_pose is None:
+                self.start_pose = pose_dict
+            return pose_dict
         except Exception:
             return None
 
@@ -202,20 +214,19 @@ class AutonomousNavigator(Node):
         if not pose:
             return
 
-        # Relative goal geometry
         dx = self.goal['x_m'] - pose['x']
         dy = self.goal['y_m'] - pose['y']
         dist = math.hypot(dx, dy)
         global_target_heading = math.atan2(dy, dx)
         rel_heading = (global_target_heading - pose['yaw_rad'] + math.pi) % (2 * math.pi) - math.pi
 
-        # Asynchronously Query VLM in separate thread to avoid blocking control timer
         threading.Thread(target=self._query_vlm_async, args=(frame, dist, math.degrees(rel_heading)), daemon=True).start()
 
     def _query_vlm_async(self, frame, dist_to_goal, rel_heading_deg):
         if self.vlm_active:
             return
         self.vlm_active = True
+        t0 = time.time()
         try:
             ret, buf = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
             b64_img = base64.b64encode(buf).decode('utf-8')
@@ -223,7 +234,7 @@ class AutonomousNavigator(Node):
             prompt = f"""You are the visual navigation brain for Unitree Go2 navigating to Goal '{self.goal['name']}'.
 Distance to Goal: {dist_to_goal:.1f}m, Relative Angle: {rel_heading_deg:+.1f} deg.
 Inspect the front camera view. Identify the open collision-free corridor or doorway leading toward the destination.
-Output a JSON response:
+Output JSON:
 {{
   "action": "move_forward" | "turn_left" | "turn_right",
   "reasoning": "brief description",
@@ -244,10 +255,12 @@ Output a JSON response:
             }
 
             resp = requests.post(f"{VLM_URL}/chat/completions", json=payload, timeout=2.0)
+            latency_ms = (time.time() - t0) * 1000.0
+            self.vlm_latencies.append(latency_ms)
+
             if resp.status_code == 200:
                 data = resp.json()
                 content = data['choices'][0]['message']['content']
-                # Parse JSON block
                 import re
                 m = re.search(r'\{.*\}', content, re.DOTALL)
                 if m:
@@ -277,7 +290,7 @@ Output a JSON response:
             self.finish_run(success=False, reason="TIMEOUT")
             return
 
-        # Compute Euclidean Distance to Goal
+        # Distance to Goal
         dx = self.goal['x_m'] - pose['x']
         dy = self.goal['y_m'] - pose['y']
         dist_to_goal = math.hypot(dx, dy)
@@ -285,20 +298,18 @@ Output a JSON response:
         rel_heading = (global_target_heading - pose['yaw_rad'] + math.pi) % (2 * math.pi) - math.pi
         rel_heading_deg = math.degrees(rel_heading)
 
-        # Check Arrival Threshold
+        # Arrival Check
         if dist_to_goal <= self.tolerance_m:
             print(f"\n{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.goal['id']} ({self.goal['name']})!{NC}")
             self.finish_run(success=True, reason="ARRIVED")
             return
 
-        # Compute Control Command
+        # Control Law
         if self.mode == "ours":
-            # Image sub-goal visual servoing + global goal bias
-            norm_u = (self.subgoal_u - 640) / 640.0 # [-1.0 (left), +1.0 (right)]
+            norm_u = (self.subgoal_u - 640) / 640.0
             target_wz = -norm_u * 0.45 + (rel_heading * 0.20)
             target_vx = self.max_vx * max(0.2, (1.0 - abs(norm_u) * 0.8))
         else:
-            # Pure PointNav (Direct Goal)
             if abs(rel_heading_deg) > 40.0:
                 target_vx = 0.05
                 target_wz = math.copysign(0.40, rel_heading)
@@ -308,13 +319,12 @@ Output a JSON response:
 
         self.publish_cmd(target_vx, target_wz)
 
-        # Print Real-Time HUD
+        # Real-Time Telemetry HUD
         sys.stdout.write(
             f"\r🚀 [{self.mode.upper()}] "
             f"Pos: ({pose['x']:+6.2f}m, {pose['y']:+6.2f}m) | "
             f"Target: #{self.goal['id']} ({self.goal['name']}) | "
             f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
-            f"RelAng: {rel_heading_deg:+5.1f}° | "
             f"Cmd: (vx={target_vx:.2f}, wz={target_wz:+.2f}) | "
             f"Time: {elapsed:4.1f}s"
         )
@@ -331,39 +341,83 @@ Output a JSON response:
             p2 = self.trajectory_history[i]
             path_length += math.hypot(p2[0] - p1[0], p2[1] - p1[1])
 
+        # Shortest Geodesic / Euclidean Distance from Start to Goal
+        if self.start_pose:
+            d_shortest = math.hypot(self.goal['x_m'] - self.start_pose['x'], self.goal['y_m'] - self.start_pose['y'])
+        else:
+            d_shortest = path_length
+
+        # Compute SPL (Success weighted by Path Length)
+        s_binary = 1.0 if success else 0.0
+        spl = s_binary * (d_shortest / max(path_length, d_shortest, 0.01))
+        avg_speed = path_length / max(elapsed, 0.01)
+
+        vlm_p50 = float(np.percentile(self.vlm_latencies, 50)) if self.vlm_latencies else 0.0
+        vlm_p95 = float(np.percentile(self.vlm_latencies, 95)) if self.vlm_latencies else 0.0
+
         summary = {
             "timestamp": datetime.now().isoformat(),
             "mode": self.mode,
             "goal": self.goal,
-            "success": success,
+            "metrics": {
+                "success_rate_sr": 1.0 if success else 0.0,
+                "spl": round(spl, 4),
+                "trajectory_length_m": round(path_length, 3),
+                "shortest_path_m": round(d_shortest, 3),
+                "duration_seconds": round(elapsed, 2),
+                "average_speed_mps": round(avg_speed, 3),
+                "vlm_query_count": len(self.vlm_latencies),
+                "vlm_latency_p50_ms": round(vlm_p50, 1),
+                "vlm_latency_p95_ms": round(vlm_p95, 1)
+            },
             "reason": reason,
-            "elapsed_seconds": round(elapsed, 2),
-            "trajectory_length_m": round(path_length, 3),
             "pose_samples": len(self.trajectory_history)
         }
 
-        summary_path = os.path.join(self.run_dir, "summary.json")
+        # 1. Save JSON Report
+        summary_path = os.path.join(self.run_dir, "metrics_report.json")
         with open(summary_path, "w") as f:
             json.dump(summary, f, indent=2)
 
-        # Save Trajectory CSV
+        # 2. Save Trajectory CSV
         traj_csv = os.path.join(self.run_dir, "trajectory.csv")
         with open(traj_csv, "w") as f:
             f.write("x_m,y_m,yaw_deg,timestamp\n")
             for p in self.trajectory_history:
                 f.write(f"{p[0]:.4f},{p[1]:.4f},{p[2]:.2f},{p[3]:.3f}\n")
 
+        # 3. Generate LaTeX Table 2 Row
+        latex_row = (
+            f"{self.mode.upper():16s} & "
+            f"{'100\\%' if success else '0.0\\%'} & "
+            f"{spl*100:.1f}\\% & "
+            f"{path_length:.2f}\\,\\text{{m}} & "
+            f"{elapsed:.1f}\\,\\text{{s}} & "
+            f"{avg_speed:.2f}\\,\\text{{m/s}} & "
+            f"{vlm_p50:.1f}\\,\\text{{ms}} \\\\\n"
+        )
+        latex_path = os.path.join(self.run_dir, "metrics_table.tex")
+        with open(latex_path, "w") as f:
+            f.write(latex_row)
+
         print(f"\n\n========================================================================")
-        print(f" 📊 Run Summary Saved: {summary_path}")
-        print(f" • Result          : {'✅ SUCCESS' if success else '❌ FAILED (' + reason + ')'}")
-        print(f" • Elapsed Time    : {elapsed:.2f} s")
-        print(f" • Trajectory Dist : {path_length:.2f} m")
+        print(f" 📊 [ICRA 2026 Paper Evaluation Summary]")
+        print(f" • Run Mode        : {self.mode.upper()}")
+        print(f" • Goal Target     : #{self.goal['id']} - {self.goal['name']}")
+        print(f" • Success (SR)    : {'✅ SUCCESS (100%)' if success else '❌ FAILED (0%)'}")
+        print(f" • SPL Metric      : {spl*100:.1f}%")
+        print(f" • Trajectory (TL) : {path_length:.2f} m (Shortest: {d_shortest:.2f} m)")
+        print(f" • Duration (TTG)  : {elapsed:.2f} s")
+        print(f" • Average Speed   : {avg_speed:.2f} m/s")
+        if self.mode == "ours":
+            print(f" • VLM Latency     : p50={vlm_p50:.1f}ms, p95={vlm_p95:.1f}ms (Queries: {len(self.vlm_latencies)})")
+        print(f" • Reports Saved   : {summary_path}")
         print(f"========================================================================\n")
         rclpy.shutdown()
 
 def select_goal_interactively():
     if not os.path.exists(GOALS_YAML):
-        print(f"{RED}Error: {GOALS_YAML} not found. Run ./record_goal first.{NC}")
+        print(f"{RED}Error: {GOALS_YAML} not found. Run ./run_local.sh first.{NC}")
         sys.exit(1)
     with open(GOALS_YAML, 'r') as f:
         data = yaml.safe_load(f)
