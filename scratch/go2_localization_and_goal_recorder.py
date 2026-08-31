@@ -4,9 +4,10 @@ Unified Real-Time Localization HUD, Auto-CSV Logger & Interactive Goal Recorder 
 Features:
   1. 5-Second Live Localization Stability & Calibration Warmup Check
   2. Live (X, Y, Z, Yaw) HUD stream
-  3. Automatic CSV logging to ~/.ros/localization_runs/latest/
-  4. Interactive Goal Recording (1-Click Enter)
-  5. Auto-renders 2D map goal pins using 2d_metadata.json
+  3. Automatic Camera Snapshot capture when recording goal (config/goals/goal_XX.jpg)
+  4. Automatic CSV logging to ~/.ros/localization_runs/latest/
+  5. Interactive Goal Recording (1-Click Enter)
+  6. Auto-renders 2D map goal pins using 2d_metadata.json
 """
 
 import os
@@ -19,8 +20,10 @@ import threading
 from datetime import datetime
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, qos_profile_sensor_data
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
 import tf2_ros
 import cv2
 import numpy as np
@@ -34,6 +37,7 @@ NC = '\033[0m'
 
 GOALS_YAML = "/home/unitree/go2_ws_antarctica/config/navigation_goals.yaml"
 GOALS_JSON = "/home/unitree/go2_ws_antarctica/config/navigation_goals.json"
+GOALS_DIR = "/home/unitree/go2_ws_antarctica/config/goals"
 MAP_2D_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d.png"
 MAP_METADATA_JSON = "/home/unitree/go2_ws_antarctica/2dmap/2d_metadata.json"
 GOALS_MAP_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d_goals_map.png"
@@ -43,6 +47,8 @@ class UnifiedLocalizationAndGoalNode(Node):
         super().__init__('go2_localization_and_goal_node')
         self.lock = threading.Lock()
         self.current_pose = None
+        self.latest_frame = None
+        self.bridge = CvBridge()
         self.last_pose_time = time.time()
         self.pose_count = 0
         self.is_localized = False
@@ -51,6 +57,7 @@ class UnifiedLocalizationAndGoalNode(Node):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.run_dir = os.path.expanduser(f"~/.ros/localization_runs/{timestamp}")
         os.makedirs(self.run_dir, exist_ok=True)
+        os.makedirs(GOALS_DIR, exist_ok=True)
         self.csv_path = os.path.join(self.run_dir, "localization_poses.csv")
         self.log_path = os.path.join(self.run_dir, "localization.log")
 
@@ -71,6 +78,7 @@ class UnifiedLocalizationAndGoalNode(Node):
 
         qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT, history=HistoryPolicy.KEEP_LAST, depth=10)
         self.create_subscription(PoseWithCovarianceStamped, '/rtabmap/localization_pose', self.pose_callback, qos)
+        self.create_subscription(Image, '/camera/front/image_raw', self.image_callback, qos_profile_sensor_data)
 
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
@@ -103,6 +111,14 @@ class UnifiedLocalizationAndGoalNode(Node):
 
         self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},{cov_x:.6f},LOCALIZED\n")
         self.csv_file.flush()
+
+    def image_callback(self, msg: Image):
+        try:
+            cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            with self.lock:
+                self.latest_frame = cv_img
+        except Exception:
+            pass
 
     def tf_fallback_timer(self):
         with self.lock:
@@ -140,6 +156,12 @@ class UnifiedLocalizationAndGoalNode(Node):
     def get_pose(self):
         with self.lock:
             return self.current_pose
+
+    def get_snapshot(self):
+        with self.lock:
+            if self.latest_frame is not None:
+                return self.latest_frame.copy()
+        return None
 
     def destroy_node(self):
         if hasattr(self, 'csv_file') and not self.csv_file.closed:
@@ -198,10 +220,9 @@ def render_goals_on_map(goals):
         px = max(20, min(w - 20, px))
         py = max(20, min(h - 20, py))
 
-        cv2.circle(overlay, (px, py), 12, (0, 0, 240), -1, cv2.LINE_AA)
-        cv2.circle(overlay, (px, py), 14, (255, 255, 255), 2, cv2.LINE_AA)
-        cv2.putText(overlay, str(gid), (px - 5, py + 5), cv2.FONT_HERSHEY_DUPLEX, 0.55, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(overlay, f"#{gid}: {name}", (px + 18, py + 5), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 200), 1, cv2.LINE_AA)
+        cv2.circle(overlay, (px, py), 10, (0, 0, 240), -1, cv2.LINE_AA)
+        cv2.circle(overlay, (px, py), 12, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(overlay, f"#{gid}", (px - 8, py - 14), cv2.FONT_HERSHEY_DUPLEX, 0.55, (0, 0, 220), 1, cv2.LINE_AA)
 
     cv2.imwrite(GOALS_MAP_PNG, overlay)
 
@@ -215,6 +236,7 @@ def main():
     print(f"{BOLD}{CYAN} 🐕 [Unitree Go2] Unified Localization HUD & Goal Manager{NC}")
     print(f" 📂 CSV Log File : {node.csv_path}")
     print(f" 🚩 Goals Config : {GOALS_YAML}")
+    print(f" 📸 Goals Images : {GOALS_DIR}/")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
 
     goals = load_goals()
@@ -249,7 +271,7 @@ def main():
     print(f"{BOLD}{GREEN}========================================================================{NC}\n")
 
     print(f"{BOLD}🎯 Key Controls:{NC}")
-    print(f"  • {GREEN}[ENTER]{NC}          : Automatically record current pose as Goal #{len(goals)+1} (in sequence)")
+    print(f"  • {GREEN}[ENTER]{NC}          : Automatically record current pose & camera photo as Goal #{len(goals)+1}")
     print(f"  • {YELLOW}'d' / 'del'{NC}      : Delete the last recorded goal (with confirmation)")
     print(f"  • {CYAN}'list'{NC}           : Display all registered goals")
     print(f"  • {RED}'clear'{NC}          : Clear all registered goals (with confirmation)")
@@ -273,7 +295,7 @@ def main():
             elif user_input.lower() in ('list', 'l'):
                 print(f"\nRegistered Goals ({len(goals)}):")
                 for g in goals:
-                    print(f"  [{g['id']}] {g['name']:25s} | X={g['x_m']:+7.2f}m, Y={g['y_m']:+7.2f}m, Yaw={g['yaw_deg']:+6.1f}°")
+                    print(f"  [{g['id']}] {g['name']:25s} | X={g['x_m']:+7.2f}m, Y={g['y_m']:+7.2f}m, Yaw={g['yaw_deg']:+6.1f}° | Photo: {g.get('snapshot_image', 'None')}")
                 print()
                 continue
 
@@ -304,7 +326,7 @@ def main():
                     print(f"Cancelled.\n")
                 continue
 
-            # Default: [ENTER] -> Record Goal
+            # Default: [ENTER] -> Record Goal & Capture Camera Photo
             if not pose:
                 print(f"\n{RED}❌ Error: Cannot record goal - Robot is not localized yet.{NC}\n")
                 continue
@@ -312,6 +334,20 @@ def main():
             new_id = len(goals) + 1
             default_name = f"Waypoint_{new_id}"
             
+            # Capture Front Camera Image
+            snap = node.get_snapshot()
+            snap_rel_path = f"config/goals/goal_{new_id:02d}_{default_name}.jpg"
+            snap_full_path = os.path.join(GOALS_DIR, f"goal_{new_id:02d}_{default_name}.jpg")
+            if snap is not None:
+                # Add overlay tag on goal photo
+                tag_img = snap.copy()
+                cv2.putText(tag_img, f"Goal #{new_id}: {default_name} (X={pose['x']:+.2f}m, Y={pose['y']:+.2f}m)",
+                            (30, 50), cv2.FONT_HERSHEY_DUPLEX, 0.9, (0, 255, 255), 2, cv2.LINE_AA)
+                cv2.imwrite(snap_full_path, tag_img)
+                photo_status = f"📸 Saved {snap_rel_path}"
+            else:
+                photo_status = "⚠️ Camera frame not available"
+
             goal_entry = {
                 "id": new_id,
                 "name": default_name,
@@ -320,12 +356,14 @@ def main():
                 "y_m": round(pose['y'], 2),
                 "z_m": round(pose['z'], 2),
                 "yaw_deg": round(pose['yaw'], 1),
-                "tolerance_m": 0.50
+                "tolerance_m": 0.50,
+                "snapshot_image": snap_rel_path
             }
             goals.append(goal_entry)
             save_goals(goals)
             print(f"\n{GREEN}{BOLD}✅ [GOAL RECORDED] Goal #{new_id} '{default_name}' saved!{NC}")
-            print(f"   📍 Pose: X={goal_entry['x_m']:+.2f}m, Y={goal_entry['y_m']:+.2f}m, Yaw={goal_entry['yaw_deg']:+.1f}° | Total Goals: {len(goals)}\n")
+            print(f"   📍 Pose  : X={goal_entry['x_m']:+.2f}m, Y={goal_entry['y_m']:+.2f}m, Yaw={goal_entry['yaw_deg']:+.1f}°")
+            print(f"   📸 Photo : {photo_status} | Total Goals: {len(goals)}\n")
 
         except (KeyboardInterrupt, EOFError):
             break
