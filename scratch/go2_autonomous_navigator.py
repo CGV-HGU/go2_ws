@@ -179,6 +179,33 @@ class AutonomousNavigator(Node):
         # 10Hz Control Loop & Policy/VLM Loop (0.5s for PixNav, 0.7s for VLM)
         self.create_timer(0.1, self.control_loop)
         self.create_timer(0.5 if self.mode == "pixnav" else 0.7, self.vlm_decision_loop)
+        self.create_timer(0.2, self.tf_fallback_timer)
+
+    def tf_fallback_timer(self):
+        with self.lock:
+            last_t = self.current_pose['time'] if self.current_pose else 0.0
+        if time.time() - last_t > 0.5:
+            try:
+                t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
+                pos = t.transform.translation
+                ori = t.transform.rotation
+                siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
+                cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
+                yaw_rad = math.atan2(siny_cosp, cosy_cosp)
+                yaw_deg = math.degrees(yaw_rad)
+
+                with self.lock:
+                    self.current_pose = {
+                        "x": float(pos.x),
+                        "y": float(pos.y),
+                        "z": float(pos.z),
+                        "yaw": float(yaw_deg),
+                        "yaw_rad": float(yaw_rad),
+                        "time": time.time(),
+                        "status": "TF_TRACKING"
+                    }
+            except Exception:
+                pass
 
     def cloud_callback(self, msg: PointCloud2):
         try:
@@ -249,14 +276,18 @@ class AutonomousNavigator(Node):
             siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
             cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
             yaw_rad = math.atan2(siny_cosp, cosy_cosp)
-            return {
+            res = {
                 "x": float(pos.x),
                 "y": float(pos.y),
                 "z": float(pos.z),
                 "yaw": float(math.degrees(yaw_rad)),
                 "yaw_rad": float(yaw_rad),
-                "time": time.time()
+                "time": time.time(),
+                "status": "TF_TRACKING"
             }
+            with self.lock:
+                self.current_pose = res
+            return res
         except Exception:
             return None
 
