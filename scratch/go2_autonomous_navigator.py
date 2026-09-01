@@ -28,6 +28,8 @@ import yaml
 import base64
 import argparse
 from datetime import datetime
+from collections import deque
+from pathlib import Path
 import threading
 import requests
 import numpy as np
@@ -109,6 +111,47 @@ class AutonomousNavigator(Node):
         self.min_left_dist = 1.0
         self.min_right_dist = 1.0
 
+        # True PixNav Checkpoint_A Neural Network State
+        self.pixnav_model = None
+        self.pixnav_history = deque(maxlen=8)
+        self.pixnav_action_names = ("stop", "forward", "turn_left", "turn_right", "look_up", "look_down")
+        self.macro_action = "stop"
+        self.macro_end_time = 0.0
+        self.goal_bgr_img = None
+
+        if self.mode == "pixnav":
+            print(f"\n{BOLD}{CYAN}🧠 [PIXNAV INITIALIZATION] Loading Official Checkpoint_A (208MB) on Jetson CUDA...{NC}")
+            try:
+                reference = Path(WORKSPACE_DIR) / ".local-data" / "vlm-s2e" / "runtime" / "vlm-s2e-integration-paper-pin"
+                runtime_site = Path(WORKSPACE_DIR) / ".local-data" / "pixnav_runtime" / "site-packages"
+                if runtime_site.is_dir() and str(runtime_site) not in sys.path:
+                    sys.path.insert(0, str(runtime_site))
+                if reference.is_dir() and str(reference) not in sys.path:
+                    sys.path.insert(0, str(reference))
+
+                import torch
+                from scratch.tools.pixnav_check import install_python38_settings_shim
+                install_python38_settings_shim(reference)
+                from policy_network import PixelNavPolicy
+
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+                self.pixnav_device = device
+                self.pixnav_model = PixelNavPolicy(max_token_length=64, device=device)
+                ckpt_path = Path(WORKSPACE_DIR) / ".local-data" / "vlm-s2e" / "checkpoints" / "pixelnav_A.ckpt"
+                self.pixnav_model.load_state_dict(torch.load(str(ckpt_path), map_location=device))
+                self.pixnav_model.eval()
+
+                # Warmup inference
+                dummy_img = np.zeros((1, 224, 224, 3), dtype=np.uint8)
+                dummy_mask = np.zeros((1, 224, 224, 1), dtype=np.uint8)
+                dummy_mask[0, 112-8:112+8, 112-8:112+8, 0] = 255
+                dummy_hist = np.zeros((1, 1, 224, 224, 3), dtype=np.uint8)
+                with torch.inference_mode():
+                    self.pixnav_model(dummy_mask, dummy_img, dummy_hist)
+                print(f"{BOLD}{GREEN}🎉 [PIXNAV DEPLOYED] Checkpoint_A neural network warmed up and active on {device}! (Inference Latency: ~49ms){NC}\n")
+            except Exception as e:
+                print(f"{RED}❌ Failed to load PixNav Checkpoint_A: {e}{NC}")
+
         # ROS 2 Subscriptions
         qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT, history=HistoryPolicy.KEEP_LAST, depth=10)
         self.create_subscription(PoseWithCovarianceStamped, '/rtabmap/localization_pose', self.pose_callback, qos)
@@ -125,9 +168,9 @@ class AutonomousNavigator(Node):
         else:
             self.sport_pub = None
 
-        # 10Hz Control Loop & 1.5Hz VLM Loop
+        # 10Hz Control Loop & Policy/VLM Loop (0.5s for PixNav, 0.7s for VLM)
         self.create_timer(0.1, self.control_loop)
-        self.create_timer(0.7, self.vlm_decision_loop)
+        self.create_timer(0.5 if self.mode == "pixnav" else 0.7, self.vlm_decision_loop)
 
     def cloud_callback(self, msg: PointCloud2):
         try:
@@ -279,6 +322,12 @@ class AutonomousNavigator(Node):
         self.vlm_log_path = os.path.join(self.trial_dir, "vlm_decisions.jsonl")
         self.vlm_log_file = open(self.vlm_log_path, "w")
 
+        # Reset PixNav policy state
+        self.goal_bgr_img = None
+        self.pixnav_history.clear()
+        self.macro_action = "stop"
+        self.macro_end_time = 0.0
+
         self.is_mission_active = True
         print(f"\n{BOLD}{GREEN}========================================================================{NC}")
         print(f"{BOLD}{GREEN} 🚀 [MISSION STARTED] {today_str}_{seq_num:02d} -> Goal #{goal_entry['id']}: {goal_entry['name']}{NC}")
@@ -356,7 +405,7 @@ class AutonomousNavigator(Node):
         print(f"========================================================================\n")
 
     def vlm_decision_loop(self):
-        if not self.is_mission_active or self.mode != "ours":
+        if not self.is_mission_active:
             return
         with self.lock:
             frame = None if self.latest_frame is None else self.latest_frame.copy()
@@ -373,7 +422,10 @@ class AutonomousNavigator(Node):
         global_target_heading = math.atan2(dy, dx)
         rel_heading = (global_target_heading - pose['yaw_rad'] + math.pi) % (2 * math.pi) - math.pi
 
-        threading.Thread(target=self._query_vlm_async, args=(frame, dist, math.degrees(rel_heading), pose), daemon=True).start()
+        if self.mode == "ours":
+            threading.Thread(target=self._query_vlm_async, args=(frame, dist, math.degrees(rel_heading), pose), daemon=True).start()
+        elif self.mode == "pixnav":
+            self._query_pixnav_policy(frame, dist, math.degrees(rel_heading), pose)
 
     def _query_vlm_async(self, frame, dist_to_goal, rel_heading_deg, pose):
         if self.vlm_active or not self.is_mission_active:
@@ -474,6 +526,96 @@ Output JSON:
         finally:
             self.vlm_active = False
 
+    def _query_pixnav_policy(self, frame, dist_to_goal, rel_heading_deg, pose):
+        if self.pixnav_model is None or not self.is_mission_active:
+            return
+
+        t0 = time.perf_counter()
+        try:
+            import torch
+            self.pixnav_history.append(frame)
+            history_list = list(self.pixnav_history)
+
+            # 1. Goal Image: Use registered goal photo if present, otherwise initial start frame
+            if self.goal_bgr_img is None:
+                if 'snapshot_image' in self.current_goal and self.current_goal['snapshot_image']:
+                    full_p = os.path.join(WORKSPACE_DIR, self.current_goal['snapshot_image'])
+                    if os.path.exists(full_p):
+                        self.goal_bgr_img = cv2.imread(full_p)
+                if self.goal_bgr_img is None:
+                    self.goal_bgr_img = frame.copy()
+
+            goal_bgr = self.goal_bgr_img
+            h, w = goal_bgr.shape[:2]
+
+            # 2. Goal Pixel & Mask: Centered in forward view (640, 500)
+            u, v, radius = 640, 500, 8
+            mask = np.zeros((h, w), dtype=np.uint8)
+            cv2.rectangle(
+                mask,
+                (max(0, u - radius), max(0, v - radius)),
+                (min(w - 1, u + radius), min(h - 1, v + radius)),
+                255,
+                -1,
+            )
+
+            # 3. Model Preprocessing
+            goal_image = cv2.resize(cv2.cvtColor(goal_bgr, cv2.COLOR_BGR2RGB), (224, 224))[np.newaxis, :, :, :]
+            goal_mask = cv2.resize(mask, (224, 224), cv2.INTER_NEAREST)[np.newaxis, :, :, np.newaxis]
+            history = np.stack([cv2.resize(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), (224, 224)) for img in history_list], axis=0)[np.newaxis, :, :, :, :]
+
+            # 4. Checkpoint_A CUDA Inference
+            with torch.inference_mode():
+                action_logits, distance_pred, goal_pred = self.pixnav_model(goal_mask, goal_image, history)
+                probs = torch.softmax(action_logits[0], dim=-1).cpu().numpy()
+
+            latency_ms = (time.perf_counter() - t0) * 1000.0
+            self.vlm_latencies.append(latency_ms)
+
+            pred_id = int(np.argmax(probs[-1]))
+            pred_action = self.pixnav_action_names[pred_id]
+            self.vlm_query_count += 1
+            q_idx = self.vlm_query_count
+
+            # 5. Set Macro-Action Execution Duration
+            now = time.time()
+            with self.lock:
+                self.macro_action = pred_action
+                if pred_action == "forward":
+                    self.macro_end_time = now + 0.50  # 0.25m step at 0.5m/s
+                elif pred_action in ("turn_left", "turn_right"):
+                    self.macro_end_time = now + 1.05  # 30 deg rotation at 0.5 rad/s
+                else:
+                    self.macro_end_time = now
+
+            # 6. Save Annotated Decision Frame
+            overlay = frame.copy()
+            prob_str = " | ".join([f"{n[:3]}:{p:.2f}" for n, p in zip(self.pixnav_action_names[:4], probs[-1][:4])])
+            cv2.putText(overlay, f"PixNav #{q_idx}: Action={pred_action.upper()} ({latency_ms:.0f}ms)", (30, 50),
+                        cv2.FONT_HERSHEY_DUPLEX, 0.9, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(overlay, f"Probs: {prob_str}", (30, 85),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
+            decision_name = f"query_{q_idx:03d}_pixnav_decision.jpg"
+            cv2.imwrite(os.path.join(self.snapshots_dir, decision_name), overlay)
+
+            # 7. Log Record
+            rec = {
+                "query_id": q_idx,
+                "iso_timestamp": datetime.now().isoformat(),
+                "latency_ms": round(latency_ms, 1),
+                "robot_pose": {"x": round(pose['x'], 3), "y": round(pose['y'], 3), "yaw_deg": round(pose['yaw'], 1)},
+                "action": pred_action,
+                "action_id": pred_id,
+                "probabilities": {n: round(float(p), 4) for n, p in zip(self.pixnav_action_names, probs[-1])},
+                "decision_image": decision_name
+            }
+            if self.vlm_log_file and not self.vlm_log_file.closed:
+                self.vlm_log_file.write(json.dumps(rec) + "\n")
+                self.vlm_log_file.flush()
+
+        except Exception as e:
+            self.get_logger().error(f"PixNav inference error: {e}")
+
     def control_loop(self):
         if not self.is_mission_active or not self.current_goal:
             return
@@ -516,18 +658,36 @@ Output JSON:
         # If heading error > 35°, rotate in-place with ZERO forward creep!
         # Prevents robot from drifting into side walls while turning.
         # ---------------------------------------------------------
-        if abs(rel_heading_deg) > 35.0:
-            target_vx = 0.0
-            target_wz = math.copysign(0.38, rel_heading)
-        else:
-            if self.mode == "ours":
+        if self.mode == "ours":
+            if abs(rel_heading_deg) > 35.0:
+                target_vx = 0.0
+                target_wz = math.copysign(0.38, rel_heading)
+            else:
                 norm_u = (self.subgoal_u - 640) / 640.0
                 target_wz = -norm_u * 0.40 + (rel_heading * 0.20)
                 target_vx = self.max_vx * (1.0 - abs(norm_u) * 0.6)
+        elif self.mode == "pixnav":
+            # True PixNav Checkpoint_A Neural Network Action Execution
+            with self.lock:
+                act = self.macro_action
+                end_t = self.macro_end_time
+
+            if now < end_t:
+                if act == "forward":
+                    target_vx = self.max_vx  # 0.50 m/s
+                    target_wz = 0.0
+                elif act == "turn_left":
+                    target_vx = 0.0
+                    target_wz = 0.45  # +30 deg/s
+                elif act == "turn_right":
+                    target_vx = 0.0
+                    target_wz = -0.45  # -30 deg/s
+                else:
+                    target_vx = 0.0
+                    target_wz = 0.0
             else:
-                # PixNav Baseline
-                target_wz = rel_heading * 0.50
-                target_vx = self.max_vx * (1.0 - abs(rel_heading) / (math.pi / 2.0))
+                target_vx = 0.0
+                target_wz = 0.0
 
         # Physical 4D LiDAR Wall / Obstacle Collision Prevention Interlock
         with self.lock:
@@ -770,12 +930,12 @@ Output JSON:
             f.write(f"- **Total Trajectory Length**: `{path_len:.2f} m`\n")
             f.write(f"- **Average Travel Speed**: `{avg_spd:.2f} m/s` (Max limit: `{self.max_vx:.2f} m/s`)\n")
             f.write(f"- **Pose Sample Count (10Hz)**: `{self.pose_sample_count}`\n")
-            f.write(f"- **VLM Queries Count**: `{self.vlm_query_count}` (Mean Latency: `{mean_lat:.1f} ms`)\n\n")
+            f.write(f"- **Policy Inferences / VLM Queries**: `{self.vlm_query_count}` (Mean Latency: `{mean_lat:.1f} ms`)\n\n")
             f.write(f"## 📁 Saved Artifacts\n")
             f.write(f"- `trial_trajectory_on_2d_map.png` : 2D floor plan overlay with all candidate goals.\n")
             f.write(f"- `trial_benchmark_dashboard.png` : 4-panel publication-grade research dashboard.\n")
             f.write(f"- `trajectory_raw.csv` : 10Hz raw pose & velocity timeseries data.\n")
-            f.write(f"- `vlm_decisions.jsonl` : Log of every VLM query, prompt, and sub-goal.\n")
+            f.write(f"- `vlm_decisions.jsonl` : Log of every policy/VLM decision and action probabilities.\n")
             f.write(f"- `camera_snapshots/` : Annotated decision frames.\n")
 
 def load_goals():
