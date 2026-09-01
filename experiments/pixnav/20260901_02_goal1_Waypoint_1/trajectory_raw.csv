@@ -1,0 +1,1 @@
+iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,rel_heading_deg,status
