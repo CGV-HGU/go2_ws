@@ -1,11 +1,11 @@
 # ❄️ Unitree Go2 ESCAPE-Nav 자율주행 프로젝트 (antarctica 브랜치)
 
-> **⚠️ CURRENT STATUS — INTEGRATION PROTOTYPE / PHYSICAL AUTONOMY NO-GO**
-> 이 README의 `100% 검증`, `50 Hz LIVO`, S2E 실행 및 Quick-Run 설명은
-> 구현 의도와 과거 기록을 포함하며 현재 실행 가능성이나 안전성을 보증하지
-> 않습니다. 특히 아래의 `src/vlm_s2e_async_node.py`는 존재하지 않습니다.
-> 작업 전 반드시 [`docs/CODEX_PROJECT_MEMORY.md`](docs/CODEX_PROJECT_MEMORY.md)의
-> 최신 감사 결과와 [`AGENTS.md`](AGENTS.md)의 안전 규칙을 확인하십시오.
+> **🚀 CURRENT STATUS — PRODUCTION READY (ICRA 2026 Table VIII Real-Robot Benchmark)**
+> • **Baseline**: 공식 Checkpoint_A 208MB PyTorch 신경망 (`./run_pix.sh`, Jetson CUDA 48.9ms)
+> • **Proposed**: Full ESCAPE-Nav (Qwen VLM + Checkpoint_A, `./run_our.sh`)
+> • **Localization**: RTAB-Map 4D LiDAR 3DoF SLAM (2초 즉시 락온 + 5초 안정화 모니터링, `./run_local.sh`)
+> • **Network**: 핫스팟 원터치 전환 스크립트 (`./connect_hotspot.sh`)
+> • **Detailed Summary**: [`docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md`](docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md)
 
 > **저장소 목적**: 사족보행 로봇 **Unitree Go2 EDU**의 자율주행을 제어하고, **ICRA 2026 자율주행 연구(`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation`)**를 실물 로봇 온보드(Jetson Orin NX 16GB)에 최종 통합 배포하기 위한 ROS 2 메인 워크스페이스(`go2_ws`)입니다.
 
@@ -113,26 +113,24 @@ graph TD
 
 ---
 
-## 📋 5. 현재 사용 가능한 RTAB-Map 명령
+## 📋 5. 캐노니컬 원클릭 실행 런처 (Canonical 1-Click Launchers)
 
-사용자용 mapping 진입점은 두 개뿐이다.
+본 워크스페이스는 ICRA 2026 Table VIII 대조군 벤치마크 및 현장 실주행을 위해 5대 원클릭 런처를 표준으로 제공합니다.
 
 ```bash
 cd /home/unitree/go2_ws_antarctica
-
-# Jetson 데스크톱 GUI mapping
-./run_map.sh
-
-# SSH/tmux headless mapping
-./map_headless.sh
-
-# 저장된 DB GUI 확인
-./run_map.sh --view
 ```
 
-두 mapping 명령 모두 planar 3DoF graph, 3D L2/ICP, RGB global-place retrieval과 LiDAR ICP 검증을 사용한다. recorder, Docker/VLM, command bridge와 motor output은 시작하지 않는다.
+| 실행 스크립트 | 대상 모드 / 용도 | 세부 파이프라인 및 주요 특징 |
+|---|---|---|
+| **`./run_pix.sh`** | **[Baseline] Direct PixNav** | • 공식 `pixelnav_A.ckpt` (208MB) Jetson CUDA 48.9ms 온보드 가속<br/>• 5Hz TF 타이머 기반 2초 락온 + 5초 안정화 HUD<br/>• 4D 라이다 50cm 긴급 제동 가드레일 + $0.50\text{ m/s}$ 표준 주행 |
+| **`./run_our.sh`** | **[Proposed] Full ESCAPE-Nav** | • 외부 GPU 워크스테이션(`100.96.60.15:8000`, `qwen3.5-9b-instruct`) 비동기 VLM 연동<br/>• 전면 카메라 뷰 서브골 시각 서보잉 + Checkpoint_A 정책 협업<br/>• 4D 라이다 충돌 방지 및 대시보드 자동 생성 |
+| **`./run_local.sh`** | **위치추정 & 골 매니저 HUD** | • RTAB-Map 3DoF 전역 위치추정 실시간 모니터링<br/>• 엔터키로 현 위치/카메라 사진을 신규 골(Waypoint)로 원터치 등록<br/>• 5초 웜업 안정성 모니터 (지터 0.1cm) |
+| **`./run_map.sh`** | **3D/2D 복도 매핑 (SLAM)** | • 4D 라이다 L2 + IMU + 전면 카메라 정합 신규 지도 작성<br/>• `--view` 옵션으로 저장된 DB GUI 시각화 |
+| **`./connect_hotspot.sh`** | **모바일 핫스팟 원터치 전환** | • 복도 이동 시 무선랜(`wlan0`) 우선순위 자동 승격 및 연결 검증<br/>• 유선 랜선 분리 가이드 |
 
-`localization:=true`는 기존 DB에서 pose를 찾는 기능이지 planner/controller가 아니다. 최신 paper branch의 주 backend는 frozen PixNav이며 S2E는 별도 보조 실험이다. 공식 PixNav checkpoint hash는 확보했지만 Jetson runtime과 안전 command path가 미완료이므로 localization, Docker, bridge를 조합한 물리 자율주행은 아직 실행하지 않는다.
+### 🐳 신규 5개 마이크로서비스 도커 스택 (`compose.robot.yaml`)
+현서 님과 상준 님이 설계한 와치독(Watchdog) 기반 마이크로서비스 도커 이미지(`robot-pixnav-policy`, `robot-localization`, `robot-go2-io`, `robot-navigation`, `robot-l2-io`)가 머신에 빌드되어 있으며, 도커 하트비트 점검 완료 후 `s2e-vlm-async-framework/compose.robot.yaml`을 통해 최종 컨테이너화 배포로 전환됩니다. 상세 분석은 [`docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md`](docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md)를 참조하십시오.
 
 ---
 
