@@ -1,0 +1,38 @@
+{
+  "trial_dir": "/home/unitree/go2_ws_antarctica/experiments/ours/goal_1_Waypoint_1/trial_03_20260901_130424",
+  "created_at": "2026-09-01T13:04:58.140449",
+  "mode": "ours",
+  "goal": {
+    "id": 1,
+    "name": "Waypoint_1",
+    "description": "Candidate goal #1",
+    "x_m": -18.693,
+    "y_m": 26.875,
+    "z_m": 0.308,
+    "yaw_deg": -172.0,
+    "tolerance_m": 0.5
+  },
+  "initial_pose": {
+    "x": -12.35054751481151,
+    "y": 27.364709790432023,
+    "z": 0.31257421309950106,
+    "yaw": -171.80014176192506,
+    "yaw_rad": -2.9984781291386042,
+    "time": 1788235464.7324014
+  },
+  "final_status": {
+    "success": true,
+    "reason": "ARRIVED",
+    "duration_seconds": 33.4,
+    "final_distance_to_goal_m": 0.493,
+    "total_pose_samples": 334,
+    "total_vlm_queries": 22
+  },
+  "saved_artifacts": {
+    "trajectory_map_overlay": "trial_trajectory_on_2d_map.png",
+    "trajectory_plot_bev": "trajectory_plot_bev.png",
+    "trajectory_raw_csv": "trajectory_raw.csv",
+    "vlm_decisions_jsonl": "vlm_decisions.jsonl",
+    "camera_snapshots_dir": "camera_snapshots/"
+  }
+}
