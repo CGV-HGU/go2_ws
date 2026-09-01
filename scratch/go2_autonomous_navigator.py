@@ -122,6 +122,9 @@ class AutonomousNavigator(Node):
         if self.mode == "pixnav":
             print(f"\n{BOLD}{CYAN}🧠 [PIXNAV INITIALIZATION] Loading Official Checkpoint_A (208MB) on Jetson CUDA...{NC}")
             try:
+                import warnings
+                warnings.filterwarnings("ignore", category=UserWarning)
+
                 if WORKSPACE_DIR not in sys.path:
                     sys.path.insert(0, WORKSPACE_DIR)
                 tools_dir = str(Path(WORKSPACE_DIR) / "scratch" / "tools")
