@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """
-Persistent Interactive Mission Control & Autonomous Navigator for Unitree Go2.
-Features:
-  1. Persistent ROS 2 Localization & Control Stack (Zero restart lag)
-  2. Interactive Goal Selection Loop (1 -> Goal 1 -> Arrive & Hold -> 2 -> Goal 2)
-  3. Dual-Layer Actuation: Direct CycloneDDS Sport API (1008) + ROS 2 /cmd_vel
-  4. Automatic Per-Trial Hierarchical Artifacts Logging:
-     - camera_snapshots/ (Communicated raw frames & subgoals)
-     - trial_trajectory_on_2d_map.png (Clean 1-자 corridor overlay)
-     - trajectory_plot_bev.png (300 DPI BEV plot)
-     - trajectory_raw.csv & vlm_decisions.jsonl
+Publication-Grade Autonomous Navigator & Benchmark Engine for Unitree Go2 (ICRA 2026).
+Key Features:
+  1. 5-Episode Benchmark Architecture with Date_Numbering Folder Hierarchy:
+     experiments/{mode}/YYYYMMDD_XX_goalY_{name}/
+  2. Multi-Goal Global 2D Map Visualization:
+     Shows ALL registered candidate goals (#1~#5), Active Target, START, STOP, and Trajectory.
+  3. 4-Panel Research Benchmark Dashboard (trial_benchmark_dashboard.png):
+     - BEV Trajectory with all goals & obstacles
+     - Velocity profiles (vx, wz) over time
+     - Distance to goal convergence (dt)
+     - Heading error & VLM inference latencies
+  4. In-Place Rotation Safety Interlock:
+     Pure zero-creep in-place rotation when |rel_heading| > 35° (prevents wall scrapes).
+  5. Lean & Rapid Artifacts Logging:
+     Eliminates duplicate raw images; stores only annotated decision frames (query_XXX_vlm_decision.jpg).
+  6. Human-Readable Executive Summary (trial_summary.md) for instant paper table compilation.
 """
 
 import os
@@ -62,9 +68,9 @@ EXP_ROOT = os.path.join(WORKSPACE_DIR, "experiments")
 VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
 
-class PersistentAutonomousNavigator(Node):
-    def __init__(self, mode="ours", max_vx=0.30, max_wz=0.50, tolerance_m=0.50, timeout_s=120):
-        super().__init__('go2_persistent_navigator')
+class AutonomousNavigator(Node):
+    def __init__(self, mode="ours", max_vx=0.30, max_wz=0.45, tolerance_m=0.35, timeout_s=120):
+        super().__init__('go2_autonomous_navigator')
         self.mode = mode
         self.max_vx = max_vx
         self.max_wz = max_wz
@@ -79,6 +85,7 @@ class PersistentAutonomousNavigator(Node):
         # Active Mission State
         self.is_mission_active = False
         self.current_goal = None
+        self.all_goals = []
         self.start_pose = None
         self.mission_start_time = 0.0
         self.trajectory_history = []
@@ -132,10 +139,6 @@ class PersistentAutonomousNavigator(Node):
                 "yaw_rad": math.atan2(siny_cosp, cosy_cosp),
                 "time": time.time()
             }
-            if self.is_mission_active:
-                if self.start_pose is None:
-                    self.start_pose = self.current_pose
-                self.trajectory_history.append((self.current_pose['x'], self.current_pose['y'], self.current_pose['yaw'], time.time()))
 
     def image_callback(self, msg: Image):
         try:
@@ -161,7 +164,7 @@ class PersistentAutonomousNavigator(Node):
             siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
             cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
             yaw_rad = math.atan2(siny_cosp, cosy_cosp)
-            pose_dict = {
+            return {
                 "x": float(pos.x),
                 "y": float(pos.y),
                 "z": float(pos.z),
@@ -169,9 +172,6 @@ class PersistentAutonomousNavigator(Node):
                 "yaw_rad": float(yaw_rad),
                 "time": time.time()
             }
-            if self.is_mission_active and self.start_pose is None:
-                self.start_pose = pose_dict
-            return pose_dict
         except Exception:
             return None
 
@@ -199,9 +199,10 @@ class PersistentAutonomousNavigator(Node):
     def stop_robot(self):
         self.publish_cmd(0.0, 0.0)
 
-    def start_mission(self, goal_entry):
+    def start_mission(self, goal_entry, all_goals):
         self.current_goal = goal_entry
-        self.start_pose = None
+        self.all_goals = all_goals
+        self.start_pose = self.get_current_pose()
         self.trajectory_history = []
         self.vlm_decision_history = []
         self.vlm_latencies = []
@@ -211,19 +212,19 @@ class PersistentAutonomousNavigator(Node):
         self.subgoal_u = 640
         self.subgoal_v = 500
 
-        # Setup Trial Directory
-        goal_folder_name = f"goal_{goal_entry['id']}_{goal_entry['name']}"
-        mode_goal_dir = os.path.join(EXP_ROOT, self.mode, goal_folder_name)
-        os.makedirs(mode_goal_dir, exist_ok=True)
+        # Date_Numbering Folder Architecture: experiments/{mode}/YYYYMMDD_XX_goalY_{name}/
+        today_str = datetime.now().strftime("%Y%m%d")
+        mode_dir = os.path.join(EXP_ROOT, self.mode)
+        os.makedirs(mode_dir, exist_ok=True)
 
-        existing_trials = glob.glob(os.path.join(mode_goal_dir, "trial_*"))
-        trial_num = len(existing_trials) + 1
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.trial_dir = os.path.join(mode_goal_dir, f"trial_{trial_num:02d}_{timestamp}")
+        existing_today = glob.glob(os.path.join(mode_dir, f"{today_str}_*"))
+        seq_num = len(existing_today) + 1
+        trial_folder_name = f"{today_str}_{seq_num:02d}_goal{goal_entry['id']}_{goal_entry['name']}"
+        self.trial_dir = os.path.join(mode_dir, trial_folder_name)
         self.snapshots_dir = os.path.join(self.trial_dir, "camera_snapshots")
         os.makedirs(self.snapshots_dir, exist_ok=True)
 
-        # Update symlink
+        # Update symlink to latest trial
         latest_link = os.path.join(EXP_ROOT, "latest")
         if os.path.lexists(latest_link):
             os.remove(latest_link)
@@ -232,10 +233,13 @@ class PersistentAutonomousNavigator(Node):
         except Exception:
             pass
 
+        # Save Start Camera Frame
+        self.save_single_snapshot("start_frame")
+
         # Open Log Files
         self.csv_path = os.path.join(self.trial_dir, "trajectory_raw.csv")
         self.csv_file = open(self.csv_path, "w")
-        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,status\n")
+        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,rel_heading_deg,status\n")
         self.csv_file.flush()
 
         self.vlm_log_path = os.path.join(self.trial_dir, "vlm_decisions.jsonl")
@@ -243,10 +247,10 @@ class PersistentAutonomousNavigator(Node):
 
         self.is_mission_active = True
         print(f"\n{BOLD}{GREEN}========================================================================{NC}")
-        print(f"{BOLD}{GREEN} 🚀 [MISSION STARTED] Navigating to Goal #{goal_entry['id']}: {goal_entry['name']}{NC}")
-        print(f" • Mode        : {BOLD}{self.mode.upper()}{NC} ({'Qwen VLM + PixNav' if self.mode == 'ours' else 'Pure PixNav'})")
-        print(f" • Destination : X={goal_entry['x_m']:+.2f}m, Y={goal_entry['y_m']:+.2f}m")
-        print(f" • Trial Folder: {self.trial_dir}")
+        print(f"{BOLD}{GREEN} 🚀 [MISSION STARTED] {today_str}_{seq_num:02d} -> Goal #{goal_entry['id']}: {goal_entry['name']}{NC}")
+        print(f" • Mode            : {BOLD}{self.mode.upper()}{NC}")
+        print(f" • Target Pose     : X={goal_entry['x_m']:+.2f}m, Y={goal_entry['y_m']:+.2f}m, Tolerance={self.tolerance_m:.2f}m")
+        print(f" • Output Folder   : {self.trial_dir}")
         print(f"{BOLD}{GREEN}========================================================================{NC}\n")
 
     def finish_mission(self, success: bool, reason: str, final_dist: float = 0.0):
@@ -254,52 +258,67 @@ class PersistentAutonomousNavigator(Node):
         self.stop_robot()
         elapsed = time.time() - self.mission_start_time
 
-        # Save Final Snapshot
-        self.save_final_snapshot("arrival" if success else "abort")
+        # Save Final Arrival/Abort Frame
+        self.save_single_snapshot("arrival_frame" if success else "abort_frame")
 
-        # Render Trajectory Map & Plots
-        self.render_trajectory_on_2d_map()
+        # Calculate Path Metrics
+        path_length_m = 0.0
+        for i in range(1, len(self.trajectory_history)):
+            p0, p1 = self.trajectory_history[i-1], self.trajectory_history[i]
+            path_length_m += math.hypot(p1[0] - p0[0], p1[1] - p0[1])
+        avg_speed_mps = (path_length_m / elapsed) if elapsed > 0 else 0.0
 
-        # Metadata
+        # Close Log Files
+        if self.csv_file: self.csv_file.close()
+        if self.vlm_log_file: self.vlm_log_file.close()
+
+        # Render Publication-Quality Multi-Goal 2D Map & 4-Panel Research Dashboard
+        map_path = self.render_multi_goal_trajectory_map(path_length_m, elapsed, avg_speed_mps, success)
+        dashboard_path = self.render_benchmark_dashboard(path_length_m, elapsed, avg_speed_mps, success)
+
+        # Generate Human-Readable Markdown Executive Summary
+        self.generate_markdown_summary(path_length_m, elapsed, avg_speed_mps, final_dist, success, reason)
+
+        # JSON Metadata
         metadata = {
             "trial_dir": self.trial_dir,
             "created_at": datetime.now().isoformat(),
             "mode": self.mode,
             "goal": self.current_goal,
             "initial_pose": self.start_pose,
-            "final_status": {
+            "metrics": {
                 "success": success,
                 "reason": reason,
-                "duration_seconds": round(elapsed, 2),
+                "duration_s": round(elapsed, 2),
+                "path_length_m": round(path_length_m, 2),
+                "average_speed_mps": round(avg_speed_mps, 3),
                 "final_distance_to_goal_m": round(final_dist, 3),
                 "total_pose_samples": self.pose_sample_count,
-                "total_vlm_queries": self.vlm_query_count
+                "total_vlm_queries": self.vlm_query_count,
+                "mean_vlm_latency_ms": round(float(np.mean(self.vlm_latencies)), 1) if self.vlm_latencies else 0.0
             },
             "saved_artifacts": {
-                "trajectory_map_overlay": "trial_trajectory_on_2d_map.png",
-                "trajectory_plot_bev": "trajectory_plot_bev.png",
+                "trial_trajectory_on_2d_map": "trial_trajectory_on_2d_map.png",
+                "trial_benchmark_dashboard": "trial_benchmark_dashboard.png",
+                "trial_summary_md": "trial_summary.md",
                 "trajectory_raw_csv": "trajectory_raw.csv",
                 "vlm_decisions_jsonl": "vlm_decisions.jsonl",
                 "camera_snapshots_dir": "camera_snapshots/"
             }
         }
-
-        meta_path = os.path.join(self.trial_dir, "trial_metadata.json")
-        with open(meta_path, "w") as f:
+        with open(os.path.join(self.trial_dir, "trial_metadata.json"), "w") as f:
             json.dump(metadata, f, indent=2)
 
-        if self.csv_file: self.csv_file.close()
-        if self.vlm_log_file: self.vlm_log_file.close()
-
-        print(f"\n\n========================================================================")
-        print(f"{GREEN}{BOLD} 💾 [TRIAL #{self.current_goal['id']} DATA & VISUAL ARTIFACTS SAVED]{NC}")
+        print(f"\n========================================================================")
+        print(f"{GREEN}{BOLD} 💾 [EPISODE COMPLETED & ARTIFACTS ARCHIVED]{NC}")
         print(f"========================================================================")
-        print(f" • Outcome             : {'✅ ARRIVED & HOLDING POSITION' if success else '⚠️ HALTED: ' + reason}")
-        print(f" • Exact Trial Folder  : {self.trial_dir}")
-        print(f" • 🗺️ 2D Map Trajectory : trial_trajectory_on_2d_map.png ⭐")
-        print(f" • 📸 VLM Raw & Decision: camera_snapshots/ (query_XXX_raw.jpg & decision.jpg) ⭐")
-        print(f" • 📄 Raw Trajectory CSV: trajectory_raw.csv ({self.pose_sample_count} poses)")
-        print(f" • 📋 Trial Metadata   : trial_metadata.json")
+        print(f" • Result              : {'✅ ARRIVED WITHIN TOLERANCE' if success else '⚠️ HALTED: ' + reason}")
+        print(f" • Folder              : {self.trial_dir}")
+        print(f" • 🗺️ Multi-Goal Map    : trial_trajectory_on_2d_map.png (All goals & path)")
+        print(f" • 📊 4-Panel Dashboard: trial_benchmark_dashboard.png (Speed, distance, errors)")
+        print(f" • 📋 Executive Summary : trial_summary.md (Instant paper table stats)")
+        print(f" • 📸 VLM Decisions    : camera_snapshots/ (Annotated decision overlays only)")
+        print(f" • 📈 Metrics          : Time={elapsed:.1f}s | Length={path_length_m:.2f}m | AvgSpd={avg_speed_mps:.2f}m/s")
         print(f"========================================================================\n")
 
     def vlm_decision_loop(self):
@@ -330,17 +349,12 @@ class PersistentAutonomousNavigator(Node):
         q_idx = self.vlm_query_count
         t0 = time.time()
 
-        # 1. Save Exact Communicated Raw JPEG Frame
-        raw_frame_name = f"query_{q_idx:03d}_raw.jpg"
-        raw_frame_path = os.path.join(self.snapshots_dir, raw_frame_name)
-        cv2.imwrite(raw_frame_path, frame)
-
         try:
             ret, buf = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
             b64_img = base64.b64encode(buf).decode('utf-8')
 
             prompt = f"""You are the visual navigation brain for Unitree Go2 navigating to Goal '{self.current_goal['name']}'.
-Distance to Goal: {dist_to_goal:.1f}m, Relative Angle: {rel_heading_deg:+.1f} deg.
+Distance to Goal: {dist_to_goal:.1f}m, Relative Heading: {rel_heading_deg:+.1f} deg.
 Inspect the front camera view. Identify the open collision-free corridor or doorway leading toward the destination.
 Output JSON:
 {{
@@ -383,15 +397,13 @@ Output JSON:
                     self.subgoal_u = int(pt_dict.get('x', 0.5) * 1280)
                     self.subgoal_v = int(pt_dict.get('y', 0.72) * 720)
 
-            # 2. Save Decision Overlay Image with Guidance Path Arrow
+            # Save ONLY Annotated Decision Frame (Clean, lightweight, 0 duplication)
             overlay = frame.copy()
             u, v = self.subgoal_u, self.subgoal_v
-            
-            # Draw Guidance Arrow from camera base [640, 700] to Subgoal [u, v]
             cv2.arrowedLine(overlay, (640, 700), (u, v), (0, 255, 255), 4, tipLength=0.15)
             cv2.circle(overlay, (u, v), 14, (0, 255, 0), 3, cv2.LINE_AA)
             cv2.circle(overlay, (u, v), 6, (0, 0, 255), -1, cv2.LINE_AA)
-            cv2.putText(overlay, f"VLM Subgoal #{q_idx}: [{u},{v}] ({action})", (30, 50),
+            cv2.putText(overlay, f"VLM Query #{q_idx}: [{u},{v}] ({action})", (30, 50),
                         cv2.FONT_HERSHEY_DUPLEX, 1.0, (0, 255, 255), 2, cv2.LINE_AA)
             cv2.putText(overlay, f"Dist: {dist_to_goal:.1f}m | Latency: {latency_ms:.0f}ms | {reasoning[:40]}", (30, 90),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
@@ -403,7 +415,8 @@ Output JSON:
                 "query_id": q_idx,
                 "pose": (pose['x'], pose['y']),
                 "subgoal_uv": [u, v],
-                "action": action
+                "action": action,
+                "latency_ms": latency_ms
             })
 
             vlm_record = {
@@ -416,8 +429,7 @@ Output JSON:
                 "action": action,
                 "reasoning": reasoning,
                 "subgoal_uv": [u, v],
-                "raw_image_file": raw_frame_name,
-                "decision_overlay_image": decision_frame_name
+                "decision_image": decision_frame_name
             }
             if self.vlm_log_file and not self.vlm_log_file.closed:
                 self.vlm_log_file.write(json.dumps(vlm_record) + "\n")
@@ -440,6 +452,12 @@ Output JSON:
             self.stop_robot()
             return
 
+        if self.start_pose is None:
+            self.start_pose = pose
+
+        # Record trajectory at 10Hz
+        self.trajectory_history.append((pose['x'], pose['y'], pose['yaw'], now))
+
         dx = self.current_goal['x_m'] - pose['x']
         dy = self.current_goal['y_m'] - pose['y']
         dist_to_goal = math.hypot(dx, dy)
@@ -447,27 +465,35 @@ Output JSON:
         rel_heading = (global_target_heading - pose['yaw_rad'] + math.pi) % (2 * math.pi) - math.pi
         rel_heading_deg = math.degrees(rel_heading)
 
+        # Check Arrival
         if dist_to_goal <= self.tolerance_m:
             print(f"\n{GREEN}{BOLD}🎉 [GOAL REACHED] Arrived within {dist_to_goal:.2f}m of Goal #{self.current_goal['id']} ({self.current_goal['name']})!{NC}")
             self.finish_mission(success=True, reason="ARRIVED", final_dist=dist_to_goal)
             return
 
+        # Check Timeout
         if elapsed > self.timeout_s:
             print(f"\n{RED}⏱️ [TIMEOUT] Exceeded duration of {self.timeout_s}s. Halting robot.{NC}")
             self.finish_mission(success=False, reason="TIMEOUT", final_dist=dist_to_goal)
             return
 
-        if self.mode == "ours":
-            norm_u = (self.subgoal_u - 640) / 640.0
-            target_wz = -norm_u * 0.45 + (rel_heading * 0.20)
-            target_vx = self.max_vx * max(0.2, (1.0 - abs(norm_u) * 0.8))
+        # ---------------------------------------------------------
+        # In-Place Rotation Safety Interlock:
+        # If heading error > 35°, rotate in-place with ZERO forward creep!
+        # Prevents robot from drifting into side walls while turning.
+        # ---------------------------------------------------------
+        if abs(rel_heading_deg) > 35.0:
+            target_vx = 0.0
+            target_wz = math.copysign(0.38, rel_heading)
         else:
-            if abs(rel_heading_deg) > 40.0:
-                target_vx = 0.05
-                target_wz = math.copysign(0.40, rel_heading)
+            if self.mode == "ours":
+                norm_u = (self.subgoal_u - 640) / 640.0
+                target_wz = -norm_u * 0.40 + (rel_heading * 0.20)
+                target_vx = self.max_vx * (1.0 - abs(norm_u) * 0.6)
             else:
-                target_vx = self.max_vx * (1.0 - abs(rel_heading) / math.pi)
+                # PixNav Baseline
                 target_wz = rel_heading * 0.50
+                target_vx = self.max_vx * (1.0 - abs(rel_heading) / (math.pi / 2.0))
 
         self.publish_cmd(target_vx, target_wz)
 
@@ -477,7 +503,7 @@ Output JSON:
             self.csv_file.write(
                 f"{iso_ts},{elapsed:.3f},{self.pose_sample_count},"
                 f"{pose['x']:.4f},{pose['y']:.4f},{pose['z']:.4f},{pose['yaw']:.2f},"
-                f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},NAVIGATING\n"
+                f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},{rel_heading_deg:.2f},NAVIGATING\n"
             )
             self.csv_file.flush()
 
@@ -487,20 +513,20 @@ Output JSON:
             f"Target: #{self.current_goal['id']} ({self.current_goal['name']}) | "
             f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
             f"Cmd: (vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}) | "
-            f"Frames: #{self.vlm_query_count:02d} | "
+            f"VLM: #{self.vlm_query_count:02d} | "
             f"Poses: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
         )
         sys.stdout.flush()
 
-    def save_final_snapshot(self, label):
+    def save_single_snapshot(self, label):
         with self.lock:
             if self.latest_frame is None or self.snapshots_dir is None:
                 return
             frame = self.latest_frame.copy()
-        path = os.path.join(self.snapshots_dir, f"{label}_frame.jpg")
+        path = os.path.join(self.snapshots_dir, f"{label}.jpg")
         cv2.imwrite(path, frame)
 
-    def render_trajectory_on_2d_map(self):
+    def render_multi_goal_trajectory_map(self, path_len, elapsed, avg_spd, success):
         if not os.path.exists(MAP_2D_PNG) or not self.trajectory_history:
             return None
 
@@ -524,6 +550,28 @@ Output JSON:
 
         overlay = map_img.copy()
 
+        # 1. Draw ALL Registered Candidate Goals
+        for g in self.all_goals:
+            gid = g['id']
+            gx, gy = g['x_m'], g['y_m']
+            px = int((gx - min_x) / res)
+            py = int(h - 1 - (gy - min_y) / res)
+            px = max(20, min(w - 20, px))
+            py = max(20, min(h - 20, py))
+
+            is_target = (gid == self.current_goal['id'])
+            if is_target:
+                # Active Target: Red circle + double white outline + Target badge
+                cv2.circle(overlay, (px, py), 12, (0, 0, 230), -1, cv2.LINE_AA)
+                cv2.circle(overlay, (px, py), 15, (255, 255, 255), 2, cv2.LINE_AA)
+                cv2.putText(overlay, f"Goal #{gid} (TARGET)", (px - 50, py - 20), cv2.FONT_HERSHEY_DUPLEX, 0.55, (0, 0, 220), 1, cv2.LINE_AA)
+            else:
+                # Inactive Candidate Goal: Amber circle + white outline + Goal badge
+                cv2.circle(overlay, (px, py), 10, (0, 180, 240), -1, cv2.LINE_AA)
+                cv2.circle(overlay, (px, py), 12, (255, 255, 255), 2, cv2.LINE_AA)
+                cv2.putText(overlay, f"Goal #{gid}", (px - 30, py - 18), cv2.FONT_HERSHEY_DUPLEX, 0.55, (0, 140, 200), 1, cv2.LINE_AA)
+
+        # 2. Draw Trajectory Path Line with Arrow Markers
         pts = []
         for p in self.trajectory_history:
             px = int((p[0] - min_x) / res)
@@ -533,45 +581,152 @@ Output JSON:
         for i in range(1, len(pts)):
             cv2.line(overlay, pts[i-1], pts[i], (255, 120, 0), 4, cv2.LINE_AA)
 
-        for dec in self.vlm_decision_history:
-            dpx = int((dec['pose'][0] - min_x) / res)
-            dpy = int(h - 1 - (dec['pose'][1] - min_y) / res)
-            cv2.circle(overlay, (dpx, dpy), 5, (0, 215, 255), -1, cv2.LINE_AA)
+        # Draw directional arrows along trajectory
+        step_stride = max(1, len(pts) // 6)
+        for i in range(step_stride, len(pts) - 5, step_stride):
+            cv2.arrowedLine(overlay, pts[i-2], pts[i+2], (0, 240, 255), 2, tipLength=0.4)
 
-        start_px = pts[0]
-        goal_px = (int((self.current_goal['x_m'] - min_x) / res), int(h - 1 - (self.current_goal['y_m'] - min_y) / res))
+        # 3. Draw START Pin (Green) & STOP Pin (Purple)
+        start_p = pts[0]
+        end_p = pts[-1]
+        cv2.circle(overlay, start_p, 9, (0, 200, 0), -1, cv2.LINE_AA)
+        cv2.circle(overlay, start_p, 12, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(overlay, "START", (start_p[0] - 25, start_p[1] + 24), cv2.FONT_HERSHEY_DUPLEX, 0.55, (0, 160, 0), 1, cv2.LINE_AA)
 
-        cv2.circle(overlay, start_px, 8, (0, 200, 0), -1, cv2.LINE_AA)
-        cv2.circle(overlay, start_px, 10, (255, 255, 255), 2, cv2.LINE_AA)
-        cv2.putText(overlay, f"START ({self.start_pose['x']:.1f}m)", (start_px[0] - 60, start_px[1] + 25), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 160, 0), 1, cv2.LINE_AA)
+        stop_color = (200, 0, 200) if success else (0, 0, 255)
+        cv2.circle(overlay, end_p, 9, stop_color, -1, cv2.LINE_AA)
+        cv2.circle(overlay, end_p, 11, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(overlay, "STOP", (end_p[0] - 25, end_p[1] + 24), cv2.FONT_HERSHEY_DUPLEX, 0.55, stop_color, 1, cv2.LINE_AA)
 
-        cv2.circle(overlay, goal_px, 9, (0, 0, 240), -1, cv2.LINE_AA)
-        cv2.circle(overlay, goal_px, 11, (255, 255, 255), 2, cv2.LINE_AA)
-        cv2.putText(overlay, f"GOAL #{self.current_goal['id']}: {self.current_goal['name']}", (goal_px[0] - 80, goal_px[1] - 15), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 220), 1, cv2.LINE_AA)
+        # 4. Top Executive Summary Header Banner
+        banner_w = min(w - 30, 680)
+        cv2.rectangle(overlay, (15, 10), (15 + banner_w, 48), (255, 255, 255), -1)
+        cv2.rectangle(overlay, (15, 10), (15 + banner_w, 48), (180, 180, 180), 1)
+        status_txt = "ARRIVED" if success else "TIMEOUT/HALT"
+        header_str = f"[{self.mode.upper()}] Goal #{self.current_goal['id']} | Time: {elapsed:.1f}s | Len: {path_len:.2f}m | Spd: {avg_spd:.2f}m/s | {status_txt}"
+        cv2.putText(overlay, header_str, (25, 35), cv2.FONT_HERSHEY_DUPLEX, 0.50, (30, 30, 30), 1, cv2.LINE_AA)
 
         out_map_path = os.path.join(self.trial_dir, "trial_trajectory_on_2d_map.png")
         cv2.imwrite(out_map_path, overlay)
+        return out_map_path
+
+    def render_benchmark_dashboard(self, path_len, elapsed, avg_spd, success):
+        if not self.trajectory_history:
+            return None
 
         try:
-            fig, ax = plt.subplots(figsize=(10, 4.5), dpi=200)
+            fig, axes = plt.subplots(2, 2, figsize=(13, 8.5), dpi=250)
+            fig.patch.set_facecolor('#f8f9fa')
+
+            # Extract Data
+            times = [p[3] - self.mission_start_time for p in self.trajectory_history]
             xs = [p[0] for p in self.trajectory_history]
             ys = [p[1] for p in self.trajectory_history]
-            ax.plot(xs, ys, color='#0066cc', linewidth=2.5, label='Robot Trajectory (10Hz)')
-            ax.scatter(xs[0], ys[0], color='#00aa00', s=100, zorder=6, label=f"Start ({xs[0]:.1f}m)")
-            ax.scatter(self.current_goal['x_m'], self.current_goal['y_m'], color='#dd0000', s=130, marker='*', zorder=6, label=f"Goal #{self.current_goal['id']}: {self.current_goal['name']}")
-            ax.set_title(f"Trial #{self.current_goal['id']} [{self.mode.upper()}]: Trajectory to {self.current_goal['name']}", fontsize=13, fontweight='bold', pad=10)
-            ax.set_xlabel("Map X (meters)", fontsize=11)
-            ax.set_ylabel("Map Y (meters)", fontsize=11)
-            ax.grid(True, linestyle='--', alpha=0.5)
-            ax.legend(loc='upper right', framealpha=0.95)
-            plt.tight_layout()
-            plot_path = os.path.join(self.trial_dir, "trajectory_plot_bev.png")
-            plt.savefig(plot_path)
-            plt.close()
-        except Exception:
-            pass
+            yaws = [p[2] for p in self.trajectory_history]
 
-        return out_map_path
+            # Read CSV for commanded velocities
+            csv_path = os.path.join(self.trial_dir, "trajectory_raw.csv")
+            vxs, wzs, dists, rel_angles = [], [], [], []
+            if os.path.exists(csv_path):
+                import pandas as pd
+                df = pd.read_csv(csv_path)
+                vxs = df['cmd_vx'].tolist()
+                wzs = df['cmd_wz'].tolist()
+                dists = df['dist_to_goal_m'].tolist()
+                rel_angles = df['rel_heading_deg'].tolist()
+
+            # Panel 1: BEV Trajectory & All Goals
+            ax1 = axes[0, 0]
+            ax1.set_facecolor('#ffffff')
+            ax1.plot(xs, ys, color='#0066cc', linewidth=2.5, label='Robot Path')
+            ax1.scatter(xs[0], ys[0], color='#00aa00', s=100, zorder=5, label='Start')
+            ax1.scatter(xs[-1], ys[-1], color='#990099', s=100, zorder=5, label='Stop')
+            for g in self.all_goals:
+                is_tgt = (g['id'] == self.current_goal['id'])
+                c = '#dd0000' if is_tgt else '#f39c12'
+                m = '*' if is_tgt else 'o'
+                s = 140 if is_tgt else 80
+                lbl = f"Goal #{g['id']} (Target)" if is_tgt else f"Goal #{g['id']}"
+                ax1.scatter(g['x_m'], g['y_m'], color=c, marker=m, s=s, zorder=6, label=lbl)
+            ax1.set_title("1. 2D Bird's-Eye View Trajectory", fontweight='bold')
+            ax1.set_xlabel("Map X (meters)")
+            ax1.set_ylabel("Map Y (meters)")
+            ax1.grid(True, linestyle='--', alpha=0.5)
+            ax1.legend(loc='best', fontsize=8)
+
+            # Panel 2: Commanded Velocities
+            ax2 = axes[0, 1]
+            ax2.set_facecolor('#ffffff')
+            if vxs:
+                t_arr = times[:len(vxs)]
+                ax2.plot(t_arr, vxs, color='#27ae60', linewidth=2.0, label='Linear Velocity vx (m/s)')
+                ax2.plot(t_arr, wzs, color='#e67e22', linewidth=2.0, linestyle='--', label='Angular Yaw Rate wz (rad/s)')
+                ax2.axhline(0, color='gray', linestyle=':', alpha=0.6)
+            ax2.set_title("2. Commanded Velocities Profile", fontweight='bold')
+            ax2.set_xlabel("Elapsed Time (seconds)")
+            ax2.set_ylabel("Velocity")
+            ax2.grid(True, linestyle='--', alpha=0.5)
+            ax2.legend(loc='best', fontsize=8)
+
+            # Panel 3: Distance to Goal Convergence
+            ax3 = axes[1, 0]
+            ax3.set_facecolor('#ffffff')
+            if dists:
+                t_arr = times[:len(dists)]
+                ax3.plot(t_arr, dists, color='#c0392b', linewidth=2.5, label='Distance to Goal (m)')
+                ax3.axhline(self.tolerance_m, color='#2980b9', linestyle='--', label=f'Arrival Threshold ({self.tolerance_m:.2f}m)')
+            ax3.set_title("3. Goal Distance Convergence dt", fontweight='bold')
+            ax3.set_xlabel("Elapsed Time (seconds)")
+            ax3.set_ylabel("Euclidean Distance (m)")
+            ax3.grid(True, linestyle='--', alpha=0.5)
+            ax3.legend(loc='best', fontsize=8)
+
+            # Panel 4: Heading Error & VLM Decision Latencies
+            ax4 = axes[1, 1]
+            ax4.set_facecolor('#ffffff')
+            if rel_angles:
+                t_arr = times[:len(rel_angles)]
+                ax4.plot(t_arr, rel_angles, color='#8e44ad', linewidth=2.0, label='Relative Heading Error (deg)')
+                ax4.axhline(0, color='gray', linestyle=':', alpha=0.6)
+                ax4.axhline(35.0, color='orange', linestyle=':', alpha=0.5, label='In-Place Turn Boundary (±35°)')
+                ax4.axhline(-35.0, color='orange', linestyle=':', alpha=0.5)
+            ax4.set_title("4. Heading Error & Alignment Profile", fontweight='bold')
+            ax4.set_xlabel("Elapsed Time (seconds)")
+            ax4.set_ylabel("Heading Error (deg)")
+            ax4.grid(True, linestyle='--', alpha=0.5)
+            ax4.legend(loc='best', fontsize=8)
+
+            plt.suptitle(f"Unitree Go2 Autonomous Navigation Benchmark [{self.mode.upper()}] - Goal #{self.current_goal['id']}: {self.current_goal['name']}",
+                         fontsize=14, fontweight='bold', y=0.98)
+            plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+            dashboard_path = os.path.join(self.trial_dir, "trial_benchmark_dashboard.png")
+            plt.savefig(dashboard_path)
+            plt.close()
+            return dashboard_path
+        except Exception:
+            return None
+
+    def generate_markdown_summary(self, path_len, elapsed, avg_spd, final_dist, success, reason):
+        md_path = os.path.join(self.trial_dir, "trial_summary.md")
+        mean_lat = float(np.mean(self.vlm_latencies)) if self.vlm_latencies else 0.0
+        with open(md_path, "w") as f:
+            f.write(f"# 🏁 Benchmark Trial Executive Summary\n\n")
+            f.write(f"- **Method / Mode**: `{self.mode.upper()}`\n")
+            f.write(f"- **Target Goal**: Goal #{self.current_goal['id']} (`{self.current_goal['name']}`) at $({self.current_goal['x_m']:+.2f}m, {self.current_goal['y_m']:+.2f}m)$\n")
+            f.write(f"- **Outcome**: {'✅ **SUCCESS (ARRIVED)**' if success else '⚠️ **HALTED** (' + reason + ')'}\n")
+            f.write(f"- **Final Distance Error**: `{final_dist:.3f} m` (Tolerance: `{self.tolerance_m:.2f} m`)\n")
+            f.write(f"- **Total Duration**: `{elapsed:.2f} s`\n")
+            f.write(f"- **Total Trajectory Length**: `{path_len:.2f} m`\n")
+            f.write(f"- **Average Travel Speed**: `{avg_spd:.2f} m/s` (Max limit: `{self.max_vx:.2f} m/s`)\n")
+            f.write(f"- **Pose Sample Count (10Hz)**: `{self.pose_sample_count}`\n")
+            f.write(f"- **VLM Queries Count**: `{self.vlm_query_count}` (Mean Latency: `{mean_lat:.1f} ms`)\n\n")
+            f.write(f"## 📁 Saved Artifacts\n")
+            f.write(f"- `trial_trajectory_on_2d_map.png` : 2D floor plan overlay with all candidate goals.\n")
+            f.write(f"- `trial_benchmark_dashboard.png` : 4-panel publication-grade research dashboard.\n")
+            f.write(f"- `trajectory_raw.csv` : 10Hz raw pose & velocity timeseries data.\n")
+            f.write(f"- `vlm_decisions.jsonl` : Log of every VLM query, prompt, and sub-goal.\n")
+            f.write(f"- `camera_snapshots/` : Annotated decision frames.\n")
 
 def load_goals():
     if not os.path.exists(GOALS_YAML):
@@ -582,7 +737,7 @@ def load_goals():
 
 def print_goal_menu(goals):
     print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-    print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Autonomous Navigation: Persistent Mission Control]{NC}")
+    print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Autonomous Navigation: 5-Episode Benchmark Shell]{NC}")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
     for g in goals:
         photo_info = f"📸 Photo: {g.get('snapshot_image', 'None')}" if 'snapshot_image' in g else ""
@@ -591,15 +746,15 @@ def print_goal_menu(goals):
     print(f"{BOLD}{CYAN}========================================================================{NC}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Persistent Goal-Directed Experiment Runner for Unitree Go2")
+    parser = argparse.ArgumentParser(description="Publication Benchmark Runner for Unitree Go2")
     parser.add_argument('--mode', choices=['ours', 'pixnav'], default='ours', help="Navigation mode (ours = ESCAPE-Nav, pixnav = PointNav)")
     parser.add_argument('--goal', type=str, default=None, help="Initial Goal ID (Optional)")
-    parser.add_argument('--tolerance', type=float, default=0.50, help="Goal arrival tolerance in meters")
+    parser.add_argument('--tolerance', type=float, default=0.35, help="Goal arrival tolerance in meters")
     parser.add_argument('--timeout', type=int, default=120, help="Max run duration in seconds")
     args = parser.parse_args()
 
     rclpy.init()
-    node = PersistentAutonomousNavigator(
+    node = AutonomousNavigator(
         mode=args.mode,
         tolerance_m=args.tolerance,
         timeout_s=args.timeout
@@ -647,8 +802,8 @@ def main():
             print(f"{YELLOW}⚠️ Invalid choice. Please enter a valid Goal ID (1-{len(goals)}).{NC}")
             continue
 
-        # Start Autonomous Navigation
-        node.start_mission(selected_goal)
+        # Start Autonomous Navigation Mission
+        node.start_mission(selected_goal, goals)
 
         # Wait until mission completes (goal reached or timeout or interrupted)
         try:
@@ -661,7 +816,7 @@ def main():
     node.stop_robot()
     node.destroy_node()
     rclpy.shutdown()
-    print(f"\n{GREEN}✅ Navigation Stack Safely Closed. 🐕{NC}")
+    print(f"\n{GREEN}✅ Benchmark Runner Safely Closed. 🐕{NC}")
 
 if __name__ == '__main__':
     main()

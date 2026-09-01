@@ -218,19 +218,30 @@ def render_goals_on_map(goals):
 
     overlay = img.copy()
 
-    for g in goals:
-        gid = g.get('id', 1)
+    colors = [(0, 140, 255), (0, 200, 100), (255, 100, 0), (200, 0, 200), (0, 220, 220)]
+    for idx, g in enumerate(goals):
+        gid = g.get('id', idx + 1)
         name = g.get('name', f'Goal_{gid}')
         gx = g['x_m']
         gy = g['y_m']
         px = int((gx - min_x) / res)
         py = int(h - 1 - (gy - min_y) / res)
-        px = max(20, min(w - 20, px))
-        py = max(20, min(h - 20, py))
+        px = max(25, min(w - 25, px))
+        py = max(25, min(h - 25, py))
 
-        cv2.circle(overlay, (px, py), 10, (0, 0, 240), -1, cv2.LINE_AA)
-        cv2.circle(overlay, (px, py), 12, (255, 255, 255), 2, cv2.LINE_AA)
-        cv2.putText(overlay, f"#{gid}", (px - 8, py - 14), cv2.FONT_HERSHEY_DUPLEX, 0.55, (0, 0, 220), 1, cv2.LINE_AA)
+        col = colors[(gid - 1) % len(colors)]
+        cv2.circle(overlay, (px, py), 11, col, -1, cv2.LINE_AA)
+        cv2.circle(overlay, (px, py), 13, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(overlay, f"#{gid}", (px - 9, py + 4), cv2.FONT_HERSHEY_DUPLEX, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(overlay, f"Goal #{gid}: {name}", (px - 40, py - 18), cv2.FONT_HERSHEY_DUPLEX, 0.52, (20, 20, 20), 2, cv2.LINE_AA)
+        cv2.putText(overlay, f"Goal #{gid}: {name}", (px - 40, py - 18), cv2.FONT_HERSHEY_DUPLEX, 0.52, col, 1, cv2.LINE_AA)
+
+    # Header Banner
+    banner_w = min(w - 30, 650)
+    cv2.rectangle(overlay, (15, 10), (15 + banner_w, 44), (255, 255, 255), -1)
+    cv2.rectangle(overlay, (15, 10), (15 + banner_w, 44), (180, 180, 180), 1)
+    cv2.putText(overlay, f"Candidate Navigation Goals ({len(goals)} registered)", 
+                (25, 32), cv2.FONT_HERSHEY_DUPLEX, 0.52, (30, 30, 30), 1, cv2.LINE_AA)
 
     cv2.imwrite(GOALS_MAP_PNG, overlay)
 
