@@ -69,7 +69,7 @@ VLM_URL = "http://100.96.60.15:8000/v1"
 MODEL_NAME = "qwen3.5-9b-instruct"
 
 class AutonomousNavigator(Node):
-    def __init__(self, mode="ours", max_vx=0.30, max_wz=0.45, tolerance_m=0.35, timeout_s=120):
+    def __init__(self, mode="ours", max_vx=0.50, max_wz=0.50, tolerance_m=0.35, timeout_s=120):
         super().__init__('go2_autonomous_navigator')
         self.mode = mode
         self.max_vx = max_vx
@@ -749,6 +749,8 @@ def main():
     parser = argparse.ArgumentParser(description="Publication Benchmark Runner for Unitree Go2")
     parser.add_argument('--mode', choices=['ours', 'pixnav'], default='ours', help="Navigation mode (ours = ESCAPE-Nav, pixnav = PointNav)")
     parser.add_argument('--goal', type=str, default=None, help="Initial Goal ID (Optional)")
+    parser.add_argument('--max-vx', type=float, default=0.50, help="Maximum linear velocity in m/s (default: 0.50)")
+    parser.add_argument('--max-wz', type=float, default=0.50, help="Maximum angular velocity in rad/s (default: 0.50)")
     parser.add_argument('--tolerance', type=float, default=0.35, help="Goal arrival tolerance in meters")
     parser.add_argument('--timeout', type=int, default=120, help="Max run duration in seconds")
     args = parser.parse_args()
@@ -756,6 +758,8 @@ def main():
     rclpy.init()
     node = AutonomousNavigator(
         mode=args.mode,
+        max_vx=args.max_vx,
+        max_wz=args.max_wz,
         tolerance_m=args.tolerance,
         timeout_s=args.timeout
     )
