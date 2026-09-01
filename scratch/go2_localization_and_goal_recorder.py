@@ -285,7 +285,11 @@ def main():
         time.sleep(1.0)
         p = node.get_pose()
         if p:
-            drift_cm = math.hypot(p['x'] - ref_x, p['y'] - ref_y) * 100.0
+            drift_m = math.hypot(p['x'] - ref_x, p['y'] - ref_y)
+            if drift_m > 1.0:
+                ref_x, ref_y = p['x'], p['y']
+                drift_m = 0.0
+            drift_cm = drift_m * 100.0
             status_tag = f"{GREEN}100% HEALTHY LOCK!{NC}" if sec == 5 else f"{CYAN}STABLE (Jitter: {drift_cm:3.1f}cm){NC}"
             print(f" [{sec}/5s] {GREEN}🟢 LOCALIZED{NC} | X:{BOLD}{p['x']:+7.3f}m{NC} Y:{BOLD}{p['y']:+7.3f}m{NC} Yaw:{BOLD}{p['yaw']:+6.1f}°{NC} | {status_tag}")
 

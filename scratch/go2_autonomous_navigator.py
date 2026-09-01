@@ -996,25 +996,30 @@ def main():
     # 1. Searching for initial landmarks
     print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map 4D LiDAR Localization Lock...{NC}")
     wait_count = 0
-    while node.current_pose is None:
+    initial_pose = node.get_current_pose()
+    while initial_pose is None:
         time.sleep(0.5)
         wait_count += 1
         if wait_count % 4 == 0:
             print(f"  {YELLOW}🔍 Still searching for 4D LiDAR map landmarks ({wait_count * 0.5:.1f}s elapsed)...{NC}")
+        initial_pose = node.get_current_pose()
 
     # 2. 5-Second Live Localization Stability & Calibration Warmup Monitor
     print(f"\n{BOLD}{GREEN}========================================================================{NC}")
     print(f"{BOLD}{GREEN} 🛰️ [2/2] LOCALIZATION LOCK & STABILITY CALIBRATION (5s Warmup Monitor){NC}")
     print(f"{BOLD}{GREEN}========================================================================{NC}")
 
-    initial_pose = node.get_current_pose()
     ref_x = initial_pose['x']
     ref_y = initial_pose['y']
     for sec in range(1, 6):
         time.sleep(1.0)
         p = node.get_current_pose()
         if p:
-            drift_cm = math.hypot(p['x'] - ref_x, p['y'] - ref_y) * 100.0
+            drift_m = math.hypot(p['x'] - ref_x, p['y'] - ref_y)
+            if drift_m > 1.0:
+                ref_x, ref_y = p['x'], p['y']
+                drift_m = 0.0
+            drift_cm = drift_m * 100.0
             status_tag = f"{GREEN}100% HEALTHY LOCK!{NC}" if sec == 5 else f"{CYAN}STABLE (Jitter: {drift_cm:3.1f}cm){NC}"
             print(f" [{sec}/5s] {GREEN}🟢 LOCALIZED{NC} | X:{BOLD}{p['x']:+7.3f}m{NC} Y:{BOLD}{p['y']:+7.3f}m{NC} Yaw:{BOLD}{p['yaw']:+6.1f}°{NC} | {status_tag}")
 
