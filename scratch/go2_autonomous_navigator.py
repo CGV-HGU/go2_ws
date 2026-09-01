@@ -122,6 +122,11 @@ class AutonomousNavigator(Node):
         if self.mode == "pixnav":
             print(f"\n{BOLD}{CYAN}🧠 [PIXNAV INITIALIZATION] Loading Official Checkpoint_A (208MB) on Jetson CUDA...{NC}")
             try:
+                if WORKSPACE_DIR not in sys.path:
+                    sys.path.insert(0, WORKSPACE_DIR)
+                tools_dir = str(Path(WORKSPACE_DIR) / "scratch" / "tools")
+                if tools_dir not in sys.path:
+                    sys.path.insert(0, tools_dir)
                 reference = Path(WORKSPACE_DIR) / ".local-data" / "vlm-s2e" / "runtime" / "vlm-s2e-integration-paper-pin"
                 runtime_site = Path(WORKSPACE_DIR) / ".local-data" / "pixnav_runtime" / "site-packages"
                 if runtime_site.is_dir() and str(runtime_site) not in sys.path:
@@ -130,7 +135,7 @@ class AutonomousNavigator(Node):
                     sys.path.insert(0, str(reference))
 
                 import torch
-                from scratch.tools.pixnav_check import install_python38_settings_shim
+                from pixnav_check import install_python38_settings_shim
                 install_python38_settings_shim(reference)
                 from policy_network import PixelNavPolicy
 
@@ -425,7 +430,7 @@ class AutonomousNavigator(Node):
         if self.mode == "ours":
             threading.Thread(target=self._query_vlm_async, args=(frame, dist, math.degrees(rel_heading), pose), daemon=True).start()
         elif self.mode == "pixnav":
-            self._query_pixnav_policy(frame, dist, math.degrees(rel_heading), pose)
+            threading.Thread(target=self._query_pixnav_policy_async, args=(frame, dist, math.degrees(rel_heading), pose), daemon=True).start()
 
     def _query_vlm_async(self, frame, dist_to_goal, rel_heading_deg, pose):
         if self.vlm_active or not self.is_mission_active:
@@ -526,12 +531,19 @@ Output JSON:
         finally:
             self.vlm_active = False
 
-    def _query_pixnav_policy(self, frame, dist_to_goal, rel_heading_deg, pose):
-        if self.pixnav_model is None or not self.is_mission_active:
+    def _query_pixnav_policy_async(self, frame, dist_to_goal, rel_heading_deg, pose):
+        if getattr(self, 'pixnav_active', False) or not self.is_mission_active:
             return
-
+        self.pixnav_active = True
         t0 = time.perf_counter()
         try:
+            if self.pixnav_model is None:
+                # Fallback: if model failed to load, keep moving forward safely
+                with self.lock:
+                    self.macro_action = "forward"
+                    self.macro_end_time = time.time() + 0.60
+                return
+
             import torch
             self.pixnav_history.append(frame)
             history_list = list(self.pixnav_history)
@@ -615,6 +627,8 @@ Output JSON:
 
         except Exception as e:
             self.get_logger().error(f"PixNav inference error: {e}")
+        finally:
+            self.pixnav_active = False
 
     def control_loop(self):
         if not self.is_mission_active or not self.current_goal:
@@ -978,16 +992,15 @@ def main():
 
     # 1. Searching for initial landmarks
     print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map 4D LiDAR Localization Lock...{NC}")
-    initial_pose = None
-    while initial_pose is None:
-        initial_pose = node.get_current_pose()
-        time.sleep(0.3)
+    while node.current_pose is None:
+        time.sleep(0.2)
 
     # 2. 5-Second Live Localization Stability & Calibration Warmup Monitor
     print(f"\n{BOLD}{GREEN}========================================================================{NC}")
     print(f"{BOLD}{GREEN} 🛰️ [2/2] LOCALIZATION LOCK & STABILITY CALIBRATION (5s Warmup Monitor){NC}")
     print(f"{BOLD}{GREEN}========================================================================{NC}")
 
+    initial_pose = node.get_current_pose()
     ref_x = initial_pose['x']
     ref_y = initial_pose['y']
     for sec in range(1, 6):
