@@ -265,10 +265,14 @@ def main():
 
     # 1. Searching for initial landmarks
     print(f"\n{YELLOW}⏳ [1/2] Searching for 4D LiDAR map landmarks...{NC}")
-    initial_pose = None
-    while initial_pose is None:
-        initial_pose = node.get_pose()
-        time.sleep(0.2)
+    wait_count = 0
+    while node.get_pose() is None:
+        time.sleep(0.5)
+        wait_count += 1
+        if wait_count % 4 == 0:
+            print(f"  {YELLOW}🔍 Still searching for 4D LiDAR map landmarks ({wait_count * 0.5:.1f}s elapsed)...{NC}")
+
+    initial_pose = node.get_pose()
 
     # 2. 5-Second Live Localization Stability & Calibration Warmup
     print(f"\n{BOLD}{GREEN}========================================================================{NC}")

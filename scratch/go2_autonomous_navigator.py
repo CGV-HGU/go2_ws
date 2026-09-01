@@ -995,8 +995,12 @@ def main():
 
     # 1. Searching for initial landmarks
     print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map 4D LiDAR Localization Lock...{NC}")
+    wait_count = 0
     while node.current_pose is None:
-        time.sleep(0.2)
+        time.sleep(0.5)
+        wait_count += 1
+        if wait_count % 4 == 0:
+            print(f"  {YELLOW}🔍 Still searching for 4D LiDAR map landmarks ({wait_count * 0.5:.1f}s elapsed)...{NC}")
 
     # 2. 5-Second Live Localization Stability & Calibration Warmup Monitor
     print(f"\n{BOLD}{GREEN}========================================================================{NC}")
