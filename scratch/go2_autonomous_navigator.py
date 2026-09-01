@@ -35,7 +35,10 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, qos_profile_sensor_data
 from geometry_msgs.msg import PoseWithCovarianceStamped, Twist
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
+try:
+    from cv_bridge import CvBridge
+except Exception:
+    CvBridge = None
 import tf2_ros
 
 try:
@@ -70,7 +73,7 @@ class PersistentAutonomousNavigator(Node):
 
         self.current_pose = None
         self.latest_frame = None
-        self.bridge = CvBridge()
+        self.bridge = CvBridge() if CvBridge else None
         self.lock = threading.Lock()
 
         # Active Mission State
@@ -136,7 +139,12 @@ class PersistentAutonomousNavigator(Node):
 
     def image_callback(self, msg: Image):
         try:
-            cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            if self.bridge:
+                cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            else:
+                cv_img = np.frombuffer(msg.data, dtype=np.uint8).reshape((msg.height, msg.width, -1))
+                if 'rgb' in msg.encoding.lower():
+                    cv_img = cv2.cvtColor(cv_img, cv2.COLOR_RGB2BGR)
             with self.lock:
                 self.latest_frame = cv_img
         except Exception:
