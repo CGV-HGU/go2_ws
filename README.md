@@ -8,6 +8,7 @@
 > • **Network**: 핫스팟 원터치 전환 스크립트 (`./connect_hotspot.sh`)
 > • **Detailed Summary**: [`docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md`](docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md)
 > • **Deep Synthesis & Analysis**: [`docs/experiments/10_pixnav_reality_check_slam_cheat_key_and_escapenav_synthesis.md`](docs/experiments/10_pixnav_reality_check_slam_cheat_key_and_escapenav_synthesis.md)
+> • **Master Bringup Guide**: [`system_bringup/README.md`](system_bringup/README.md) (전체 브링업 및 운영 SOP)
 
 > **저장소 목적**: 사족보행 로봇 **Unitree Go2 EDU**의 자율주행을 제어하고, **ICRA 2026 자율주행 연구(`ESCAPE-Nav: Experience-Shaped Causally Aligned Perception–Execution for Asynchronous VLM Navigation`)**를 실물 로봇 온보드(Jetson Orin NX 16GB)에 최종 통합 배포하기 위한 ROS 2 메인 워크스페이스(`go2_ws`)입니다.
 
