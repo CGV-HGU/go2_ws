@@ -14,6 +14,8 @@
 | 2.6 | [PixNav 구성요소별 위치·필요 이유와 무구동 시험](06_pixnav_components_where_why_and_robot_free_tests.md) | 파일별 역할, 단계별 필요성, quick/evidence/CUDA 실행법 | **Operator guide** |
 | 2.7 | [Robot–Jetson–Docker–Server 4-Tier 구현률](07_4tier_robot_jetson_docker_server_readiness.md) | Tier별 100점 체크리스트, 현재 실측, 다음 Gate와 무구동 시험 | **Authoritative readiness** |
 | 2.8 | [RTAB-Map LIVO fact-first 검증 계획](08_rtabmap_livo_fact_first_validation_plan.md) | 3DoF·2 Hz·5 cm·Type-2 OFF baseline과 실패 원인 분기 | **Active validation plan** |
+| 2.9 | [PixNav 배포, 5-Docker 분석 및 RTAB-Map 준비도 요약](09_pixnav_deployment_and_5docker_readiness_summary.md) | Checkpoint_A 온보드 배포, 마이크로서비스 도커 분석, 7대 토픽 점검 | **Authoritative deployment** |
+| 2.10 | [PixNav 실체 분석, SLAM 치트키 논쟁 및 ESCAPE-Nav 종합](10_pixnav_reality_check_slam_cheat_key_and_escapenav_synthesis.md) | PixNav 기하학/입력 투영, 오도메트리/종료조건 분석, 치트키 vs 비전 비교 | **Authoritative synthesis** |
 | 3 | [4-Tier 실측 감사 및 ICRA 2027 프로토콜](../master_plan/[2026-08-27]_Robot_Jetson_Docker_Server_4Tier_실측감사_및_ICRA2027_실로봇_실험프로토콜.md) | 현재 구현 준비도와 paired campaign 원칙 | **Authoritative audit** |
 | 4 | [RTAB-Map 실물 검증계획](../07_real_robot_sensor_and_autonomy_verification_plan.md) | 센서·map·global loop 세부 기준 | **Active** |
 | 5 | [실로봇 정량 테이블 규격](01_table1_table2_quantitative_experiment_master_protocol.md) | Direct-goal vs Full, 25회/method, main/deployment/safety table | **Schema active / 값 미측정** |
