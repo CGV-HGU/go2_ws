@@ -124,12 +124,12 @@ class UnifiedLocalizationAndGoalNode(Node):
         cov_x = float(msg.pose.covariance[0])
 
         with self.lock:
-            # Protect against false loop closure teleportation (> 2.0m jump in < 1.0s) once stabilized
+            # Protect against false loop closure teleportation once stabilized
             if self.filter_active and self.current_pose is not None:
-                dt = now - self.current_pose.get("time", now)
-                if dt < 1.0:
+                dt = max(0.001, now - self.current_pose.get("time", now))
+                if dt < 5.0:
                     jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
-                    if jump_d > 2.0:
+                    if jump_d > 2.0 and (jump_d / dt) > 1.2:
                         self.jump_warning = f"⚠️ JUMP REJECTED ({jump_d:.1f}m in {dt:.2f}s)"
                         return  # Ignore corrupted relocalization jump!
 
@@ -177,10 +177,10 @@ class UnifiedLocalizationAndGoalNode(Node):
 
             with self.lock:
                 if self.filter_active and self.current_pose is not None:
-                    dt = now - self.current_pose.get("time", now)
-                    if dt < 1.0:
+                    dt = max(0.001, now - self.current_pose.get("time", now))
+                    if dt < 5.0:
                         jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
-                        if jump_d > 2.0:
+                        if jump_d > 2.0 and (jump_d / dt) > 1.2:
                             self.jump_warning = f"⚠️ JUMP REJECTED ({jump_d:.1f}m in {dt:.2f}s)"
                             return  # Ignore corrupted TF jump!
 
@@ -214,10 +214,10 @@ class UnifiedLocalizationAndGoalNode(Node):
             now = time.time()
             with self.lock:
                 if self.filter_active and self.current_pose is not None:
-                    dt = now - self.current_pose.get("time", now)
-                    if dt < 1.0:
+                    dt = max(0.001, now - self.current_pose.get("time", now))
+                    if dt < 5.0:
                         jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
-                        if jump_d > 2.0:
+                        if jump_d > 2.0 and (jump_d / dt) > 1.2:
                             # Jump detected: return safe continuous pose
                             return dict(self.current_pose)
 
@@ -389,8 +389,11 @@ def main():
             pose = node.get_pose()
             if pose:
                 status_color = GREEN if pose['status'] == 'LOCALIZED' else CYAN
+                edge_warn = ""
+                if pose['x'] < -25.20:
+                    edge_warn = f" | {YELLOW}{BOLD}⚠️ [MAP EDGE: Limit is -26.0m! Record Goal Here]{NC}"
                 warn_str = f" | {RED}{BOLD}{node.jump_warning}{NC}" if getattr(node, 'jump_warning', None) else ""
-                pose_str = f"{status_color}{pose['status']}{NC} | X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Z:{pose['z']:+6.3f}m Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC}{warn_str}"
+                pose_str = f"{status_color}{pose['status']}{NC} | X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Z:{pose['z']:+6.3f}m Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC}{edge_warn}{warn_str}"
             else:
                 pose_str = f"{YELLOW}🔍 SEARCHING FOR LANDMARKS...{NC}"
 
