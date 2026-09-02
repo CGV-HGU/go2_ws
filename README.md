@@ -1,9 +1,10 @@
 # ❄️ Unitree Go2 ESCAPE-Nav 자율주행 프로젝트 (antarctica 브랜치)
 
 > **🚀 CURRENT STATUS — PRODUCTION READY (ICRA 2026 Table VIII Real-Robot Benchmark)**
-> • **Baseline**: 공식 Checkpoint_A 208MB PyTorch 신경망 (`./run_pix.sh`, Jetson CUDA 48.9ms)
-> • **Proposed**: Full ESCAPE-Nav (Qwen VLM + Checkpoint_A, `./run_our.sh`)
-> • **Localization**: RTAB-Map 4D LiDAR 3DoF SLAM (2초 즉시 락온 + 5초 안정화 모니터링, `./run_local.sh`)
+> • **Baseline**: 공식 Checkpoint_A 208MB PyTorch 신경망 (`./run_pixnav.sh` / `./run_pix.sh`, Jetson CUDA 48.9ms)
+> • **Proposed**: Full ESCAPE-Nav (Qwen VLM + Checkpoint_A, `./run_escape_nav.sh` / `./run_our.sh`)
+> • **Localization**: RTAB-Map 4D LiDAR 3DoF SLAM & 골 매니저 (`./run_localization.sh` / `./run_local.sh`)
+> • **Mapping**: RTAB-Map 3DoF SLAM 복도 지도 생성 (`./run_mapping.sh` / `./run_map.sh`)
 > • **Network**: 핫스팟 원터치 전환 스크립트 (`./connect_hotspot.sh`)
 > • **Detailed Summary**: [`docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md`](docs/experiments/09_pixnav_deployment_and_5docker_readiness_summary.md)
 
@@ -121,12 +122,12 @@ graph TD
 cd /home/unitree/go2_ws_antarctica
 ```
 
-| 실행 스크립트 (기본 / 직관적 별칭) | 대상 모드 / 용도 | 세부 파이프라인 및 주요 특징 |
+| 실행 스크립트 (캐노니컬 표준 / 단축 별칭) | 대상 모드 / 용도 | 세부 파이프라인 및 주요 특징 |
 |---|---|---|
-| **`./run_pix.sh`**<br>`./run_pixnav.sh` | **[Baseline] Direct PixNav** | • 공식 `pixelnav_A.ckpt` (208MB) Jetson CUDA 48.9ms 온보드 가속<br/>• 5Hz TF 타이머 기반 2초 락온 + 5초 안정화 HUD<br/>• 4D 라이다 50cm 긴급 제동 가드레일 + $0.50\text{ m/s}$ 표준 주행 |
-| **`./run_our.sh`**<br>`./run_escape_nav.sh` | **[Proposed] Full ESCAPE-Nav** | • 외부 GPU 워크스테이션(`100.96.60.15:8000`, `qwen3.5-9b-instruct`) 비동기 VLM 연동<br/>• 전면 카메라 뷰 서브골 시각 서보잉 + Checkpoint_A 정책 협업<br/>• 4D 라이다 충돌 방지 및 대시보드 자동 생성 |
-| **`./run_local.sh`**<br>`./run_goal_recorder.sh`<br>`./run_localization_and_goals.sh` | **위치추정 & 골 매니저 HUD** | • RTAB-Map 3DoF 전역 위치추정 실시간 모니터링<br/>• 엔터키로 현 위치/카메라 사진을 신규 골(Waypoint)로 원터치 등록<br/>• 5초 웜업 안정성 모니터 (지터 0.1cm) |
-| **`./run_map.sh`**<br>`./run_mapping.sh` | **3D/2D 복도 매핑 (SLAM)** | • 4D 라이다 L2 + IMU + 전면 카메라 정합 신규 지도 작성<br/>• `--view` 옵션으로 저장된 DB GUI 시각화 |
+| **`./run_mapping.sh`**<br>`./run_map.sh` | **3D/2D 복도 매핑 (SLAM)** | • 4D 라이다 L2 + IMU + 전면 카메라 정합 신규 지도 작성<br/>• `--view` 옵션으로 저장된 DB GUI 시각화 |
+| **`./run_localization.sh`**<br>`./run_local.sh` | **위치추정 & 골 매니저 HUD** | • RTAB-Map 3DoF 전역 위치추정 실시간 모니터링<br/>• 엔터키로 현 위치/카메라 사진을 신규 골(Waypoint)로 원터치 등록<br/>• 5초 웜업 안정성 모니터 (지터 0.1cm) |
+| **`./run_escape_nav.sh`**<br>`./run_our.sh` | **[Proposed] Full ESCAPE-Nav** | • 외부 GPU 워크스테이션(`100.96.60.15:8000`, `qwen3.5-9b-instruct`) 비동기 VLM 연동<br/>• 전면 카메라 뷰 서브골 시각 서보잉 + Checkpoint_A 정책 협업<br/>• 4D 라이다 충돌 방지 및 대시보드 자동 생성 |
+| **`./run_pixnav.sh`**<br>`./run_pix.sh` | **[Baseline] Direct PixNav** | • 공식 `pixelnav_A.ckpt` (208MB) Jetson CUDA 48.9ms 온보드 가속<br/>• 5Hz TF 타이머 기반 2초 락온 + 5초 안정화 HUD<br/>• 4D 라이다 50cm 긴급 제동 가드레일 + $0.50\text{ m/s}$ 표준 주행 |
 | **`./connect_hotspot.sh`** | **모바일 핫스팟 원터치 전환** | • 복도 이동 시 무선랜(`wlan0`) 우선순위 자동 승격 및 연결 검증<br/>• 유선 랜선 분리 가이드 |
 
 ### 🐳 신규 5개 마이크로서비스 도커 스택 (`compose.robot.yaml`)

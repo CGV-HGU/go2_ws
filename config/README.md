@@ -40,7 +40,7 @@
 
 ## 🎮 신규 골 등록 방법
 
-1. 로봇 전원을 켜고 `./run_local.sh` (또는 `./run_goal_recorder.sh`)를 실행합니다.
+1. 로봇 전원을 켜고 `./run_localization.sh` (또는 `./run_local.sh`)를 실행합니다.
 2. 5초 안정화 후 원하는 위치로 로봇을 이동한 뒤 **엔터(Enter)**를 누르면:
    - 현재 (X, Y, Z, Yaw) 좌표가 즉시 기록됩니다.
    - 전면 카메라 뷰(`goals/goal_XX.jpg`)가 자동 저장됩니다.
