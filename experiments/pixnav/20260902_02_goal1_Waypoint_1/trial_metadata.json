@@ -1,0 +1,43 @@
+{
+  "trial_dir": "/home/unitree/go2_ws_antarctica/experiments/pixnav/20260902_02_goal1_Waypoint_1",
+  "created_at": "2026-09-02T10:33:04.391074",
+  "mode": "pixnav",
+  "goal": {
+    "id": 1,
+    "name": "Waypoint_1",
+    "description": "Candidate goal #1",
+    "x_m": -18.693,
+    "y_m": 26.875,
+    "z_m": 0.308,
+    "yaw_deg": -172.0,
+    "tolerance_m": 0.5
+  },
+  "initial_pose": {
+    "x": -11.974455419852838,
+    "y": 27.360126395599714,
+    "z": 0.31072142588027996,
+    "yaw": -175.13202039726397,
+    "yaw_rad": -3.056630381602124,
+    "time": 1788312762.3892403,
+    "status": "TF_TRACKING"
+  },
+  "metrics": {
+    "success": true,
+    "reason": "ARRIVED",
+    "duration_s": 19.75,
+    "path_length_m": 7.42,
+    "average_speed_mps": 0.376,
+    "final_distance_to_goal_m": 0.086,
+    "total_pose_samples": 197,
+    "total_vlm_queries": 40,
+    "mean_vlm_latency_ms": 80.2
+  },
+  "saved_artifacts": {
+    "trial_trajectory_on_2d_map": "trial_trajectory_on_2d_map.png",
+    "trial_benchmark_dashboard": "trial_benchmark_dashboard.png",
+    "trial_summary_md": "trial_summary.md",
+    "trajectory_raw_csv": "trajectory_raw.csv",
+    "vlm_decisions_jsonl": "vlm_decisions.jsonl",
+    "camera_snapshots_dir": "camera_snapshots/"
+  }
+}
