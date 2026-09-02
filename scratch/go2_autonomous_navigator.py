@@ -43,6 +43,28 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, qos_profile_sensor_data
 from geometry_msgs.msg import PoseWithCovarianceStamped, Twist
 from sensor_msgs.msg import Image, PointCloud2
+
+# Configure stdin and stdout to replace any invalid UTF-8 bytes to prevent UnicodeDecodeError
+try:
+    sys.stdin.reconfigure(encoding='utf-8', errors='replace')
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+
+def safe_input(prompt: str = "") -> str:
+    """Read user input robustly, handling non-UTF-8 bytes and EOF cleanly."""
+    try:
+        return input(prompt).strip()
+    except UnicodeDecodeError:
+        try:
+            sys.stdout.write(prompt)
+            sys.stdout.flush()
+            raw = sys.stdin.buffer.readline()
+            return raw.decode('utf-8', errors='replace').strip()
+        except Exception:
+            return ""
+    except Exception:
+        return ""
 try:
     from cv_bridge import CvBridge
 except Exception:
@@ -377,6 +399,7 @@ class AutonomousNavigator(Node):
 
     def finish_mission(self, success: bool, reason: str, final_dist: float = 0.0):
         self.is_mission_active = False
+        self.last_mission_success = success
         self.stop_robot()
         elapsed = time.time() - self.mission_start_time
 
@@ -724,77 +747,73 @@ Output JSON:
             return
 
         # ---------------------------------------------------------
-        # In-Place Rotation Safety Interlock:
-        # If heading error > 35°, rotate in-place with ZERO forward creep!
-        # Prevents robot from drifting into side walls while turning.
+        # 1. In-Place Rotation Safety Interlock:
+        # If heading error > 25° (PixNav) or > 30° (Ours), rotate in-place with ZERO forward creep!
+        # Prevents wall collisions and enables smooth 180° turnaround at corridor ends.
         # ---------------------------------------------------------
-        if self.mode == "ours":
-            if abs(rel_heading_deg) > 35.0:
-                target_vx = 0.0
-                target_wz = math.copysign(0.38, rel_heading)
-            else:
+        align_threshold_deg = 25.0 if self.mode == "pixnav" else 30.0
+        is_aligning_in_place = abs(rel_heading_deg) > align_threshold_deg
+
+        if is_aligning_in_place:
+            target_vx = 0.0
+            target_wz = math.copysign(0.40, rel_heading)
+        else:
+            if self.mode == "ours":
                 norm_u = (self.subgoal_u - 640) / 640.0
                 target_wz = -norm_u * 0.40 + (rel_heading * 0.20)
                 target_vx = self.max_vx * (1.0 - abs(norm_u) * 0.6)
-        elif self.mode == "pixnav":
-            # True PixNav Checkpoint_A Neural Network Action Execution
-            with self.lock:
-                act = self.macro_action
-                end_t = self.macro_end_time
+            elif self.mode == "pixnav":
+                # True PixNav Checkpoint_A Neural Network Action Execution
+                with self.lock:
+                    act = self.macro_action
+                    end_t = self.macro_end_time
 
-            if now < end_t:
-                if act == "forward":
-                    target_vx = self.max_vx  # 0.50 m/s
-                    target_wz = 0.0
-                elif act == "turn_left":
-                    target_vx = 0.0
-                    target_wz = 0.45  # +30 deg/s
-                elif act == "turn_right":
-                    target_vx = 0.0
-                    target_wz = -0.45  # -30 deg/s
+                if now < end_t:
+                    if act == "forward":
+                        target_vx = self.max_vx  # 0.50 m/s
+                        target_wz = 0.0
+                    elif act == "turn_left":
+                        target_vx = 0.0
+                        target_wz = 0.45  # +30 deg/s
+                    elif act == "turn_right":
+                        target_vx = 0.0
+                        target_wz = -0.45  # -30 deg/s
+                    else:
+                        target_vx = 0.0
+                        target_wz = 0.0
                 else:
                     target_vx = 0.0
                     target_wz = 0.0
-            else:
+
+            # ---------------------------------------------------------
+            # 2. Physical 4D LiDAR Wall / Obstacle Collision Prevention Interlock
+            # (Only applies when robot is actively driving forward down the corridor)
+            # ---------------------------------------------------------
+            with self.lock:
+                fwd_clearance = self.min_forward_dist
+                left_clearance = self.min_left_dist
+                right_clearance = self.min_right_dist
+
+            # Side Wall Repulsion (LiDAR Corridor Centering)
+            if left_clearance < 0.45:
+                # Too close to left wall (< 45cm)! Push away to right
+                target_wz = min(target_wz, -0.28)
+                target_vx = min(target_vx, 0.30)
+            elif right_clearance < 0.45:
+                # Too close to right wall (< 45cm)! Push away to left
+                target_wz = max(target_wz, 0.28)
+                target_vx = min(target_vx, 0.30)
+
+            # Forward Obstacle Interlock
+            if fwd_clearance < 0.50:
+                # Wall or obstacle directly in front within 50cm! Stop forward motion and steer towards open corridor
                 target_vx = 0.0
-                target_wz = 0.0
-
-        # ---------------------------------------------------------
-        # Physical 4D LiDAR Wall / Obstacle Collision Prevention Interlock
-        # ---------------------------------------------------------
-        with self.lock:
-            fwd_clearance = self.min_forward_dist
-            left_clearance = self.min_left_dist
-            right_clearance = self.min_right_dist
-
-        # 1. Heading Alignment Interlock for PixNav:
-        # If robot heading deviates from the goal by > 25°, don't plow forward into side walls!
-        # Force in-place rotation towards the goal.
-        if self.mode == "pixnav":
-            if abs(rel_heading_deg) > 25.0:
-                target_vx = 0.0
-                target_wz = math.copysign(0.40, rel_heading)
-
-        # 2. Side Wall Repulsion (LiDAR Corridor Centering)
-        if left_clearance < 0.45:
-            # Too close to left wall (< 45cm)! Push away to right
-            target_wz = min(target_wz, -0.28)
-            target_vx = min(target_vx, 0.30)
-        elif right_clearance < 0.45:
-            # Too close to right wall (< 45cm)! Push away to left
-            target_wz = max(target_wz, 0.28)
-            target_vx = min(target_vx, 0.30)
-
-        # 3. Forward Obstacle Interlock
-        if fwd_clearance < 0.50:
-            # Wall or obstacle directly in front within 50cm! Stop forward motion and steer towards open corridor
-            target_vx = 0.0
-            avoid_wz = 0.38 if left_clearance > right_clearance else -0.38
-            target_wz = avoid_wz
-        elif fwd_clearance < 0.75:
-            # Approaching obstacle: slow down smoothly
-            speed_factor = max(0.15, (fwd_clearance - 0.50) / 0.25)
-            target_vx *= speed_factor
+                avoid_wz = 0.38 if left_clearance > right_clearance else -0.38
+                target_wz = avoid_wz
+            elif fwd_clearance < 0.75:
+                # Approaching obstacle: slow down smoothly
+                speed_factor = max(0.15, (fwd_clearance - 0.50) / 0.25)
+                target_vx *= speed_factor
 
         self.publish_cmd(target_vx, target_wz)
 
@@ -1038,18 +1057,22 @@ def load_goals():
 
 def print_goal_menu(goals):
     print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-    print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Autonomous Navigation: 5-Episode Benchmark Shell]{NC}")
+    print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Autonomous Navigation: Multi-Goal Benchmark Shell]{NC}")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
     for g in goals:
         photo_info = f"📸 Photo: {g.get('snapshot_image', 'None')}" if 'snapshot_image' in g else ""
         print(f"  [{g['id']}] {g['name']:25s} | X={g['x_m']:+7.2f}m, Y={g['y_m']:+7.2f}m, Yaw={g['yaw_deg']:+6.1f}° | {photo_info}")
-    print(f"  [q] Safe Shutdown & Exit Stack")
+    if len(goals) > 1:
+        seq_str = " -> ".join(f"#{g['id']}" for g in goals)
+        print(f"  [all] Continuous Sequential Patrol ({seq_str})")
+        print(f"  [1,2] Custom Waypoint Sequence (e.g. '1,2' or '2,1')")
+    print(f"  [q]   Safe Shutdown & Exit Stack")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
 
 def main():
     parser = argparse.ArgumentParser(description="Publication Benchmark Runner for Unitree Go2")
     parser.add_argument('--mode', choices=['ours', 'pixnav'], default='ours', help="Navigation mode (ours = ESCAPE-Nav, pixnav = PointNav)")
-    parser.add_argument('--goal', type=str, default=None, help="Initial Goal ID (Optional)")
+    parser.add_argument('--goal', type=str, default=None, help="Initial Goal ID or Sequence (e.g. '1' or '1,2' or 'all')")
     parser.add_argument('--max-vx', type=float, default=0.50, help="Maximum linear velocity in m/s (default: 0.50)")
     parser.add_argument('--max-wz', type=float, default=0.50, help="Maximum angular velocity in rad/s (default: 0.50)")
     parser.add_argument('--tolerance', type=float, default=0.35, help="Goal arrival tolerance in meters")
@@ -1116,33 +1139,63 @@ def main():
             initial_goal_arg = None
         else:
             try:
-                choice = input(f"\n👉 Enter Target Goal [1-{len(goals)}] to navigate (or 'q' to quit): ").strip()
+                choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}], sequence (e.g. '1,2'), 'all', or 'q': ").strip()
             except (KeyboardInterrupt, EOFError):
                 break
 
         if choice.lower() in ('q', 'quit', 'exit'):
             break
 
-        selected_goal = None
-        for g in goals:
-            if str(g['id']) == choice or str(g['name']).lower() == choice.lower():
-                selected_goal = g
-                break
+        # Parse goal selection: single goal, sequence ('1,2' or '1 2'), or 'all'
+        goal_sequence = []
+        if choice.lower() in ('all', 'seq', 'patrol'):
+            goal_sequence = list(goals)
+        elif ',' in choice or ' ' in choice or '->' in choice:
+            tokens = choice.replace('->', ' ').replace(',', ' ').split()
+            for token in tokens:
+                for g in goals:
+                    if str(g['id']) == token or str(g['name']).lower() == token.lower():
+                        if g not in goal_sequence:
+                            goal_sequence.append(g)
+                        break
+        else:
+            for g in goals:
+                if str(g['id']) == choice or str(g['name']).lower() == choice.lower():
+                    goal_sequence.append(g)
+                    break
 
-        if not selected_goal:
-            print(f"{YELLOW}⚠️ Invalid choice. Please enter a valid Goal ID (1-{len(goals)}).{NC}")
+        if not goal_sequence:
+            print(f"{YELLOW}⚠️ Invalid choice. Please enter a valid Goal ID (1-{len(goals)}), '1,2', or 'all'.{NC}")
             continue
 
-        # Start Autonomous Navigation Mission
-        node.start_mission(selected_goal, goals)
+        # Execute goal sequence
+        interrupted = False
+        for seq_idx, selected_goal in enumerate(goal_sequence):
+            if len(goal_sequence) > 1:
+                print(f"\n{BOLD}{CYAN}========================================================================{NC}")
+                print(f"{BOLD}{CYAN} 📍 [WAYPOINT {seq_idx+1}/{len(goal_sequence)}] Navigating to Goal #{selected_goal['id']}: {selected_goal['name']}{NC}")
+                print(f"{BOLD}{CYAN}========================================================================{NC}")
 
-        # Wait until mission completes (goal reached or timeout or interrupted)
-        try:
-            while node.is_mission_active:
-                time.sleep(0.1)
-        except KeyboardInterrupt:
-            print(f"\n{YELLOW}⚠️ Manual interrupt received! Halting robot.{NC}")
-            node.finish_mission(success=False, reason="USER_INTERRUPT", final_dist=0.0)
+            node.start_mission(selected_goal, goals)
+
+            try:
+                while node.is_mission_active:
+                    time.sleep(0.1)
+            except KeyboardInterrupt:
+                print(f"\n{YELLOW}⚠️ Manual interrupt received! Halting robot.{NC}")
+                node.finish_mission(success=False, reason="USER_INTERRUPT", final_dist=0.0)
+                interrupted = True
+                break
+
+            if interrupted or not getattr(node, 'last_mission_success', False):
+                print(f"\n{YELLOW}⚠️ Waypoint sequence halted.{NC}")
+                break
+
+            if seq_idx < len(goal_sequence) - 1:
+                next_g = goal_sequence[seq_idx + 1]
+                print(f"\n{GREEN}{BOLD}🎉 Goal #{selected_goal['id']} reached successfully!{NC}")
+                print(f"{CYAN}⏸️ Pausing 2.5s, then automatically transitioning to Goal #{next_g['id']} ({next_g['name']})...{NC}\n")
+                time.sleep(2.5)
 
     node.stop_robot()
     node.destroy_node()
