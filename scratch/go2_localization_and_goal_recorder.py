@@ -342,21 +342,35 @@ def main():
 
             elif user_input.lower() in ('clear', 'c', 'reset'):
                 if not goals:
-                    print(f"\n{YELLOW}⚠️ Goal list already empty.{NC}\n")
+                    print(f"\n{YELLOW}⚠️ Goal list is already empty.{NC}\n")
                     continue
-                confirm = input(f"\n{RED}⚠️ Are you sure you want to CLEAR ALL {len(goals)} goals? [y/N]: {NC}").strip().lower()
-                if confirm in ('y', 'yes'):
-                    goals = []
-                    save_goals(goals)
-                    print(f"{RED}🧹 All registered goals cleared!{NC}\n")
-                else:
-                    print(f"Cancelled.\n")
+                goals = []
+                save_goals(goals)
+                # Clean up existing goal snapshot files
+                for f in os.listdir(GOALS_DIR):
+                    if f.endswith('.jpg') or f.endswith('.png'):
+                        try:
+                            os.remove(os.path.join(GOALS_DIR, f))
+                        except Exception:
+                            pass
+                print(f"\n{GREEN}{BOLD}🧹 All registered goals and goal photos have been CLEARED!{NC}")
+                print(f"{CYAN}👉 Drive the robot to your desired destination and press [ENTER] to save Goal #1.{NC}\n")
                 continue
 
             # Default: [ENTER] -> Record Goal & Capture Camera Photo
             if not pose:
                 print(f"\n{RED}❌ Error: Cannot record goal - Robot is not localized yet.{NC}\n")
                 continue
+
+            # Double-Enter / Duplicate Protection:
+            # Prevent accidental duplicate goals if the robot hasn't moved from the previous goal (< 0.60m)
+            if goals:
+                last_g = goals[-1]
+                dist_from_last = math.hypot(pose['x'] - last_g['x_m'], pose['y'] - last_g['y_m'])
+                if dist_from_last < 0.60:
+                    print(f"\n{YELLOW}{BOLD}⚠️ [DUPLICATE BLOCKED] Robot is only {dist_from_last:.2f}m away from Goal #{last_g['id']}!{NC}")
+                    print(f"{YELLOW}👉 Please drive the robot with the remote controller to your next waypoint before pressing [ENTER].{NC}\n")
+                    continue
 
             new_id = len(goals) + 1
             default_name = f"Waypoint_{new_id}"
@@ -390,7 +404,8 @@ def main():
             save_goals(goals)
             print(f"\n{GREEN}{BOLD}✅ [GOAL RECORDED] Goal #{new_id} '{default_name}' saved!{NC}")
             print(f"   📍 Pose  : X={goal_entry['x_m']:+.2f}m, Y={goal_entry['y_m']:+.2f}m, Yaw={goal_entry['yaw_deg']:+.1f}°")
-            print(f"   📸 Photo : {photo_status} | Total Goals: {len(goals)}\n")
+            print(f"   📸 Photo : {photo_status} | Total Goals: {len(goals)}")
+            print(f"   🗺️ Map   : Updated 2dmap/2d_goals_map.png\n")
 
         except (KeyboardInterrupt, EOFError):
             break

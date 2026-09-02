@@ -599,8 +599,15 @@ Output JSON:
             goal_bgr = self.goal_bgr_img
             h, w = goal_bgr.shape[:2]
 
-            # 2. Goal Pixel & Mask: Centered in forward corridor vanishing point (640, 360)
-            u, v, radius = 640, 360, 10
+            # 2. Goal Pixel & Mask: Project relative goal bearing into camera view
+            # When facing goal directly (rel_heading_deg=0), u=640 (center).
+            # If goal is to the left (rel_heading_deg > 0), u < 640.
+            # If goal is to the right (rel_heading_deg < 0), u > 640.
+            norm_heading = max(-1.0, min(1.0, rel_heading_deg / 45.0))
+            u = int(640 - norm_heading * 480)
+            u = max(60, min(w - 60, u))
+            v = 360
+            radius = 12
             mask = np.zeros((h, w), dtype=np.uint8)
             cv2.rectangle(
                 mask,
@@ -752,12 +759,33 @@ Output JSON:
                 target_vx = 0.0
                 target_wz = 0.0
 
+        # ---------------------------------------------------------
         # Physical 4D LiDAR Wall / Obstacle Collision Prevention Interlock
+        # ---------------------------------------------------------
         with self.lock:
             fwd_clearance = self.min_forward_dist
             left_clearance = self.min_left_dist
             right_clearance = self.min_right_dist
 
+        # 1. Heading Alignment Interlock for PixNav:
+        # If robot heading deviates from the goal by > 25°, don't plow forward into side walls!
+        # Force in-place rotation towards the goal.
+        if self.mode == "pixnav":
+            if abs(rel_heading_deg) > 25.0:
+                target_vx = 0.0
+                target_wz = math.copysign(0.40, rel_heading)
+
+        # 2. Side Wall Repulsion (LiDAR Corridor Centering)
+        if left_clearance < 0.45:
+            # Too close to left wall (< 45cm)! Push away to right
+            target_wz = min(target_wz, -0.28)
+            target_vx = min(target_vx, 0.30)
+        elif right_clearance < 0.45:
+            # Too close to right wall (< 45cm)! Push away to left
+            target_wz = max(target_wz, 0.28)
+            target_vx = min(target_vx, 0.30)
+
+        # 3. Forward Obstacle Interlock
         if fwd_clearance < 0.50:
             # Wall or obstacle directly in front within 50cm! Stop forward motion and steer towards open corridor
             target_vx = 0.0
