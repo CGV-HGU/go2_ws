@@ -384,14 +384,29 @@ def main():
     print(f"  • {RED}'clear'{NC}          : Clear all registered goals (with confirmation)")
     print(f"  • 'q' / Ctrl+C      : Exit and save all logs\n")
 
+    map_bounds = None
+    if os.path.exists(MAP_METADATA_JSON):
+        try:
+            with open(MAP_METADATA_JSON, 'r') as mf:
+                map_bounds = json.load(mf)
+        except Exception:
+            pass
+
     while True:
         try:
             pose = node.get_pose()
             if pose:
                 status_color = GREEN if pose['status'] == 'LOCALIZED' else CYAN
                 edge_warn = ""
-                if pose['x'] < -25.20:
-                    edge_warn = f" | {YELLOW}{BOLD}⚠️ [MAP EDGE: Limit is -26.0m! Record Goal Here]{NC}"
+                if map_bounds:
+                    dist_to_edge = min(
+                        abs(pose['x'] - map_bounds.get('min_x', -999)),
+                        abs(pose['x'] - map_bounds.get('max_x', 999)),
+                        abs(pose['y'] - map_bounds.get('min_y', -999)),
+                        abs(pose['y'] - map_bounds.get('max_y', 999))
+                    )
+                    if dist_to_edge < 1.0:
+                        edge_warn = f" | {YELLOW}{BOLD}⚠️ [MAP EDGE: {dist_to_edge:.1f}m to boundary! Record Goal Here]{NC}"
                 warn_str = f" | {RED}{BOLD}{node.jump_warning}{NC}" if getattr(node, 'jump_warning', None) else ""
                 pose_str = f"{status_color}{pose['status']}{NC} | X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Z:{pose['z']:+6.3f}m Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC}{edge_warn}{warn_str}"
             else:
