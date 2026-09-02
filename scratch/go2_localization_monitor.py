@@ -64,7 +64,13 @@ class LocalizationMonitor(Node):
             depth=10
         )
 
-        # 1. Subscribe to RTAB-Map Localization Pose
+        # 1. Subscribe to RTAB-Map Localization Pose (support both root and namespaced topics)
+        self.create_subscription(
+            PoseWithCovarianceStamped,
+            '/localization_pose',
+            self.pose_callback,
+            qos
+        )
         self.create_subscription(
             PoseWithCovarianceStamped,
             '/rtabmap/localization_pose',

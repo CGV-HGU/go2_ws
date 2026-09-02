@@ -188,6 +188,7 @@ class AutonomousNavigator(Node):
 
         # ROS 2 Subscriptions
         qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT, history=HistoryPolicy.KEEP_LAST, depth=10)
+        self.create_subscription(PoseWithCovarianceStamped, '/localization_pose', self.pose_callback, qos)
         self.create_subscription(PoseWithCovarianceStamped, '/rtabmap/localization_pose', self.pose_callback, qos)
         self.create_subscription(Image, '/camera/front/image_raw', self.image_callback, qos_profile_sensor_data)
         self.create_subscription(PointCloud2, '/livo/cloud', self.cloud_callback, qos_profile_sensor_data)

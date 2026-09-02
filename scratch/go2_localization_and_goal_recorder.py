@@ -102,6 +102,7 @@ class UnifiedLocalizationAndGoalNode(Node):
         self.start_time = time.time()
 
         qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT, history=HistoryPolicy.KEEP_LAST, depth=10)
+        self.create_subscription(PoseWithCovarianceStamped, '/localization_pose', self.pose_callback, qos)
         self.create_subscription(PoseWithCovarianceStamped, '/rtabmap/localization_pose', self.pose_callback, qos)
         self.create_subscription(Image, '/camera/front/image_raw', self.image_callback, qos_profile_sensor_data)
 
@@ -475,6 +476,11 @@ def main():
             if not pose:
                 print(f"\n{RED}❌ Error: Cannot record goal - Robot is not localized yet.{NC}\n")
                 continue
+
+            # Out-of-bounds corridor boundary guard:
+            if pose['y'] < -25.0 or pose['y'] > -4.0:
+                print(f"\n{YELLOW}{BOLD}⚠️ [OUT-OF-BOUNDS WARNING] Captured pose Y={pose['y']:.2f}m is outside expected corridor bounds (-22m ~ -7m)!{NC}")
+                print(f"{YELLOW}👉 Please verify that RTAB-Map has not mislocalized (false relocalization).{NC}\n")
 
             # Double-Enter / Duplicate Protection:
             # Prevent accidental duplicate goals if the robot hasn't moved from the previous goal (< 0.60m)
