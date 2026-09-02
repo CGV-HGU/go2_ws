@@ -109,6 +109,7 @@ class UnifiedLocalizationAndGoalNode(Node):
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
         self.create_timer(0.2, self.tf_fallback_timer)
         self.jump_warning = None
+        self.filter_active = False
 
     def pose_callback(self, msg: PoseWithCovarianceStamped):
         pos = msg.pose.pose.position
@@ -123,8 +124,8 @@ class UnifiedLocalizationAndGoalNode(Node):
         cov_x = float(msg.pose.covariance[0])
 
         with self.lock:
-            # Protect against false loop closure teleportation (> 2.0m jump in < 1.0s)
-            if self.current_pose is not None:
+            # Protect against false loop closure teleportation (> 2.0m jump in < 1.0s) once stabilized
+            if self.filter_active and self.current_pose is not None:
                 dt = now - self.current_pose.get("time", now)
                 if dt < 1.0:
                     jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
@@ -175,7 +176,7 @@ class UnifiedLocalizationAndGoalNode(Node):
             iso_ts = datetime.now().isoformat()
 
             with self.lock:
-                if self.current_pose is not None:
+                if self.filter_active and self.current_pose is not None:
                     dt = now - self.current_pose.get("time", now)
                     if dt < 1.0:
                         jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
@@ -212,7 +213,7 @@ class UnifiedLocalizationAndGoalNode(Node):
             yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
             now = time.time()
             with self.lock:
-                if self.current_pose is not None:
+                if self.filter_active and self.current_pose is not None:
                     dt = now - self.current_pose.get("time", now)
                     if dt < 1.0:
                         jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
@@ -373,6 +374,8 @@ def main():
     print(f"{BOLD}{GREEN}========================================================================{NC}")
     print(f"{BOLD}{GREEN} 🎯 [LOCALIZATION FULLY STABILIZED] Ready for Goal Recording!{NC}")
     print(f"{BOLD}{GREEN}========================================================================{NC}\n")
+
+    node.filter_active = True
 
     print(f"{BOLD}🎯 Key Controls:{NC}")
     print(f"  • {GREEN}[ENTER]{NC}          : Automatically record current pose & camera photo as Goal #{len(goals)+1}")
