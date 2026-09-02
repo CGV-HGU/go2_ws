@@ -1,0 +1,19 @@
+goals:
+- id: 1
+  name: Waypoint_1_Corridor_End
+  description: Corridor destination waypoint
+  x_m: -18.68
+  y_m: 27.05
+  z_m: 0.31
+  yaw_deg: -177.3
+  tolerance_m: 0.5
+  snapshot_image: config/goals/goal_01_Waypoint_1.jpg
+- id: 2
+  name: Waypoint_2_Start_Line
+  description: Corridor start line waypoint
+  x_m: -12.37
+  y_m: 27.44
+  z_m: 0.31
+  yaw_deg: -170.7
+  tolerance_m: 0.5
+  snapshot_image: config/goals/goal_02_Waypoint_2.jpg

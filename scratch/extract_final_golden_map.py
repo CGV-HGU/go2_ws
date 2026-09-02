@@ -198,6 +198,22 @@ def process_database(db_path, output_dir="2dmap"):
     Image.fromarray(grid).save(os.path.join(output_dir, "0833.pgm"))
     print(f"Saved 2D Grid Map: {map_path}")
 
+    # Save 2d_metadata.json
+    import json
+    meta = {
+        "min_x": round(float(min_gx), 3),
+        "max_x": round(float(max_gx), 3),
+        "min_y": round(float(min_gy), 3),
+        "max_y": round(float(max_gy), 3),
+        "resolution": float(res),
+        "width": int(map_w),
+        "height": int(map_h)
+    }
+    meta_path = os.path.join(output_dir, "2d_metadata.json")
+    with open(meta_path, "w") as f:
+        json.dump(meta, f, indent=2)
+    print(f"Saved 2D Metadata: {meta_path}")
+
     # Trajectory Overlay
     grid_color = cv2.cvtColor(grid, cv2.COLOR_GRAY2BGR)
     t_pts = []
