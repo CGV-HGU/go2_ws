@@ -353,8 +353,14 @@ def main():
                             os.remove(os.path.join(GOALS_DIR, f))
                         except Exception:
                             pass
-                print(f"\n{GREEN}{BOLD}🧹 All registered goals and goal photos have been CLEARED!{NC}")
-                print(f"{CYAN}👉 Drive the robot to your desired destination and press [ENTER] to save Goal #1.{NC}\n")
+                # Flush stdin buffer to throw away any residual Enter keystroke!
+                try:
+                    import termios
+                    termios.tcflush(sys.stdin, termios.TCIFLUSH)
+                except Exception:
+                    pass
+                print(f"\n{GREEN}{BOLD}🧹 All registered goals and goal photos have been CLEARED! (Total: 0){NC}")
+                print(f"{CYAN}{BOLD}👉 Drive the robot with the remote controller to your destination, then press [ENTER] to save Goal #1.{NC}\n")
                 continue
 
             # Default: [ENTER] -> Record Goal & Capture Camera Photo
