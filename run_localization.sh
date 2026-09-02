@@ -74,7 +74,7 @@ fi
 
 if [ ! -f "$RTABMAP_DB" ]; then
     echo "❌ Error: Target map database not found: $RTABMAP_DB" >&2
-    echo "   Please record a map first using ./run_map.sh" >&2
+    echo "   Please record a map first using ./run_mapping.sh" >&2
     exit 1
 fi
 

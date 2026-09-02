@@ -1,1 +1,0 @@
-run_escape_nav.sh

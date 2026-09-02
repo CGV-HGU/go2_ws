@@ -74,14 +74,14 @@ cd /home/unitree/go2_ws_antarctica
 
 ## 3. 🎯 4대 표준 실행 스크립트 요약
 
-루트 디렉토리에 직관적인 정식 표준 명칭과 하위 호환용 단축 별칭(Symlink)이 완비되어 있습니다:
+루트 디렉토리에 직관적인 정식 표준 명칭으로 통합되어 있습니다:
 
-| 표준 실행 명령어 | 단축 별칭 | 대상 모드 및 세부 역할 |
-|---|---|---|
-| **`./run_mapping.sh`** | `./run_map.sh` | **3D/2D 복도 매핑 (SLAM)**<br>• L2 라이다 + IMU + 전면 카메라 정합 신규 지도 생성<br>• `--view` 옵션으로 3D GUI 뷰어 확인 가능 |
-| **`./run_localization.sh`** | `./run_local.sh` | **위치추정 HUD & 골 매니저**<br>• RTAB-Map 3DoF 전역 위치추정 실시간 모니터링<br>• 엔터([ENTER]) 입력 시 현 위치 + 카메라 사진을 신규 골로 자동 등록 |
-| **`./run_escape_nav.sh`** | `./run_our.sh` | **[Proposed] Full ESCAPE-Nav 주행**<br>• Qwen-VL 비동기 시각 서보잉 + Checkpoint_A 정책 협업<br>• 4D 라이다 능동 장애물 회피 및 벤치마크 대시보드 자동 저장 |
-| **`./run_pixnav.sh`** | `./run_pix.sh` | **[Baseline] Direct PixNav 주행**<br>• 온보드 CUDA Checkpoint_A 가속 주행 (~54ms 추론)<br>• 라이다 긴급 제동 가드레일 적용 |
+| 표준 실행 명령어 | 대상 모드 및 세부 역할 |
+|---|---|
+| **`./run_mapping.sh`** | **3D/2D 복도 매핑 (SLAM)**<br>• L2 라이다 + IMU + 전면 카메라 정합 신규 지도 생성<br>• `--view` 옵션으로 3D GUI 뷰어 확인 가능 |
+| **`./run_localization.sh`** | **위치추정 HUD & 골 매니저**<br>• RTAB-Map 3DoF 전역 위치추정 실시간 모니터링<br>• 엔터([ENTER]) 입력 시 현 위치 + 카메라 사진을 신규 골로 자동 등록 |
+| **`./run_escape_nav.sh`** | **[Proposed] Full ESCAPE-Nav 주행**<br>• Qwen-VL 비동기 시각 서보잉 + Checkpoint_A 정책 협업<br>• 4D 라이다 능동 장애물 회피 및 벤치마크 대시보드 자동 저장 |
+| **`./run_pixnav.sh`** | **[Baseline] Direct PixNav 주행**<br>• 온보드 CUDA Checkpoint_A 가속 주행 (~54ms 추론)<br>• 라이다 긴급 제동 가드레일 적용 |
 
 ---
 
