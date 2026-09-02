@@ -1,0 +1,44 @@
+{
+  "trial_dir": "/home/unitree/go2_ws_antarctica/experiments/pixnav/20260902_05_goal2_Waypoint_2",
+  "created_at": "2026-09-02T11:11:05.499356",
+  "mode": "pixnav",
+  "goal": {
+    "id": 2,
+    "name": "Waypoint_2",
+    "description": "Candidate destination #2 recorded via interactive HUD",
+    "x_m": -18.68,
+    "y_m": 27.05,
+    "z_m": 0.31,
+    "yaw_deg": -177.3,
+    "tolerance_m": 0.5,
+    "snapshot_image": "config/goals/goal_02_Waypoint_2.jpg"
+  },
+  "initial_pose": {
+    "x": -12.371485275833734,
+    "y": 27.4180651308785,
+    "z": 0.30850152053022667,
+    "yaw": -172.61557226593553,
+    "yaw_rad": -3.0127100762547836,
+    "time": 1788315040.6173189,
+    "status": "TF_TRACKING"
+  },
+  "metrics": {
+    "success": false,
+    "reason": "USER_INTERRUPT",
+    "duration_s": 23.3,
+    "path_length_m": 6.03,
+    "average_speed_mps": 0.259,
+    "final_distance_to_goal_m": 0.0,
+    "total_pose_samples": 233,
+    "total_vlm_queries": 47,
+    "mean_vlm_latency_ms": 78.1
+  },
+  "saved_artifacts": {
+    "trial_trajectory_on_2d_map": "trial_trajectory_on_2d_map.png",
+    "trial_benchmark_dashboard": "trial_benchmark_dashboard.png",
+    "trial_summary_md": "trial_summary.md",
+    "trajectory_raw_csv": "trajectory_raw.csv",
+    "vlm_decisions_jsonl": "vlm_decisions.jsonl",
+    "camera_snapshots_dir": "camera_snapshots/"
+  }
+}

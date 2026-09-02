@@ -3,21 +3,22 @@
     {
       "id": 1,
       "name": "Waypoint_1",
-      "description": "Candidate goal #1",
-      "x_m": -18.693,
-      "y_m": 26.875,
-      "z_m": 0.308,
-      "yaw_deg": -172.0,
-      "tolerance_m": 0.5
+      "description": "Candidate destination #1 recorded via interactive HUD",
+      "x_m": -12.37,
+      "y_m": 27.44,
+      "z_m": 0.31,
+      "yaw_deg": -170.7,
+      "tolerance_m": 0.5,
+      "snapshot_image": "config/goals/goal_01_Waypoint_1.jpg"
     },
     {
       "id": 2,
       "name": "Waypoint_2",
       "description": "Candidate destination #2 recorded via interactive HUD",
-      "x_m": -12.0,
-      "y_m": 27.38,
+      "x_m": -18.68,
+      "y_m": 27.05,
       "z_m": 0.31,
-      "yaw_deg": -173.5,
+      "yaw_deg": -177.3,
       "tolerance_m": 0.5,
       "snapshot_image": "config/goals/goal_02_Waypoint_2.jpg"
     }
