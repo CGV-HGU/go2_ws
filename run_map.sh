@@ -133,6 +133,8 @@ cleanup() {
     if [ -f "/home/unitree/.ros/rtabmap.db" ]; then
         cp -f "/home/unitree/.ros/rtabmap.db" "$RUN_DIR/rtabmap.db"
         echo "💾 Saved Map DB: $RUN_DIR/rtabmap.db ($(du -h "$RUN_DIR/rtabmap.db" | cut -f1))"
+        echo "🗺️ Auto-extracting 2D Golden Map..."
+        python3 "$WORKSPACE_DIR/scratch/extract_final_golden_map.py" "/home/unitree/.ros/rtabmap.db" "$WORKSPACE_DIR/2dmap" || true
     fi
     echo "✅ Mapping stack terminated safely. 🗺️"
     exit "$exit_status"
@@ -180,7 +182,7 @@ ros2 launch rtabmap_launch go2_rtabmap.launch.py \
     $GUI_ARG \
     reg_force_3dof:=true \
     icp_force_4dof:=false \
-    loop_closure_identity_guess:=true \
+    loop_closure_identity_guess:=false \
     proximity_by_space:=false >/dev/null 2>&1 &
 PIDS+=($!)
 sleep 3
