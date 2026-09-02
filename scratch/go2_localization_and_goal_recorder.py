@@ -38,12 +38,34 @@ RED = '\033[0;31m'
 BOLD = '\033[1m'
 NC = '\033[0m'
 
+# Configure stdin and stdout to replace any invalid UTF-8 bytes to prevent UnicodeDecodeError
+try:
+    sys.stdin.reconfigure(encoding='utf-8', errors='replace')
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+
 GOALS_YAML = "/home/unitree/go2_ws_antarctica/config/navigation_goals.yaml"
 GOALS_JSON = "/home/unitree/go2_ws_antarctica/config/navigation_goals.json"
 GOALS_DIR = "/home/unitree/go2_ws_antarctica/config/goals"
 MAP_2D_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d.png"
 MAP_METADATA_JSON = "/home/unitree/go2_ws_antarctica/2dmap/2d_metadata.json"
 GOALS_MAP_PNG = "/home/unitree/go2_ws_antarctica/2dmap/2d_goals_map.png"
+
+def safe_input(prompt: str = "") -> str:
+    """Read user input robustly, handling non-UTF-8 bytes and EOF cleanly."""
+    try:
+        return input(prompt).strip()
+    except UnicodeDecodeError:
+        try:
+            sys.stdout.write(prompt)
+            sys.stdout.flush()
+            raw = sys.stdin.buffer.readline()
+            return raw.decode('utf-8', errors='replace').strip()
+        except Exception:
+            return ""
+    except Exception:
+        return ""
 
 class UnifiedLocalizationAndGoalNode(Node):
     def __init__(self):
@@ -129,41 +151,68 @@ class UnifiedLocalizationAndGoalNode(Node):
             pass
 
     def tf_fallback_timer(self):
+        try:
+            t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
+            pos = t.transform.translation
+            ori = t.transform.rotation
+            siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
+            cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
+            yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
+
+            now = time.time()
+            elapsed = now - self.start_time
+            iso_ts = datetime.now().isoformat()
+
+            with self.lock:
+                status = "LOCALIZED" if self.is_localized else "TF_TRACKING"
+                self.current_pose = {
+                    "x": float(pos.x),
+                    "y": float(pos.y),
+                    "z": float(pos.z),
+                    "yaw": float(yaw_deg),
+                    "cov_x": 0.0,
+                    "time": now,
+                    "status": status
+                }
+                self.pose_count += 1
+
+            self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},0.0,{status}\n")
+            self.csv_file.flush()
+        except Exception:
+            pass
+
+    def get_latest_live_pose(self):
+        # Direct zero-latency TF lookup
+        try:
+            t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
+            pos = t.transform.translation
+            ori = t.transform.rotation
+            siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
+            cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
+            yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
+            now = time.time()
+            with self.lock:
+                status = "LOCALIZED" if self.is_localized else "TF_TRACKING"
+                self.current_pose = {
+                    "x": float(pos.x),
+                    "y": float(pos.y),
+                    "z": float(pos.z),
+                    "yaw": float(yaw_deg),
+                    "cov_x": 0.0,
+                    "time": now,
+                    "status": status
+                }
+                return dict(self.current_pose)
+        except Exception:
+            pass
+
         with self.lock:
-            last_t = self.current_pose['time'] if self.current_pose else 0.0
-        if time.time() - last_t > 1.0:
-            try:
-                t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
-                pos = t.transform.translation
-                ori = t.transform.rotation
-                siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
-                cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
-                yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
-
-                now = time.time()
-                elapsed = now - self.start_time
-                iso_ts = datetime.now().isoformat()
-
-                with self.lock:
-                    self.current_pose = {
-                        "x": float(pos.x),
-                        "y": float(pos.y),
-                        "z": float(pos.z),
-                        "yaw": float(yaw_deg),
-                        "cov_x": 0.0,
-                        "time": now,
-                        "status": "TF_TRACKING"
-                    }
-                    self.pose_count += 1
-
-                self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},0.0,TF_TRACKING\n")
-                self.csv_file.flush()
-            except Exception:
-                pass
+            if self.current_pose:
+                return dict(self.current_pose)
+            return None
 
     def get_pose(self):
-        with self.lock:
-            return self.current_pose
+        return self.get_latest_live_pose()
 
     def get_snapshot(self):
         with self.lock:
@@ -314,7 +363,7 @@ def main():
                 pose_str = f"{YELLOW}🔍 SEARCHING FOR LANDMARKS...{NC}"
 
             prompt_msg = f"\r[Live: {pose_str}]\n👉 Press [ENTER] to save Goal #{len(goals)+1} (or type command): "
-            user_input = input(prompt_msg).strip()
+            user_input = safe_input(prompt_msg)
 
             if user_input.lower() in ('q', 'quit', 'exit'):
                 break
@@ -331,7 +380,7 @@ def main():
                     print(f"\n{YELLOW}⚠️ No goals to delete.{NC}\n")
                     continue
                 last_g = goals[-1]
-                confirm = input(f"\n{YELLOW}⚠️ Delete last goal [#{last_g['id']}: {last_g['name']}]? [y/N]: {NC}").strip().lower()
+                confirm = safe_input(f"\n{YELLOW}⚠️ Delete last goal [#{last_g['id']}: {last_g['name']}]? [y/N]: {NC}").lower()
                 if confirm in ('y', 'yes', ''):
                     removed = goals.pop()
                     save_goals(goals)
@@ -341,18 +390,17 @@ def main():
                 continue
 
             elif user_input.lower() in ('clear', 'c', 'reset'):
-                if not goals:
-                    print(f"\n{YELLOW}⚠️ Goal list is already empty.{NC}\n")
-                    continue
                 goals = []
                 save_goals(goals)
                 # Clean up existing goal snapshot files
-                for f in os.listdir(GOALS_DIR):
-                    if f.endswith('.jpg') or f.endswith('.png'):
-                        try:
-                            os.remove(os.path.join(GOALS_DIR, f))
-                        except Exception:
-                            pass
+                if os.path.exists(GOALS_DIR):
+                    for f in os.listdir(GOALS_DIR):
+                        if f.endswith('.jpg') or f.endswith('.png'):
+                            try:
+                                os.remove(os.path.join(GOALS_DIR, f))
+                            except Exception:
+                                pass
+                render_goals_on_map(goals)
                 # Flush stdin buffer to throw away any residual Enter keystroke!
                 try:
                     import termios
@@ -364,6 +412,16 @@ def main():
                 continue
 
             # Default: [ENTER] -> Record Goal & Capture Camera Photo
+            # 🔥 CRITICAL: Re-query the live RTAB-Map TF transform at destination right NOW!
+            print(f"\n{CYAN}📡 Capturing real-time localization pose from RTAB-Map at destination...{NC}")
+            pose = node.get_latest_live_pose()
+            if not pose:
+                for _ in range(15):
+                    time.sleep(0.1)
+                    pose = node.get_latest_live_pose()
+                    if pose:
+                        break
+
             if not pose:
                 print(f"\n{RED}❌ Error: Cannot record goal - Robot is not localized yet.{NC}\n")
                 continue
