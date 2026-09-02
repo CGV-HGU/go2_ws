@@ -1,19 +1,19 @@
 goals:
 - id: 1
-  name: Waypoint_1
-  description: 'Candidate destination #1 recorded via interactive HUD'
-  x_m: -12.34
-  y_m: -30.12
+  name: Waypoint_1_Mid
+  description: 'Corridor destination waypoint #1'
+  x_m: -7.01
+  y_m: -20.25
   z_m: 0.31
-  yaw_deg: -111.9
+  yaw_deg: -90.0
   tolerance_m: 0.5
   snapshot_image: config/goals/goal_01_Waypoint_1.jpg
 - id: 2
-  name: Waypoint_2
-  description: 'Candidate destination #2 recorded via interactive HUD'
-  x_m: -14.48
-  y_m: -32.68
+  name: Waypoint_2_Far
+  description: 'Corridor destination waypoint #2'
+  x_m: -7.01
+  y_m: -11.19
   z_m: 0.31
-  yaw_deg: -108.5
+  yaw_deg: -90.0
   tolerance_m: 0.5
   snapshot_image: config/goals/goal_02_Waypoint_2.jpg

@@ -7,6 +7,7 @@
 
 | 우선순위 | 문서 | 용도 |
 |---:|---|---|
+| **⭐ 0** | [`시스템 브링업 & 운영 SOP 마스터 허브`](../system_bringup/README.md) | **부팅·핫스팟·5단계 SOP·PixNav 분석 및 트러블슈팅 총괄** |
 | 1 | [`실로봇 전체 E2E 마스터 계획`](./experiments/00_real_robot_end_to_end_master_test_plan.md) | 센서→3DoF map→localization→PixelNav/S2E→4-Tier→안전→pilot→논문 campaign |
 | 2 | [`00_CURRENT_STATUS_AND_NEXT_STEPS.md`](./00_CURRENT_STATUS_AND_NEXT_STEPS.md) | RTAB-Map 최신 실측과 바로 다음 작업 |
 | 3 | [`4-Tier 최신 구현률`](./experiments/07_4tier_robot_jetson_docker_server_readiness.md) | Tier별 준비도, Gate 완료도, 8월 30일 Jetson-only 검증 |
@@ -31,13 +32,11 @@
 ```bash
 cd /home/unitree/go2_ws_antarctica
 
-./run_map.sh       # Jetson desktop GUI
-./map_headless.sh  # SSH/tmux
-./run_map.sh --view
-./analyze_map_run.py  # latest run의 read-only DB/log 자동 판정
+./run_mapping.sh          # 3D/2D 복도 매핑 (헤드리스 기본)
+./run_mapping.sh --view   # Jetson 데스크톱 GUI 점군 뷰어 동시 활성화
 ```
 
-사용자용 mapping 진입점은 위 두 파일뿐이다. 둘 다 planar 3DoF, 3D L2/ICP, RGB 장소 후보와 LiDAR ICP global-loop 검증을 사용하고 recorder·Docker/VLM·motor path는 시작하지 않는다.
+사용자용 최신 브링업 및 자율주행 파이프라인은 [`../system_bringup/README.md`](../system_bringup/README.md)에 집대성되어 있습니다.
 
 ## 폴더 지도
 
