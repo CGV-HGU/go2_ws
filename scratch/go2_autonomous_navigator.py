@@ -582,20 +582,25 @@ Output JSON:
             self.pixnav_history.append(frame)
             history_list = list(self.pixnav_history)
 
-            # 1. Goal Image: Use registered goal photo if present, otherwise initial start frame
+            # 1. Goal Image: Use registered goal photo if present, corridor reference, or frame
             if self.goal_bgr_img is None:
                 if 'snapshot_image' in self.current_goal and self.current_goal['snapshot_image']:
                     full_p = os.path.join(WORKSPACE_DIR, self.current_goal['snapshot_image'])
                     if os.path.exists(full_p):
                         self.goal_bgr_img = cv2.imread(full_p)
                 if self.goal_bgr_img is None:
-                    self.goal_bgr_img = frame.copy()
+                    # Check for any available corridor goal photo as visual reference
+                    corridor_ref = os.path.join(WORKSPACE_DIR, "config/goals/goal_02_Waypoint_2.jpg")
+                    if os.path.exists(corridor_ref):
+                        self.goal_bgr_img = cv2.imread(corridor_ref)
+                    else:
+                        self.goal_bgr_img = frame.copy()
 
             goal_bgr = self.goal_bgr_img
             h, w = goal_bgr.shape[:2]
 
-            # 2. Goal Pixel & Mask: Centered in forward view (640, 500)
-            u, v, radius = 640, 500, 8
+            # 2. Goal Pixel & Mask: Centered in forward corridor vanishing point (640, 360)
+            u, v, radius = 640, 360, 10
             mask = np.zeros((h, w), dtype=np.uint8)
             cv2.rectangle(
                 mask,
@@ -613,6 +618,16 @@ Output JSON:
             # 4. Checkpoint_A CUDA Inference
             with torch.inference_mode():
                 action_logits, distance_pred, goal_pred = self.pixnav_model(goal_mask, goal_image, history)
+
+                # Real-Robot Constraint: Go2 camera has a fixed rigid mount
+                # Mask out vertical actions (look_up=4, look_down=5) matching ROBOT_NAV_ALLOWED_POLICY_ACTIONS
+                action_logits[0, :, 4] = -1e9
+                action_logits[0, :, 5] = -1e9
+
+                # Suppress premature stop while en route to goal
+                if dist_to_goal > self.tolerance_m:
+                    action_logits[0, :, 0] = -1e9
+
                 probs = torch.softmax(action_logits[0], dim=-1).cpu().numpy()
 
             latency_ms = (time.perf_counter() - t0) * 1000.0
@@ -623,14 +638,14 @@ Output JSON:
             self.vlm_query_count += 1
             q_idx = self.vlm_query_count
 
-            # 5. Set Macro-Action Execution Duration
+            # 5. Set Macro-Action Execution Duration (with buffer for seamless trotting)
             now = time.time()
             with self.lock:
                 self.macro_action = pred_action
                 if pred_action == "forward":
-                    self.macro_end_time = now + 0.50  # 0.25m step at 0.5m/s
+                    self.macro_end_time = now + 0.65  # Smooth 0.5s interval bridge (no stutter)
                 elif pred_action in ("turn_left", "turn_right"):
-                    self.macro_end_time = now + 1.05  # 30 deg rotation at 0.5 rad/s
+                    self.macro_end_time = now + 1.10  # 30 deg rotation at 0.45 rad/s
                 else:
                     self.macro_end_time = now
 
