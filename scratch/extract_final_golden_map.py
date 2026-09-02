@@ -128,9 +128,10 @@ def process_database(db_path, output_dir="2dmap"):
 
     c.execute("SELECT id, obstacle_cells, ground_cells FROM Data WHERE obstacle_cells IS NOT NULL OR ground_cells IS NOT NULL")
     for nid, obs_blob, gnd_blob in c.fetchall():
-        if nid not in opt_poses:
+        pose_tuple = opt_poses.get(nid) or raw_poses.get(nid)
+        if pose_tuple is None:
             continue
-        tx, ty, tz, yaw = opt_poses[nid]
+        tx, ty, tz, yaw = pose_tuple
         cos_yaw = math.cos(yaw)
         sin_yaw = math.sin(yaw)
 
@@ -186,11 +187,13 @@ def process_database(db_path, output_dir="2dmap"):
     o_py = np.clip((map_h - 1 - ((all_obs[:, 1] - min_gy) / res).astype(int)), 0, map_h - 1)
     np.add.at(hit_count, (o_py, o_px), 1)
 
-    # Morphological Close for Solid Continuous Walls
+    # Morphological Close & Dilation for Solid Continuous Architectural Walls
     raw_obs = (hit_count >= 1).astype(np.uint8)
-    close_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    close_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
     closed_obs = cv2.morphologyEx(raw_obs, cv2.MORPH_CLOSE, close_kernel)
-    grid[closed_obs > 0] = 0
+    dilate_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    thick_obs = cv2.dilate(closed_obs, dilate_kernel, iterations=1)
+    grid[thick_obs > 0] = 0
 
     # Save 2d.png and 0833.pgm
     map_path = os.path.join(output_dir, "2d.png")
