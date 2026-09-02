@@ -133,6 +133,10 @@ class AutonomousNavigator(Node):
         self.min_left_dist = 1.0
         self.min_right_dist = 1.0
 
+        # Jump Rejection Guard
+        self.filter_active = False
+        self.jump_warning = None
+
         # True PixNav Checkpoint_A Neural Network State
         self.pixnav_model = None
         self.pixnav_history = deque(maxlen=8)
@@ -216,14 +220,23 @@ class AutonomousNavigator(Node):
                 yaw_rad = math.atan2(siny_cosp, cosy_cosp)
                 yaw_deg = math.degrees(yaw_rad)
 
+                now = time.time()
                 with self.lock:
+                    if self.filter_active and self.current_pose is not None:
+                        dt = max(0.001, now - self.current_pose.get("time", now))
+                        if dt < 5.0:
+                            jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
+                            if jump_d > 2.0 and (jump_d / dt) > 1.2:
+                                self.jump_warning = f"⚠️ JUMP REJECTED ({jump_d:.1f}m in {dt:.2f}s)"
+                                return
+
                     self.current_pose = {
                         "x": float(pos.x),
                         "y": float(pos.y),
                         "z": float(pos.z),
                         "yaw": float(yaw_deg),
                         "yaw_rad": float(yaw_rad),
-                        "time": time.time(),
+                        "time": now,
                         "status": "TF_TRACKING"
                     }
             except Exception:
@@ -264,14 +277,26 @@ class AutonomousNavigator(Node):
         cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
         yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
 
+        now = time.time()
         with self.lock:
+            # Protect against false loop closure teleportation (> 2.0m jump) once active
+            if self.filter_active and self.current_pose is not None:
+                dt = max(0.001, now - self.current_pose.get("time", now))
+                if dt < 5.0:
+                    jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
+                    if jump_d > 2.0 and (jump_d / dt) > 1.2:
+                        self.jump_warning = f"⚠️ JUMP REJECTED ({jump_d:.1f}m in {dt:.2f}s)"
+                        return  # Ignore corrupted relocalization jump!
+
+            self.jump_warning = None
             self.current_pose = {
                 "x": float(pos.x),
                 "y": float(pos.y),
                 "z": float(pos.z),
                 "yaw": float(yaw_deg),
                 "yaw_rad": math.atan2(siny_cosp, cosy_cosp),
-                "time": time.time()
+                "time": now,
+                "status": "LOCALIZED"
             }
 
     def image_callback(self, msg: Image):
@@ -298,18 +323,26 @@ class AutonomousNavigator(Node):
             siny_cosp = 2.0 * (ori.w * ori.z + ori.x * ori.y)
             cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
             yaw_rad = math.atan2(siny_cosp, cosy_cosp)
-            res = {
-                "x": float(pos.x),
-                "y": float(pos.y),
-                "z": float(pos.z),
-                "yaw": float(math.degrees(yaw_rad)),
-                "yaw_rad": float(yaw_rad),
-                "time": time.time(),
-                "status": "TF_TRACKING"
-            }
+            now = time.time()
             with self.lock:
+                if self.filter_active and self.current_pose is not None:
+                    dt = max(0.001, now - self.current_pose.get("time", now))
+                    if dt < 5.0:
+                        jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
+                        if jump_d > 2.0 and (jump_d / dt) > 1.2:
+                            return dict(self.current_pose)
+
+                res = {
+                    "x": float(pos.x),
+                    "y": float(pos.y),
+                    "z": float(pos.z),
+                    "yaw": float(math.degrees(yaw_rad)),
+                    "yaw_rad": float(yaw_rad),
+                    "time": now,
+                    "status": "TF_TRACKING"
+                }
                 self.current_pose = res
-            return res
+                return res
         except Exception:
             return None
 
@@ -338,6 +371,7 @@ class AutonomousNavigator(Node):
         self.publish_cmd(0.0, 0.0)
 
     def start_mission(self, goal_entry, all_goals):
+        self.filter_active = True
         self.current_goal = goal_entry
         self.all_goals = all_goals
         self.start_pose = self.get_current_pose()
@@ -1123,6 +1157,8 @@ def main():
     print(f"{BOLD}{GREEN}========================================================================{NC}")
     print(f"{BOLD}{GREEN} 🎯 [LOCALIZATION FULLY STABILIZED] Ready for Mission Execution!{NC}")
     print(f"{BOLD}{GREEN}========================================================================{NC}\n")
+
+    node.filter_active = True
 
     initial_goal_arg = args.goal
 
