@@ -108,6 +108,7 @@ class UnifiedLocalizationAndGoalNode(Node):
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
         self.create_timer(0.2, self.tf_fallback_timer)
+        self.jump_warning = None
 
     def pose_callback(self, msg: PoseWithCovarianceStamped):
         pos = msg.pose.pose.position
@@ -122,6 +123,16 @@ class UnifiedLocalizationAndGoalNode(Node):
         cov_x = float(msg.pose.covariance[0])
 
         with self.lock:
+            # Protect against false loop closure teleportation (> 2.0m jump in < 1.0s)
+            if self.current_pose is not None:
+                dt = now - self.current_pose.get("time", now)
+                if dt < 1.0:
+                    jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
+                    if jump_d > 2.0:
+                        self.jump_warning = f"⚠️ JUMP REJECTED ({jump_d:.1f}m in {dt:.2f}s)"
+                        return  # Ignore corrupted relocalization jump!
+
+            self.jump_warning = None
             self.current_pose = {
                 "x": float(pos.x),
                 "y": float(pos.y),
@@ -164,6 +175,15 @@ class UnifiedLocalizationAndGoalNode(Node):
             iso_ts = datetime.now().isoformat()
 
             with self.lock:
+                if self.current_pose is not None:
+                    dt = now - self.current_pose.get("time", now)
+                    if dt < 1.0:
+                        jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
+                        if jump_d > 2.0:
+                            self.jump_warning = f"⚠️ JUMP REJECTED ({jump_d:.1f}m in {dt:.2f}s)"
+                            return  # Ignore corrupted TF jump!
+
+                self.jump_warning = None
                 status = "LOCALIZED" if self.is_localized else "TF_TRACKING"
                 self.current_pose = {
                     "x": float(pos.x),
@@ -182,7 +202,7 @@ class UnifiedLocalizationAndGoalNode(Node):
             pass
 
     def get_latest_live_pose(self):
-        # Direct zero-latency TF lookup
+        # Direct zero-latency TF lookup with jump protection
         try:
             t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
             pos = t.transform.translation
@@ -192,6 +212,14 @@ class UnifiedLocalizationAndGoalNode(Node):
             yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
             now = time.time()
             with self.lock:
+                if self.current_pose is not None:
+                    dt = now - self.current_pose.get("time", now)
+                    if dt < 1.0:
+                        jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
+                        if jump_d > 2.0:
+                            # Jump detected: return safe continuous pose
+                            return dict(self.current_pose)
+
                 status = "LOCALIZED" if self.is_localized else "TF_TRACKING"
                 self.current_pose = {
                     "x": float(pos.x),
@@ -358,7 +386,8 @@ def main():
             pose = node.get_pose()
             if pose:
                 status_color = GREEN if pose['status'] == 'LOCALIZED' else CYAN
-                pose_str = f"{status_color}{pose['status']}{NC} | X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Z:{pose['z']:+6.3f}m Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC}"
+                warn_str = f" | {RED}{BOLD}{node.jump_warning}{NC}" if getattr(node, 'jump_warning', None) else ""
+                pose_str = f"{status_color}{pose['status']}{NC} | X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Z:{pose['z']:+6.3f}m Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC}{warn_str}"
             else:
                 pose_str = f"{YELLOW}🔍 SEARCHING FOR LANDMARKS...{NC}"
 
