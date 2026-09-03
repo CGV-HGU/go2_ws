@@ -36,23 +36,18 @@ find_display() {
     return 1
 }
 
+EXPLICIT_GUI=false
+EXPLICIT_HEADLESS=false
+
 # Parse Arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --gui)
-            if find_display; then
-                GUI_MODE=true
-                GUI_ARG="rtabmap_viz:=true"
-            else
-                echo "⚠️ No X display found. Falling back to headless mapping over SSH." >&2
-                GUI_MODE=false
-                GUI_ARG="rtabmap_viz:=false"
-            fi
+            EXPLICIT_GUI=true
             shift
             ;;
         --headless)
-            GUI_MODE=false
-            GUI_ARG="rtabmap_viz:=false"
+            EXPLICIT_HEADLESS=true
             shift
             ;;
         --view)
@@ -86,10 +81,26 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [ "$GUI_MODE" = false ] && [ "$GUI_ARG" = "rtabmap_viz:=false" ]; then
+if [ "$EXPLICIT_GUI" = true ]; then
     if find_display; then
         GUI_MODE=true
         GUI_ARG="rtabmap_viz:=true"
+    else
+        echo "⚠️ No X display found. Falling back to headless mapping over SSH." >&2
+        GUI_MODE=false
+        GUI_ARG="rtabmap_viz:=false"
+    fi
+elif [ "$EXPLICIT_HEADLESS" = true ]; then
+    GUI_MODE=false
+    GUI_ARG="rtabmap_viz:=false"
+else
+    # Default for robot operation: headless over SSH unless DISPLAY is explicitly forwarded
+    if [ -n "${DISPLAY:-}" ] && xdpyinfo >/dev/null 2>&1; then
+        GUI_MODE=true
+        GUI_ARG="rtabmap_viz:=true"
+    else
+        GUI_MODE=false
+        GUI_ARG="rtabmap_viz:=false"
     fi
 fi
 
