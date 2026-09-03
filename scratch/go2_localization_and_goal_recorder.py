@@ -119,6 +119,12 @@ class UnifiedLocalizationAndGoalNode(Node):
         cosy_cosp = 1.0 - 2.0 * (ori.y * ori.y + ori.z * ori.z)
         yaw_deg = math.degrees(math.atan2(siny_cosp, cosy_cosp))
 
+        # Ignore exact duplicate timestamps if both topics publish simultaneously
+        stamp_key = (msg.header.stamp.sec, msg.header.stamp.nanosec)
+        if getattr(self, '_last_sub_stamp', None) == stamp_key:
+            return
+        self._last_sub_stamp = stamp_key
+
         now = time.time()
         elapsed = now - self.start_time
         iso_ts = datetime.now().isoformat()
