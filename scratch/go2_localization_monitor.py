@@ -101,6 +101,12 @@ class LocalizationMonitor(Node):
         yaw_rad = math.atan2(siny_cosp, cosy_cosp)
         yaw_deg = math.degrees(yaw_rad)
 
+        # Ignore exact duplicate timestamps if both topics publish simultaneously
+        stamp_key = (msg.header.stamp.sec, msg.header.stamp.nanosec)
+        if getattr(self, '_last_sub_stamp', None) == stamp_key:
+            return
+        self._last_sub_stamp = stamp_key
+
         now = time.time()
         elapsed = now - self.start_time
         iso_ts = datetime.now().isoformat()
