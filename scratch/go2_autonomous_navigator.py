@@ -1446,12 +1446,21 @@ def main():
         if initial_goal_arg is not None:
             choice = str(initial_goal_arg).strip()
             initial_goal_arg = None
-            print(f"\n🚀 [AUTO-LAUNCH] Target Goal #{choice} selected by default. Launching mission immediately...", flush=True)
+            print(f"\n📍 Pre-selected Goal on CLI: Goal #{choice}")
+            try:
+                confirm = safe_input(f"👉 Press [ENTER] to execute mission to Goal #{choice}, enter another Goal [1-{len(goals)}], or 'q' to abort: ").strip()
+                if confirm.lower() in ('q', 'quit', 'exit'):
+                    break
+                if confirm:
+                    choice = confirm
+            except (KeyboardInterrupt, EOFError):
+                break
         else:
             try:
-                choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}] (Press [ENTER] for Goal #1), 'all', or 'q': ").strip()
+                choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}] to start mission, 'all', or 'q' to quit: ").strip()
                 if not choice:
-                    choice = "1"
+                    print(f"\n{YELLOW}⚠️ Robot remains completely stationary. Please enter a Goal ID (e.g. 1, 2) to navigate.{NC}")
+                    continue
             except (KeyboardInterrupt, EOFError):
                 break
 

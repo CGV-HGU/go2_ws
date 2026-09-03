@@ -60,10 +60,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [ -z "$GOAL_ARG" ]; then
-    GOAL_ARG="1"
-fi
-
 if [ -n "$START_GOAL" ] && [ -z "$INITIAL_POSE" ]; then
     INITIAL_POSE=$(python3 -c "import sys; sys.path.insert(0, '$WORKSPACE_DIR/scratch'); import map_relocalizer, math; wps = {w['id']: w for w in map_relocalizer.load_registered_waypoints()}; w = wps.get($START_GOAL); sys.stdout.write(f\"{w['x_m']} {w['y_m']} {w['z_m']} 0 0 {math.radians(w['yaw_deg']):.4f}\" if w else '')" 2>/dev/null || true)
 fi
@@ -171,4 +167,8 @@ if ! kill -0 "$RTABMAP_PID" 2>/dev/null; then
 fi
 
 # 5. Launch Goal-Directed PixNav Controller
-python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode pixnav --goal "$GOAL_ARG" "${PASSTHROUGH_ARGS[@]}"
+if [ -n "$GOAL_ARG" ]; then
+    python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode pixnav --goal "$GOAL_ARG" "${PASSTHROUGH_ARGS[@]}"
+else
+    python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode pixnav "${PASSTHROUGH_ARGS[@]}"
+fi
