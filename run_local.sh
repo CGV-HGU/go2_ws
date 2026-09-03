@@ -1,0 +1,1 @@
+/home/unitree/go2_ws_antarctica/local.sh

@@ -110,11 +110,27 @@ class LocalizationMonitor(Node):
         now = time.time()
         elapsed = now - self.start_time
         iso_ts = datetime.now().isoformat()
+        wall_hhmmss = datetime.now().strftime("%H:%M:%S")
         self.last_pose_time = now
         self.pose_count += 1
         self.is_localized = True
 
         cov_x = float(msg.pose.covariance[0])
+
+        # Jump Detection Warning
+        jump_warn = ""
+        if hasattr(self, '_last_pos') and self._last_pos is not None:
+            dt = max(0.001, now - self._last_pos['time'])
+            if dt < 5.0:
+                jump_d = math.hypot(pos.x - self._last_pos['x'], pos.y - self._last_pos['y'])
+                if jump_d > 2.0 and (jump_d / dt) > 1.2:
+                    jump_warn = f" | {RED}{BOLD}⚠️ [JUMP DETECTED: {jump_d:.1f}m in {dt:.2f}s!]{NC}"
+        self._last_pos = {'x': pos.x, 'y': pos.y, 'time': now}
+
+        # Boundary check
+        boundary_warn = ""
+        if pos.y < -26.5 or pos.y > -3.5:
+            boundary_warn = f" | {YELLOW}{BOLD}⚠️ [OUT-OF-BOUNDS Y={pos.y:+.2f}m]{NC}"
 
         # Write to CSV
         self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},{cov_x:.6f},LOCALIZED\n")
@@ -125,12 +141,14 @@ class LocalizationMonitor(Node):
         self.log_file.flush()
 
         print(
+            f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] "
             f"{GREEN}🎯 [LOCALIZED #{self.pose_count:04d}]{NC} "
             f"{BOLD}X:{NC} {pos.x:+7.3f}m | "
             f"{BOLD}Y:{NC} {pos.y:+7.3f}m | "
             f"{BOLD}Z:{NC} {pos.z:+6.3f}m | "
             f"{BOLD}Yaw:{NC} {yaw_deg:+6.1f}° "
             f"{CYAN}(cov_x={cov_x:.4f}){NC}"
+            f"{jump_warn}{boundary_warn}"
         )
 
     def status_timer_callback(self):
@@ -139,6 +157,7 @@ class LocalizationMonitor(Node):
         if now - self.last_pose_time > 2.0:
             iso_ts = datetime.now().isoformat()
             elapsed = now - self.start_time
+            wall_hhmmss = datetime.now().strftime("%H:%M:%S")
             try:
                 t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
                 pos = t.transform.translation
@@ -151,6 +170,7 @@ class LocalizationMonitor(Node):
                 self.csv_file.flush()
 
                 print(
+                    f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] "
                     f"{CYAN}📍 [TF TRACKING]{NC} "
                     f"X: {pos.x:+7.3f}m | "
                     f"Y: {pos.y:+7.3f}m | "
@@ -158,7 +178,7 @@ class LocalizationMonitor(Node):
                     f"Yaw: {yaw_deg:+6.1f}°"
                 )
             except Exception:
-                print(f"{YELLOW}🔍 [SEARCHING] Looking for visual/LiDAR landmarks in map... (Stand in known corridor area){NC}")
+                print(f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] {YELLOW}🔍 [SEARCHING] Looking for visual/LiDAR landmarks in map... (Stand in known corridor area){NC}")
 
     def destroy_node(self):
         if hasattr(self, 'csv_file') and not self.csv_file.closed:
