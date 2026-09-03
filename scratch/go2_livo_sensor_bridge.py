@@ -100,6 +100,7 @@ class Go2LivoSensorBridge(Node):
         )
 
         self.odom_pub = self.create_publisher(Odometry, '/livo/odom', sensor_qos)
+        self.rtabmap_odom_pub = self.create_publisher(Odometry, '/rtabmap/odom', sensor_qos)
         self.imu_pub = self.create_publisher(Imu, '/livo/imu', sensor_qos)
         self.cloud_pub = self.create_publisher(PointCloud2, '/livo/cloud', cloud_qos)
         self.tf_broadcaster = TransformBroadcaster(self)
@@ -159,6 +160,7 @@ class Go2LivoSensorBridge(Node):
         out.header.frame_id = 'odom'
         out.child_frame_id = 'base_link'
         self.odom_pub.publish(out)
+        self.rtabmap_odom_pub.publish(out)
 
         transform = TransformStamped()
         transform.header = copy.deepcopy(out.header)

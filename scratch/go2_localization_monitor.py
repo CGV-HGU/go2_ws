@@ -18,9 +18,10 @@ import time
 from datetime import datetime
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 from geometry_msgs.msg import PoseWithCovarianceStamped
-from nav_msgs.msg import Odometry
+from nav_msgs.msg import Odometry, OccupancyGrid
+from rtabmap_msgs.msg import Info
 from sensor_msgs.msg import Image, PointCloud2
 import tf2_ros
 
@@ -97,11 +98,24 @@ class LocalizationMonitor(Node):
         self.create_subscription(PointCloud2, '/livo/cloud', self._cloud_callback, qos_best_effort)
         self.create_subscription(Odometry, '/livo/odom', self._odom_callback, qos_best_effort)
 
-        # 3. TF Buffer to monitor map -> base_link
+        # 3. Teammate Compatibility Relays (/map -> /rtabmap/map, /info -> /rtabmap/info)
+        map_qos = QoSProfile(
+            history=HistoryPolicy.KEEP_LAST,
+            depth=1,
+            reliability=ReliabilityPolicy.RELIABLE,
+            durability=DurabilityPolicy.TRANSIENT_LOCAL
+        )
+        self.rtabmap_map_pub = self.create_publisher(OccupancyGrid, '/rtabmap/map', map_qos)
+        self.create_subscription(OccupancyGrid, '/map', self._map_relay_cb, qos_best_effort)
+
+        self.rtabmap_info_pub = self.create_publisher(Info, '/rtabmap/info', qos_best_effort)
+        self.create_subscription(Info, '/info', self._info_relay_cb, qos_best_effort)
+
+        # 4. TF Buffer to monitor map -> base_link
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
-        # 4. 2Hz Periodic Status & Safety Timer (Prints HUD & logs unlocalized states)
+        # 5. 2Hz Periodic Status & Safety Timer (Prints HUD & logs unlocalized states)
         self.create_timer(0.5, self.status_timer_callback)
 
         print(f"\n{BOLD}{CYAN}========================================================================{NC}")
@@ -122,6 +136,12 @@ class LocalizationMonitor(Node):
     def _odom_callback(self, msg: Odometry):
         self.odom_count += 1
         self.last_odom_time = time.time()
+
+    def _map_relay_cb(self, msg: OccupancyGrid):
+        self.rtabmap_map_pub.publish(msg)
+
+    def _info_relay_cb(self, msg: Info):
+        self.rtabmap_info_pub.publish(msg)
 
     def sensor_health_status(self, now: float) -> str:
         cam_ok = (now - self.last_cam_time) < 1.5
