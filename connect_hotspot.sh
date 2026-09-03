@@ -15,6 +15,7 @@ BOLD='\033[1m'
 NC='\033[0m'
 
 HOTSPOT_SSID="민석의 S25 Ultra"
+HOTSPOT_PASS="01040219544"
 
 echo -e "\n${BOLD}${CYAN}========================================================================${NC}"
 echo -e "${BOLD}${CYAN} 📱 [Unitree Go2 Mobile Hotspot & Wireless LAN Switcher]${NC}"
@@ -23,7 +24,7 @@ echo -e "${BOLD}${CYAN}=========================================================
 # 1. Enable Wi-Fi Radio
 echo -e "${YELLOW}📡 [1/3] Enabling Wi-Fi radio on wlan0...${NC}"
 nmcli radio wifi on 2>/dev/null || true
-sudo ip link set wlan0 up 2>/dev/null || true
+sudo -n ip link set wlan0 up 2>/dev/null || true
 sleep 1
 
 # 2. Rescan Wi-Fi networks
@@ -37,7 +38,7 @@ if nmcli con up "${HOTSPOT_SSID}" 2>/dev/null; then
     echo -e "${GREEN}✅ Successfully activated profile '${HOTSPOT_SSID}'!${NC}"
 else
     echo -e "${YELLOW}⚠️ Profile activation retry: Connecting directly to Wi-Fi SSID...${NC}"
-    nmcli dev wifi connect "${HOTSPOT_SSID}" 2>/dev/null || {
+    nmcli dev wifi connect "${HOTSPOT_SSID}" password "${HOTSPOT_PASS}" || {
         echo -e "${RED}❌ Failed to connect to '${HOTSPOT_SSID}'. Please verify phone hotspot is turned ON!${NC}"
         exit 1
     }

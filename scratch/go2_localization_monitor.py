@@ -13,6 +13,7 @@ Features:
 
 import os
 import sys
+import json
 import math
 import time
 from datetime import datetime
@@ -56,6 +57,22 @@ class LocalizationMonitor(Node):
 
         # DB file size check
         self.db_size_mb = (os.path.getsize(RTABMAP_DB) / (1024 * 1024)) if os.path.exists(RTABMAP_DB) else 0.0
+
+        # Dynamically load active map bounding box from 2dmap/2d_metadata.json
+        self.map_bounds = None
+        meta_path = os.path.expanduser("~/go2_ws_antarctica/2dmap/2d_metadata.json")
+        if os.path.exists(meta_path):
+            try:
+                with open(meta_path, "r") as f:
+                    meta = json.load(f)
+                    self.map_bounds = {
+                        "min_x": float(meta["min_x"]) - 3.0,
+                        "max_x": float(meta["max_x"]) + 3.0,
+                        "min_y": float(meta["min_y"]) - 3.0,
+                        "max_y": float(meta["max_y"]) + 3.0,
+                    }
+            except Exception:
+                pass
 
         # Automatic Log Directory Setup
         if not log_dir:
@@ -192,10 +209,11 @@ class LocalizationMonitor(Node):
                     jump_warn = f" | {RED}{BOLD}⚠️ [JUMP DETECTED: {jump_d:.1f}m in {dt:.2f}s!]{NC}"
         self._last_pos = {'x': pos.x, 'y': pos.y, 'time': now}
 
-        # Boundary check
+        # Boundary check (dynamically checked against active map bounds)
         boundary_warn = ""
-        if pos.y < -26.5 or pos.y > -3.5:
-            boundary_warn = f" | {YELLOW}{BOLD}⚠️ [OUT-OF-BOUNDS Y={pos.y:+.2f}m]{NC}"
+        if self.map_bounds is not None:
+            if pos.x < self.map_bounds["min_x"] or pos.x > self.map_bounds["max_x"] or pos.y < self.map_bounds["min_y"] or pos.y > self.map_bounds["max_y"]:
+                boundary_warn = f" | {YELLOW}{BOLD}⚠️ [OUT-OF-BOUNDS ({pos.x:+.1f}, {pos.y:+.1f})]{NC}"
 
         # Write continuous LOCALIZED entry to CSV
         self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},{cov_x:.6f},LOCALIZED,0.0\n")
