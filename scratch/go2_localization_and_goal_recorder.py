@@ -141,6 +141,8 @@ class UnifiedLocalizationAndGoalNode(Node):
                         return  # Ignore corrupted relocalization jump!
 
             self.jump_warning = None
+            is_reliable = cov_x <= 0.02
+            status = "LOCALIZED" if is_reliable else "ODOM_DRIFT"
             self.current_pose = {
                 "x": float(pos.x),
                 "y": float(pos.y),
@@ -148,12 +150,12 @@ class UnifiedLocalizationAndGoalNode(Node):
                 "yaw": float(yaw_deg),
                 "cov_x": cov_x,
                 "time": now,
-                "status": "LOCALIZED"
+                "status": status
             }
             self.pose_count += 1
-            self.is_localized = True
+            self.is_localized = is_reliable
 
-        self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},{cov_x:.6f},LOCALIZED\n")
+        self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{pos.x:.4f},{pos.y:.4f},{pos.z:.4f},{yaw_deg:.2f},{cov_x:.6f},{status}\n")
         self.csv_file.flush()
 
     def image_callback(self, msg: Image):
@@ -403,17 +405,30 @@ def main():
         try:
             pose = node.get_pose()
             if pose:
-                status_color = GREEN if pose['status'] == 'LOCALIZED' else CYAN
+                if pose['status'] == 'LOCALIZED':
+                    status_color = GREEN
+                elif pose['status'] == 'ODOM_DRIFT':
+                    status_color = YELLOW
+                else:
+                    status_color = CYAN
                 edge_warn = ""
                 if map_bounds:
-                    dist_to_edge = min(
-                        abs(pose['x'] - map_bounds.get('min_x', -999)),
-                        abs(pose['x'] - map_bounds.get('max_x', 999)),
-                        abs(pose['y'] - map_bounds.get('min_y', -999)),
-                        abs(pose['y'] - map_bounds.get('max_y', 999))
-                    )
-                    if dist_to_edge < 1.0:
-                        edge_warn = f" | {YELLOW}{BOLD}⚠️ [MAP EDGE: {dist_to_edge:.1f}m to boundary! Record Goal Here]{NC}"
+                    min_x = map_bounds.get('min_x', -999)
+                    max_x = map_bounds.get('max_x', 999)
+                    min_y = map_bounds.get('min_y', -999)
+                    max_y = map_bounds.get('max_y', 999)
+                    is_out = (pose['x'] < min_x or pose['x'] > max_x or pose['y'] < min_y or pose['y'] > max_y)
+                    if is_out:
+                        edge_warn = f" | {RED}{BOLD}🚫 [OUT OF MAP! ({pose['x']:.1f}, {pose['y']:.1f}) is outside map range [{min_x:.0f}~{max_x:.0f}]]{NC}"
+                    else:
+                        dist_to_edge = min(
+                            abs(pose['x'] - min_x),
+                            abs(pose['x'] - max_x),
+                            abs(pose['y'] - min_y),
+                            abs(pose['y'] - max_y)
+                        )
+                        if dist_to_edge < 1.0:
+                            edge_warn = f" | {YELLOW}{BOLD}⚠️ [MAP EDGE: {dist_to_edge:.1f}m to boundary]{NC}"
                 warn_str = f" | {RED}{BOLD}{node.jump_warning}{NC}" if getattr(node, 'jump_warning', None) else ""
                 pose_str = f"{status_color}{pose['status']}{NC} | X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Z:{pose['z']:+6.3f}m Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC}{edge_warn}{warn_str}"
             else:
