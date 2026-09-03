@@ -157,7 +157,7 @@ def generate_launch_description():
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),
         DeclareLaunchArgument('reg_force_3dof', default_value='true', description='Constrain registration transforms to x/y/yaw'),
         DeclareLaunchArgument('icp_force_4dof', default_value='false', description='Allow ICP x/y/z/yaw correction only for an explicit 4DoF diagnostic'),
-        DeclareLaunchArgument('loop_closure_identity_guess', default_value='true', description='Let RGB retrieval seed the 3D LiDAR ICP global-loop check'),
+        DeclareLaunchArgument('loop_closure_identity_guess', default_value='false', description='Let RGB retrieval seed the 3D LiDAR ICP global-loop check'),
         DeclareLaunchArgument('proximity_by_space', default_value='false', description='Enable Type-2 spatial proximity loops only for a separately labelled diagnostic'),
         
         # Camera mount is the existing project estimate. Calibrated camera
