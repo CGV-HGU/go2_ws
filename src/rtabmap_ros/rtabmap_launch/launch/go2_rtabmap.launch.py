@@ -97,6 +97,7 @@ def generate_launch_description():
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
         'RGBD/OptimizeFromGraphEnd': 'false',
+        'RGBD/StartAtOrigin': 'true',          # Always start localization at map origin (0,0,0), ignore stale shutdown poses
         'Mem/UseOdomGravity': 'false',         # Use /livo/imu for gravity links, not odometry attitude
         'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold for reliable loop closure acceptance
         'Icp/PointToPlane': 'true',            # 3D Point-to-Plane ICP
