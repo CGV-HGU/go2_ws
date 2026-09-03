@@ -498,10 +498,22 @@ def main():
                 print(f"\n{RED}❌ Error: Cannot record goal - Robot is not localized yet.{NC}\n")
                 continue
 
-            # Out-of-bounds corridor boundary guard:
-            if pose['y'] < -25.0 or pose['y'] > -4.0:
-                print(f"\n{YELLOW}{BOLD}⚠️ [OUT-OF-BOUNDS WARNING] Captured pose Y={pose['y']:.2f}m is outside expected corridor bounds (-22m ~ -7m)!{NC}")
-                print(f"{YELLOW}👉 Please verify that RTAB-Map has not mislocalized (false relocalization).{NC}\n")
+            # Dynamic out-of-bounds map boundary guard:
+            if map_bounds:
+                min_x = map_bounds.get('min_x', -999)
+                max_x = map_bounds.get('max_x', 999)
+                min_y = map_bounds.get('min_y', -999)
+                max_y = map_bounds.get('max_y', 999)
+                if pose['x'] < min_x or pose['x'] > max_x or pose['y'] < min_y or pose['y'] > max_y:
+                    print(f"\n{RED}{BOLD}🚫 [OUT-OF-MAP WARNING] Captured pose ({pose['x']:.2f}m, {pose['y']:.2f}m) is OUTSIDE the 2D map!{NC}")
+                    print(f"{RED}   Map bounding box: X=[{min_x:.1f}, {max_x:.1f}]m, Y=[{min_y:.1f}, {max_y:.1f}]m{NC}")
+                    confirm = safe_input(f"{YELLOW}👉 Do you still want to record this out-of-map goal? [y/N]: {NC}").lower()
+                    if confirm not in ('y', 'yes'):
+                        print("Cancelled.\n")
+                        continue
+
+            if pose.get('status') == 'ODOM_DRIFT':
+                print(f"\n{YELLOW}{BOLD}⚠️ [SCAN MATCH WARNING] Covariance is high ({pose.get('cov_x', 0):.4f}) - LiDAR matching is degraded!{NC}\n")
 
             # Double-Enter / Duplicate Protection:
             # Prevent accidental duplicate goals if the robot hasn't moved from the previous goal (< 0.60m)
