@@ -44,3 +44,12 @@ goals:
   yaw_deg: 24.3
   tolerance_m: 0.5
   snapshot_image: config/goals/goal_05_Waypoint_5.jpg
+- id: 6
+  name: Waypoint_6
+  description: 'Candidate destination #6 recorded via interactive HUD'
+  x_m: 83.05
+  y_m: 8.17
+  z_m: 0.31
+  yaw_deg: -12.3
+  tolerance_m: 0.5
+  snapshot_image: config/goals/goal_06_Waypoint_6.jpg
