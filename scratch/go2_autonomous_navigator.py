@@ -737,21 +737,10 @@ Output JSON:
             self.pixnav_history.append(frame)
             history_list = list(self.pixnav_history)
 
-            # 1. Goal Image: Use registered goal photo if present, corridor reference, or frame
-            if self.goal_bgr_img is None:
-                if 'snapshot_image' in self.current_goal and self.current_goal['snapshot_image']:
-                    full_p = os.path.join(WORKSPACE_DIR, self.current_goal['snapshot_image'])
-                    if os.path.exists(full_p):
-                        self.goal_bgr_img = cv2.imread(full_p)
-                if self.goal_bgr_img is None:
-                    # Check for any available corridor goal photo as visual reference
-                    corridor_ref = os.path.join(WORKSPACE_DIR, "config/goals/goal_02_Waypoint_2.jpg")
-                    if os.path.exists(corridor_ref):
-                        self.goal_bgr_img = cv2.imread(corridor_ref)
-                    else:
-                        self.goal_bgr_img = frame.copy()
-
-            goal_bgr = self.goal_bgr_img
+            # 1. Live Ego-Centric Goal Frame:
+            # Use current robot camera frame so the projected waypoint (u, v)
+            # aligns directly with the real-time visual scene in front of the robot.
+            goal_bgr = frame.copy()
             h, w = goal_bgr.shape[:2]
 
             # 2. Goal Pixel & Mask: Project relative goal bearing into camera view
