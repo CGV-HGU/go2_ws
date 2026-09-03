@@ -1236,13 +1236,21 @@ def load_goals():
         data = yaml.safe_load(f)
         return data.get('goals', [])
 
-def print_goal_menu(goals):
+def print_goal_menu(goals, current_pose=None):
     print(f"\n{BOLD}{CYAN}========================================================================{NC}")
     print(f"{BOLD}{CYAN} 🐕 [Unitree Go2 Autonomous Navigation: Multi-Goal Benchmark Shell]{NC}")
+    if current_pose:
+        status_str = f"{GREEN}🟢 LOCALIZED{NC}" if current_pose.get('status') == 'LOCALIZED' else f"{YELLOW}⚠️ TF_TRACKING{NC}"
+        cov_str = f"(cov: {current_pose.get('cov_x', 0.0):.4f})"
+        print(f" 📍 Current Pose: {BOLD}X={current_pose['x']:+.2f}m, Y={current_pose['y']:+.2f}m, Yaw={current_pose['yaw']:+.1f}°{NC} | {status_str} {cov_str}")
     print(f"{BOLD}{CYAN}========================================================================{NC}")
     for g in goals:
+        dist_info = ""
+        if current_pose:
+            d = math.hypot(g['x_m'] - current_pose['x'], g['y_m'] - current_pose['y'])
+            dist_info = f" | Dist: {d:.2f}m"
         photo_info = f"📸 Photo: {g.get('snapshot_image', 'None')}" if 'snapshot_image' in g else ""
-        print(f"  [{g['id']}] {g['name']:25s} | X={g['x_m']:+7.2f}m, Y={g['y_m']:+7.2f}m, Yaw={g['yaw_deg']:+6.1f}° | {photo_info}")
+        print(f"  [{g['id']}] {g['name']:20s} | X={g['x_m']:+6.2f}m, Y={g['y_m']:+6.2f}m, Yaw={g['yaw_deg']:+5.1f}°{dist_info} | {photo_info}")
     if len(goals) > 1:
         seq_str = " -> ".join(f"#{g['id']}" for g in goals)
         print(f"  [all] Continuous Sequential Patrol ({seq_str})")
@@ -1354,14 +1362,16 @@ def main():
             print(f"{RED}Error: No candidate goals registered in {GOALS_YAML}. Run ./run_local.sh first.{NC}")
             break
 
-        print_goal_menu(goals)
+        print_goal_menu(goals, node.get_current_pose())
 
         if initial_goal_arg is not None:
             choice = str(initial_goal_arg).strip()
             initial_goal_arg = None
         else:
             try:
-                choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}], sequence (e.g. '1,2'), 'all', or 'q': ").strip()
+                choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}] (Press [ENTER] for Goal #1), 'all', or 'q': ").strip()
+                if not choice:
+                    choice = "1"
             except (KeyboardInterrupt, EOFError):
                 break
 
