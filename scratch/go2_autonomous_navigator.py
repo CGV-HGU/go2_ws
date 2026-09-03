@@ -394,6 +394,9 @@ class AutonomousNavigator(Node):
         self.rotation_time_s = 0.0
         self.stationary_time_s = 0.0
         self.last_step_time = time.time()
+        self.min_clearance_encountered = 999.0
+        self.lidar_repulsion_count = 0
+        self.forward_stop_count = 0
         self.subgoal_u = 640
         self.subgoal_v = 500
 
@@ -424,7 +427,7 @@ class AutonomousNavigator(Node):
         # Open Log Files
         self.csv_path = os.path.join(self.trial_dir, "trajectory_raw.csv")
         self.csv_file = open(self.csv_path, "w")
-        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,rel_heading_deg,status\n")
+        self.csv_file.write("iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,rel_heading_deg,fwd_clear_m,left_clear_m,right_clear_m,status\n")
         self.csv_file.flush()
 
         self.vlm_log_path = os.path.join(self.trial_dir, "vlm_decisions.jsonl")
@@ -474,6 +477,16 @@ class AutonomousNavigator(Node):
         effective_hz = (self.pose_sample_count / elapsed) if elapsed > 0 else 0.0
         total_budget = max(0.001, self.forward_time_s + self.rotation_time_s + self.stationary_time_s)
 
+        # Shortest (Optimal) Geodesic Distance & SPL
+        if self.start_pose:
+            optimal_path_m = math.hypot(self.current_goal['x_m'] - self.start_pose['x'], self.current_goal['y_m'] - self.start_pose['y'])
+        else:
+            optimal_path_m = path_length_m
+
+        spl = ((1.0 if success else 0.0) * optimal_path_m / max(optimal_path_m, path_length_m)) if path_length_m > 0 else 0.0
+        path_eff_pct = (optimal_path_m / max(0.001, path_length_m)) * 100.0 if path_length_m > 0 else 100.0
+        min_clear_m = self.min_clearance_encountered if self.min_clearance_encountered < 900.0 else 0.0
+
         # Write Dedicated time_log.txt
         time_log_path = os.path.join(self.trial_dir, "time_log.txt")
         with open(time_log_path, "w") as f:
@@ -484,6 +497,16 @@ class AutonomousNavigator(Node):
             f.write(f"• Target Goal             : Goal #{self.current_goal['id']} ({self.current_goal['name']})\n")
             f.write(f"• Outcome                 : {'SUCCESS (ARRIVED)' if success else 'HALTED (' + reason + ')'}\n")
             f.write(f"• Final Distance Error    : {final_dist:.3f} m (Tolerance: {self.tolerance_m:.2f} m)\n")
+            f.write("------------------------------------------------------------------------\n")
+            f.write("🏆 ICRA 2026 NAVIGATION BENCHMARK METRICS:\n")
+            f.write(f"• Success Rate (SR)       : {'100% (ARRIVED)' if success else '0% (FAILED: ' + reason + ')'}\n")
+            f.write(f"• SPL (Success Path Length: {spl:.3f} (Gold Standard Metric)\n")
+            f.write(f"• Optimal Distance (L_opt): {optimal_path_m:.2f} m (Euclidean Start-Goal)\n")
+            f.write(f"• Actual Path Length (L)  : {path_length_m:.2f} m\n")
+            f.write(f"• Path Length Efficiency  : {path_eff_pct:.1f}%\n")
+            f.write(f"• Min Obstacle Clearance  : {min_clear_m:.2f} m (4D LiDAR Safety Margin)\n")
+            f.write(f"• LiDAR Wall Repulsions   : {self.lidar_repulsion_count} events\n")
+            f.write(f"• Forward Collision Stops : {self.forward_stop_count} events\n")
             f.write("------------------------------------------------------------------------\n")
             f.write("📅 MISSION TIME LOG:\n")
             f.write(f"• Start Timestamp (Local) : {self.mission_start_wall}\n")
@@ -510,7 +533,8 @@ class AutonomousNavigator(Node):
 
         # Generate Human-Readable Markdown Executive Summary
         self.generate_markdown_summary(path_length_m, elapsed, avg_speed_mps, final_dist, success, reason,
-                                      effective_hz, mean_lat, min_lat, max_lat, p95_lat, total_budget)
+                                      effective_hz, mean_lat, min_lat, max_lat, p95_lat, total_budget,
+                                      spl, optimal_path_m, path_eff_pct, min_clear_m)
 
         # JSON Metadata
         metadata = {
@@ -535,8 +559,14 @@ class AutonomousNavigator(Node):
             "metrics": {
                 "success": success,
                 "reason": reason,
-                "duration_s": round(elapsed, 2),
+                "spl": round(spl, 3),
+                "optimal_distance_m": round(optimal_path_m, 2),
                 "path_length_m": round(path_length_m, 2),
+                "path_efficiency_pct": round(path_eff_pct, 1),
+                "min_obstacle_clearance_m": round(min_clear_m, 2),
+                "lidar_repulsion_count": self.lidar_repulsion_count,
+                "forward_collision_stop_count": self.forward_stop_count,
+                "duration_s": round(elapsed, 2),
                 "average_speed_mps": round(avg_speed_mps, 3),
                 "final_distance_to_goal_m": round(final_dist, 3),
                 "total_pose_samples": self.pose_sample_count,
@@ -849,6 +879,17 @@ Output JSON:
             return
 
         # ---------------------------------------------------------
+        # Read live 4D LiDAR clearances
+        with self.lock:
+            fwd_clearance = self.min_forward_dist
+            left_clearance = self.min_left_dist
+            right_clearance = self.min_right_dist
+
+        cur_min_clear = min(fwd_clearance, left_clearance, right_clearance)
+        if cur_min_clear < self.min_clearance_encountered:
+            self.min_clearance_encountered = cur_min_clear
+
+        # ---------------------------------------------------------
         # 1. In-Place Rotation Safety Interlock:
         # If heading error > 25° (PixNav) or > 30° (Ours), rotate in-place with ZERO forward creep!
         # Prevents wall collisions and enables smooth 180° turnaround at corridor ends.
@@ -891,24 +932,19 @@ Output JSON:
             # 2. Physical 4D LiDAR Wall / Obstacle Collision Prevention Interlock
             # (Only applies when robot is actively driving forward down the corridor)
             # ---------------------------------------------------------
-            with self.lock:
-                fwd_clearance = self.min_forward_dist
-                left_clearance = self.min_left_dist
-                right_clearance = self.min_right_dist
-
             # Side Wall Repulsion (LiDAR Corridor Centering)
             if left_clearance < 0.45:
-                # Too close to left wall (< 45cm)! Push away to right
+                self.lidar_repulsion_count += 1
                 target_wz = min(target_wz, -0.28)
                 target_vx = min(target_vx, 0.30)
             elif right_clearance < 0.45:
-                # Too close to right wall (< 45cm)! Push away to left
+                self.lidar_repulsion_count += 1
                 target_wz = max(target_wz, 0.28)
                 target_vx = min(target_vx, 0.30)
 
             # Forward Obstacle Interlock
             if fwd_clearance < 0.50:
-                # Wall or obstacle directly in front within 50cm! Stop forward motion and steer towards open corridor
+                self.forward_stop_count += 1
                 target_vx = 0.0
                 avoid_wz = 0.38 if left_clearance > right_clearance else -0.38
                 target_wz = avoid_wz
@@ -935,7 +971,8 @@ Output JSON:
             self.csv_file.write(
                 f"{iso_ts},{elapsed:.3f},{self.pose_sample_count},"
                 f"{pose['x']:.4f},{pose['y']:.4f},{pose['z']:.4f},{pose['yaw']:.2f},"
-                f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},{rel_heading_deg:.2f},NAVIGATING\n"
+                f"{self.cmd_vx:.3f},{self.cmd_wz:.3f},{dist_to_goal:.3f},{rel_heading_deg:.2f},"
+                f"{fwd_clearance:.2f},{left_clearance:.2f},{right_clearance:.2f},NAVIGATING\n"
             )
             self.csv_file.flush()
 
@@ -1140,7 +1177,8 @@ Output JSON:
             return None
 
     def generate_markdown_summary(self, path_len, elapsed, avg_spd, final_dist, success, reason,
-                                  effective_hz, mean_lat, min_lat, max_lat, p95_lat, total_budget):
+                                  effective_hz, mean_lat, min_lat, max_lat, p95_lat, total_budget,
+                                  spl, optimal_path_m, path_eff_pct, min_clear_m):
         md_path = os.path.join(self.trial_dir, "trial_summary.md")
         with open(md_path, "w") as f:
             f.write(f"# 🏁 Benchmark Trial Executive Summary\n\n")
@@ -1153,6 +1191,17 @@ Output JSON:
             f.write(f"- **Average Travel Speed**: `{avg_spd:.2f} m/s` (Max limit: `{self.max_vx:.2f} m/s`)\n")
             f.write(f"- **Pose Sample Count (10Hz)**: `{self.pose_sample_count}`\n")
             f.write(f"- **Policy Inferences / VLM Queries**: `{self.vlm_query_count}` (Mean Latency: `{mean_lat:.1f} ms`)\n\n")
+            f.write(f"## 🏆 ICRA 2026 Navigation Benchmark Performance\n\n")
+            f.write(f"| Evaluation Metric | Value | Reference / Standard |\n")
+            f.write(f"|---|---|---|\n")
+            f.write(f"| **Success Rate (SR)** | `{'100%' if success else '0%'}` | Goal tolerance $\\le {self.tolerance_m:.2f} m$ |\n")
+            f.write(f"| **SPL (Success Path Length)** | `{spl:.3f}` | **Gold Standard** ($S \\times L_{{opt}} / \\max(L_{{opt}}, L_{{act}})$) |\n")
+            f.write(f"| **Shortest Distance ($L_{{opt}}$)** | `{optimal_path_m:.2f} m` | Euclidean Start-to-Goal |\n")
+            f.write(f"| **Actual Trajectory ($L_{{act}}$)** | `{path_len:.2f} m` | Integrated 10Hz Odometry |\n")
+            f.write(f"| **Path Length Efficiency** | `{path_eff_pct:.1f}%` | $L_{{opt}} / L_{{act}} \\times 100$ |\n")
+            f.write(f"| **Min Obstacle Clearance** | `{min_clear_m:.2f} m` | 4D LiDAR Closest Point Cloud |\n")
+            f.write(f"| **LiDAR Wall Repulsions** | `{self.lidar_repulsion_count}` | Corridor centering auto-steers |\n")
+            f.write(f"| **Forward Collision Stops** | `{self.forward_stop_count}` | Obstacle emergency interlocks (< 0.50m) |\n\n")
             f.write(f"## ⏱️ Detailed Time Log & Latency Breakdown\n\n")
             f.write(f"| Timing & Profiling Metric | Recorded Value |\n")
             f.write(f"|---|---|\n")
