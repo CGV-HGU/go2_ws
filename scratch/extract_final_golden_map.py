@@ -52,9 +52,12 @@ def process_database(db_path, output_dir="2dmap"):
         ids_data = zlib.decompress(admin_row[0])
         poses_data = zlib.decompress(admin_row[1])
         ids = struct.unpack(f"<{len(ids_data)//4}i", ids_data)
-        for i, nid in enumerate(ids):
-            chunk = poses_data[i*48:(i+1)*48]
-            opt_poses[int(nid)] = decode_transform(chunk)
+        if len(ids) > 1:
+            for i, nid in enumerate(ids):
+                chunk = poses_data[i*48:(i+1)*48]
+                opt_poses[int(nid)] = decode_transform(chunk)
+        else:
+            opt_poses = raw_poses
     else:
         opt_poses = raw_poses
 
