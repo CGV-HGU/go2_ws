@@ -56,6 +56,24 @@ def _rotation_matrix(x: float, y: float, z: float, w: float) -> Optional[np.ndar
     )
 
 
+def _quat_inv(q: np.ndarray) -> np.ndarray:
+    return np.array([-q[0], -q[1], -q[2], q[3]], dtype=np.float64)
+
+
+def _quat_mult(q1: np.ndarray, q2: np.ndarray) -> np.ndarray:
+    x1, y1, z1, w1 = q1
+    x2, y2, z2, w2 = q2
+    return np.array(
+        [
+            w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
+            w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
+            w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
+            w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
+        ],
+        dtype=np.float64,
+    )
+
+
 def _gravity_alignment_deg(quaternion: Tuple[float, float, float, float], acceleration: np.ndarray) -> float:
     rotation = _rotation_matrix(*quaternion)
     accel_norm = float(np.linalg.norm(acceleration))
@@ -85,6 +103,12 @@ class Go2LivoSensorBridge(Node):
         if self.imu_order_mode not in ('auto', 'xyzw', 'wxyz'):
             raise ValueError("imu_quaternion_order must be 'auto', 'xyzw' or 'wxyz'")
         self.detected_imu_order: Optional[str] = None
+
+        self.declare_parameter('zero_origin', True)
+        self.zero_origin = bool(self.get_parameter('zero_origin').value)
+        self.origin_p: Optional[np.ndarray] = None
+        self.origin_q: Optional[np.ndarray] = None
+        self.origin_rot: Optional[np.ndarray] = None
 
         sensor_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
@@ -155,20 +179,54 @@ class Go2LivoSensorBridge(Node):
         translation = np.array([p.x, p.y, p.z], dtype=np.float64)
         self.odom_history.append((source_ns, translation, rotation, msg))
 
+        p_raw = np.array([p.x, p.y, p.z], dtype=np.float64)
+        q_raw = np.array([q.x, q.y, q.z, q.w], dtype=np.float64)
+
+        if self.zero_origin:
+            if self.origin_p is None:
+                self.origin_p = p_raw.copy()
+                self.origin_q = q_raw.copy()
+                self.origin_rot = rotation.copy()
+                self.get_logger().info(
+                    'Zero-origin calibrated: origin_p=(%.3f, %.3f, %.3f)' % (p.x, p.y, p.z)
+                )
+
+            # Transform translation and orientation relative to origin (SE3 relative pose)
+            p_rel = self.origin_rot.T @ (p_raw - self.origin_p)
+            q_rel = _quat_mult(_quat_inv(self.origin_q), q_raw)
+            q_norm = math.sqrt(float(np.sum(q_rel * q_rel)))
+            if q_norm > 1e-8:
+                q_rel = q_rel / q_norm
+            pub_px, pub_py, pub_pz = float(p_rel[0]), float(p_rel[1]), float(p_rel[2])
+            pub_qx, pub_qy, pub_qz, pub_qw = float(q_rel[0]), float(q_rel[1]), float(q_rel[2]), float(q_rel[3])
+        else:
+            pub_px, pub_py, pub_pz = p.x, p.y, p.z
+            pub_qx, pub_qy, pub_qz, pub_qw = q.x, q.y, q.z, q.w
+
         out = copy.deepcopy(msg)
         out.header.stamp = self._aligned_stamp(source_ns, 'odom')
         out.header.frame_id = 'odom'
         out.child_frame_id = 'base_link'
+        out.pose.pose.position.x = pub_px
+        out.pose.pose.position.y = pub_py
+        out.pose.pose.position.z = pub_pz
+        out.pose.pose.orientation.x = pub_qx
+        out.pose.pose.orientation.y = pub_qy
+        out.pose.pose.orientation.z = pub_qz
+        out.pose.pose.orientation.w = pub_qw
         self.odom_pub.publish(out)
         self.rtabmap_odom_pub.publish(out)
 
         transform = TransformStamped()
         transform.header = copy.deepcopy(out.header)
         transform.child_frame_id = 'base_link'
-        transform.transform.translation.x = p.x
-        transform.transform.translation.y = p.y
-        transform.transform.translation.z = p.z
-        transform.transform.rotation = copy.deepcopy(q)
+        transform.transform.translation.x = pub_px
+        transform.transform.translation.y = pub_py
+        transform.transform.translation.z = pub_pz
+        transform.transform.rotation.x = pub_qx
+        transform.transform.rotation.y = pub_qy
+        transform.transform.rotation.z = pub_qz
+        transform.transform.rotation.w = pub_qw
         self.tf_broadcaster.sendTransform(transform)
 
     def _imu_callback(self, msg: Imu) -> None:
