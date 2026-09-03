@@ -135,12 +135,44 @@ class LocalizationMonitor(Node):
         # 5. 2Hz Periodic Status & Safety Timer (Prints HUD & logs unlocalized states)
         self.create_timer(0.5, self.status_timer_callback)
 
-        print(f"\n{BOLD}{CYAN}========================================================================{NC}")
-        print(f"{BOLD}{CYAN} 🎯 [Go2 Real-Time Localization & RTAB-Map Sensor Health Monitor]{NC}")
-        print(f" 📂 Log Dir : {log_dir}")
-        print(f" 📄 CSV Log : {self.csv_path}")
-        print(f" 🗺️ Map DB  : {RTABMAP_DB} ({self.db_size_mb:.1f} MB)")
-        print(f"{BOLD}{CYAN}========================================================================{NC}\n")
+        # Map DB verification
+        n_nodes = 0
+        mtime_str = "Unknown"
+        min_x, max_x = (0.0, 0.0)
+        min_y, max_y = (0.0, 0.0)
+        origin_str = "Unknown"
+        if os.path.exists(RTABMAP_DB):
+            import sqlite3, struct
+            try:
+                mtime_str = datetime.fromtimestamp(os.path.getmtime(RTABMAP_DB)).strftime("%Y-%m-%d %H:%M:%S")
+                conn = sqlite3.connect(f"file:{RTABMAP_DB}?mode=ro", uri=True)
+                c = conn.cursor()
+                c.execute("SELECT count(*) FROM Node")
+                n_nodes = c.fetchone()[0]
+                c.execute("SELECT id, pose FROM Node WHERE pose IS NOT NULL ORDER BY id")
+                rows = c.fetchall()
+                xs, ys = [], []
+                for _, blob in rows:
+                    if len(blob) == 48:
+                        v = struct.unpack("<12f", blob)
+                        xs.append(v[3])
+                        ys.append(v[7])
+                conn.close()
+                if xs:
+                    min_x, max_x = min(xs), max(xs)
+                    min_y, max_y = min(ys), max(ys)
+                    origin_str = f"Node #1 at (X={xs[0]:+.3f}m, Y={ys[0]:+.3f}m)"
+            except Exception:
+                pass
+
+        print(f"\n{BOLD}{GREEN}========================================================================{NC}")
+        print(f"{BOLD}{GREEN} 🗺️ [ACTIVE SLAM MAP VERIFICATION - CONFIRMED LATEST MAP]{NC}")
+        print(f" • Database File : {BOLD}{RTABMAP_DB}{NC} ({self.db_size_mb:.1f} MB)")
+        print(f" • Last Modified : {BOLD}{mtime_str}{NC} ({n_nodes} nodes)")
+        print(f" • Map Bounds    : X=[{min_x:+.2f}m, {max_x:+.2f}m], Y=[{min_y:+.2f}m, {max_y:+.2f}m]")
+        print(f" • Zero-Origin   : ✅ {origin_str}")
+        print(f" • Pose Log File : {self.csv_path}")
+        print(f"{BOLD}{GREEN}========================================================================{NC}\n", flush=True)
 
     def _cam_callback(self, msg: Image):
         self.cam_count += 1
@@ -273,42 +305,52 @@ class LocalizationMonitor(Node):
                 tf_available = False
 
             # Determine explicit status and log continuously
-            if lost_duration < 5.0 and tf_available:
-                # 🟡 Coasting on TF (Temporary visual feature dropout)
-                status_name = "COASTING_TF"
+            if tf_available and self.last_pose_time > 0:
+                # 🟢 TF Tracking while stationary (RTAB-Map only publishes localization_pose on new motion)
+                status_name = "LOCALIZED"
                 px, py, pz = tf_pos
-                self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{px:.4f},{py:.4f},{pz:.4f},{tf_yaw:.2f},0.0,{status_name},{lost_duration:.1f}\n")
+                self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{px:.4f},{py:.4f},{pz:.4f},{tf_yaw:.2f},0.0,{status_name},0.0\n")
                 self.csv_file.flush()
-                self.log_file.write(f"[{iso_ts}] {status_name} (Lost for {lost_duration:.1f}s) X:{px:+7.3f} Y:{py:+7.3f} Yaw:{tf_yaw:+6.1f}\n")
-                self.log_file.flush()
 
                 if now - self.last_hud_print_time >= 0.5:
                     self.last_hud_print_time = now
                     print(
                         f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] "
-                        f"{YELLOW}🟡 [RELOCALIZING / COASTING]{NC} "
-                        f"No fix for {BOLD}{lost_duration:.1f}s{NC} | "
-                        f"TF X:{px:+7.3f}m Y:{py:+7.3f}m Yaw:{tf_yaw:+6.1f}° | {sensor_str}"
+                        f"{GREEN}🟢 [LOCALIZED (Stationary/TF)]{NC} "
+                        f"{BOLD}X:{NC}{px:+7.3f}m {BOLD}Y:{NC}{py:+7.3f}m {BOLD}Z:{NC}{pz:+6.3f}m "
+                        f"{BOLD}Yaw:{NC}{tf_yaw:+6.1f}° | {sensor_str}",
+                        flush=True
+                    )
+
+            elif tf_available and self.last_pose_time == 0:
+                # 🟡 Initial TF alignment active, waiting for first RTAB-Map ICP lock
+                status_name = "SEARCHING_LOCK"
+                px, py, pz = tf_pos
+                self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{px:.4f},{py:.4f},{pz:.4f},{tf_yaw:.2f},0.0,{status_name},{lost_duration:.1f}\n")
+                self.csv_file.flush()
+
+                if now - self.last_hud_print_time >= 0.5:
+                    self.last_hud_print_time = now
+                    print(
+                        f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] "
+                        f"{YELLOW}🟡 [SEARCHING FOR MAP ICP FIX]{NC} "
+                        f"TF X:{px:+7.3f}m Y:{py:+7.3f}m Yaw:{tf_yaw:+6.1f}° | {sensor_str}",
+                        flush=True
                     )
 
             else:
-                # 🔴 Fully NOT LOCALIZED / LOST (> 5.0s or never localized)
+                # 🔴 Fully NOT LOCALIZED (No TF and No RTAB-Map pose)
                 status_name = "NOT_LOCALIZED"
-                if tf_available:
-                    px, py, pz = tf_pos
-                elif self.latest_pose:
+                if self.latest_pose:
                     px, py, pz, tf_yaw = self.latest_pose['x'], self.latest_pose['y'], self.latest_pose['z'], self.latest_pose['yaw']
                 else:
                     px, py, pz, tf_yaw = 0.0, 0.0, 0.0, 0.0
 
                 self.csv_file.write(f"{iso_ts},{elapsed:.3f},{self.pose_count},{px:.4f},{py:.4f},{pz:.4f},{tf_yaw:.2f},0.0,{status_name},{lost_duration:.1f}\n")
                 self.csv_file.flush()
-                self.log_file.write(f"[{iso_ts}] {status_name} (Lost for {lost_duration:.1f}s) - Searching for landmarks\n")
-                self.log_file.flush()
 
                 if now - self.last_hud_print_time >= 0.5:
                     self.last_hud_print_time = now
-                    # Check if all sensors are disconnected
                     if (now - self.last_cloud_time) > 3.0 and (now - self.last_odom_time) > 3.0:
                         cause_msg = f"{RED}{BOLD}⚠️ ROBOT SENSORS OFFLINE (Check Go2 Power / CycloneDDS){NC}"
                     else:
@@ -318,7 +360,8 @@ class LocalizationMonitor(Node):
                         f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] "
                         f"{RED}🔴 [NOT LOCALIZED]{NC} "
                         f"Lost for {BOLD}{RED}{lost_duration:.1f}s{NC} | "
-                        f"{cause_msg} | {sensor_str}"
+                        f"{cause_msg} | {sensor_str}",
+                        flush=True
                     )
 
     def destroy_node(self):

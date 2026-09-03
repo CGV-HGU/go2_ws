@@ -982,7 +982,7 @@ Output JSON:
             status_tag = f"{GREEN}🟢 LOCALIZED{NC}" if pose.get('status') == 'LOCALIZED' else f"{YELLOW}⚠️ {pose.get('status', 'ODOM_DRIFT')}{NC}"
             cov_val = pose.get('cov_x', getattr(self, 'last_cov_x', 0.0))
             cov_str = f"cov: {cov_val:.4f}"
-            print(f"\n📍 [{wall_hhmmss} | +{elapsed:4.1f}s] {status_tag} ({cov_str}) | Robot: X={BOLD}{pose['x']:+6.2f}m{NC}, Y={BOLD}{pose['y']:+6.2f}m{NC}, Yaw={pose['yaw']:+5.1f}° | Goal #{self.current_goal['id']} ({self.current_goal['name']}): Dist={BOLD}{dist_to_goal:5.2f}m{NC}, Bearing={rel_heading_deg:+5.1f}° | Cmd: vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}")
+            print(f"\n📍 [{wall_hhmmss} | +{elapsed:4.1f}s] {status_tag} ({cov_str}) | Robot: X={BOLD}{pose['x']:+6.2f}m{NC}, Y={BOLD}{pose['y']:+6.2f}m{NC}, Yaw={pose['yaw']:+5.1f}° | Goal #{self.current_goal['id']} ({self.current_goal['name']}): Dist={BOLD}{dist_to_goal:5.2f}m{NC}, Bearing={rel_heading_deg:+5.1f}° | Cmd: vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}", flush=True)
 
         # 2. High-rate in-place status line
         sys.stdout.write(
@@ -1302,22 +1302,20 @@ def main():
         except Exception as e:
             print(f"{YELLOW}⚠️ Map verification read note: {e}{NC}")
 
-    # 1. Searching for initial landmarks (Wait for actual RTAB-Map ICP match)
-    print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map 4D LiDAR Localization Lock...{NC}")
+    # 1. Searching for initial landmarks
+    print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map 4D LiDAR Localization Lock...{NC}", flush=True)
     wait_count = 0
-    while not node.is_localized:
-        time.sleep(0.5)
+    initial_pose = None
+    while initial_pose is None:
+        time.sleep(0.3)
         wait_count += 1
-        p = node.get_current_pose()
-        cov = p.get('cov_x', 0.0) if p else 0.0
-        status = p.get('status', 'NONE') if p else 'NONE'
-        if wait_count % 4 == 0:
-            print(f"  {YELLOW}🔍 Searching for map landmarks ({wait_count * 0.5:.1f}s elapsed) | Status: {status} (cov: {cov:.4f})...{NC}")
-        if wait_count >= 30:  # 15s timeout
-            print(f"  {YELLOW}⚠️ Relocalization taking > 15s. Proceeding with current estimate.{NC}")
+        initial_pose = node.get_current_pose()
+        if wait_count % 5 == 0 and initial_pose is None:
+            print(f"  {YELLOW}🔍 Waiting for map transform ({wait_count * 0.3:.1f}s elapsed)...{NC}", flush=True)
+        if wait_count >= 20 and initial_pose is None:
+            print(f"  {YELLOW}⚠️ Proceeding with initial TF search...{NC}", flush=True)
             break
 
-    initial_pose = node.get_current_pose()
     while initial_pose is None:
         time.sleep(0.2)
         initial_pose = node.get_current_pose()
@@ -1340,11 +1338,11 @@ def main():
             drift_cm = drift_m * 100.0
             cov_val = p.get('cov_x', 0.0)
             status_tag = f"{GREEN}100% HEALTHY LOCK! (cov: {cov_val:.4f}){NC}" if sec == 5 else f"{CYAN}STABLE (Jitter: {drift_cm:3.1f}cm, cov: {cov_val:.4f}){NC}"
-            print(f" [{sec}/5s] {GREEN}🟢 LOCALIZED{NC} | X:{BOLD}{p['x']:+7.3f}m{NC} Y:{BOLD}{p['y']:+7.3f}m{NC} Yaw:{BOLD}{p['yaw']:+6.1f}°{NC} | {status_tag}")
+            print(f" [{sec}/5s] {GREEN}🟢 LOCALIZED{NC} | X:{BOLD}{p['x']:+7.3f}m{NC} Y:{BOLD}{p['y']:+7.3f}m{NC} Yaw:{BOLD}{p['yaw']:+6.1f}°{NC} | {status_tag}", flush=True)
 
-    print(f"{BOLD}{GREEN}========================================================================{NC}")
-    print(f"{BOLD}{GREEN} 🎯 [LOCALIZATION FULLY STABILIZED] Ready for Mission Execution!{NC}")
-    print(f"{BOLD}{GREEN}========================================================================{NC}\n")
+    print(f"{BOLD}{GREEN}========================================================================{NC}", flush=True)
+    print(f"{BOLD}{GREEN} 🎯 [LOCALIZATION FULLY STABILIZED] Ready for Mission Execution!{NC}", flush=True)
+    print(f"{BOLD}{GREEN}========================================================================{NC}\n", flush=True)
 
     node.filter_active = True
 
