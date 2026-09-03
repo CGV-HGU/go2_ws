@@ -12,7 +12,7 @@ set -e
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 RTABMAP_DB="/home/unitree/.ros/rtabmap.db"
-GOAL_ARG="${1:-}"
+GOAL_ARG="${1:-1}"
 
 if [ ! -f "$RTABMAP_DB" ]; then
     echo "❌ Error: Map database not found: $RTABMAP_DB" >&2

@@ -138,6 +138,8 @@ class AutonomousNavigator(Node):
         self.jump_warning = None
         self.is_localized = False
         self.last_cov_x = 0.0
+        self.rtabmap_pose_count = 0
+        self.last_rtabmap_time = 0.0
 
         # True PixNav Checkpoint_A Neural Network State
         self.pixnav_model = None
@@ -305,6 +307,8 @@ class AutonomousNavigator(Node):
             self.jump_warning = None
             self.is_localized = is_reliable
             self.last_cov_x = cov_x
+            self.rtabmap_pose_count += 1
+            self.last_rtabmap_time = now
             self.current_pose = {
                 "x": float(pos.x),
                 "y": float(pos.y),
@@ -977,23 +981,23 @@ Output JSON:
 
         wall_hhmmss = datetime.now().strftime("%H:%M:%S")
 
-        # 1. Continuous Periodic 1Hz Full Localization & Progress Log (Printed as permanent line every 1 second)
+        # Continuous 1Hz Full RTAB-Map Real-Time Localization & Mission Log
         if self.pose_sample_count % 10 == 0:
-            status_tag = f"{GREEN}🟢 LOCALIZED{NC}" if pose.get('status') == 'LOCALIZED' else f"{YELLOW}⚠️ {pose.get('status', 'ODOM_DRIFT')}{NC}"
             cov_val = pose.get('cov_x', getattr(self, 'last_cov_x', 0.0))
             cov_str = f"cov: {cov_val:.4f}"
-            print(f"\n📍 [{wall_hhmmss} | +{elapsed:4.1f}s] {status_tag} ({cov_str}) | Robot: X={BOLD}{pose['x']:+6.2f}m{NC}, Y={BOLD}{pose['y']:+6.2f}m{NC}, Yaw={pose['yaw']:+5.1f}° | Goal #{self.current_goal['id']} ({self.current_goal['name']}): Dist={BOLD}{dist_to_goal:5.2f}m{NC}, Bearing={rel_heading_deg:+5.1f}° | Cmd: vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}", flush=True)
-
-        # 2. High-rate in-place status line
-        sys.stdout.write(
-            f"\r⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] [{self.mode.upper()}] "
-            f"Pos: ({pose['x']:+6.2f}m, {pose['y']:+6.2f}m) | "
-            f"Target: #{self.current_goal['id']} ({self.current_goal['name']}) | "
-            f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
-            f"Cmd: (vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}) | "
-            f"Poses: #{self.pose_sample_count:04d}"
-        )
-        sys.stdout.flush()
+            time_since_rtab = now - getattr(self, 'last_rtabmap_time', 0.0)
+            rtab_count = getattr(self, 'rtabmap_pose_count', 0)
+            if time_since_rtab < 2.0 and rtab_count > 0:
+                loc_badge = f"{GREEN}🟢 [RTABMAP #{rtab_count:04d}]{NC}"
+            else:
+                loc_badge = f"{YELLOW}⚠️ [TF_TRACKING (lost {time_since_rtab:.1f}s)]{NC}"
+            print(
+                f"⏱️ [{wall_hhmmss} | +{elapsed:4.1f}s] {loc_badge} "
+                f"X:{BOLD}{pose['x']:+7.3f}m{NC} Y:{BOLD}{pose['y']:+7.3f}m{NC} Yaw:{BOLD}{pose['yaw']:+6.1f}°{NC} ({cov_str}) | "
+                f"Goal #{self.current_goal['id']} ({self.current_goal['name']}): Dist={BOLD}{dist_to_goal:5.2f}m{NC} (Bear:{rel_heading_deg:+5.1f}°) | "
+                f"Cmd: vx={self.cmd_vx:.2f} wz={self.cmd_wz:+.2f}",
+                flush=True
+            )
 
     def save_single_snapshot(self, label):
         with self.lock:
@@ -1261,7 +1265,7 @@ def print_goal_menu(goals, current_pose=None):
 def main():
     parser = argparse.ArgumentParser(description="Publication Benchmark Runner for Unitree Go2")
     parser.add_argument('--mode', choices=['ours', 'pixnav'], default='ours', help="Navigation mode (ours = ESCAPE-Nav, pixnav = PointNav)")
-    parser.add_argument('--goal', type=str, default=None, help="Initial Goal ID or Sequence (e.g. '1' or '1,2' or 'all')")
+    parser.add_argument('--goal', type=str, default='1', help="Initial Goal ID or Sequence (default: '1')")
     parser.add_argument('--max-vx', type=float, default=0.50, help="Maximum linear velocity in m/s (default: 0.50)")
     parser.add_argument('--max-wz', type=float, default=0.50, help="Maximum angular velocity in rad/s (default: 0.50)")
     parser.add_argument('--tolerance', type=float, default=0.35, help="Goal arrival tolerance in meters")
@@ -1367,6 +1371,7 @@ def main():
         if initial_goal_arg is not None:
             choice = str(initial_goal_arg).strip()
             initial_goal_arg = None
+            print(f"\n🚀 [AUTO-LAUNCH] Target Goal #{choice} selected by default. Launching mission immediately...", flush=True)
         else:
             try:
                 choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}] (Press [ENTER] for Goal #1), 'all', or 'q': ").strip()
