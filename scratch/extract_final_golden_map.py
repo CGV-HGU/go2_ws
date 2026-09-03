@@ -145,7 +145,7 @@ def process_database(db_path, output_dir="2dmap"):
                 pts = struct.unpack(f"<{num_pts*3}f", obs_data)
                 lx = np.array(pts[0::3])
                 ly = np.array(pts[1::3])
-                valid = (lx**2 + ly**2 <= 10.0**2) & (lx**2 + ly**2 >= 0.35**2)
+                valid = (lx**2 + ly**2 <= 25.0**2) & (lx**2 + ly**2 >= 0.35**2)
                 lx, ly = lx[valid], ly[valid]
                 gx = tx + lx * cos_yaw - ly * sin_yaw
                 gy = ty + lx * sin_yaw + ly * cos_yaw
@@ -158,7 +158,7 @@ def process_database(db_path, output_dir="2dmap"):
                 pts = struct.unpack(f"<{num_pts*3}f", gnd_data)
                 lx = np.array(pts[0::6])
                 ly = np.array(pts[1::6])
-                valid = (lx**2 + ly**2 <= 10.0**2) & (lx**2 + ly**2 >= 0.35**2)
+                valid = (lx**2 + ly**2 <= 25.0**2) & (lx**2 + ly**2 >= 0.35**2)
                 lx, ly = lx[valid], ly[valid]
                 gx = tx + lx * cos_yaw - ly * sin_yaw
                 gy = ty + lx * sin_yaw + ly * cos_yaw

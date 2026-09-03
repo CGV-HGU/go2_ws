@@ -17,6 +17,7 @@ import json
 import math
 import time
 from datetime import datetime
+import argparse
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
@@ -25,6 +26,9 @@ from nav_msgs.msg import Odometry, OccupancyGrid
 from rtabmap_msgs.msg import Info
 from sensor_msgs.msg import Image, PointCloud2
 import tf2_ros
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import map_relocalizer
 
 GREEN = '\033[0;32m'
 CYAN = '\033[0;36m'
@@ -110,6 +114,9 @@ class LocalizationMonitor(Node):
         self.create_subscription(PoseWithCovarianceStamped, '/rtabmap/localization_pose', self.pose_callback, qos_best_effort)
         self.create_subscription(PoseWithCovarianceStamped, '/localization_pose', self.pose_callback, qos_best_effort)
 
+        self.initial_pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/initialpose', 10)
+        self.rtabmap_initial_pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/rtabmap/initialpose', 10)
+
         # 2. Subscribe to RTAB-Map Input Sensor Feeds to monitor input health
         self.create_subscription(Image, '/camera/front/image_raw', self._cam_callback, qos_best_effort)
         self.create_subscription(PointCloud2, '/livo/cloud', self._cloud_callback, qos_best_effort)
@@ -134,6 +141,10 @@ class LocalizationMonitor(Node):
 
         # 5. 2Hz Periodic Status & Safety Timer (Prints HUD & logs unlocalized states)
         self.create_timer(0.5, self.status_timer_callback)
+
+    def set_initial_pose(self, x: float, y: float, z: float = 0.0, yaw_deg: float = 0.0):
+        map_relocalizer.publish_initial_pose(self.initial_pose_pub, x, y, z, yaw_deg, self.get_clock().now())
+        map_relocalizer.publish_initial_pose(self.rtabmap_initial_pose_pub, x, y, z, yaw_deg, self.get_clock().now())
 
         # Map DB verification
         n_nodes = 0
@@ -372,8 +383,34 @@ class LocalizationMonitor(Node):
         super().destroy_node()
 
 def main():
+    parser = argparse.ArgumentParser(description="Dedicated Go2 Localization HUD & Monitor")
+    parser.add_argument('--start-goal', type=int, default=None, help="Initial waypoint ID to seed localization (0=origin, 1..N)")
+    parser.add_argument('--start-origin', action='store_true', help="Seed localization at map origin (Node 1, 0,0,0)")
+    parser.add_argument('--initial-pose', type=str, default=None, help="Initial pose format: 'x y z roll pitch yaw'")
+    parser.add_argument('--auto-reloc', action='store_true', help="Auto-relocalize against recorded map keyframes")
+    args, unknown = parser.parse_known_args()
+
     rclpy.init()
     node = LocalizationMonitor()
+
+    registered_wps = map_relocalizer.load_registered_waypoints()
+    wp_map = {w['id']: w for w in registered_wps}
+
+    if args.start_origin:
+        print(f"📍 {CYAN}Seeding initial pose at Map Origin (Node 1): X=0.0m, Y=0.0m, Yaw=0.0°{NC}")
+        node.set_initial_pose(0.0, 0.0, 0.0, 0.0)
+    elif args.start_goal is not None and args.start_goal in wp_map:
+        w = wp_map[args.start_goal]
+        print(f"📍 {CYAN}Seeding initial pose at [{w['id']}] {w['name']}: X={w['x_m']:+.2f}m, Y={w['y_m']:+.2f}m, Yaw={w['yaw_deg']:+.1f}°{NC}")
+        node.set_initial_pose(w['x_m'], w['y_m'], w['z_m'], w['yaw_deg'])
+    elif args.initial_pose:
+        parts = [float(v) for v in args.initial_pose.strip().split()]
+        if len(parts) >= 3:
+            x, y, z = parts[0], parts[1], parts[2]
+            yaw = math.degrees(parts[5]) if len(parts) >= 6 else 0.0
+            print(f"📍 {CYAN}Seeding initial pose: X={x:+.2f}m, Y={y:+.2f}m, Yaw={yaw:+.1f}°{NC}")
+            node.set_initial_pose(x, y, z, yaw)
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

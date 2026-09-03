@@ -29,7 +29,11 @@ try:
     from cv_bridge import CvBridge
 except Exception:
     CvBridge = None
+import argparse
 import tf2_ros
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import map_relocalizer
 
 GREEN = '\033[0;32m'
 CYAN = '\033[0;36m'
@@ -106,11 +110,18 @@ class UnifiedLocalizationAndGoalNode(Node):
         self.create_subscription(PoseWithCovarianceStamped, '/rtabmap/localization_pose', self.pose_callback, qos)
         self.create_subscription(Image, '/camera/front/image_raw', self.image_callback, qos_profile_sensor_data)
 
+        self.initial_pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/initialpose', 10)
+        self.rtabmap_initial_pose_pub = self.create_publisher(PoseWithCovarianceStamped, '/rtabmap/initialpose', 10)
+
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
         self.create_timer(0.2, self.tf_fallback_timer)
         self.jump_warning = None
         self.filter_active = False
+
+    def set_initial_pose(self, x: float, y: float, z: float = 0.0, yaw_deg: float = 0.0):
+        map_relocalizer.publish_initial_pose(self.initial_pose_pub, x, y, z, yaw_deg, self.get_clock().now())
+        map_relocalizer.publish_initial_pose(self.rtabmap_initial_pose_pub, x, y, z, yaw_deg, self.get_clock().now())
 
     def pose_callback(self, msg: PoseWithCovarianceStamped):
         pos = msg.pose.pose.position
@@ -141,7 +152,7 @@ class UnifiedLocalizationAndGoalNode(Node):
                         return  # Ignore corrupted relocalization jump!
 
             self.jump_warning = None
-            is_reliable = cov_x <= 0.02
+            is_reliable = cov_x <= 0.08
             status = "LOCALIZED" if is_reliable else "ODOM_DRIFT"
             self.current_pose = {
                 "x": float(pos.x),
@@ -185,6 +196,10 @@ class UnifiedLocalizationAndGoalNode(Node):
             iso_ts = datetime.now().isoformat()
 
             with self.lock:
+                # Do not adopt unlocalized startup TF before RTAB-Map matches the map
+                if not self.is_localized:
+                    return
+
                 if self.filter_active and self.current_pose is not None:
                     dt = max(0.001, now - self.current_pose.get("time", now))
                     if dt < 5.0:
@@ -212,6 +227,10 @@ class UnifiedLocalizationAndGoalNode(Node):
             pass
 
     def get_latest_live_pose(self):
+        with self.lock:
+            if not self.is_localized:
+                return None
+
         # Direct zero-latency TF lookup with jump protection
         try:
             t = self.tf_buffer.lookup_transform('map', 'base_link', rclpy.time.Time())
@@ -333,6 +352,13 @@ def render_goals_on_map(goals):
     cv2.imwrite(GOALS_MAP_PNG, overlay)
 
 def main():
+    parser = argparse.ArgumentParser(description="Go2 Unified Localization HUD & Goal Manager")
+    parser.add_argument('--start-goal', type=int, default=None, help="Initial waypoint ID to seed localization (0=origin, 1..N)")
+    parser.add_argument('--start-origin', action='store_true', help="Seed localization at map origin (Node 1, 0,0,0)")
+    parser.add_argument('--initial-pose', type=str, default=None, help="Initial pose format: 'x y z roll pitch yaw'")
+    parser.add_argument('--auto-reloc', action='store_true', help="Auto-relocalize against recorded map keyframes")
+    args, unknown = parser.parse_known_args()
+
     rclpy.init()
     node = UnifiedLocalizationAndGoalNode()
     spin_thread = threading.Thread(target=rclpy.spin, args=(node,), daemon=True)
@@ -346,20 +372,81 @@ def main():
     print(f"{BOLD}{CYAN}========================================================================{NC}")
 
     goals = load_goals()
+    registered_wps = map_relocalizer.load_registered_waypoints()
+    wp_map = {w['id']: w for w in registered_wps}
+
     print(f"Loaded {len(goals)} registered candidate goals:")
     for g in goals:
         print(f"  [{g['id']}] {g['name']:25s} | X={g['x_m']:+7.2f}m, Y={g['y_m']:+7.2f}m, Yaw={g['yaw_deg']:+6.1f}°")
 
-    # 1. Searching for initial landmarks
-    print(f"\n{YELLOW}⏳ [1/2] Searching for 4D LiDAR map landmarks...{NC}")
+    # Handle CLI initial pose seeding if specified
+    if args.start_origin:
+        print(f"\n📍 {CYAN}Seeding initial pose at Map Origin (Node 1): X=0.0m, Y=0.0m, Yaw=0.0°{NC}")
+        node.set_initial_pose(0.0, 0.0, 0.0, 0.0)
+    elif args.start_goal is not None and args.start_goal in wp_map:
+        w = wp_map[args.start_goal]
+        print(f"\n📍 {CYAN}Seeding initial pose at [{w['id']}] {w['name']}: X={w['x_m']:+.2f}m, Y={w['y_m']:+.2f}m, Yaw={w['yaw_deg']:+.1f}°{NC}")
+        node.set_initial_pose(w['x_m'], w['y_m'], w['z_m'], w['yaw_deg'])
+    elif args.initial_pose:
+        parts = [float(v) for v in args.initial_pose.strip().split()]
+        if len(parts) >= 3:
+            x, y, z = parts[0], parts[1], parts[2]
+            yaw = math.degrees(parts[5]) if len(parts) >= 6 else 0.0
+            print(f"\n📍 {CYAN}Seeding initial pose: X={x:+.2f}m, Y={y:+.2f}m, Yaw={yaw:+.1f}°{NC}")
+            node.set_initial_pose(x, y, z, yaw)
+    elif args.auto_reloc:
+        time.sleep(1.0)
+        frame = node.get_snapshot()
+        if frame is not None:
+            reloc = map_relocalizer.MapRelocalizer()
+            match = reloc.match_live_frame(frame)
+            if match:
+                print(f"\n🎯 {GREEN}[AUTO-MATCH] Camera matched map Node #{match['node_id']} (X={match['x_m']:+.2f}m, Y={match['y_m']:+.2f}m, Yaw={match['yaw_deg']:+.1f}°){NC}")
+                node.set_initial_pose(match['x_m'], match['y_m'], match['z_m'], match['yaw_deg'])
+
+    # 1. Searching for verified map localization
+    print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map to lock onto recorded map landmarks...{NC}")
     wait_count = 0
-    while node.get_pose() is None:
+    prompted_options = False
+
+    while not node.is_localized or node.get_pose() is None:
         time.sleep(0.5)
         wait_count += 1
-        if wait_count % 4 == 0:
-            print(f"  {YELLOW}🔍 Still searching for 4D LiDAR map landmarks ({wait_count * 0.5:.1f}s elapsed)...{NC}")
+        if wait_count % 4 == 0 and not node.is_localized:
+            print(f"  {YELLOW}🔍 Still searching for map landmarks ({wait_count * 0.5:.1f}s elapsed)...{NC}")
+
+        if wait_count >= 8 and not node.is_localized and not prompted_options:
+            prompted_options = True
+            print(f"\n{BOLD}{CYAN}------------------------------------------------------------------------{NC}")
+            print(f"{BOLD}{CYAN}💡 [MAP RELOCALIZATION HELPER]{NC}")
+            print(f" RTAB-Map has not yet localized on the map. You can select the robot's physical starting location:")
+            for w in registered_wps:
+                print(f"   [{w['id']}] {w['name']:25s} | X={w['x_m']:+7.2f}m, Y={w['y_m']:+7.2f}m, Yaw={w['yaw_deg']:+6.1f}°")
+            print(f"   [a] Auto-relocalize using live camera vs recorded map keyframes")
+            print(f"   [w] Continue waiting for automatic LiDAR ICP / visual match")
+            print(f"{BOLD}{CYAN}------------------------------------------------------------------------{NC}")
+            try:
+                choice = safe_input(f"👉 Enter Starting Waypoint [0-{len(registered_wps)-1}], 'a', or press [ENTER] to wait: ").strip()
+                if choice.isdigit() and int(choice) in wp_map:
+                    w = wp_map[int(choice)]
+                    print(f"📍 Applying starting waypoint [{w['id']}] {w['name']} to RTAB-Map initialpose...")
+                    node.set_initial_pose(w['x_m'], w['y_m'], w['z_m'], w['yaw_deg'])
+                elif choice.lower() in ('a', 'auto'):
+                    frame = node.get_snapshot()
+                    if frame is not None:
+                        reloc = map_relocalizer.MapRelocalizer()
+                        match = reloc.match_live_frame(frame)
+                        if match:
+                            print(f"🎯 {GREEN}[AUTO-MATCH] Matched Node #{match['node_id']} (X={match['x_m']:+.2f}m, Y={match['y_m']:+.2f}m, Yaw={match['yaw_deg']:+.1f}°){NC}")
+                            node.set_initial_pose(match['x_m'], match['y_m'], match['z_m'], match['yaw_deg'])
+                        else:
+                            print(f"⚠️ Could not find confident visual match. Continuing automatic search...")
+            except Exception:
+                pass
 
     initial_pose = node.get_pose()
+    print(f"\n{BOLD}{GREEN}🎯 [MAP LOCK CONFIRMED] Robot localized at recorded map position:{NC}")
+    print(f"   X:{BOLD}{initial_pose['x']:+7.3f}m{NC} Y:{BOLD}{initial_pose['y']:+7.3f}m{NC} Yaw:{BOLD}{initial_pose['yaw']:+6.1f}°{NC}")
 
     # 2. 5-Second Live Localization Stability & Calibration Warmup
     print(f"\n{BOLD}{GREEN}========================================================================{NC}")

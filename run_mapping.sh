@@ -207,7 +207,8 @@ ros2 launch rtabmap_launch go2_rtabmap.launch.py \
     reg_force_3dof:=true \
     icp_force_4dof:=false \
     loop_closure_identity_guess:=false \
-    proximity_by_space:=false >/dev/null 2>&1 &
+    proximity_by_space:=false \
+    range_max:=25.0 >/dev/null 2>&1 &
 PIDS+=($!)
 sleep 3
 

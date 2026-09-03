@@ -30,6 +30,9 @@ def generate_launch_description():
     icp_force_4dof = LaunchConfiguration('icp_force_4dof', default='false')
     loop_closure_identity_guess = LaunchConfiguration('loop_closure_identity_guess', default='true')
     proximity_by_space = LaunchConfiguration('proximity_by_space', default='false')
+    start_at_origin = LaunchConfiguration('start_at_origin', default='false')
+    initial_pose = LaunchConfiguration('initial_pose', default='')
+    range_max = LaunchConfiguration('range_max', default='25.0')
 
     # Common LIO mapping parameters for both modes.
     base_parameters = {
@@ -97,20 +100,23 @@ def generate_launch_description():
         'RGBD/AngularUpdate': '0.05',
         'RGBD/LinearUpdate': '0.1',
         'RGBD/OptimizeFromGraphEnd': 'false',
-        'RGBD/StartAtOrigin': 'true',          # Always start localization at map origin (0,0,0), ignore stale shutdown poses
+        'RGBD/StartAtOrigin': ParameterValue(start_at_origin, value_type=str),
+        'Kp/MaxFeatures': '-1',                # Disable visual dictionary queries when using pure 3D LiDAR ICP
         'Mem/UseOdomGravity': 'false',         # Use /livo/imu for gravity links, not odometry attitude
-        'Icp/CorrespondenceRatio': '0.15',     # Robust 15% overlap threshold for reliable loop closure acceptance
+        'Icp/CorrespondenceRatio': '0.10',     # Robust 10% overlap threshold for reliable long-range loop closure
         'Icp/PointToPlane': 'true',            # 3D Point-to-Plane ICP
         'Icp/PointToPlaneK': '15',             # 15 nearest neighbors for accurate normal calculation
         'Icp/PointToPlaneGroundNormalsUp': '0.9',# Force ground normals upward during quadruped gait pitch wobbles
         'Icp/VoxelSize': '0.05',               # 5cm Voxelization for ICP
-        'Icp/MaxCorrespondenceDistance': '0.20',# 20cm correspondence distance for fast convergence
+        'Icp/MaxCorrespondenceDistance': '0.35',# 35cm correspondence distance for fast long-range convergence
+        'Icp/RangeMin': '0.35',                # 35cm near-body blind zone for ICP
+        'Icp/RangeMax': '0',                   # 0 = No max range filter on ICP (uses full sensor distance up to 30m)
 
         # Local 3D occupancy data generated directly from the scan cloud.
         'gen_depth': False,
         'gen_scan': False,
         'Grid/Sensor': '0',                    # 0 = laser scan / scan_cloud
-        'Grid/RangeMax': '6.0',                # 6.0m high-confidence indoor range (eliminates glass multipath)
+        'Grid/RangeMax': ParameterValue(range_max, value_type=str), # Maximum LiDAR mapping & localization range (up to 30m)
         'Grid/RangeMin': '0.35',               # 35cm near-body blind zone (cuts off front nose & antenna reflection)
         'Grid/CellSize': '0.05',               # 5cm sharp grid resolution
         'Grid/3D': 'true',                     # Real-time 3D voxel/octomap
@@ -120,7 +126,7 @@ def generate_launch_description():
         'Grid/NormalK': '15',                  # 15 nearest neighbors for robust normal calculation
         'Grid/MinGroundHeight': '-0.45',       # Ground height lower bound (-45cm encompasses standing floor at -35cm)
         'Grid/MaxGroundHeight': '-0.20',       # Ground height upper bound (-20cm clamps floor roughness)
-        'Grid/MaxObstacleHeight': '1.80',      # Captures full door frame, ignores ceiling lights (>1.8m)
+        'Grid/MaxObstacleHeight': '2.20',      # Captures full door frame and tall walls up to 2.2m
         'Grid/NoiseFilteringRadius': '0.15',   # 15cm radius noise filter
         'Grid/NoiseFilteringMinNeighbors': '5',# Minimum 5 neighbor points required
         'GridGlobal/FootprintRadius': '0.45',  # Clear robot body footprint in the assembled grid
@@ -139,6 +145,7 @@ def generate_launch_description():
     localization_parameters.update({
         'Mem/IncrementalMemory': 'false',
         'Mem/InitWMWithAllNodes': 'true',
+        'initial_pose': ParameterValue(initial_pose, value_type=str),
     })
 
     remappings = [
@@ -148,11 +155,15 @@ def generate_launch_description():
         ('scan_cloud', scan_cloud_topic),
         ('imu', '/livo/imu'),
         ('localization_pose', '/rtabmap/localization_pose'),
+        ('initialpose', '/initialpose'),
     ]
 
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false', description='Use simulation time'),
         DeclareLaunchArgument('localization', default_value='false', description='Localize against the existing database instead of creating a new map'),
+        DeclareLaunchArgument('start_at_origin', default_value='false', description='Assume robot starts at map origin (0,0,0) only if explicitly enabled'),
+        DeclareLaunchArgument('initial_pose', default_value='', description='Set initial pose in localization mode (e.g. "x y z roll pitch yaw")'),
+        DeclareLaunchArgument('range_max', default_value='25.0', description='Maximum range in meters for LiDAR mapping and localization (e.g. 25.0 or 30.0)'),
         DeclareLaunchArgument('scan_cloud_topic', default_value='/livo/cloud', description='Base-frame PointCloud2 topic prepared by go2_livo_sensor_bridge.py'),
         DeclareLaunchArgument('subscribe_scan_cloud', default_value='true', description='Subscribe to LiDAR PointCloud (set true when lidar is active)'),
         DeclareLaunchArgument('rtabmap_viz', default_value='false', description='Launch RTAB-Map real-time 3D GUI visualizer'),

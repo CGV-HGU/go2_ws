@@ -3,16 +3,67 @@
 # Canonical 1-Click Launcher for Baseline: Direct Goal / Pure PixNav
 # ==============================================================================
 # Usage:
-#   ./run_pixnav.sh             # Interactive selection of candidate goals [1-5]
-#   ./run_pixnav.sh 1           # Direct run to Goal #1 (Waypoint_1_Mid)
-#   ./run_pixnav.sh 2           # Direct run to Goal #2 (Waypoint_2_Far)
+#   ./run_pixnav.sh                     # Interactive selection of candidate goals [1-5]
+#   ./run_pixnav.sh 1                   # Direct run to Goal #1
+#   ./run_pixnav.sh 1 --start-origin    # Start at map origin (0,0,0) and run to Goal #1
+#   ./run_pixnav.sh 2 --start-goal 1    # Start at Goal #1 and run to Goal #2
+#   ./run_pixnav.sh 1 --auto-reloc      # Auto-relocalize against recorded map keyframes
 # ==============================================================================
 
 set -e
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 RTABMAP_DB="/home/unitree/.ros/rtabmap.db"
-GOAL_ARG="${1:-1}"
+
+GOAL_ARG=""
+START_GOAL=""
+START_AT_ORIGIN=false
+INITIAL_POSE=""
+PASSTHROUGH_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --start-goal)
+            START_GOAL="$2"
+            PASSTHROUGH_ARGS+=("--start-goal" "$2")
+            shift 2
+            ;;
+        --start-origin)
+            START_AT_ORIGIN=true
+            PASSTHROUGH_ARGS+=("--start-origin")
+            shift
+            ;;
+        --initial-pose)
+            INITIAL_POSE="$2"
+            PASSTHROUGH_ARGS+=("--initial-pose" "$2")
+            shift 2
+            ;;
+        --auto-reloc)
+            PASSTHROUGH_ARGS+=("--auto-reloc")
+            shift
+            ;;
+        -*)
+            echo "Error: unsupported option: $1" >&2
+            exit 2
+            ;;
+        *)
+            if [ -z "$GOAL_ARG" ]; then
+                GOAL_ARG="$1"
+            else
+                PASSTHROUGH_ARGS+=("$1")
+            fi
+            shift
+            ;;
+    esac
+done
+
+if [ -z "$GOAL_ARG" ]; then
+    GOAL_ARG="1"
+fi
+
+if [ -n "$START_GOAL" ] && [ -z "$INITIAL_POSE" ]; then
+    INITIAL_POSE=$(python3 -c "import sys; sys.path.insert(0, '$WORKSPACE_DIR/scratch'); import map_relocalizer, math; wps = {w['id']: w for w in map_relocalizer.load_registered_waypoints()}; w = wps.get($START_GOAL); sys.stdout.write(f\"{w['x_m']} {w['y_m']} {w['z_m']} 0 0 {math.radians(w['yaw_deg']):.4f}\" if w else '')" 2>/dev/null || true)
+fi
 
 if [ ! -f "$RTABMAP_DB" ]; then
     echo "❌ Error: Map database not found: $RTABMAP_DB" >&2
@@ -91,19 +142,30 @@ sleep 1
 
 # 4. Launch RTAB-Map in Localization Mode (Headless background)
 echo "🗺️ [3/3] Launching RTAB-Map Localization Engine (localization:=true)..."
+INITIAL_POSE_ARGS=()
+if [ -n "$INITIAL_POSE" ]; then
+    INITIAL_POSE_ARGS=("initial_pose:=$INITIAL_POSE")
+fi
+
 ros2 launch rtabmap_launch go2_rtabmap.launch.py \
     localization:=true \
     rtabmap_viz:=false \
     reg_force_3dof:=true \
     icp_force_4dof:=false \
     loop_closure_identity_guess:=false \
-    proximity_by_space:=false >/dev/null 2>&1 &
-PIDS+=($!)
+    proximity_by_space:=false \
+    start_at_origin:="$START_AT_ORIGIN" \
+    range_max:=25.0 \
+    "${INITIAL_POSE_ARGS[@]}" >/home/unitree/.ros/rtabmap_launch.log 2>&1 &
+RTABMAP_PID=$!
+PIDS+=($RTABMAP_PID)
 sleep 3
 
-# 5. Launch Goal-Directed PixNav Controller
-if [ -n "$GOAL_ARG" ]; then
-    python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode pixnav --goal "$GOAL_ARG"
-else
-    python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode pixnav
+if ! kill -0 "$RTABMAP_PID" 2>/dev/null; then
+    echo "❌ Error: RTAB-Map failed to launch! Output from /home/unitree/.ros/rtabmap_launch.log:" >&2
+    tail -n 25 /home/unitree/.ros/rtabmap_launch.log >&2
+    exit 1
 fi
+
+# 5. Launch Goal-Directed PixNav Controller
+python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode pixnav --goal "$GOAL_ARG" "${PASSTHROUGH_ARGS[@]}"
