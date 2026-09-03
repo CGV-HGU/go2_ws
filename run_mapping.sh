@@ -111,10 +111,15 @@ echo " Display : $([ "$GUI_MODE" = true ] && echo "GUI (rtabmap_viz active on $D
 echo "========================================================================"
 
 PIDS=()
+SESSION_START_TIME=$(date +%s)
+SESSION_START_STR=$(date '+%Y-%m-%d %H:%M:%S')
 
 cleanup() {
     local exit_status=$?
     trap - SIGINT SIGTERM EXIT
+    local session_end_time=$(date +%s)
+    local session_duration=$((session_end_time - SESSION_START_TIME))
+    local session_end_str=$(date '+%Y-%m-%d %H:%M:%S')
     echo ""
     echo "🛑 Stopping mapping stack and saving database..."
     for pid in "${PIDS[@]:-}"; do
@@ -136,6 +141,14 @@ cleanup() {
         echo "🗺️ Auto-extracting 2D Golden Map..."
         python3 "$WORKSPACE_DIR/scratch/extract_final_golden_map.py" "/home/unitree/.ros/rtabmap.db" "$WORKSPACE_DIR/2dmap" || true
     fi
+    echo ""
+    echo "========================================================================"
+    echo "⏱️ [MAPPING SESSION TIME LOG]"
+    echo " • Session Start : $SESSION_START_STR"
+    echo " • Session End   : $session_end_str"
+    echo " • Total Elapsed : ${session_duration}s ($((session_duration / 60))m $((session_duration % 60))s)"
+    echo " • Saved Map Run : $RUN_DIR"
+    echo "========================================================================"
     echo "✅ Mapping stack terminated safely. 🗺️"
     exit "$exit_status"
 }
@@ -189,4 +202,4 @@ sleep 3
 
 # 5. Start Live Loop-Event Logger (Front Console)
 echo "🔍 [4/4] Starting Real-Time Loop Closure Logger..."
-exec python3 "$WORKSPACE_DIR/scratch/rtabmap_loop_logger.py"
+python3 "$WORKSPACE_DIR/scratch/rtabmap_loop_logger.py"

@@ -86,10 +86,15 @@ echo " Display : $([ "$GUI_MODE" = true ] && echo "GUI (rtabmap_viz active on $D
 echo "========================================================================"
 
 PIDS=()
+SESSION_START_TIME=$(date +%s)
+SESSION_START_STR=$(date '+%Y-%m-%d %H:%M:%S')
 
 cleanup() {
     local exit_status=$?
     trap - SIGINT SIGTERM EXIT
+    local session_end_time=$(date +%s)
+    local session_duration=$((session_end_time - SESSION_START_TIME))
+    local session_end_str=$(date '+%Y-%m-%d %H:%M:%S')
     echo ""
     echo "🛑 Shutting down localization stack..."
     for pid in "${PIDS[@]:-}"; do
@@ -103,6 +108,14 @@ cleanup() {
     pkill -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
     pkill -x rtabmap 2>/dev/null || true
     pkill -x rtabmap_viz 2>/dev/null || true
+    echo ""
+    echo "========================================================================"
+    echo "⏱️ [LOCALIZATION SESSION TIME LOG]"
+    echo " • Session Start : $SESSION_START_STR"
+    echo " • Session End   : $session_end_str"
+    echo " • Total Elapsed : ${session_duration}s ($((session_duration / 60))m $((session_duration % 60))s)"
+    echo " • Active Goals  : $WORKSPACE_DIR/config/navigation_goals.json"
+    echo "========================================================================"
     echo "✅ Localization terminated safely. Bye! 🐕"
     exit "$exit_status"
 }
@@ -156,4 +169,4 @@ sleep 3
 
 # 5. Start Unified Real-Time HUD & Interactive Goal Recorder (Front Console)
 echo "🎯 [4/4] Starting Real-Time Localization HUD & Goal Manager..."
-exec python3 "$WORKSPACE_DIR/scratch/go2_localization_and_goal_recorder.py"
+python3 "$WORKSPACE_DIR/scratch/go2_localization_and_goal_recorder.py"
