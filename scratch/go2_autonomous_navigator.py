@@ -136,6 +136,8 @@ class AutonomousNavigator(Node):
         # Jump Rejection Guard
         self.filter_active = False
         self.jump_warning = None
+        self.is_localized = False
+        self.last_cov_x = 0.0
 
         # True PixNav Checkpoint_A Neural Network State
         self.pixnav_model = None
@@ -284,10 +286,15 @@ class AutonomousNavigator(Node):
             return
         self._last_sub_stamp = stamp_key
 
+        cov_x = float(msg.pose.covariance[0])
+        is_reliable = cov_x <= 0.02
+        status = "LOCALIZED" if is_reliable else "ODOM_DRIFT"
+
         now = time.time()
         with self.lock:
             # Protect against false loop closure teleportation (> 2.0m jump) once active
-            if self.filter_active and self.current_pose is not None:
+            # (Do NOT reject true global relocalizations with high confidence: cov_x <= 0.005)
+            if self.filter_active and self.current_pose is not None and cov_x > 0.005:
                 dt = max(0.001, now - self.current_pose.get("time", now))
                 if dt < 5.0:
                     jump_d = math.hypot(pos.x - self.current_pose["x"], pos.y - self.current_pose["y"])
@@ -296,14 +303,17 @@ class AutonomousNavigator(Node):
                         return  # Ignore corrupted relocalization jump!
 
             self.jump_warning = None
+            self.is_localized = is_reliable
+            self.last_cov_x = cov_x
             self.current_pose = {
                 "x": float(pos.x),
                 "y": float(pos.y),
                 "z": float(pos.z),
                 "yaw": float(yaw_deg),
                 "yaw_rad": math.atan2(siny_cosp, cosy_cosp),
+                "cov_x": cov_x,
                 "time": now,
-                "status": "LOCALIZED"
+                "status": status
             }
 
     def image_callback(self, msg: Image):
@@ -966,6 +976,15 @@ Output JSON:
             self.csv_file.flush()
 
         wall_hhmmss = datetime.now().strftime("%H:%M:%S")
+
+        # 1. Continuous Periodic 1Hz Full Localization & Progress Log (Printed as permanent line every 1 second)
+        if self.pose_sample_count % 10 == 0:
+            status_tag = f"{GREEN}🟢 LOCALIZED{NC}" if pose.get('status') == 'LOCALIZED' else f"{YELLOW}⚠️ {pose.get('status', 'ODOM_DRIFT')}{NC}"
+            cov_val = pose.get('cov_x', getattr(self, 'last_cov_x', 0.0))
+            cov_str = f"cov: {cov_val:.4f}"
+            print(f"\n📍 [{wall_hhmmss} | +{elapsed:4.1f}s] {status_tag} ({cov_str}) | Robot: X={BOLD}{pose['x']:+6.2f}m{NC}, Y={BOLD}{pose['y']:+6.2f}m{NC}, Yaw={pose['yaw']:+5.1f}° | Goal #{self.current_goal['id']} ({self.current_goal['name']}): Dist={BOLD}{dist_to_goal:5.2f}m{NC}, Bearing={rel_heading_deg:+5.1f}° | Cmd: vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}")
+
+        # 2. High-rate in-place status line
         sys.stdout.write(
             f"\r⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] [{self.mode.upper()}] "
             f"Pos: ({pose['x']:+6.2f}m, {pose['y']:+6.2f}m) | "
@@ -1252,15 +1271,55 @@ def main():
     spin_thread = threading.Thread(target=rclpy.spin, args=(node,), daemon=True)
     spin_thread.start()
 
-    # 1. Searching for initial landmarks
+    # 0. Active Map Verification Banner (Guarantees user that the latest map is loaded)
+    map_db = "/home/unitree/.ros/rtabmap.db"
+    if os.path.exists(map_db):
+        import sqlite3, struct
+        try:
+            mtime_str = datetime.fromtimestamp(os.path.getmtime(map_db)).strftime("%Y-%m-%d %H:%M:%S")
+            conn = sqlite3.connect(f"file:{map_db}?mode=ro", uri=True)
+            c = conn.cursor()
+            c.execute("SELECT count(*) FROM Node")
+            n_nodes = c.fetchone()[0]
+            c.execute("SELECT id, pose FROM Node WHERE pose IS NOT NULL ORDER BY id")
+            rows = c.fetchall()
+            xs, ys = [], []
+            for _, blob in rows:
+                if len(blob) == 48:
+                    v = struct.unpack("<12f", blob)
+                    xs.append(v[3])
+                    ys.append(v[7])
+            conn.close()
+            min_x, max_x = (min(xs), max(xs)) if xs else (0.0, 0.0)
+            min_y, max_y = (min(ys), max(ys)) if ys else (0.0, 0.0)
+            print(f"\n{BOLD}{GREEN}========================================================================{NC}")
+            print(f"{BOLD}{GREEN} 🗺️ [ACTIVE SLAM MAP VERIFICATION - CONFIRMED LATEST MAP]{NC}")
+            print(f" • Database File : {BOLD}{map_db}{NC}")
+            print(f" • Last Modified : {BOLD}{mtime_str}{NC} ({n_nodes} nodes)")
+            print(f" • Map Bounds    : X=[{min_x:+.2f}m, {max_x:+.2f}m], Y=[{min_y:+.2f}m, {max_y:+.2f}m]")
+            print(f" • Zero-Origin   : ✅ Node #1 at (X={xs[0]:+.3f}m, Y={ys[0]:+.3f}m)")
+            print(f"{BOLD}{GREEN}========================================================================{NC}")
+        except Exception as e:
+            print(f"{YELLOW}⚠️ Map verification read note: {e}{NC}")
+
+    # 1. Searching for initial landmarks (Wait for actual RTAB-Map ICP match)
     print(f"\n{YELLOW}⏳ [1/2] Waiting for RTAB-Map 4D LiDAR Localization Lock...{NC}")
     wait_count = 0
-    initial_pose = node.get_current_pose()
-    while initial_pose is None:
+    while not node.is_localized:
         time.sleep(0.5)
         wait_count += 1
+        p = node.get_current_pose()
+        cov = p.get('cov_x', 0.0) if p else 0.0
+        status = p.get('status', 'NONE') if p else 'NONE'
         if wait_count % 4 == 0:
-            print(f"  {YELLOW}🔍 Still searching for 4D LiDAR map landmarks ({wait_count * 0.5:.1f}s elapsed)...{NC}")
+            print(f"  {YELLOW}🔍 Searching for map landmarks ({wait_count * 0.5:.1f}s elapsed) | Status: {status} (cov: {cov:.4f})...{NC}")
+        if wait_count >= 30:  # 15s timeout
+            print(f"  {YELLOW}⚠️ Relocalization taking > 15s. Proceeding with current estimate.{NC}")
+            break
+
+    initial_pose = node.get_current_pose()
+    while initial_pose is None:
+        time.sleep(0.2)
         initial_pose = node.get_current_pose()
 
     # 2. 5-Second Live Localization Stability & Calibration Warmup Monitor
@@ -1279,7 +1338,8 @@ def main():
                 ref_x, ref_y = p['x'], p['y']
                 drift_m = 0.0
             drift_cm = drift_m * 100.0
-            status_tag = f"{GREEN}100% HEALTHY LOCK!{NC}" if sec == 5 else f"{CYAN}STABLE (Jitter: {drift_cm:3.1f}cm){NC}"
+            cov_val = p.get('cov_x', 0.0)
+            status_tag = f"{GREEN}100% HEALTHY LOCK! (cov: {cov_val:.4f}){NC}" if sec == 5 else f"{CYAN}STABLE (Jitter: {drift_cm:3.1f}cm, cov: {cov_val:.4f}){NC}"
             print(f" [{sec}/5s] {GREEN}🟢 LOCALIZED{NC} | X:{BOLD}{p['x']:+7.3f}m{NC} Y:{BOLD}{p['y']:+7.3f}m{NC} Yaw:{BOLD}{p['yaw']:+6.1f}°{NC} | {status_tag}")
 
     print(f"{BOLD}{GREEN}========================================================================{NC}")
