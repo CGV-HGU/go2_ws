@@ -270,9 +270,13 @@ class LocalizationMonitor(Node):
         if now - self.last_hud_print_time >= 0.45:
             self.last_hud_print_time = now
             sensor_str = self.sensor_health_status(now)
+            if abs(cov_x - 0.0010) < 1e-4:
+                tag = f"{YELLOW}🟡 [SEED/PRIOR #{self.pose_count:04d}]{NC}"
+            else:
+                tag = f"{GREEN}🟢 [LOCALIZED #{self.pose_count:04d}]{NC}"
             print(
                 f"⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] "
-                f"{GREEN}🟢 [LOCALIZED #{self.pose_count:04d}]{NC} "
+                f"{tag} "
                 f"{BOLD}X:{NC}{pos.x:+7.3f}m "
                 f"{BOLD}Y:{NC}{pos.y:+7.3f}m "
                 f"{BOLD}Z:{NC}{pos.z:+6.3f}m "

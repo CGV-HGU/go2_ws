@@ -17,7 +17,7 @@ RTABMAP_DB="/home/unitree/.ros/rtabmap.db"
 
 GOAL_ARG=""
 START_GOAL=""
-START_AT_ORIGIN=false
+START_AT_ORIGIN=true
 INITIAL_POSE=""
 PASSTHROUGH_ARGS=()
 
@@ -25,6 +25,7 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --start-goal)
             START_GOAL="$2"
+            START_AT_ORIGIN=false
             PASSTHROUGH_ARGS+=("--start-goal" "$2")
             shift 2
             ;;
@@ -35,10 +36,12 @@ while [[ $# -gt 0 ]]; do
             ;;
         --initial-pose)
             INITIAL_POSE="$2"
+            START_AT_ORIGIN=false
             PASSTHROUGH_ARGS+=("--initial-pose" "$2")
             shift 2
             ;;
         --auto-reloc)
+            START_AT_ORIGIN=false
             PASSTHROUGH_ARGS+=("--auto-reloc")
             shift
             ;;
