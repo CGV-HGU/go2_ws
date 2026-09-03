@@ -1061,3 +1061,14 @@ The P7 gate now independently rejects a source frame older than 1.0 s or a
 PixNav decision older than 0.5 s even if the upstream adapter previously
 accepted it. Foxy `colcon test` passes 72/72. The source manifest preserves the
 exact uncommitted runtime sources until the user commits and pushes them.
+
+## 10.5 Real-World 71m Corridor Mapping Audit & Future Challenge Roadmap (2026-09-03 KST)
+
+On 2026-09-03, a 350-node real-world mapping run (`~/.ros/rtabmap.db`, 93.6 MB) was executed and evaluated:
+- **Trajectory Performance**: The Go2 completed a full 71.18 m round-trip including straight corridors, 90-degree corners, and a triangular roundabout, returning to the start with an endpoint gap of 1.000 m (1.4% drift rate).
+- **Observed Boundaries & Sharpness**: 2D occupancy grid extraction confirmed crisp, non-diverging single walls with zero catastrophic folding.
+- **Backlog Challenges Logged**:
+  1. *Unclosed Loop Drift*: The 1.0m endpoint drift was not closed due to `Icp/MaxCorrespondenceDistance: 0.20m` and `Icp/MaxTranslation: 0.20m`. Candidate parameter relaxation (`0.40m` / `0.70m` / `IdentityGuess: true`) logged in `docs/troubleshooting/07_loop_closure_icp_and_corridor_tuning_challenge_log.md`.
+  2. *Near-Wall Blind Zone*: Wall-hugging navigation leaves a 20-35cm unmapped band due to `Grid/RangeMin: 0.35m`. 2D Bresenham ray-tracing planned for post-benchmark extraction.
+  3. *Zero Runtime Disruption*: Per user directive, current live launch files remain strictly untouched to preserve stable baseline localization for ongoing trials.
+
