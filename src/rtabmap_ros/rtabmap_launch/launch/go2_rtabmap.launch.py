@@ -146,6 +146,7 @@ def generate_launch_description():
         ('odom', '/livo/odom'),
         ('scan_cloud', scan_cloud_topic),
         ('imu', '/livo/imu'),
+        ('localization_pose', '/rtabmap/localization_pose'),
     ]
 
     return LaunchDescription([

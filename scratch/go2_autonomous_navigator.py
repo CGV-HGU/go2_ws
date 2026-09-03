@@ -388,6 +388,12 @@ class AutonomousNavigator(Node):
         self.pose_sample_count = 0
         self.vlm_query_count = 0
         self.mission_start_time = time.time()
+        self.mission_start_dt = datetime.now()
+        self.mission_start_wall = self.mission_start_dt.strftime("%Y-%m-%d %H:%M:%S")
+        self.forward_time_s = 0.0
+        self.rotation_time_s = 0.0
+        self.stationary_time_s = 0.0
+        self.last_step_time = time.time()
         self.subgoal_u = 640
         self.subgoal_v = 500
 
@@ -458,12 +464,53 @@ class AutonomousNavigator(Node):
         if self.csv_file: self.csv_file.close()
         if self.vlm_log_file: self.vlm_log_file.close()
 
+        # Detailed Time Logging & Profiling
+        self.mission_end_dt = datetime.now()
+        self.mission_end_wall = self.mission_end_dt.strftime("%Y-%m-%d %H:%M:%S")
+        mean_lat = float(np.mean(self.vlm_latencies)) if self.vlm_latencies else 0.0
+        min_lat = float(np.min(self.vlm_latencies)) if self.vlm_latencies else 0.0
+        max_lat = float(np.max(self.vlm_latencies)) if self.vlm_latencies else 0.0
+        p95_lat = float(np.percentile(self.vlm_latencies, 95)) if self.vlm_latencies else 0.0
+        effective_hz = (self.pose_sample_count / elapsed) if elapsed > 0 else 0.0
+        total_budget = max(0.001, self.forward_time_s + self.rotation_time_s + self.stationary_time_s)
+
+        # Write Dedicated time_log.txt
+        time_log_path = os.path.join(self.trial_dir, "time_log.txt")
+        with open(time_log_path, "w") as f:
+            f.write("========================================================================\n")
+            f.write("⏱️ BENCHMARK TIME LOG & EXECUTION PROFILING REPORT\n")
+            f.write("========================================================================\n")
+            f.write(f"• Method / Mode           : {self.mode.upper()}\n")
+            f.write(f"• Target Goal             : Goal #{self.current_goal['id']} ({self.current_goal['name']})\n")
+            f.write(f"• Outcome                 : {'SUCCESS (ARRIVED)' if success else 'HALTED (' + reason + ')'}\n")
+            f.write(f"• Final Distance Error    : {final_dist:.3f} m (Tolerance: {self.tolerance_m:.2f} m)\n")
+            f.write("------------------------------------------------------------------------\n")
+            f.write("📅 MISSION TIME LOG:\n")
+            f.write(f"• Start Timestamp (Local) : {self.mission_start_wall}\n")
+            f.write(f"• End Timestamp (Local)   : {self.mission_end_wall}\n")
+            f.write(f"• Total Duration          : {elapsed:.3f} seconds ({elapsed/60.0:.2f} min)\n")
+            f.write(f"• 10Hz Control Steps      : {self.pose_sample_count} steps (Effective Loop Rate: {effective_hz:.2f} Hz)\n")
+            f.write("------------------------------------------------------------------------\n")
+            f.write("⚡ LATENCY & DECISION PROFILING:\n")
+            f.write(f"• Total Policy Inferences : {self.vlm_query_count} queries\n")
+            f.write(f"• Mean Inference Latency  : {mean_lat:.1f} ms\n")
+            f.write(f"• Min Inference Latency   : {min_lat:.1f} ms\n")
+            f.write(f"• Max Inference Latency   : {max_lat:.1f} ms\n")
+            f.write(f"• P95 Inference Latency   : {p95_lat:.1f} ms\n")
+            f.write("------------------------------------------------------------------------\n")
+            f.write("🏃 KINEMATIC TIME BUDGET:\n")
+            f.write(f"• Forward Translation Time: {self.forward_time_s:.2f} s ({self.forward_time_s/total_budget*100:.1f}%)\n")
+            f.write(f"• In-Place Rotation Time  : {self.rotation_time_s:.2f} s ({self.rotation_time_s/total_budget*100:.1f}%)\n")
+            f.write(f"• Standby / Decel Time    : {self.stationary_time_s:.2f} s ({self.stationary_time_s/total_budget*100:.1f}%)\n")
+            f.write("========================================================================\n")
+
         # Render Publication-Quality Multi-Goal 2D Map & 4-Panel Research Dashboard
         map_path = self.render_multi_goal_trajectory_map(path_length_m, elapsed, avg_speed_mps, success)
         dashboard_path = self.render_benchmark_dashboard(path_length_m, elapsed, avg_speed_mps, success)
 
         # Generate Human-Readable Markdown Executive Summary
-        self.generate_markdown_summary(path_length_m, elapsed, avg_speed_mps, final_dist, success, reason)
+        self.generate_markdown_summary(path_length_m, elapsed, avg_speed_mps, final_dist, success, reason,
+                                      effective_hz, mean_lat, min_lat, max_lat, p95_lat, total_budget)
 
         # JSON Metadata
         metadata = {
@@ -472,6 +519,19 @@ class AutonomousNavigator(Node):
             "mode": self.mode,
             "goal": self.current_goal,
             "initial_pose": self.start_pose,
+            "timing": {
+                "start_timestamp": self.mission_start_wall,
+                "end_timestamp": self.mission_end_wall,
+                "duration_s": round(elapsed, 3),
+                "effective_loop_hz": round(effective_hz, 2),
+                "mean_latency_ms": round(mean_lat, 1),
+                "min_latency_ms": round(min_lat, 1),
+                "max_latency_ms": round(max_lat, 1),
+                "p95_latency_ms": round(p95_lat, 1),
+                "forward_time_s": round(self.forward_time_s, 2),
+                "rotation_time_s": round(self.rotation_time_s, 2),
+                "stationary_time_s": round(self.stationary_time_s, 2)
+            },
             "metrics": {
                 "success": success,
                 "reason": reason,
@@ -481,12 +541,13 @@ class AutonomousNavigator(Node):
                 "final_distance_to_goal_m": round(final_dist, 3),
                 "total_pose_samples": self.pose_sample_count,
                 "total_vlm_queries": self.vlm_query_count,
-                "mean_vlm_latency_ms": round(float(np.mean(self.vlm_latencies)), 1) if self.vlm_latencies else 0.0
+                "mean_vlm_latency_ms": round(mean_lat, 1)
             },
             "saved_artifacts": {
                 "trial_trajectory_on_2d_map": "trial_trajectory_on_2d_map.png",
                 "trial_benchmark_dashboard": "trial_benchmark_dashboard.png",
                 "trial_summary_md": "trial_summary.md",
+                "time_log_txt": "time_log.txt",
                 "trajectory_raw_csv": "trajectory_raw.csv",
                 "vlm_decisions_jsonl": "vlm_decisions.jsonl",
                 "camera_snapshots_dir": "camera_snapshots/"
@@ -500,11 +561,11 @@ class AutonomousNavigator(Node):
         print(f"========================================================================")
         print(f" • Result              : {'✅ ARRIVED WITHIN TOLERANCE' if success else '⚠️ HALTED: ' + reason}")
         print(f" • Folder              : {self.trial_dir}")
-        print(f" • 🗺️ Multi-Goal Map    : trial_trajectory_on_2d_map.png (All goals & path)")
-        print(f" • 📊 4-Panel Dashboard: trial_benchmark_dashboard.png (Speed, distance, errors)")
-        print(f" • 📋 Executive Summary : trial_summary.md (Instant paper table stats)")
-        print(f" • 📸 VLM Decisions    : camera_snapshots/ (Annotated decision overlays only)")
-        print(f" • 📈 Metrics          : Time={elapsed:.1f}s | Length={path_length_m:.2f}m | AvgSpd={avg_speed_mps:.2f}m/s")
+        print(f" • ⏱️ Mission Time Log  : Start {self.mission_start_wall.split()[1]} | End {self.mission_end_wall.split()[1]} | Total {elapsed:.2f}s ({effective_hz:.1f}Hz)")
+        print(f" • ⚡ Policy Latency    : Mean {mean_lat:.1f}ms (P95: {p95_lat:.1f}ms, Max: {max_lat:.1f}ms) | {self.vlm_query_count} queries")
+        print(f" • 🏃 Kinematic Budget : Fwd {self.forward_time_s:.1f}s ({self.forward_time_s/total_budget*100:.0f}%) | Rot {self.rotation_time_s:.1f}s ({self.rotation_time_s/total_budget*100:.0f}%)")
+        print(f" • 📄 Saved Files      : time_log.txt, trial_summary.md, trial_benchmark_dashboard.png")
+        print(f" • 📈 Path Metrics     : Length={path_length_m:.2f}m | AvgSpd={avg_speed_mps:.2f}m/s | Error={final_dist:.3f}m")
         print(f"========================================================================\n")
 
     def vlm_decision_loop(self):
@@ -860,6 +921,16 @@ Output JSON:
 
         self.pose_sample_count += 1
         iso_ts = datetime.now().isoformat()
+        now_step = time.time()
+        dt_step = max(0.001, now_step - getattr(self, 'last_step_time', now_step))
+        self.last_step_time = now_step
+        if abs(self.cmd_vx) > 0.05 and abs(self.cmd_wz) < 0.25:
+            self.forward_time_s += dt_step
+        elif abs(self.cmd_wz) >= 0.25:
+            self.rotation_time_s += dt_step
+        else:
+            self.stationary_time_s += dt_step
+
         if self.csv_file and not self.csv_file.closed:
             self.csv_file.write(
                 f"{iso_ts},{elapsed:.3f},{self.pose_sample_count},"
@@ -868,14 +939,14 @@ Output JSON:
             )
             self.csv_file.flush()
 
+        wall_hhmmss = datetime.now().strftime("%H:%M:%S")
         sys.stdout.write(
-            f"\r🚀 [{self.mode.upper()}] "
+            f"\r⏱️ [{wall_hhmmss} | +{elapsed:04.1f}s] [{self.mode.upper()}] "
             f"Pos: ({pose['x']:+6.2f}m, {pose['y']:+6.2f}m) | "
             f"Target: #{self.current_goal['id']} ({self.current_goal['name']}) | "
             f"{BOLD}Dist: {dist_to_goal:5.2f}m{NC} | "
             f"Cmd: (vx={self.cmd_vx:.2f}, wz={self.cmd_wz:+.2f}) | "
-            f"VLM: #{self.vlm_query_count:02d} | "
-            f"Poses: #{self.pose_sample_count:04d} ({elapsed:4.1f}s)"
+            f"Poses: #{self.pose_sample_count:04d}"
         )
         sys.stdout.flush()
 
@@ -1068,9 +1139,9 @@ Output JSON:
         except Exception:
             return None
 
-    def generate_markdown_summary(self, path_len, elapsed, avg_spd, final_dist, success, reason):
+    def generate_markdown_summary(self, path_len, elapsed, avg_spd, final_dist, success, reason,
+                                  effective_hz, mean_lat, min_lat, max_lat, p95_lat, total_budget):
         md_path = os.path.join(self.trial_dir, "trial_summary.md")
-        mean_lat = float(np.mean(self.vlm_latencies)) if self.vlm_latencies else 0.0
         with open(md_path, "w") as f:
             f.write(f"# 🏁 Benchmark Trial Executive Summary\n\n")
             f.write(f"- **Method / Mode**: `{self.mode.upper()}`\n")
@@ -1082,7 +1153,19 @@ Output JSON:
             f.write(f"- **Average Travel Speed**: `{avg_spd:.2f} m/s` (Max limit: `{self.max_vx:.2f} m/s`)\n")
             f.write(f"- **Pose Sample Count (10Hz)**: `{self.pose_sample_count}`\n")
             f.write(f"- **Policy Inferences / VLM Queries**: `{self.vlm_query_count}` (Mean Latency: `{mean_lat:.1f} ms`)\n\n")
+            f.write(f"## ⏱️ Detailed Time Log & Latency Breakdown\n\n")
+            f.write(f"| Timing & Profiling Metric | Recorded Value |\n")
+            f.write(f"|---|---|\n")
+            f.write(f"| **Mission Start Time (Local)** | `{self.mission_start_wall}` |\n")
+            f.write(f"| **Mission End Time (Local)** | `{self.mission_end_wall}` |\n")
+            f.write(f"| **Total Navigation Time** | `{elapsed:.3f} s` ({elapsed/60.0:.2f} min) |\n")
+            f.write(f"| **Effective Control Loop Rate** | `{effective_hz:.2f} Hz` (Target: 10.0 Hz) |\n")
+            f.write(f"| **Policy / VLM Mean Latency** | `{mean_lat:.1f} ms` (Min: `{min_lat:.1f} ms`, Max: `{max_lat:.1f} ms`, P95: `{p95_lat:.1f} ms`) |\n")
+            f.write(f"| **Forward Translating Time** | `{self.forward_time_s:.2f} s` ({self.forward_time_s/total_budget*100:.1f}%) |\n")
+            f.write(f"| **In-Place Rotating Time** | `{self.rotation_time_s:.2f} s` ({self.rotation_time_s/total_budget*100:.1f}%) |\n")
+            f.write(f"| **Standby / Decel Time** | `{self.stationary_time_s:.2f} s` ({self.stationary_time_s/total_budget*100:.1f}%) |\n\n")
             f.write(f"## 📁 Saved Artifacts\n")
+            f.write(f"- `time_log.txt` : Dedicated human-readable time log and kinematic profiling report.\n")
             f.write(f"- `trial_trajectory_on_2d_map.png` : 2D floor plan overlay with all candidate goals.\n")
             f.write(f"- `trial_benchmark_dashboard.png` : 4-panel publication-grade research dashboard.\n")
             f.write(f"- `trajectory_raw.csv` : 10Hz raw pose & velocity timeseries data.\n")

@@ -21,10 +21,15 @@ if [ ! -f "$RTABMAP_DB" ]; then
 fi
 
 PIDS=()
+SESSION_START_TIME=$(date +%s)
+SESSION_START_STR=$(date '+%Y-%m-%d %H:%M:%S')
 
 cleanup() {
     local exit_status=$?
     trap - SIGINT SIGTERM EXIT
+    local session_end_time=$(date +%s)
+    local session_duration=$((session_end_time - SESSION_START_TIME))
+    local session_end_str=$(date '+%Y-%m-%d %H:%M:%S')
     echo ""
     echo "🛑 Shutting down ESCAPE-Nav Autonomy Stack..."
     for pid in "${PIDS[@]:-}"; do
@@ -38,6 +43,13 @@ cleanup() {
     pkill -f '[r]os2 launch rtabmap_launch go2_rtabmap\.launch\.py' 2>/dev/null || true
     pkill -x rtabmap 2>/dev/null || true
     pkill -x rtabmap_viz 2>/dev/null || true
+    echo ""
+    echo "========================================================================"
+    echo "⏱️ [ESCAPE-NAV SESSION TIME LOG]"
+    echo " • Session Start : $SESSION_START_STR"
+    echo " • Session End   : $session_end_str"
+    echo " • Total Elapsed : ${session_duration}s ($((session_duration / 60))m $((session_duration % 60))s)"
+    echo "========================================================================"
     echo "✅ Robot safely halted and stack closed. 🐕"
     exit "$exit_status"
 }
@@ -91,7 +103,7 @@ sleep 3
 
 # 5. Launch Goal-Directed ESCAPE-Nav Controller
 if [ -n "$GOAL_ARG" ]; then
-    exec python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode ours --goal "$GOAL_ARG"
+    python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode ours --goal "$GOAL_ARG"
 else
-    exec python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode ours
+    python3 "$WORKSPACE_DIR/scratch/go2_autonomous_navigator.py" --mode ours
 fi
