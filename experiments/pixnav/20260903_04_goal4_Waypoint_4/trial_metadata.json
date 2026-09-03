@@ -1,0 +1,64 @@
+{
+  "trial_dir": "/home/unitree/go2_ws_antarctica/experiments/pixnav/20260903_04_goal4_Waypoint_4",
+  "created_at": "2026-09-03T18:09:55.325581",
+  "mode": "pixnav",
+  "goal": {
+    "id": 4,
+    "name": "Waypoint_4",
+    "description": "Candidate destination #4 recorded via interactive HUD",
+    "x_m": 83.25,
+    "y_m": 8.49,
+    "z_m": 0.31,
+    "yaw_deg": -40.7,
+    "tolerance_m": 0.5,
+    "snapshot_image": "config/goals/goal_04_Waypoint_4.jpg"
+  },
+  "initial_pose": {
+    "x": 76.70436096191406,
+    "y": 8.132450103759766,
+    "z": 0.30931007862091064,
+    "yaw": -77.64421324727593,
+    "yaw_rad": -1.355147166285563,
+    "time": 1788426569.2506003,
+    "status": "LOCALIZED"
+  },
+  "timing": {
+    "start_timestamp": "2026-09-03 18:09:29",
+    "end_timestamp": "2026-09-03 18:09:53",
+    "duration_s": 23.695,
+    "effective_loop_hz": 9.96,
+    "mean_latency_ms": 77.3,
+    "min_latency_ms": 59.7,
+    "max_latency_ms": 137.2,
+    "p95_latency_ms": 120.6,
+    "forward_time_s": 10.4,
+    "rotation_time_s": 13.21,
+    "stationary_time_s": 0.0
+  },
+  "metrics": {
+    "success": false,
+    "reason": "USER_INTERRUPT",
+    "spl": 0.0,
+    "optimal_distance_m": 6.56,
+    "path_length_m": 3.66,
+    "path_efficiency_pct": 179.3,
+    "min_obstacle_clearance_m": 0.04,
+    "lidar_repulsion_count": 23,
+    "forward_collision_stop_count": 0,
+    "duration_s": 23.7,
+    "average_speed_mps": 0.154,
+    "final_distance_to_goal_m": 0.0,
+    "total_pose_samples": 236,
+    "total_vlm_queries": 47,
+    "mean_vlm_latency_ms": 77.3
+  },
+  "saved_artifacts": {
+    "trial_trajectory_on_2d_map": "trial_trajectory_on_2d_map.png",
+    "trial_benchmark_dashboard": "trial_benchmark_dashboard.png",
+    "trial_summary_md": "trial_summary.md",
+    "time_log_txt": "time_log.txt",
+    "trajectory_raw_csv": "trajectory_raw.csv",
+    "vlm_decisions_jsonl": "vlm_decisions.jsonl",
+    "camera_snapshots_dir": "camera_snapshots/"
+  }
+}
