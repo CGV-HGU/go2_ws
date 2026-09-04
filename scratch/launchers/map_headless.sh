@@ -6,7 +6,7 @@
 
 set -Eeuo pipefail
 
-WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." >/dev/null 2>&1 && pwd)"
 EXEC_SCRIPT="$WORKSPACE_DIR/scratch/bringup_all_escape_nav.sh"
 LAUNCH_SOURCE="$WORKSPACE_DIR/src/rtabmap_ros/rtabmap_launch/launch/go2_rtabmap.launch.py"
 BRIDGE_SOURCE="$WORKSPACE_DIR/scratch/go2_livo_sensor_bridge.py"

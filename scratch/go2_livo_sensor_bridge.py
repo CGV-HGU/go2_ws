@@ -161,6 +161,14 @@ class Go2LivoSensorBridge(Node):
             elif abs(observed_offset - self.clock_offset_ns) > 2_000_000_000:
                 self.get_logger().warn('LiDAR clock jump detected; reinitializing the common clock offset')
                 self.clock_offset_ns = observed_offset
+            elif observed_offset < self.clock_offset_ns:
+                # ``receipt - source`` is the clock offset plus nonnegative
+                # transport/callback delay.  The first callback after startup
+                # can therefore overestimate the offset and stamp all later
+                # samples in the future.  Track the lower envelope across the
+                # shared LiDAR streams; the per-stream monotonic clamp below
+                # protects consumers while a smaller offset settles.
+                self.clock_offset_ns = observed_offset
             aligned_ns = source_ns + self.clock_offset_ns
 
         # ROS consumers reject time that moves backwards. This clamp is normally
