@@ -1,0 +1,2 @@
+iso_timestamp,elapsed_s,pose_index,x_m,y_m,z_m,yaw_deg,cmd_vx,cmd_wz,dist_to_goal_m,rel_heading_deg,fwd_clear_m,left_clear_m,right_clear_m,status
+2026-09-03T20:59:06.096115,0.079,1,-0.0005,0.0002,-0.0000,-0.67,0.000,0.000,5.570,-18.84,999.00,1.00,1.00,NAVIGATING

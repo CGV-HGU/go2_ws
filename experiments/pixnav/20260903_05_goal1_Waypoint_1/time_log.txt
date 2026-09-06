@@ -1,0 +1,36 @@
+========================================================================
+⏱️ BENCHMARK TIME LOG & EXECUTION PROFILING REPORT
+========================================================================
+• Method / Mode           : PIXNAV
+• Target Goal             : Goal #1 (Waypoint_1)
+• Outcome                 : HALTED (USER_INTERRUPT)
+• Final Distance Error    : 0.000 m (Tolerance: 0.35 m)
+------------------------------------------------------------------------
+🏆 ICRA 2026 NAVIGATION BENCHMARK METRICS:
+• Success Rate (SR)       : 0% (FAILED: USER_INTERRUPT)
+• SPL (Success Path Length: 0.000 (Gold Standard Metric)
+• Optimal Distance (L_opt): 5.57 m (Euclidean Start-Goal)
+• Actual Path Length (L)  : 0.00 m
+• Path Length Efficiency  : 100.0%
+• Min Obstacle Clearance  : 1.00 m (4D LiDAR Safety Margin)
+• LiDAR Wall Repulsions   : 0 events
+• Forward Collision Stops : 0 events
+------------------------------------------------------------------------
+📅 MISSION TIME LOG:
+• Start Timestamp (Local) : 2026-09-03 20:59:06
+• End Timestamp (Local)   : 2026-09-03 20:59:06
+• Total Duration          : 0.176 seconds (0.00 min)
+• 10Hz Control Steps      : 1 steps (Effective Loop Rate: 5.68 Hz)
+------------------------------------------------------------------------
+⚡ LATENCY & DECISION PROFILING:
+• Total Policy Inferences : 0 queries
+• Mean Inference Latency  : 0.0 ms
+• Min Inference Latency   : 0.0 ms
+• Max Inference Latency   : 0.0 ms
+• P95 Inference Latency   : 0.0 ms
+------------------------------------------------------------------------
+🏃 KINEMATIC TIME BUDGET:
+• Forward Translation Time: 0.00 s (0.0%)
+• In-Place Rotation Time  : 0.00 s (0.0%)
+• Standby / Decel Time    : 0.08 s (100.0%)
+========================================================================

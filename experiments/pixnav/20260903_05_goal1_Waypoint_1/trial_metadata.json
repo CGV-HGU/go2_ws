@@ -1,0 +1,65 @@
+{
+  "trial_dir": "/home/unitree/go2_ws_antarctica/experiments/pixnav/20260903_05_goal1_Waypoint_1",
+  "created_at": "2026-09-03T20:59:09.401068",
+  "mode": "pixnav",
+  "goal": {
+    "id": 1,
+    "name": "Waypoint_1",
+    "description": "Candidate destination #1 recorded via interactive HUD",
+    "x_m": 5.25,
+    "y_m": -1.86,
+    "z_m": 0.08,
+    "yaw_deg": 14.5,
+    "tolerance_m": 0.5,
+    "snapshot_image": "config/goals/goal_01_Waypoint_1.jpg"
+  },
+  "initial_pose": {
+    "x": -0.000513999373652041,
+    "y": 0.00024131755344569683,
+    "z": -2.0182404114166275e-05,
+    "yaw": -0.674045711066825,
+    "yaw_rad": -0.011764316967062476,
+    "cov_x": 0.001,
+    "time": 1788436745.6651466,
+    "status": "LOCALIZED"
+  },
+  "timing": {
+    "start_timestamp": "2026-09-03 20:59:06",
+    "end_timestamp": "2026-09-03 20:59:06",
+    "duration_s": 0.176,
+    "effective_loop_hz": 5.68,
+    "mean_latency_ms": 0.0,
+    "min_latency_ms": 0.0,
+    "max_latency_ms": 0.0,
+    "p95_latency_ms": 0.0,
+    "forward_time_s": 0.0,
+    "rotation_time_s": 0.0,
+    "stationary_time_s": 0.08
+  },
+  "metrics": {
+    "success": false,
+    "reason": "USER_INTERRUPT",
+    "spl": 0.0,
+    "optimal_distance_m": 5.57,
+    "path_length_m": 0.0,
+    "path_efficiency_pct": 100.0,
+    "min_obstacle_clearance_m": 1.0,
+    "lidar_repulsion_count": 0,
+    "forward_collision_stop_count": 0,
+    "duration_s": 0.18,
+    "average_speed_mps": 0.0,
+    "final_distance_to_goal_m": 0.0,
+    "total_pose_samples": 1,
+    "total_vlm_queries": 0,
+    "mean_vlm_latency_ms": 0.0
+  },
+  "saved_artifacts": {
+    "trial_trajectory_on_2d_map": "trial_trajectory_on_2d_map.png",
+    "trial_benchmark_dashboard": "trial_benchmark_dashboard.png",
+    "trial_summary_md": "trial_summary.md",
+    "time_log_txt": "time_log.txt",
+    "trajectory_raw_csv": "trajectory_raw.csv",
+    "vlm_decisions_jsonl": "vlm_decisions.jsonl",
+    "camera_snapshots_dir": "camera_snapshots/"
+  }
+}
