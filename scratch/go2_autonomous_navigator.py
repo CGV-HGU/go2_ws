@@ -68,6 +68,30 @@ def safe_input(prompt: str = "") -> str:
             return ""
     except Exception:
         return ""
+
+def timed_safe_input(prompt: str = "", timeout_s: float = 3.0, default: str = "1") -> str:
+    """Read user input with an automatic timeout fallback.
+    If user presses [ENTER] or does nothing for `timeout_s`, returns `default`.
+    """
+    import select
+    sys.stdout.write(prompt)
+    sys.stdout.flush()
+    try:
+        rlist, _, _ = select.select([sys.stdin], [], [], timeout_s)
+        if rlist:
+            try:
+                line = sys.stdin.readline()
+                val = line.strip()
+                return val if val else default
+            except Exception:
+                return default
+        else:
+            sys.stdout.write(f"\n⚡ [AUTO-START] Launching Target Goal #{default} immediately...\n")
+            sys.stdout.flush()
+            return default
+    except Exception:
+        return safe_input() or default
+
 try:
     from cv_bridge import CvBridge
 except Exception:
@@ -1446,9 +1470,13 @@ def main():
         if initial_goal_arg is not None:
             choice = str(initial_goal_arg).strip()
             initial_goal_arg = None
-            print(f"\n📍 Pre-selected Goal on CLI: Goal #{choice}")
+            print(f"\n📍 Target Goal: Goal #{choice} (Default)")
             try:
-                confirm = safe_input(f"👉 Press [ENTER] to execute mission to Goal #{choice}, enter another Goal [1-{len(goals)}], or 'q' to abort: ").strip()
+                confirm = timed_safe_input(
+                    f"👉 Press [ENTER] to execute mission to Goal #{choice} (Auto-start in 3s), enter another Goal [1-{len(goals)}], or 'q' to abort: ",
+                    timeout_s=3.0,
+                    default=choice
+                ).strip()
                 if confirm.lower() in ('q', 'quit', 'exit'):
                     break
                 if confirm:
@@ -1457,10 +1485,13 @@ def main():
                 break
         else:
             try:
-                choice = safe_input(f"\n👉 Enter Target Goal [1-{len(goals)}] to start mission, 'all', or 'q' to quit: ").strip()
+                choice = timed_safe_input(
+                    f"\n👉 Enter Target Goal [1-{len(goals)}] (Press [ENTER] for Goal #1 / Auto-start in 3s), 'all', or 'q' to quit: ",
+                    timeout_s=3.0,
+                    default="1"
+                ).strip()
                 if not choice:
-                    print(f"\n{YELLOW}⚠️ Robot remains completely stationary. Please enter a Goal ID (e.g. 1, 2) to navigate.{NC}")
-                    continue
+                    choice = "1"
             except (KeyboardInterrupt, EOFError):
                 break
 

@@ -127,7 +127,7 @@ class RealRobotPaperEvaluator:
         print("    Method & SR $\\uparrow$ & Intv. $\\downarrow$ & Time $\\downarrow$ & Rec. $\\uparrow$ & Lat. (s) $\\downarrow$ & Duty $\\uparrow$ & Yield $\\uparrow$ \\\\")
         print("    \\midrule")
         if direct_res:
-            print(f"    Direct-goal & {direct_res['SR']:.1f} & {direct_res['Intv']:.2f} & {direct_res['Time']:.1f} & {direct_res['Rec']} & {direct_res['Lat']:.2f} & {direct_res['Duty']:.1f}\\% & -- \\\\")
+            print(f"    Direct-goal & {direct_res['SR']:.1f} & {direct_res['Intv']:.2f} & {direct_res['Time']:.1f} & -- & -- & {direct_res['Duty']:.1f}\\% & -- \\\\")
         if escape_res:
             print(f"    \\textbf{{\\method}} & \\textbf{{{escape_res['SR']:.1f}}} & \\textbf{{{escape_res['Intv']:.2f}}} & \\textbf{{{escape_res['Time']:.1f}}} & \\textbf{{{escape_res['Rec']}}} & \\textbf{{{escape_res['Lat']:.2f}}} & \\textbf{{{escape_res['Duty']:.1f}\\%}} & \\textbf{{{escape_res['Yield']:.1f}\\%}} \\\\")
         print("    \\bottomrule")
