@@ -1,0 +1,75 @@
+{
+  "captured_at": "2026-09-09T02:50:11.104673+00:00",
+  "frame_id": "map",
+  "pose": {
+    "position": {
+      "x": -67.45665740966797,
+      "y": -11.42132568359375,
+      "z": 0.31004399061203003
+    },
+    "orientation": {
+      "x": 0.010377781927365992,
+      "y": 0.01573408703950264,
+      "z": -0.8473966674928106,
+      "w": 0.5306258602382485
+    }
+  },
+  "yaw_rad": -2.0229614761984025,
+  "pose_stamp_unix": 1788922210.6197236,
+  "covariance": [
+    0.06197797226927998,
+    -2.4209297374389555e-06,
+    0.0,
+    0.0,
+    0.0,
+    -0.00012720418687552093,
+    -2.420929737438956e-06,
+    0.06196640567965874,
+    0.0,
+    0.0,
+    0.0,
+    3.3769347160416477e-06,
+    0.0,
+    0.0,
+    1e-08,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3e-08,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3e-08,
+    0.0,
+    -0.00012720418687552093,
+    3.3769347160416477e-06,
+    0.0,
+    0.0,
+    0.0,
+    0.054410596955884453
+  ],
+  "last_accepted_match": {
+    "received_unix": 1788921794.8104484,
+    "stamp_unix": 1788921794.4578898,
+    "loop_closure_id": 0,
+    "proximity_detection_id": 661
+  },
+  "source_database": "/home/unitree/.ros/escape_mapping_runs/20260909_111738/rtabmap.db",
+  "source_database_sha256": "ab77ddc7b0ef7cf7fe5f009adb7a03586c4677cfea5006c30b623864bcc58d23",
+  "localization_run": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/localization-only-20260909-113043",
+  "point_goal_xy_m": {
+    "x": -67.45665740966797,
+    "y": -11.42132568359375
+  },
+  "navigation_goal_published": false,
+  "label": "2",
+  "position_accuracy_verified": false,
+  "accuracy_note": "Current estimator output saved at operator request. Physical position accuracy has not been verified, and the previously reported start-relative position discrepancy remains unresolved.",
+  "seconds_since_last_accepted_registration_at_pose": 416.16183376312256
+}

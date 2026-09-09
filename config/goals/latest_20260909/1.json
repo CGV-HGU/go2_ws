@@ -1,0 +1,76 @@
+{
+  "captured_at": "2026-09-09T02:48:50.008426+00:00",
+  "frame_id": "map",
+  "pose": {
+    "position": {
+      "x": -66.89808654785156,
+      "y": -4.6561431884765625,
+      "z": 0.3075063228607178
+    },
+    "orientation": {
+      "x": 0.0003151552518475343,
+      "y": 0.02162290594897632,
+      "z": -0.41337291858552677,
+      "w": 0.910304994666775
+    }
+  },
+  "yaw_rad": -0.8528660026672455,
+  "pose_stamp_unix": 1788922129.426324,
+  "covariance": [
+    0.035977972269279956,
+    -2.4209297374389555e-06,
+    0.0,
+    0.0,
+    0.0,
+    -0.00012720418687552093,
+    -2.420929737438956e-06,
+    0.03596640567965872,
+    0.0,
+    0.0,
+    0.0,
+    3.3769347160416477e-06,
+    0.0,
+    0.0,
+    1e-08,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3e-08,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3e-08,
+    0.0,
+    -0.00012720418687552093,
+    3.3769347160416477e-06,
+    0.0,
+    0.0,
+    0.0,
+    0.02841059695588443
+  ],
+  "last_accepted_match": {
+    "received_unix": 1788921794.8104484,
+    "stamp_unix": 1788921794.4578898,
+    "loop_closure_id": 0,
+    "proximity_detection_id": 661
+  },
+  "source_database": "/home/unitree/.ros/escape_mapping_runs/20260909_111738/rtabmap.db",
+  "source_database_sha256": "ab77ddc7b0ef7cf7fe5f009adb7a03586c4677cfea5006c30b623864bcc58d23",
+  "localization_run": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/localization-only-20260909-113043",
+  "point_goal_xy_m": {
+    "x": -66.89808654785156,
+    "y": -4.6561431884765625
+  },
+  "navigation_goal_published": false,
+  "label": "1",
+  "position_accuracy_verified": false,
+  "operator_requested_save_with_known_position_discrepancy": true,
+  "accuracy_note": "Before this capture the operator reported about 1 m forward from the start, while the prior estimated pose converted to the mapping start frame was about 0.254 m forward and 0.156 m left. This unresolved discrepancy is retained; the saved pose is the estimator output at capture time, not a ground-truth measurement.",
+  "seconds_since_last_accepted_registration_at_pose": 334.9684340953827
+}
