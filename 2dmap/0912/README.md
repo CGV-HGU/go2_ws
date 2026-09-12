@@ -21,6 +21,9 @@
 | **Goal #1** | `Waypoint_1` | **-61.124** | **7.532** | $92.2^\circ$ ($1.609\text{ rad}$) | 1.0 m | 복도 진입 직진 웨이포인트 |
 | **Goal #2** | `Waypoint_2` | **-51.033** | **7.152** | $-35.7^\circ$ ($-0.624\text{ rad}$) | 1.0 m | 복도 코너 전방 웨이포인트 (직접 후보 정렬) |
 
+*공식 설정 파일: `config/navigation_goals.json`, `config/navigation_goals.yaml`*  
+*원본 레코드: `config/goals/latest_20260912/1.json`, `2.json`*
+
 ---
 
 ## 📂 파일 구성
@@ -30,5 +33,3 @@
 - `trajectory.png`: SLAM 최적화 주행 궤적 및 4.1cm 닫힘 플롯
 - `2d_map_with_trajectory.png`: 2D 지도 위 실주행 궤적 오버레이
 - `2d_goals_map.png`: 2D 지도 위 Goal 1, Goal 2 핀/헤딩 오버레이
-- `navigation_goals.json` / `navigation_goals.yaml`: 자율주행 실행기 연동용 골 목록
-- `goals/1.json`, `goals/2.json`: 원본 골 캡처 레코드
