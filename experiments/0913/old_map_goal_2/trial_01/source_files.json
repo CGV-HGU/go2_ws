@@ -1,0 +1,77 @@
+[
+  {
+    "file": "episode.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/episode.json",
+    "source_sha256": "47dd3e261315a04f2f5e23e64de39ffbae283e5719dff64b27295d312e62bb07"
+  },
+  {
+    "file": "raw_odom.csv",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/odom-trajectory.csv",
+    "source_sha256": "3b7127edee6aa6dd243b1dcd8c2bb5b95afd8b107036d3a77285777f0144845b"
+  },
+  {
+    "file": "trajectory.csv",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/trajectory-view/episode-trajectory-10hz.csv",
+    "source_sha256": "f2a252c7ef685f7f445ca5c92fe68683d20b48ace9445ccae67b59c98464a196"
+  },
+  {
+    "file": "trajectory.png",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/trajectory-view/trajectory.png",
+    "source_sha256": "dfe6728b59508d27a20914f2fd59016eedf54c09b37706bcdd20f5dbe0ddcced"
+  },
+  {
+    "file": "trajectory.pdf",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/trajectory-view/trajectory.pdf",
+    "source_sha256": "31236a717c814d7eb0b76c838263b71a0cd69264c2d1c5ffd6363f088363a6a0"
+  },
+  {
+    "file": "distances.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/trajectory-view/distances.json",
+    "source_sha256": "26de209283d83f653061bc6a7ff6748514c743596aac35610501ebb9ab3d7c57"
+  },
+  {
+    "file": "dispatched_goal.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/full5m/runtime/goal.json",
+    "source_sha256": "0ed40e32370bf20bf1a57681d0fe99ef95226d55630e253b89218d9728d3365c"
+  },
+  {
+    "file": "result.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/full5m/runtime/result.json",
+    "source_sha256": "ead6a59c8128b40fafb8c9a1acb8d59f296ee067b08dfd6bd97d7e4745f5208d"
+  },
+  {
+    "file": "field_report.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/field-report.json",
+    "source_sha256": "0d0f3b3793fba4b12de8d4489c0235bc47de978e75f3b41b59ff6c3f4980cbe3"
+  },
+  {
+    "file": "action_timing.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/action-timing.json",
+    "source_sha256": "895026d714c754974ded2ce1ac7f37f3d4d3c673f7733f7800dcd1922802f2c9"
+  },
+  {
+    "file": "status_transitions.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/status-transitions.json",
+    "source_sha256": "f8d40622d045376329668702cdb4cf1bc07aeeaa082dd2ef174f7ae1b60b7cb7"
+  },
+  {
+    "file": "goal_plan.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/goal-plan.json",
+    "source_sha256": "0b75608578e24200cb13d43498020b1148c56046213b77055d247f7fb352acdc"
+  },
+  {
+    "file": "coordinate_check.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/coordinate-check.json",
+    "source_sha256": "704e8eed8ef8e6db098f29a46442f21d386a28c5ee07e9c099fecc15df433729"
+  },
+  {
+    "file": "stationary_localization_summary.json",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-old-map-goals-20260913/mapgoal-2-001/preflight-summary.json",
+    "source_sha256": "1c7e6cb2f7632998f6b24a92201343518d6d4418afc3c869c64934364b02a42a"
+  },
+  {
+    "file": "sweep_scheduler_trace.jsonl",
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/full5m/policy-trace/sweep_scheduler_trace.jsonl",
+    "source_sha256": "ddb0509368b2fd6710d1f76a826c8ba0555d3b799c27d2d6febec97f4654c071"
+  }
+]

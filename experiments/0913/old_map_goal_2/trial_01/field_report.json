@@ -1,0 +1,12 @@
+{
+  "recorded_unix": 1789285054.2485015,
+  "direct_intervention": null,
+  "contact": false,
+  "path_obstruction": false,
+  "physical_remaining_distance_m": null,
+  "physical_within_goal_radius_verified": null,
+  "operator_observation": "접촉 진로 방해없었고, 지금2번 골포즈쪽으로 회전한 후 멈췄어. 방향은 잘 잡은것 같은데, 불필요한 회전이 살짝 있던것 같기도하고.",
+  "goal_source": "yesterday_map",
+  "localization_method": "fixed_start_odometry",
+  "icp_localization_verified": false
+}

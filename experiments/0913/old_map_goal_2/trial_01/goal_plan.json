@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "pose_source": "fixed_start_odometry",
+  "frame_id": "fixed_start",
+  "origin": {
+    "schema_version": 1,
+    "origin_id": "5b620213d16e42a7939337954903e6b2",
+    "frame_id": "fixed_start",
+    "pose_source": "fixed_start_odometry",
+    "pose_in_odom": [
+      -3.122361421585083,
+      3.246797561645508,
+      2.2863363557171645
+    ],
+    "host_boot_id": "1f61a0a3-880f-46c5-b621-d3132a2d4e37",
+    "odom_publisher_gid": "0110e3bf998da2d1f392ba3e00001703",
+    "captured_unix": 1789284361.2128327,
+    "pose_stamp_unix": 1789284360.8500626,
+    "physical_start_confirmed_by_operator": true,
+    "absolute_map_localization_verified": false,
+    "physical_start_source": "Operator confirms same marked physical start and heading as yesterday map node 1",
+    "map_start_pose": [
+      -63.13214111328125,
+      10.395463943481445,
+      0.021760923609498058
+    ],
+    "map_node_id": 1,
+    "source_database_sha256": "b7ad87461b81f2bef1e02a527e35e1976c765c00ff2a98d8f9bd2742f6e437eb"
+  },
+  "origin_sha256": "21594b73977833ea7aad8c6cc143467fce179860ada4e4d3eb4ecc8037816862",
+  "goals": [
+    {
+      "label": "2",
+      "frame_id": "fixed_start",
+      "pose_source": "fixed_start_odometry",
+      "point_goal_xy_m": {
+        "x": 12.025669119402771,
+        "y": -3.5056468596520403
+      },
+      "yaw_rad": -0.6454761539024596,
+      "origin_sha256": "21594b73977833ea7aad8c6cc143467fce179860ada4e4d3eb4ecc8037816862",
+      "derived_unix": 1789284361.2128327,
+      "derivation_method": "Rigid map-frame conversion relative to operator-confirmed original mapping start; not a new physical goal capture",
+      "source_goal_record": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-terminal-campaign-20260912/map-session/goals/2.json",
+      "source_goal_sha256": "66075a3a98ebeafc9493db787598d4a9232c7230a451cade43a5c6f5b02d70ed",
+      "source_database_sha256": "b7ad87461b81f2bef1e02a527e35e1976c765c00ff2a98d8f9bd2742f6e437eb",
+      "source_map_goal": {
+        "captured_at": "2026-09-12T14:21:47.520186+00:00",
+        "frame_id": "map",
+        "pose": {
+          "position": {
+            "x": -51.03303909301758,
+            "y": 7.152316093444824,
+            "z": 0.3015137016773224
+          },
+          "orientation": {
+            "x": -0.02842758100852432,
+            "y": 0.01666417396746269,
+            "z": -0.3064418760695681,
+            "w": 0.9513188509016407
+          }
+        },
+        "yaw_rad": -0.6237152302929615,
+        "pose_stamp_unix": 1789222907.2482145,
+        "covariance": [
+          0.0003523740824702844,
+          -7.652514471836201e-08,
+          0.0,
+          0.0,
+          0.0,
+          1.2322363674384913e-06,
+          -7.6525144718362e-08,
+          0.0003524975811676335,
+          0.0,
+          0.0,
+          0.0,
+          -2.549461123300526e-06,
+          0.0,
+          0.0,
+          1e-08,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          3e-08,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          3e-08,
+          0.0,
+          1.2322363674384913e-06,
+          -2.549461123300526e-06,
+          0.0,
+          0.0,
+          0.0,
+          4.169340124276362e-05
+        ],
+        "last_accepted_match": {
+          "received_unix": 1789222907.478258,
+          "stamp_unix": 1789222907.2482145,
+          "loop_closure_id": 170,
+          "proximity_detection_id": 0
+        },
+        "map_registration_age_s": 0.2719717025756836,
+        "map_registration_verified": true,
+        "position_accuracy_verified": false,
+        "accuracy_note": "A recent accepted map registration is recorded; physical position must still be checked by the operator.",
+        "source_database": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-terminal-campaign-20260912/map-session/map-reprocessed.db",
+        "source_database_sha256": "b7ad87461b81f2bef1e02a527e35e1976c765c00ff2a98d8f9bd2742f6e437eb",
+        "localization_run": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-terminal-campaign-20260912/map-session",
+        "point_goal_xy_m": {
+          "x": -51.03303909301758,
+          "y": 7.152316093444824
+        },
+        "navigation_goal_published": false,
+        "capture_requested_unix": 1789222906.7529893,
+        "label": "2"
+      },
+      "physical_goal_accuracy_verified": false,
+      "absolute_map_localization_verified": false
+    }
+  ],
+  "requires_marked_start_before_each_episode": true,
+  "reanchor_at_dispatch": true,
+  "icp_corrections_used": false,
+  "success_radius_m": 1.0,
+  "final_yaw_requested": false,
+  "absolute_map_localization_verified": false
+}

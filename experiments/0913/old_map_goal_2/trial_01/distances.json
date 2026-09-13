@@ -1,0 +1,47 @@
+{
+  "episode_id": "robot-pointnav-29af24bf3e67-1",
+  "goal_label": "2",
+  "elapsed_to_stop_s": 356.92928968899923,
+  "initial_goal_straight_distance_m": 12.52622359987022,
+  "cumulative_path_10hz_m": 12.060163787336853,
+  "net_displacement_at_stop_request_m": 7.911096873939057,
+  "net_displacement_from_goal_origin_m": 7.911083226700557,
+  "software_reported_goal_distance_m": 4.847586154937744,
+  "interpolated_goal_distance_at_stop_request_m": 4.847542345172649,
+  "goal_start_frame_xy_m": [
+    12.025669119402771,
+    -3.50564685965204
+  ],
+  "stop_start_frame_xy_m": [
+    7.839586611809787,
+    -1.061187813591748
+  ],
+  "coordinate_method": "Translate by fresh episode odometry origin, rotate by negative initial heading; +X forward, +Y left.",
+  "path_source": "Archived continuous odometry, linear interpolation at 10 Hz with exact interval endpoints; no denoising.",
+  "physical_distance_measured": false,
+  "last_sample_before_stop_s": 0.0,
+  "field_report": {
+    "recorded_unix": 1789285054.2485015,
+    "direct_intervention": null,
+    "contact": false,
+    "path_obstruction": false,
+    "physical_remaining_distance_m": null,
+    "physical_within_goal_radius_verified": null,
+    "operator_observation": "접촉 진로 방해없었고, 지금2번 골포즈쪽으로 회전한 후 멈췄어. 방향은 잘 잡은것 같은데, 불필요한 회전이 살짝 있던것 같기도하고.",
+    "goal_source": "yesterday_map",
+    "localization_method": "fixed_start_odometry",
+    "icp_localization_verified": false
+  },
+  "notes": [
+    "Initial straight distance is not a reviewed shortest path for SPL.",
+    "The software residual and interpolated StopMove endpoint differ because their timestamps differ.",
+    "See episode.json for the outcome and field report; no shortest-path reference is assumed."
+  ],
+  "source_sha256": {
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/odom-trajectory.csv": "3b7127edee6aa6dd243b1dcd8c2bb5b95afd8b107036d3a77285777f0144845b",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed/episode.json": "47dd3e261315a04f2f5e23e64de39ffbae283e5719dff64b27295d312e62bb07",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/full5m/runtime/goal.json": "0ed40e32370bf20bf1a57681d0fe99ef95226d55630e253b89218d9728d3365c",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/full5m/runtime/result.json": "ead6a59c8128b40fafb8c9a1acb8d59f296ee067b08dfd6bd97d7e4745f5208d",
+    ".local-data/fixed-start-goals-20260913/export_episode_trajectory.py": "0487e5e0e7134d49ca017c33033fa9b81fd2ca99f3f4b4a945c315cce7af2be3"
+  }
+}

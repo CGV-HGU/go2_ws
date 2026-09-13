@@ -1,0 +1,73 @@
+{
+  "recorded_unix": 1789285321.642891,
+  "episode_id": "robot-pointnav-29af24bf3e67-1",
+  "requested_goal": "yesterday map goal 2",
+  "goal_map_sha256": "b7ad87461b81f2bef1e02a527e35e1976c765c00ff2a98d8f9bd2742f6e437eb",
+  "dispatch_method": "fixed_start_odometry",
+  "map_localization_verified": false,
+  "arrival_verified": false,
+  "shutdown_service_confirmed": true,
+  "look_down_substitution_count": 25,
+  "look_up_substitution_count": 0,
+  "measurements": {
+    "goal_distance_initial_m": 12.52622359987022,
+    "episode_elapsed_s": 356.92928968899923,
+    "command_count": 60,
+    "action_counts": {
+      "move_forward": 48,
+      "turn_left": 5,
+      "turn_right": 7
+    },
+    "forward_amount_counts": {
+      "0.10000000149011612": 25,
+      "0.25": 23
+    },
+    "all_actions_executed": true,
+    "forward_action_duration_s": {
+      "median": 1.32741554849963,
+      "min": 0.9358293229997798,
+      "max": 2.639025493999725
+    },
+    "forward_to_forward_result_to_command_gap_s": {
+      "n": 39,
+      "median": 0.26321307199941657,
+      "min": 0.14731643400045868,
+      "max": 40.336673699999665
+    },
+    "last_action_to_stop_s": 56.26969327000006,
+    "last_action": {
+      "command": "pixnav-93b8d2581b7d322880720c59-step-9",
+      "action": "turn_left",
+      "distance_m": 0.0,
+      "start_s": 297.0368011170003,
+      "end_s": 300.6595964189992,
+      "status": "EXECUTED",
+      "duration_s": 3.622795301998849
+    },
+    "gap_measurement_note": "Result receipt to next command receipt. Excludes braking/settling already inside each action, not total physical rest time."
+  },
+  "software_remaining_m": 4.847586154937744,
+  "cumulative_odom_10hz_m": 12.060163787336851,
+  "net_displacement_m": 7.911083226700557,
+  "confirmed_last_failure": {
+    "sweep_state": "pause_requested",
+    "missing_acks": [
+      "CONTROLLER_QUIESCENT",
+      "EXECUTOR_PAUSED"
+    ],
+    "timeout_s": 90.0,
+    "vlm_wait": "WAITING_PIXNAV_PREFETCH_APPLY",
+    "navigation_log_error": "PIXNAV_RESULT_DECISION_MISMATCH",
+    "next_code_path_to_reproduce": "Sweep pause accepted at active action_count=0, pending_command=None. step clears pause intent then _complete_go_segment requires _last_result. Verify failure before first result and missing pause ACK. Hypothesis, not yet reproduced."
+  },
+  "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-reviewed",
+  "raw_trial": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002",
+  "native_bag": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/reuse-night-map-20260913-second-check/native-inputs-mapgoal-2-001",
+  "pending_bundle": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/archives/old-map-goal-2-002-pending/raw-episode.tar.gz",
+  "pending_bundle_note": "Snapshot before operator field report and later analyses; reviewed archive and raw trial contain later additions.",
+  "source_robot_code_commit": "69b11d7d1caf77ba55d4585f13a3c0686037ce86",
+  "robot_code_worktree_dirty": true,
+  "source_commit_alone_reconstructs_runtime": false,
+  "runtime_pixnav_source_sha256": "d8d46493a8de003ac11f42873c9d0532a815ec6fba7ebd31a49b34a82c447c43",
+  "trace_export_note": "Scalar fields only for async traces; no VLM prompts, RGB, credentials, or response bodies. Full raw files stay on Jetson."
+}

@@ -1,0 +1,152 @@
+{
+  "jetson_path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/reuse-night-map-20260913-second-check/native-inputs-mapgoal-2-001",
+  "uploaded_to_git": false,
+  "format": "ROS 2 MCAP zstd_fast",
+  "scope": "startup, stationary localization check, failed preflight, and successful goal dispatch through stop; cut by episode timestamps",
+  "duration_s": 788.705767577,
+  "message_count": 323583,
+  "topic_counts": {
+    "/robot_nav/sensors/front_camera/camera_info": 11264,
+    "/rtabmap/localization_pose": 81,
+    "/robot_nav/sensors/front_camera/image_raw": 11264,
+    "/s2e/mapping/cloud": 2566,
+    "/s2e/robot/sensors/cloud": 10450,
+    "/rtabmap/info": 175,
+    "/s2e/robot/sensors/imu": 159750,
+    "/s2e/robot/sensors/odom": 101205,
+    "/tf": 26825,
+    "/tf_static": 3
+  },
+  "files": [
+    {
+      "name": "metadata.yaml",
+      "bytes": 13939,
+      "sha256": "3d412f67f55b058064dc7a46e36aee6e29bcdd8865090f0199d81d10f0c9af65"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_0.mcap",
+      "bytes": 537310813,
+      "sha256": "cb12da152fbc6252dff718abd72fe2240d54ab8992cc8884846880778a8523ec"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_1.mcap",
+      "bytes": 537132197,
+      "sha256": "a1f5e647c8eb2ec8f977531b1b811961eb016f3c52c23ce064623ce117a3ac15"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_10.mcap",
+      "bytes": 538094047,
+      "sha256": "f5b7f13ea717df2ca174f62cba89c34ddd6531030b4aa0ce00d0fb4fa450d07f"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_11.mcap",
+      "bytes": 537962669,
+      "sha256": "a311dfe6bddae3845503d829cc6c6346acc1cb02540ab1ad24f24279b471542d"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_12.mcap",
+      "bytes": 537982306,
+      "sha256": "97018d1c86288475a5f42dca75adab60c7f1a0fea98ddd060d7fe53e83b2fb0c"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_13.mcap",
+      "bytes": 537577909,
+      "sha256": "9d8ec8e47b2507879a94d53f8c571d0053849935c3b5813399ac042d5de0b2dd"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_14.mcap",
+      "bytes": 537611146,
+      "sha256": "82cfc9807507bf4d6af45adee24a8e01569ed35bd41b737eb6e3e97217e8ab4b"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_15.mcap",
+      "bytes": 537490263,
+      "sha256": "2372fc424c28709650d5b584637ad9304352c491bfee25ce3d4c7ca1c4de23cb"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_16.mcap",
+      "bytes": 537280689,
+      "sha256": "d2274e1c8f7031758c19acd2a56ec45586245e5d122d346009f8404416520d91"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_17.mcap",
+      "bytes": 537488434,
+      "sha256": "3ddf1b161ea3ae25c324a1ca90a66d7b761af39af47150447fb929b00cee01c8"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_18.mcap",
+      "bytes": 537503954,
+      "sha256": "07469ec0247d28e59c69dd9bf3448611b3dc8d527aa9304fa880750760602c3c"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_19.mcap",
+      "bytes": 537465883,
+      "sha256": "ef09ac130f3880762f7a9d297365222c030e1308b084caa7dc32bb0e0a3e12f7"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_2.mcap",
+      "bytes": 537127928,
+      "sha256": "9cad8708b181cf9572e645baadfc9d998b181bada4f5b0f96ebac25dbeee63f3"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_20.mcap",
+      "bytes": 537478182,
+      "sha256": "18a14b230722faa7d107290a51683cde1cdde3e8bee044d87bad412ab2c63d87"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_21.mcap",
+      "bytes": 536998248,
+      "sha256": "e7f46ac8aa0174b427949edc77e4aaf11737f0ff0220ccca994007eff7a7a50a"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_22.mcap",
+      "bytes": 537031582,
+      "sha256": "cdc62860a24abdabe4864b5625297983e4b4d777a44f324afcd3dcf7177b0f54"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_23.mcap",
+      "bytes": 537893256,
+      "sha256": "e337bbfda7c3b4a71585f410646d0c087125d9804cb44c91416f6778dec532e5"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_24.mcap",
+      "bytes": 523400867,
+      "sha256": "ddc8eb6fc5015713e1cde64ce10f17607ee471eceb4b2d4a845020731f59a4ce"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_3.mcap",
+      "bytes": 537658990,
+      "sha256": "1be8d86fda87350aef7b5b793160cc4b5e4e1a86616959c9cf5eaf2067c505af"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_4.mcap",
+      "bytes": 537280958,
+      "sha256": "7cc9d17ce993b6f34a99901ea29bad4b8ef206d7cfd4a907920ce30fbc45830a"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_5.mcap",
+      "bytes": 538108679,
+      "sha256": "22ce0fd6d951e9917175037c30a63c35c477cc9390c5018231a6b3f9c0d30bc9"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_6.mcap",
+      "bytes": 537567438,
+      "sha256": "ba53bb89f479d43b045375db8f34c47ce514f105e040520e2843fbef32fb52a5"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_7.mcap",
+      "bytes": 537578072,
+      "sha256": "8c20a50c73f2a2d41f8cc84571a8f39e7425d618dda3e3bc2497c283aba28c3f"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_8.mcap",
+      "bytes": 537409986,
+      "sha256": "860b4fffa7ee1149faad97296861ddbad1fb3aa5989b9dc884209aeecfa0b865"
+    },
+    {
+      "name": "native-inputs-mapgoal-2-001_9.mcap",
+      "bytes": 537621014,
+      "sha256": "f14de00791e15a7e5848be5aa32f83dedcb09eb50965d50c44b2cb33bd3fd10e"
+    }
+  ]
+}

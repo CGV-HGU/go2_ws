@@ -1,0 +1,1955 @@
+[
+  {
+    "time": 0.4810254130006797,
+    "node": "go2_action_executor",
+    "state": [
+      "INHIBITED",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 0.6807231460006733,
+    "node": "pixnav_runtime_node",
+    "state": [
+      "WAITING_FIRST_VLM",
+      "WAITING_FIRST_VLM",
+      ""
+    ]
+  },
+  {
+    "time": 0.9686445030001778,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_TASK",
+      ""
+    ]
+  },
+  {
+    "time": 1.0562073970004349,
+    "node": "sweep_scheduler_node",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 2.6486240910007837,
+    "node": "pixnav_runtime_node",
+    "state": [
+      "WAITING_FIRST_VLM",
+      "EPISODE_RESET",
+      ""
+    ]
+  },
+  {
+    "time": 2.7071838840001874,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SYNC",
+      ""
+    ]
+  },
+  {
+    "time": 3.0081647510005496,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 5.550563954000609,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 5.981915189000574,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 11.597261969000101,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 11.999045283000669,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 13.430375860000822,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 13.52321666700027,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 17.369803530000354,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 17.47989288000008,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 19.414022619000207,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 19.499529401000473,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 26.715976850000516,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 26.98067385000013,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 27.40764729000057,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 27.498600470000383,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 32.995370205000654,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 32.99964961200021,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 33.41613510800016,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 33.503284678000455,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 39.70997763500054,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 39.986136644,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 41.39105312200081,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "OBSERVATION_READY",
+      ""
+    ]
+  },
+  {
+    "time": 41.8161082860006,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 47.86320534300012,
+    "node": "pixnav_runtime_node",
+    "state": [
+      "ACTIVE",
+      "PIXNAV_ACTIVE",
+      ""
+    ]
+  },
+  {
+    "time": 47.976414762000786,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 47.990034678000484,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 49.99344971100072,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 50.24194285900012,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 51.005833201000314,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 52.48095196200029,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 53.0016410850003,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 54.0012816920007,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 54.49378403300034,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 54.971508972000265,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 55.990105812000365,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 56.51577114100019,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 57.329367903000275,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 58.97761457900015,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 59.48626251100086,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 60.987695935000374,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 61.490422315000615,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 61.96521014700011,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 62.97580868800014,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 63.493535682000584,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 63.96052790200065,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 64.37648114100011,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 64.50675878100083,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 65.00346315800016,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 65.98389045500062,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 66.48067698100022,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 68.96289524200074,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 69.47883727200042,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 69.47945649700068,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_POST_REVALIDATION_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 71.39992677000009,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 71.51532476300054,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 73.81705656700069,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 73.9802760980001,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 75.38915844599978,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 75.48858772400126,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 82.16807679500016,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 82.48050930499994,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 83.41062103700096,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 83.51420786200106,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 86.98081502199966,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 87.0262559189996,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 87.3941993389999,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "OBSERVATION_READY",
+      ""
+    ]
+  },
+  {
+    "time": 87.61276379100127,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 92.4959382800007,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 92.97844059300041,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 102.25498645600055,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 102.48010541999975,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 102.99300754500109,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 103.47712612400028,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 104.0208699900013,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 106.95902671600015,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 107.01162438699976,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 107.51111988600132,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 107.9781660259996,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 108.33096755800034,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 109.48077941500014,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 110.0077606800005,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 112.48093754799993,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 112.96064558600119,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 112.99438645400005,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 113.96552784199957,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 113.99218019600085,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 114.16015481100112,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 114.50185259600039,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 118.97145489899958,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 119.28118238600109,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_POST_REVALIDATION_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 119.48001804100022,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 119.95899703000032,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 121.39932876000057,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 121.49553132100118,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 126.14063547300066,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 126.50412641200091,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 127.44168807599999,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 127.51106429100037,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 132.7633975610006,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 132.97779792100118,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 133.3873277069997,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "OBSERVATION_READY",
+      ""
+    ]
+  },
+  {
+    "time": 133.4994851620013,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 137.49742043399965,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 137.96007902200108,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 138.43099135600096,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 138.4753135230003,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 138.98981935499978,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 143.95962011400115,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 147.49243002600087,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 147.98676239700035,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 148.48196565299986,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 148.6874525639996,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 148.99654064599963,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 149.9848578580004,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 150.49644633000025,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 152.9828106269997,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 153.49288716699994,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 153.99485345500034,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 155.02536926600078,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 155.48717339799987,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 155.96387266800048,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 155.9925832200006,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 156.22704155999963,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 156.49416642300093,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 159.478650250001,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 159.9939191350004,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 160.9615529849998,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 161.98234194200086,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 162.2606569290001,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_POST_REVALIDATION_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 162.3433847340002,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 162.5088509699999,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 173.47156282200012,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 173.48959725700115,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 175.41298085699964,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 175.49490143100047,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 182.3040445810002,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 182.47921649900127,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 183.3873976670002,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 183.49337446000027,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 187.77815669600022,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 187.98651727099968,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 189.40955133300122,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 189.521830529,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 195.68364952100092,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 195.99510987900067,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 197.39544731100068,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "OBSERVATION_READY",
+      ""
+    ]
+  },
+  {
+    "time": 197.53080025500094,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 202.95864708500085,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 202.9891531049998,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 203.96319904600023,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 204.993302072,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 205.5154431080009,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 206.48766251300003,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 206.9903004780008,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 207.47898683099993,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 207.99314184499963,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 208.96437964399956,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 209.48611865100065,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 210.00331836700025,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 210.7738337890005,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 211.98730716300088,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 212.50073946200064,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 214.50411293199977,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 214.988239454,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 215.96415159699973,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 216.48780415799956,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 216.9869741149996,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 217.84839007400114,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 223.00868611700025,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 227.491371782,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 227.58129275300053,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_POST_REVALIDATION_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 229.4058892539997,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 229.49542726599975,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 238.3106521360005,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 238.47918404899974,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 239.40381990400056,
+    "node": "vlm_node",
+    "state": [
+      "FROZEN_ROTATING",
+      "FROZEN_ROTATING",
+      ""
+    ]
+  },
+  {
+    "time": 239.4887680009997,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 248.70681780199993,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_SWEEP_OBSERVATION",
+      ""
+    ]
+  },
+  {
+    "time": 248.9744085050006,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 249.3929981780002,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "OBSERVATION_READY",
+      ""
+    ]
+  },
+  {
+    "time": 249.4950574100003,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 253.96548913600054,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 254.00439022200044,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 254.9986568580007,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 259.97268853400055,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 268.986594502001,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 269.0378852499998,
+    "node": "sweep_scheduler_node",
+    "state": [
+      "ACTIVE",
+      "PAUSE_REQUESTED",
+      ""
+    ]
+  },
+  {
+    "time": 269.56267657600074,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 269.58501797400095,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 270.4801289040006,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 270.98576616399987,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 274.9621710949996,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      ""
+    ]
+  },
+  {
+    "time": 277.4420999060003,
+    "node": "vlm_node",
+    "state": [
+      "ACTIVE",
+      "VLM_IN_FLIGHT",
+      ""
+    ]
+  },
+  {
+    "time": 277.4985062570013,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 277.9944288180013,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 279.47427223900013,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 280.01557452199995,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 282.99071192799966,
+    "node": "vlm_node",
+    "state": [
+      "WAITING_SYNC",
+      "WAITING_PIXNAV_PREFETCH_APPLY",
+      ""
+    ]
+  },
+  {
+    "time": 291.4941890900009,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 291.9889179769998,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 292.98431637900103,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 293.5241219359996,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 294.9800815180006,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 295.50393886799975,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 297.50886538099985,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 297.9908008800012,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 299.49622487099987,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 299.9964394590006,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "MOVING",
+      ""
+    ]
+  },
+  {
+    "time": 303.5513283220007,
+    "node": "go2_action_executor",
+    "state": [
+      "ACTIVE",
+      "IDLE",
+      ""
+    ]
+  },
+  {
+    "time": 359.05364485300015,
+    "node": "sweep_scheduler_node",
+    "state": [
+      "DEGRADED",
+      "SWEEP_FAILED",
+      "SWEEP_COORDINATION_TIMEOUT"
+    ]
+  },
+  {
+    "time": 359.4812520300002,
+    "node": "go2_action_executor",
+    "state": [
+      "INHIBITED",
+      "IDLE",
+      "SWEEP_CANCELLED"
+    ]
+  }
+]

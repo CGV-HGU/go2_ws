@@ -1,0 +1,82 @@
+{
+  "excluded_from_original_six_attempt_cohort": true,
+  "wrong_goal_episode": {
+    "result": {
+      "reason": "ASSISTANT_REQUESTED_STOP",
+      "goal_frame": "odom",
+      "goal_label": "2",
+      "success_distance_m": 1.0,
+      "max_duration_s": 360.0,
+      "navigation_mode": "full",
+      "look_execution": "forward_0p1",
+      "goal_published": true,
+      "shutdown_service_confirmed": true,
+      "goal_distance_m": 1.0160635709762573,
+      "statuses": {
+        "sweep_scheduler_node": {
+          "state": "ACTIVE",
+          "mode": "IDLE",
+          "healthy": true,
+          "error": ""
+        },
+        "rtab_pointgoal_adapter": {
+          "state": "READY",
+          "mode": "READY",
+          "healthy": true,
+          "error": ""
+        },
+        "go2_sensor_input": {
+          "state": "READY",
+          "mode": "FIXED_STARTUP_OFFSET",
+          "healthy": true,
+          "error": ""
+        },
+        "go2_action_executor": {
+          "state": "ACTIVE",
+          "mode": "IDLE",
+          "healthy": true,
+          "error": ""
+        },
+        "vlm_node": {
+          "state": "WAITING_SYNC",
+          "mode": "EPISODE_OVER",
+          "healthy": true,
+          "error": ""
+        },
+        "pixnav_runtime_node": {
+          "state": "ACTIVE",
+          "mode": "PIXNAV_ACTIVE",
+          "healthy": true,
+          "error": ""
+        }
+      },
+      "localization_method": "fixed_start_odometry",
+      "physical_arrival_verified": false,
+      "absolute_map_localization_verified": false
+    },
+    "intent": {
+      "recorded_unix": 1789283891.729996,
+      "requested_goal": "Yesterday map saved goal 2",
+      "executed_goal": "Today fixed-start goal 2",
+      "protocol_deviation": "Assistant selected the wrong goal set",
+      "operator_correction": "아니 어제 맵에서 찍었던 2번 골포즈를 찍으라는 말이었어. 다시 정렬을 하고 알려줄게",
+      "termination": "Assistant requested stop immediately on clarification; shutdown confirmed",
+      "include_in_intended_old_map_goal_metrics": false,
+      "preserve_for_controller_log_analysis": true
+    },
+    "raw_path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-start-goals-20260913/prepared/goal-2-004"
+  },
+  "startup_failure": {
+    "goal_published": false,
+    "motion_enabled": false,
+    "reason": "ODOM_CLOCK_RESET due overlapping old/new input during startup",
+    "raw_path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-001"
+  },
+  "old_map_goal_trial": {
+    "goal_set": "yesterday map goal 2",
+    "started": true,
+    "arrival": false,
+    "physical_trial_count_for_this_target_today": 1,
+    "prepared_directory_suffix_note": "002 follows preflight-only failure 001; this is not a second physical drive."
+  }
+}
