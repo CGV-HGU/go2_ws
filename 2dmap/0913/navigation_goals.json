@@ -47,11 +47,11 @@
     {
       "id": 5,
       "name": "Waypoint_5",
-      "description": "Goal candidate #5 on 0913 full SLAM map (NEW Long Goal: 16.13m from origin)",
-      "x_m": 15.604,
-      "y_m": -4.08,
+      "description": "Goal candidate #5 on 0914 map (Recaptured Long Goal: 15.86m from origin)",
+      "x_m": 14.443,
+      "y_m": -6.56,
       "z_m": 0.0,
-      "yaw_deg": -1.4,
+      "yaw_deg": -94.0,
       "tolerance_m": 1.0,
       "snapshot_image": "goals/5.json"
     }

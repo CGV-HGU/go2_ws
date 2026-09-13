@@ -1,0 +1,127 @@
+{
+  "campaign": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914",
+  "campaign_id": "80bf2e8fb62648deb43b107d22a6b836",
+  "goal_plan_sha256": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+  "map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+  "map_cells_file": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/map-review/projected-local-cells.npy",
+  "map_cells_sha256": "e030cd6ea8b87f88f651e7af1412815a7f1193d4d2ddf171294b41249c002bc3",
+  "map_image_method": "Projection of cached local ground/empty/obstacle cells using cached optimized poses; obstacle wins. No morphological closing/dilation. Not a fresh RTAB-Map probability fusion.",
+  "map_overlay_origin_xy": [
+    0.09113185511688908,
+    -0.13182923391981205
+  ],
+  "map_overlay_heading_rad": 0.07091280788566923,
+  "original_origin_file": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/goals/origin.json",
+  "original_origin_sha256": "dcd7d989d712bedc60569c1ad3cf84c53236ac152241be40523fd5007c955242",
+  "frame_registration": {
+    "method": "operator_confirmed_same_marked_physical_start_and_heading",
+    "operator_statement": "지금 정렬해두었어",
+    "source_origin_id": "654bff43686741c4aa4bd9339d8d765f",
+    "destination_origin_id": "e250a1e39e164ab99d65668678c87362",
+    "assumed_fixed_start_transform_xy_yaw": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "metric_registration_independently_verified": false,
+    "raw_odometry_across_boots_reused": false,
+    "retained_labels": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "newly_captured_labels": [
+      "5"
+    ]
+  },
+  "distance_type": "Euclidean distance in fixed-start odometry, not shortest path",
+  "independent_ground_truth": false,
+  "trajectories_included": false,
+  "scale_bar_m": 5,
+  "return_closure": {
+    "captured_unix": 1789312514.6237013,
+    "host_boot_id": "00640e90-abe3-4851-97f5-babb2b6bd36c",
+    "odom_publisher_gid": "01104671307a873a2ca3760b00002f03",
+    "origin_sha256": "d07f297432c942224039b0b168f60c054dff71727164eb8b0ddfd75686b7bde3",
+    "operator_statement": "지금 돌아왔고 거의 시작점과 오차가 거의 없어",
+    "operator_reports_same_marked_start": true,
+    "physical_offset_independently_measured": false,
+    "return_pose_in_odom": [
+      1.67557692527771,
+      -2.355221748352051,
+      0.5112668698892258
+    ],
+    "return_fixed_start_xy_m": {
+      "x": -0.07528878279296529,
+      "y": -0.4616263457892584
+    },
+    "position_closure_error_m": 0.467725650292124,
+    "heading_closure_error_deg": 5.43013126772671,
+    "source_snapshot_sha256": "a154adbea6ede0f6e630d32608bf19f1f406812794315de7bcb38734d1a1d7c5",
+    "new_goal_activated": false
+  },
+  "drift_correction_applied": false,
+  "goals": [
+    {
+      "goal_label": "1",
+      "new_goal": false,
+      "fixed_start_x_m": 2.976295047359577,
+      "fixed_start_y_m": 1.6749293355328907,
+      "saved_yaw_rad": -0.16456907985919206,
+      "straight_distance_m": 3.415218951687548,
+      "map_overlay_x_m": 2.9412722777946336,
+      "map_overlay_y_m": 1.749771164407135,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "2",
+      "new_goal": false,
+      "fixed_start_x_m": 4.806585606214698,
+      "fixed_start_y_m": -2.4196024419508197,
+      "saved_yaw_rad": 0.3229949009230366,
+      "straight_distance_m": 5.38123974256534,
+      "map_overlay_x_m": 5.057074300042438,
+      "map_overlay_y_m": -2.2047876996521936,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "3",
+      "new_goal": false,
+      "fixed_start_x_m": 9.299617046185157,
+      "fixed_start_y_m": 0.4242188621915379,
+      "saved_yaw_rad": -0.20163110700574816,
+      "straight_distance_m": 9.309287773440921,
+      "map_overlay_x_m": 9.337319203771505,
+      "map_overlay_y_m": 0.9502328540935793,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "4",
+      "new_goal": false,
+      "fixed_start_x_m": 10.613861243952254,
+      "fixed_start_y_m": -3.886405544069355,
+      "saved_yaw_rad": -0.6353824513828922,
+      "straight_distance_m": 11.303017232528875,
+      "map_overlay_x_m": 10.953682718867837,
+      "map_overlay_y_m": -3.256439176179519,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "5",
+      "new_goal": true,
+      "fixed_start_x_m": 14.44344518101375,
+      "fixed_start_y_m": -6.559550669508374,
+      "saved_yaw_rad": -1.6412689551238642,
+      "straight_distance_m": 15.863190526586923,
+      "map_overlay_x_m": 14.963043312330639,
+      "map_overlay_y_m": -5.65152698756461,
+      "success_radius_m": 1.0
+    }
+  ],
+  "output_sha256": {
+    "2d_goals_map_recaptured5.png": "0c6cfec83a89b5a4f8ea794e6f287275f326cc95611b97bc66897f4c2293b70a",
+    "2d_goals_map_recaptured5.pdf": "fc66ad7821a400b5a44ce78538bc7ae97908513cc78007a692a7fa6785f88b64",
+    "2d_goals_map_recaptured5.csv": "37ada662ac0634ce0d44f407764abb7eaecbaba412e3f906677e03bf1624f653"
+  }
+}
