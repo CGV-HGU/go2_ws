@@ -1,0 +1,9 @@
+{
+  "original_runtime_commit": "bb510f5368e2127b767a71af6a33abcfd32742fa",
+  "runtime_tree_dirty_before_review": true,
+  "experiment_parent_commit": "387ea6a299340686e08891698fdc0d4f799d083b",
+  "physical_drive_boot_id": "1f61a0a3-880f-46c5-b621-d3132a2d4e37",
+  "jetson_review_boot_id": "87aaf7ed-2568-4de8-91d8-3fad2ec75b8b",
+  "note": "Review only. No new physical episode. Existing native raw bags remain local; numeric old-map archive published in b434a42. Patch base is the existing dirty working copy, not clean main.",
+  "priority_update": "User requested episode collection first. Additional metric work and offline expansion deferred until after physical trials."
+}

@@ -1,0 +1,93 @@
+{
+  "protocol_id": "fixed-start-paired-goals-20260913-v1",
+  "status": "prepared_not_run",
+  "priority": "ESCAPE Full first, Direct PixelNav comparison second",
+  "minimum_paired_sets": 1,
+  "episodes_per_set": 4,
+  "order": [
+    "full_goal_2",
+    "full_goal_1",
+    "direct_goal_2",
+    "direct_goal_1"
+  ],
+  "origin_id": "256788ca8834410fbbc64b6931b4f17c",
+  "goal_plan_sha256": "bea83f29ffabef275713f060ebea0703512b26996589ebadcbefe5834134ca55",
+  "goals": {
+    "1": {
+      "x_m": 3.96820189446,
+      "y_m": -2.7723220065,
+      "straight_distance_m": 4.8407019721,
+      "verified_shortest_path_m": null
+    },
+    "2": {
+      "x_m": 2.84914973007,
+      "y_m": 1.25823633873,
+      "straight_distance_m": 3.1146127959,
+      "verified_shortest_path_m": null
+    }
+  },
+  "shared": {
+    "success_radius_m": 1.0,
+    "arrival_rule": "automatic odometry distance stop; record physical end distance separately",
+    "final_yaw_required": false,
+    "max_duration_s": 360,
+    "localization_method": "fixed_start_odometry",
+    "fresh_marked_start_alignment_each_episode": true,
+    "icp_used": false,
+    "look_execution": "forward_0p1",
+    "normal_forward_m": 0.25,
+    "camera_mode": "calibrated_4_3",
+    "camera_zoom": 1.0,
+    "images": {
+      "escape": "sha256:700595c206cbeb11bb2b471614aa3a23a590156470c22c58e8ef50d696288a62",
+      "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+      "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+      "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+      "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+    },
+    "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+    "common_native_recording": true,
+    "recording_cpu_limit": 2
+  },
+  "methods": {
+    "full": {
+      "vlm": true,
+      "observation_sweeps": true,
+      "execution": "async_true",
+      "max_steps_per_local_goal": 50
+    },
+    "direct_goal": {
+      "vlm": false,
+      "observation_sweeps": false,
+      "one_final_goal_session": true,
+      "max_steps_per_final_goal": 500
+    }
+  },
+  "metrics": {
+    "software_sr": "number of GOAL_DISTANCE_REACHED / all started episodes",
+    "physical_sr": "measured arrival and intervention rule; missing measurements stay null",
+    "spl": "mean(S_i * l_i / max(p_i,l_i)); report only with verified shortest traversable path and defined success",
+    "path": "odometry path at 10 Hz; also retain 5/20 Hz and raw trajectory",
+    "proxy": "Euclidean-reference score is explicitly a proxy until straight traversability verified"
+  },
+  "capture": [
+    "goal_dispatch",
+    "trajectory",
+    "pointgoal",
+    "commands_and_ACK",
+    "policy_inputs_and_actions",
+    "VLM_model_and_call_latency",
+    "native_RGB_cloud_odom_IMU_TF",
+    "operator_intervention_contact_people",
+    "measured_physical_final_distance"
+  ],
+  "denominator_rule": "Keep all started trials, including failures and intervention. Record pre-goal startup failures separately. Never replace a failed row with a retry.",
+  "minimum_set_limit": "Two goals per method is descriptive pilot evidence, not a generalization or significance claim.",
+  "baseline_old_six_trials": "Historical Full pilot before sweep fix; not silently pooled into the new matched comparison.",
+  "prepared_paths": {
+    "full_goal_1": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-post-drive-20260913/prepared-recorded-pairs/full_goal_1",
+    "full_goal_2": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-post-drive-20260913/prepared-recorded-pairs/full_goal_2",
+    "direct_goal_1": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-post-drive-20260913/prepared-recorded-pairs/direct_goal_1",
+    "direct_goal_2": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-post-drive-20260913/prepared-recorded-pairs/direct_goal_2"
+  }
+}

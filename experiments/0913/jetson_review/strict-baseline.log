@@ -1,0 +1,161 @@
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py
+FFFFFFFFFFFFFFF                                                          [100%]
+=================================== FAILURES ===================================
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-move_forward] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:66: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    PixNavRuntimeNode._on_sweep_command(n, pause)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:5499: in _on_sweep_command
+    checkpoint = self.runtime.step_latest_cached_image(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:3977: in step_latest_cached_image
+    return self.step(image, now_ns=now_ns)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-look_down] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:66: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    PixNavRuntimeNode._on_sweep_command(n, pause)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:5499: in _on_sweep_command
+    checkpoint = self.runtime.step_latest_cached_image(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:3977: in step_latest_cached_image
+    return self.step(image, now_ns=now_ns)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-look_up] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:66: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    PixNavRuntimeNode._on_sweep_command(n, pause)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:5499: in _on_sweep_command
+    checkpoint = self.runtime.step_latest_cached_image(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:3977: in step_latest_cached_image
+    return self.step(image, now_ns=now_ns)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-turn_left] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:66: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    PixNavRuntimeNode._on_sweep_command(n, pause)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:5499: in _on_sweep_command
+    checkpoint = self.runtime.step_latest_cached_image(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:3977: in step_latest_cached_image
+    return self.step(image, now_ns=now_ns)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-stop] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:66: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    PixNavRuntimeNode._on_sweep_command(n, pause)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:5499: in _on_sweep_command
+    checkpoint = self.runtime.step_latest_cached_image(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:3977: in step_latest_cached_image
+    return self.step(image, now_ns=now_ns)
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-move_forward] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-look_down] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-look_up] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-turn_left] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-stop] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-move_forward] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-look_down] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-look_up] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-turn_left] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+_ test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-stop] _
+src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py:71: in test_pause_before_first_action_emits_checkpoint_without_executing_policy
+    publish(r.step(frame(stamp_ns=1200), now_ns=1300))
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2024: in step
+    return self._complete_go_segment(
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py:2788: in _complete_go_segment
+    assert last_result is not None
+E   AssertionError
+=========================== short test summary info ============================
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-move_forward]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-look_down]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-look_up]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-turn_left]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[cached-stop]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-move_forward]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-look_down]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-look_up]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-turn_left]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[next-stop]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-move_forward]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-look_down]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-look_up]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-turn_left]
+FAILED src/s2e_vlm_nodes/test/test_robot_sweep_before_first_action.py::test_pause_before_first_action_emits_checkpoint_without_executing_policy[stale_then_next-stop]
+15 failed, 1 deselected in 3.63s
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py

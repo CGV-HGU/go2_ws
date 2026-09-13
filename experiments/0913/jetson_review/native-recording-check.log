@@ -1,0 +1,1 @@
+{"scope": "Synthetic messages, isolated network; validates recorder and ownership-topic handover only", "recorder_exit_code": 0, "counts": {"/s2e/mapping/cloud": 40, "/s2e/robot/sensors/odom": 100, "/s2e/robot/sensors/imu": 100, "/robot_nav/sensors/front_camera/image_raw": 100, "/s2e/robot/sensors/cloud": 60}, "passed": true, "physical_inputs_used": false}

@@ -1,0 +1,32 @@
+[
+  {
+    "trial": "goal-2-001",
+    "bag": "/work/.local-data/prepared-daylight-map-20260913/native-inputs-fixed-start",
+    "total_cloud": 8401,
+    "cloud_during_drive": 0,
+    "first_cloud_unix": 1789278796.9585376,
+    "last_cloud_unix": 1789279561.7493348,
+    "drive_start_unix": 1789279205.258149,
+    "drive_stop_unix": 1789279294.129916
+  },
+  {
+    "trial": "goal-1-001",
+    "bag": "/work/.local-data/prepared-daylight-map-20260913/native-inputs-goal-1-001",
+    "total_cloud": 108,
+    "cloud_during_drive": 0,
+    "first_cloud_unix": 1789280122.4930477,
+    "last_cloud_unix": 1789280129.3965693,
+    "drive_start_unix": 1789280171.146247,
+    "drive_stop_unix": 1789280227.8024588
+  },
+  {
+    "trial": "goal-2-002",
+    "bag": "/work/.local-data/prepared-daylight-map-20260913/native-inputs-goal-2-002",
+    "total_cloud": 192,
+    "cloud_during_drive": 0,
+    "first_cloud_unix": 1789281055.4603739,
+    "last_cloud_unix": 1789281067.9015594,
+    "drive_start_unix": 1789281106.665352,
+    "drive_stop_unix": 1789281154.210002
+  }
+]

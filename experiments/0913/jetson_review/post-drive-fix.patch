@@ -1,0 +1,228 @@
+--- a/scripts/prepare_robot_pointgoal_trial.py
++++ b/scripts/prepare_robot_pointgoal_trial.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Freeze one supervised Full PointGoal trial. Preparation never launches ROS."""
++"""Freeze one supervised Full or Direct PointGoal trial; never launch ROS."""
+ import argparse
+ import hashlib
+ import json
+@@ -15,7 +15,8 @@
+ def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+ 
+ 
+-def prepare(output,*,distance=None,map_plan=None,fixed_start_plan=None,goal_label=None,localization_run=None,look='forward_0p1',navigation_image='escape-navigation:map-control-20260913'):
++def prepare(output,*,distance=None,map_plan=None,fixed_start_plan=None,goal_label=None,localization_run=None,look='forward_0p1',navigation_image='escape-navigation:map-control-20260913',navigation_mode='full'):
++    if navigation_mode not in ('full','direct_goal'):raise ValueError('Unsupported navigation mode')
+     if look not in ('forward_0p05','forward_0p1','forward_0p2'):raise ValueError('Unsupported look execution')
+     if sum(x is not None for x in (distance,map_plan,fixed_start_plan))!=1:raise ValueError('Choose one distance, map plan or fixed-start plan')
+     if distance is not None and distance not in (5,10):raise ValueError('Prepared straight trials are 5m or 10m')
+@@ -48,14 +49,33 @@
+     overlay=yaml.safe_load((output/('compose.map-goals.yaml' if map_mode else 'compose.5m.yaml')).read_text())
+     overlay['services']['escape']['image']=nav
+     overlay['services']['escape']['environment']['PIXNAV_LOOK_EXECUTION']=look
++    overlay['services']['escape']['environment']['ROBOT_NAVIGATION_MODE']=navigation_mode
++    # The mapping input owner stops during odometry-based navigation. Record
++    # the navigation owner's corrected cloud as well as the mapping topic.
++    from robot_map_session import SLAM_IMAGE
++    shutil.copy2(Path('/home/unitree/go2_ws_antarctica/cyclonedds.xml'),output/'recording-cyclonedds.xml')
++    overlay['services']['native-recording']=dict(
++        image=SLAM_IMAGE,network_mode='host',init=True,restart='no',cpus=2.,
++        stop_signal='SIGINT',stop_grace_period='45s',entrypoint=['bash','-lc'],
++        environment=dict(ROS_DOMAIN_ID='0',RMW_IMPLEMENTATION='rmw_cyclonedds_cpp',
++                         CYCLONEDDS_URI='file:///trial/recording-cyclonedds.xml',ROS_LOG_DIR='/trial/native-ros-log'),
++        volumes=['${ESCAPE_TRIAL_DIR:?set a fresh trial directory}:/trial'],
++        command=['source /opt/ros/jazzy/setup.bash && exec ros2 bag record '
++                 '--storage mcap --storage-preset-profile zstd_fast --disable-keyboard-controls '
++                 '--max-bag-size 536870912 --output /trial/native-inputs --topics '
++                 '/robot_nav/sensors/front_camera/image_raw /robot_nav/sensors/front_camera/camera_info '
++                 '/s2e/mapping/cloud /s2e/robot/sensors/cloud /s2e/robot/sensors/odom /s2e/robot/sensors/imu '
++                 '/tf /tf_static /rtabmap/localization_pose /rtabmap/info'])
+     pose_source='localization' if map_mode else 'odometry'
+     overlay['services']['escape']['command']=['bash','-lc',
+         'source /opt/ros/jazzy/setup.bash && source /opt/s2e-robot-minimal/setup.bash && '
+         'exec ros2 launch s2e_vlm_robot robot_escape.launch.py motion_enabled:=false '
+-        'navigation_mode:=full look_execution:='+look+' pose_source:='+pose_source+
++        'navigation_mode:='+navigation_mode+' look_execution:='+look+' pose_source:='+pose_source+
+         ' sensor_input_enabled:='+('false' if map_mode else 'true')+
+         ' success_distance_m:=1.0 minimum_rotate_speed_radps:=0.5 turn_speed_radps:=0.5'
+         ' rotate_settle_window_s:=0.35 rotate_min_timeout_s:=15.0 rotate_recoil_limit_deg:=10.0']
++    if navigation_mode=='direct_goal':
++        overlay['services']['escape']['command'][-1]+=' direct_goal_max_policy_steps:=500'
+     if map_mode:
+         overlay['services']['escape']['volumes'] += [str(Path(localization_run).resolve())+':/localization:ro',str(REPO/'.local-data')+':/localization-state:ro']
+         shutil.copy2(map_plan,output/'goal-plan.json')
+@@ -68,18 +88,29 @@
+     wrapper=(TEMPLATE/'run_trial.sh').read_text()
+     wrapper=wrapper.replace("for name,digest in m['sha256'].items():", "for name,digest in m['external_config_sha256'].items():\n assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,name\nfor name,digest in m['sha256'].items():")
+     wrapper=wrapper.replace('compose.5m.yaml','compose.trial.yaml').replace('--distance-m 5 --navigation-mode full',args+' --navigation-mode full --max-duration-s '+str(duration)).replace('240s docker compose',str(duration+60)+'s docker compose')
++    wrapper=wrapper.replace('--navigation-mode full','--navigation-mode '+navigation_mode)
+     wrapper=wrapper.replace('# Physical Full 5m run.','# Physical Full PointGoal run.')
++    wrapper=wrapper.replace('dc up -d --no-deps unitree-command pixnav escape',
++                            'dc up -d --no-deps native-recording unitree-command pixnav escape')
++    wrapper=wrapper.replace('  stop_code=$?', '  stop_code=$?\n  dc stop native-recording\n  dc logs --no-color native-recording > "$trial_root/native-recording.log" 2>&1')
++    wrapper=wrapper.replace('touch "$trial_root/STACK_STARTED"',
++                            '[[ -n "$(dc ps --status running -q native-recording)" ]] || exit 1\n'
++                            'touch "$trial_root/STACK_STARTED"')
+     (output/'run_trial.sh').write_text(wrapper)
+     for name in ('compose.5m.yaml','compose.map-goals.yaml','five_meter_operator.py'):
+         (output/name).unlink()
+-    m=dict(images=dict(old['images'],escape=nav),runtime_conditions=dict(navigation='full',execution='async_true',look_execution=look,goal_frame='map' if map_mode else 'odom',goal_distance_m=distance,goal_label=goal_label,success_radius_m=1.,initial_motion_enabled=False,max_duration_s=duration,
++    m=dict(images=dict(old['images'],escape=nav,**{'native-recording':SLAM_IMAGE}),runtime_conditions=dict(navigation=navigation_mode,execution='async_true',look_execution=look,goal_frame='map' if map_mode else 'odom',goal_distance_m=distance,goal_label=goal_label,success_radius_m=1.,initial_motion_enabled=False,max_duration_s=duration,
+            turn_speed_radps=.5,minimum_rotate_speed_radps=.5,rotate_settle_window_s=.35,rotate_min_timeout_s=15.,rotate_recoil_limit_deg=10.),
+            physical_drive_validated=False,offline_checks_passed=False,ready_for_supervised_trial=False,
+            baseline_validation=old['validation_result'],campaign_validation=str(REPO/'.local-data/jetson-goal-campaign-audit-20260912/results.json'),
+            checkpoint=old['checkpoint'],camera_time_quality=old['camera_time_quality'],
+            final_yaw_requested=False,look_distance_selection='10cm has physical baseline evidence; 5/20cm are explicit unvalidated comparison settings.')
++    m['native_input_archive']=str(output/'native-inputs')
++    m['native_recording_scope']='Common read-only camera/cloud/odom/IMU/TF bag; verify in-drive topic coverage after every episode.'
+     if fixed_mode:
+         m['runtime_conditions'].update(localization_method='fixed_start_odometry',fixed_start_origin_id=plan['origin']['origin_id'],requires_marked_start_before_each_episode=True,icp_corrections_used=False)
++    if navigation_mode=='direct_goal':
++        m['runtime_conditions'].update(direct_goal_max_policy_steps=500,vlm_calls_expected=0,full_observation_sweeps_enabled=False)
+     m['sha256']={str(p.relative_to(output)):digest(p) for p in output.rglob('*') if p.is_file()}
+     m['external_config_sha256']={str(REPO/name):digest(REPO/name) for name in ('compose.robot-minimal.yaml','compose.robot-full.yaml','config/robot-full.env')}
+     (output/'manifest.json').write_text(json.dumps(m,indent=2)+'\n')
+@@ -92,7 +123,8 @@
+     p.add_argument('--goal-label',choices=('1','2','3','4','5'));p.add_argument('--localization-run',type=Path)
+     p.add_argument('--look',choices=('forward_0p05','forward_0p1','forward_0p2'),default='forward_0p1')
+     p.add_argument('--navigation-image',default='escape-navigation:map-control-20260913')
+-    a=p.parse_args();print(json.dumps(prepare(a.output,distance=a.distance_m,map_plan=a.map_plan,fixed_start_plan=a.fixed_start_plan,goal_label=a.goal_label,localization_run=a.localization_run,look=a.look,navigation_image=a.navigation_image),indent=2))
++    p.add_argument('--navigation-mode',choices=('full','direct_goal'),default='full')
++    a=p.parse_args();print(json.dumps(prepare(a.output,distance=a.distance_m,map_plan=a.map_plan,fixed_start_plan=a.fixed_start_plan,goal_label=a.goal_label,localization_run=a.localization_run,look=a.look,navigation_image=a.navigation_image,navigation_mode=a.navigation_mode),indent=2))
+ 
+ 
+ if __name__=='__main__':main()
+--- a/scripts/robot_map_session.py
++++ b/scripts/robot_map_session.py
+@@ -121,7 +121,7 @@
+         '--disable-keyboard-controls --max-bag-size 536870912 '
+         '--output /localization/native-inputs --topics '
+         '/robot_nav/sensors/front_camera/image_raw /robot_nav/sensors/front_camera/camera_info '
+-        '/s2e/mapping/cloud /s2e/robot/sensors/odom /s2e/robot/sensors/imu '
++        '/s2e/mapping/cloud /s2e/robot/sensors/cloud /s2e/robot/sensors/odom /s2e/robot/sensors/imu '
+         '/tf /tf_static /rtabmap/localization_pose /rtabmap/info'])
+     remap=' -r __ns:=/rtabmap -r __node:=rtabmap -r rgb/image:=/robot_nav/sensors/front_camera/image_raw -r rgb/camera_info:=/robot_nav/sensors/front_camera/camera_info -r odom:=/s2e/robot/sensors/odom -r scan_cloud:=/s2e/mapping/cloud -r imu:=/s2e/robot/sensors/imu'
+     services['slam']=dict(copy.deepcopy(common),image=SLAM_IMAGE,command=[setup+'exec /opt/ros/jazzy/lib/rtabmap_slam/rtabmap --ros-args --params-file /localization/config/mapping.yaml'+remap])
+--- a/scripts/robot_pointgoal_trial.py
++++ b/scripts/robot_pointgoal_trial.py
+@@ -13,6 +13,8 @@
+ parser.add_argument('--navigation-mode',choices=('full','direct_goal'),default='full')
+ args=parser.parse_args()
+ planner_name='direct_goal_pixnav' if args.navigation_mode=='direct_goal' else 'vlm_node'
++required_nodes=('go2_action_executor',planner_name,'pixnav_runtime_node','rtab_pointgoal_adapter')
++if args.navigation_mode=='full':required_nodes+=('sweep_scheduler_node',)
+ if args.distance_m is not None and (not math.isfinite(args.distance_m) or args.distance_m<=0): raise ValueError('positive finite distance required')
+ if not math.isfinite(args.max_duration_s) or not 0<args.max_duration_s<=900: raise ValueError('trial duration must be within (0,900] seconds')
+ if (args.map_plan or args.fixed_start_plan) and not args.goal_label: parser.error('Saved goal plans require --goal-label')
+@@ -149,7 +151,7 @@
+   check_stop()
+   rclpy.spin_once(n,timeout_sec=.05)
+   c=status.get('go2_action_executor')
+-  ready = control_pose_ready() and pose_key in latest and time.monotonic()-latest[pose_key][0] < (1.5 if args.map_plan else .3) and pub.get_subscription_count()>0 and c and c.state=='INHIBITED' and c.active_mode=='IDLE' and all(name in status and status[name].is_healthy and time.monotonic()-status_at[name]<3. for name in ('go2_action_executor',planner_name,'pixnav_runtime_node','sweep_scheduler_node','rtab_pointgoal_adapter'))
++  ready = control_pose_ready() and pose_key in latest and time.monotonic()-latest[pose_key][0] < (1.5 if args.map_plan else .3) and pub.get_subscription_count()>0 and c and c.state=='INHIBITED' and c.active_mode=='IDLE' and all(name in status and status[name].is_healthy and time.monotonic()-status_at[name]<3. for name in required_nodes)
+   if ready:
+    if ready_since is None: ready_since=time.monotonic()
+    if time.monotonic()-ready_since>=1.5: break
+--- a/scripts/test_robot_pointgoal_trial.py
++++ b/scripts/test_robot_pointgoal_trial.py
+@@ -72,6 +72,8 @@
+                     (tmp_path/'current-localization.json').write_text(json.dumps(pointer))
+             for name in ('go2_action_executor','vlm_node','direct_goal_pixnav','pixnav_runtime_node',
+                          'sweep_scheduler_node','rtab_pointgoal_adapter'):
++                if mode=='direct_goal' and name in ('vlm_node','sweep_scheduler_node'):continue
++                if scenario=='missing_full_sweep' and name=='sweep_scheduler_node':continue
+                 msg = NodeStatus(); msg.node_name = name; msg.header.stamp = stamp()
+                 msg.is_healthy = True; msg.active_mode = 'IDLE'
+                 msg.state = 'IDLE' if state.enabled else 'INHIBITED'
+@@ -159,7 +161,7 @@
+             if scenario=='fixed_near_goal': plan['goals'][0]['point_goal_xy_m']=dict(x=.2,y=.1)
+             (tmp_path/'START_GOAL').write_text(json.dumps(confirmation))
+             (tmp_path/'plan.json').write_text(json.dumps(plan))
+-            argv=['trial','--fixed-start-plan',str(tmp_path/'plan.json'),'--goal-label','1']
++            argv=['trial','--fixed-start-plan',str(tmp_path/'plan.json'),'--goal-label','1','--navigation-mode',mode]
+         monkeypatch.setattr(sys, 'argv', argv)
+         code = 0
+         try:
+@@ -237,8 +239,9 @@
+     assert state.calls==[True,False] and state.direct_stops==1
+ 
+ 
+-def test_fixed_start_saved_off_axis_goal_uses_current_boot_odom_and_stops(run_trial):
+-    state,result,code=run_trial('success',fixed_mode=True)
++@pytest.mark.parametrize('mode',['full','direct_goal'])
++def test_fixed_start_saved_off_axis_goal_uses_current_boot_odom_and_stops(run_trial,mode):
++    state,result,code=run_trial('success',mode=mode,fixed_mode=True)
+     assert code==0 and state.publisher_calls==1
+     assert state.published.header.frame_id=='odom'
+     assert state.published.point.x==pytest.approx(8.)
+@@ -253,3 +256,8 @@
+ def test_fixed_start_invalid_binding_or_control_source_never_enables(run_trial,scenario):
+     state,result,code=run_trial(scenario,fixed_mode=True)
+     assert code!=0 and state.publisher_calls==0 and True not in state.calls
++
++
++def test_full_still_requires_its_sweep_scheduler_before_motion(run_trial):
++    state,result,code=run_trial('missing_full_sweep')
++    assert code!=0 and state.publisher_calls==0 and True not in state.calls
+--- a/scripts/validate_robot_pointgoal_trial.py
++++ b/scripts/validate_robot_pointgoal_trial.py
+@@ -40,6 +40,15 @@
+     if e['PIXNAV_LOOK_EXECUTION']!=conditions['look_execution'] or e['ROBOT_MOTION_ENABLED']!='false':raise ValueError('Motion/look configuration mismatch')
+     command=' '.join(services['escape'].get('command') or [])
+     launch_values=dict(token.split(':=',1) for token in shlex.split(command) if ':=' in token)
++    mode=conditions.get('navigation','full')
++    if mode not in ('full','direct_goal') or launch_values.get('navigation_mode')!=mode:
++        raise ValueError('Planner differs from the prepared comparison method')
++    if e.get('ROBOT_NAVIGATION_MODE')!=mode:
++        raise ValueError('Planner environment differs from the prepared comparison method')
++    if '--navigation-mode '+mode not in (root/'run_trial.sh').read_text():
++        raise ValueError('Operator and planner comparison modes differ')
++    if mode=='direct_goal' and int(launch_values.get('direct_goal_max_policy_steps','0'))!=conditions['direct_goal_max_policy_steps']:
++        raise ValueError('Direct final-goal session budget differs from the prepared condition')
+     for key in ('turn_speed_radps','minimum_rotate_speed_radps','rotate_settle_window_s',
+                 'rotate_min_timeout_s','rotate_recoil_limit_deg'):
+         if key in conditions and float(launch_values.get(key,'nan'))!=conditions[key]:
+--- a/src/s2e_vlm_nodes/s2e_vlm_nodes/runtime/pixnav.py
++++ b/src/s2e_vlm_nodes/s2e_vlm_nodes/runtime/pixnav.py
+@@ -2021,6 +2021,14 @@
+                 self._sweep_pause_pending_decision_id = ""
+             else:
+                 self._sweep_pause_pending_decision_id = ""
++                if self._last_result is None:
++                    # A newly admitted GO may be paused before its first
++                    # policy step. There is no prior action result to close,
++                    # but this fresh image is a valid quiescent boundary.
++                    return self._blocked_preturn_pose_result(
++                        reason=SWEEP_CHECKPOINT_REASON,
++                        now_ns=image.stamp_ns,
++                    )
+                 return self._complete_go_segment(
+                     image,
+                     reason=SWEEP_CHECKPOINT_REASON,
+--- a/src/s2e_vlm_robot/launch/robot_escape.launch.py
++++ b/src/s2e_vlm_robot/launch/robot_escape.launch.py
+@@ -39,6 +39,10 @@
+             DeclareLaunchArgument("motion_enabled", default_value="false"),
+             DeclareLaunchArgument("sensor_input_enabled", default_value="true"),
+             DeclareLaunchArgument('navigation_mode', default_value=os.environ.get('ROBOT_NAVIGATION_MODE','full'), choices=['full','direct_goal']),
++            # Direct PixelNav keeps one final-goal session for the episode.
++            # Full's 50-step cap is per intermediate waypoint, so applying it
++            # to that single final-goal session would truncate the comparison.
++            DeclareLaunchArgument('direct_goal_max_policy_steps', default_value='500'),
+             DeclareLaunchArgument('look_execution', default_value=os.environ.get('PIXNAV_LOOK_EXECUTION','physical'), choices=list(LOOK_EXECUTION_MODES)),
+             DeclareLaunchArgument("vlm_backend", default_value="live_vlm"),
+             DeclareLaunchArgument("odometry_topic", default_value="/s2e/robot/sensors/odom"),
+@@ -69,9 +73,11 @@
+                 LaunchConfiguration("rotate_min_timeout_s"), "')))"
+             ])),
+             SetEnvironmentVariable('PIXNAV_LOOK_EXECUTION',LaunchConfiguration('look_execution')),
++            SetEnvironmentVariable('PIXNAV_MAX_GO_STEPS',
++                LaunchConfiguration('direct_goal_max_policy_steps'),condition=IfCondition(direct)),
+             SetEnvironmentVariable("VLM_BACKEND", vlm_backend),
+             SetEnvironmentVariable("VLM_MODEL_ADAPTER", ""),
+-            Node(package="s2e_vlm_nodes", executable="sweep_scheduler_node", output="screen"),
++            Node(package="s2e_vlm_nodes", executable="sweep_scheduler_node", output="screen",condition=UnlessCondition(direct)),
+             Node(package="s2e_vlm_robot", executable="go2_sensor_input", output="screen",
+                  condition=IfCondition(LaunchConfiguration("sensor_input_enabled"))),
+             Node(

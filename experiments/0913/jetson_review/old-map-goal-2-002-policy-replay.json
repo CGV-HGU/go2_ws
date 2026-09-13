@@ -1,0 +1,824 @@
+{
+  "scope": "Replay recorded PixelNav inputs without ROS or any robot transport.\n\nThis checks the recorded observation/action sequence, not a simulated drive.\nStop a session at the first changed action: the next recorded frame cannot\nestablish what the robot would have seen after a different physical action.\n",
+  "recording": "/work/.local-data/old-map-fixedstart-goals-20260913/prepared/old-map-goal-2-002/full5m",
+  "robot_commands_published": 0,
+  "ros_nodes_created": 0,
+  "closed_loop_driving_verified": false,
+  "maximum_view_zoom": 1.0,
+  "logit_tolerance": {
+    "rtol": 1e-05,
+    "atol": 1e-05
+  },
+  "sessions": [
+    {
+      "session": "session_0001",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "1": 3
+      }
+    },
+    {
+      "session": "session_0002",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "1": 3
+      }
+    },
+    {
+      "session": "session_0003",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "1": 3
+      }
+    },
+    {
+      "session": "session_0004",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 2,
+          "recorded_action": 2,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "2": 1,
+        "5": 1,
+        "1": 2
+      }
+    },
+    {
+      "session": "session_0005",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 3,
+        "1": 1
+      }
+    },
+    {
+      "session": "session_0006",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "3": 1
+      }
+    },
+    {
+      "session": "session_0007",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "1": 1,
+        "3": 1
+      }
+    },
+    {
+      "session": "session_0008",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 4,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 3,
+        "1": 2
+      }
+    },
+    {
+      "session": "session_0009",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 2,
+        "1": 2
+      }
+    },
+    {
+      "session": "session_0010",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 4,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 4,
+        "1": 1
+      }
+    },
+    {
+      "session": "session_0011",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 4,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 4,
+        "1": 1
+      }
+    },
+    {
+      "session": "session_0012",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "3": 1
+      }
+    },
+    {
+      "session": "session_0013",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "3": 1
+      }
+    },
+    {
+      "session": "session_0014",
+      "zoom": 1.0,
+      "steps": [
+        {
+          "index": 0,
+          "action": 5,
+          "recorded_action": 5,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 1,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 2,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 3,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 4,
+          "action": 3,
+          "recorded_action": 3,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 5,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 6,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 7,
+          "action": 2,
+          "recorded_action": 2,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 8,
+          "action": 1,
+          "recorded_action": 1,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 9,
+          "action": 2,
+          "recorded_action": 2,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        },
+        {
+          "index": 10,
+          "action": 0,
+          "recorded_action": 0,
+          "reason": "model",
+          "recorded_reason": "model",
+          "matched": true,
+          "raw_logits_match": true,
+          "raw_logits_max_abs_difference": 0.0,
+          "policy_view_matches": true
+        }
+      ],
+      "status": "matched",
+      "action_counts": {
+        "5": 1,
+        "3": 3,
+        "1": 4,
+        "2": 2,
+        "0": 1
+      }
+    }
+  ],
+  "elapsed_s": 7.44215047900002,
+  "all_recorded_steps_match": true
+}

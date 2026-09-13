@@ -1,0 +1,5 @@
+set_id,order,method,goal_label,trial_id,status,software_success,physical_success,physical_final_distance_m,final_distance_method,elapsed_s,path_10hz_m,shortest_traversable_path_m,spl,stop_reason,operator_intervention,contact,people_obstruction,artifact_path
+paired-01,1,full,2,,planned,,,,,,,,,,,,,
+paired-01,2,full,1,,planned,,,,,,,,,,,,,
+paired-01,3,direct_goal,2,,planned,,,,,,,,,,,,,
+paired-01,4,direct_goal,1,,planned,,,,,,,,,,,,,

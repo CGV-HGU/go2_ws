@@ -1,0 +1,15 @@
+{
+  "episodes": 6,
+  "policy_steps": 154,
+  "sessions": 41,
+  "action_counts": {
+    "5": 78,
+    "1": 57,
+    "3": 10,
+    "0": 6,
+    "2": 3
+  },
+  "empty_sessions": 0,
+  "all_recorded_steps_match": true,
+  "closed_loop_success_verified": false
+}

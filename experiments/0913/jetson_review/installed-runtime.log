@@ -1,0 +1,41 @@
+{"installed_pixnav": "/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/pixnav.py", "sha256": "b42d527b7f9a50bfb202142e5802c727da2a28ef2838fd80790de55705b6eab6"}
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 38%]
+........................................................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+.....................................................F.................. [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 70%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 84%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+.....................................                                    [100%]
+=================================== FAILURES ===================================
+_ S2EAsyncFaultInjectionTest.test_worker_disconnect_timeout_and_malformed_results_fail_closed _
+src/s2e_vlm_nodes/test/test_s2e_async_fault_injection.py:883: in test_worker_disconnect_timeout_and_malformed_results_fail_closed
+    self.assertGreaterEqual(len(worker.requests), 2)
+E   AssertionError: 1 not greater than or equal to 2
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1789287941.654385425] [rcl.logging_rosout]: Publisher already registered for node name: 'e2e_node'. If this is due to multiple nodes with the same name then all logs for the logger named 'e2e_node' will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[WARN] [1789287941.711270131] [rcl.logging_rosout]: Publisher already registered for node name: 'e2e_node'. If this is due to multiple nodes with the same name then all logs for the logger named 'e2e_node' will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+=========================== short test summary info ============================
+FAILED src/s2e_vlm_nodes/test/test_s2e_async_fault_injection.py::S2EAsyncFaultInjectionTest::test_worker_disconnect_timeout_and_malformed_results_fail_closed
+1 failed, 2052 passed in 51.29s
