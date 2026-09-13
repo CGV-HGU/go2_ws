@@ -1,0 +1,46 @@
+{
+  "episode_id": "robot-pointnav-6ebda4d95b52-1",
+  "goal_label": "1",
+  "elapsed_to_stop_s": 195.34801690299992,
+  "initial_goal_straight_distance_m": 4.840701972124871,
+  "cumulative_path_10hz_m": 5.979165117485142,
+  "net_displacement_at_stop_request_m": 4.109739794328493,
+  "net_displacement_from_goal_origin_m": 4.109735065014782,
+  "software_reported_goal_distance_m": 0.9999565482139587,
+  "interpolated_goal_distance_at_stop_request_m": 0.9788602372002219,
+  "goal_start_frame_xy_m": [
+    3.968201894459542,
+    -2.77232200650309
+  ],
+  "stop_start_frame_xy_m": [
+    3.6757361109358366,
+    -1.8381747325470292
+  ],
+  "coordinate_method": "Translate by fresh episode odometry origin, rotate by negative initial heading; +X forward, +Y left.",
+  "path_source": "Archived continuous odometry, linear interpolation at 10 Hz with exact interval endpoints; no denoising.",
+  "physical_distance_measured": false,
+  "last_sample_before_stop_s": 0.0,
+  "field_report": {
+    "recorded_unix": 1789281983.6179187,
+    "direct_intervention": false,
+    "contact": false,
+    "path_obstruction": null,
+    "physical_remaining_distance_m": null,
+    "physical_remaining_distance_estimate_m": 1.0,
+    "physical_within_goal_radius_verified": null,
+    "operator_observation": "개입접촉없었고 1m부근에 있어",
+    "outcome_note": "No intervention or contact; visually about 1m from physical goal, not measured. Path obstruction was not specified."
+  },
+  "notes": [
+    "Initial straight distance is not a reviewed shortest path for SPL.",
+    "The software residual and interpolated StopMove endpoint differ because their timestamps differ.",
+    "See episode.json for the outcome and field report; no shortest-path reference is assumed."
+  ],
+  "source_sha256": {
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-start-goals-20260913/archives/goal-1-003-reviewed/odom-trajectory.csv": "31fe12e8d13e977fea429877b164dd811463bf1b8ffd1c75409e86b508d7746d",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-start-goals-20260913/archives/goal-1-003-reviewed/episode.json": "b806acf8b85dc7f3cace43fbae7bacef33629fb2865540bbfa90944d1639a378",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-start-goals-20260913/prepared/goal-1-003/full5m/runtime/goal.json": "b9275ea6f79a7f91a86d15d759292cd430edce4a5e4958de94a7cb17d4a00992",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-start-goals-20260913/prepared/goal-1-003/full5m/runtime/result.json": "42b3dd6ca9d9385039d07b42d45eacfd0e7f42a5f52a4c15122bab6ef694b778",
+    ".local-data/fixed-start-goals-20260913/export_episode_trajectory.py": "0487e5e0e7134d49ca017c33033fa9b81fd2ca99f3f4b4a945c315cce7af2be3"
+  }
+}

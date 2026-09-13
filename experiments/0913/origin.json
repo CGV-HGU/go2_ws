@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "origin_id": "256788ca8834410fbbc64b6931b4f17c",
+  "frame_id": "fixed_start",
+  "pose_source": "fixed_start_odometry",
+  "pose_in_odom": [
+    -3.0145506858825684,
+    5.280195236206055,
+    -1.8738396115527227
+  ],
+  "host_boot_id": "1f61a0a3-880f-46c5-b621-d3132a2d4e37",
+  "odom_publisher_gid": "011097361bb8dd80106192bc00001703",
+  "captured_unix": 1789278638.0104167,
+  "pose_stamp_unix": 1789278637.9521832,
+  "physical_start_confirmed_by_operator": true,
+  "absolute_map_localization_verified": false
+}

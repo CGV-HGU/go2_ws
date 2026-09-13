@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "pose_source": "fixed_start_odometry",
+  "frame_id": "fixed_start",
+  "origin": {
+    "schema_version": 1,
+    "origin_id": "256788ca8834410fbbc64b6931b4f17c",
+    "frame_id": "fixed_start",
+    "pose_source": "fixed_start_odometry",
+    "pose_in_odom": [
+      -3.0145506858825684,
+      5.280195236206055,
+      -1.8738396115527227
+    ],
+    "host_boot_id": "1f61a0a3-880f-46c5-b621-d3132a2d4e37",
+    "odom_publisher_gid": "011097361bb8dd80106192bc00001703",
+    "captured_unix": 1789278638.0104167,
+    "pose_stamp_unix": 1789278637.9521832,
+    "physical_start_confirmed_by_operator": true,
+    "absolute_map_localization_verified": false
+  },
+  "origin_sha256": "d6f2842dd159096f2d1a4e1de714971898bff0553771247c9a6bba2fdc109d8e",
+  "goals": [
+    {
+      "label": "1",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 3.9682018944595425,
+        "y": -2.7723220065030905
+      },
+      "yaw_rad": 0.17081387426597305,
+      "origin_sha256": "d6f2842dd159096f2d1a4e1de714971898bff0553771247c9a6bba2fdc109d8e",
+      "captured_unix": 1789278916.9945157,
+      "pose_stamp_unix": 1789278916.9642863,
+      "pose_in_odom": [
+        -6.844760894775391,
+        2.3201470375061035,
+        -1.7030257372867497
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false
+    },
+    {
+      "label": "2",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 2.849149730070444,
+        "y": 1.2582363387310733
+      },
+      "yaw_rad": -0.31989493163472393,
+      "origin_sha256": "d6f2842dd159096f2d1a4e1de714971898bff0553771247c9a6bba2fdc109d8e",
+      "captured_unix": 1789278974.9897566,
+      "pose_stamp_unix": 1789278974.9685836,
+      "pose_in_odom": [
+        -2.663909673690796,
+        2.185382843017578,
+        -2.1937345431874467
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false
+    }
+  ],
+  "requires_marked_start_before_each_episode": true,
+  "reanchor_at_dispatch": true,
+  "icp_corrections_used": false,
+  "success_radius_m": 1.0,
+  "final_yaw_requested": false,
+  "absolute_map_localization_verified": false
+}
