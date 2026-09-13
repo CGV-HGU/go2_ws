@@ -37,10 +37,10 @@ goals:
   snapshot_image: goals/4.json
 - id: 5
   name: Waypoint_5
-  description: 'Goal candidate #5 on 0913 full SLAM map (8.99m from origin)'
-  x_m: 7.955
-  y_m: 4.189
+  description: 'Goal candidate #5 on 0913 full SLAM map (NEW Long Goal: 16.13m from origin)'
+  x_m: 15.604
+  y_m: -4.08
   z_m: 0.0
-  yaw_deg: 82.8
+  yaw_deg: -1.4
   tolerance_m: 1.0
   snapshot_image: goals/5.json

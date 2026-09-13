@@ -1,0 +1,104 @@
+{
+  "campaign": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913",
+  "campaign_id": "5421aeb68b744631b2436402a6a5b3a5",
+  "goal_plan_sha256": "69781f18c387d396246bcc451997e756e934474a60f1ad123c96abf0a47991a7",
+  "map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+  "map_cells_file": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/map-review/projected-local-cells.npy",
+  "map_cells_sha256": "e030cd6ea8b87f88f651e7af1412815a7f1193d4d2ddf171294b41249c002bc3",
+  "map_image_method": "Projection of cached local ground/empty/obstacle cells using cached optimized poses; obstacle wins. No morphological closing/dilation. Not a fresh RTAB-Map probability fusion.",
+  "map_overlay_origin_xy": [
+    0.09113185511688908,
+    -0.13182923391981205
+  ],
+  "map_overlay_heading_rad": 0.07091280788566923,
+  "original_origin_file": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/goals/origin.json",
+  "original_origin_sha256": "dcd7d989d712bedc60569c1ad3cf84c53236ac152241be40523fd5007c955242",
+  "frame_registration": {
+    "method": "operator_confirmed_same_marked_physical_start_and_heading",
+    "operator_statement": "기존 시작 위치·방향에 맞춰둠",
+    "source_origin_id": "a1b045fe1b4a4e82ab035129dfd5facd",
+    "destination_origin_id": "654bff43686741c4aa4bd9339d8d765f",
+    "assumed_fixed_start_transform_xy_yaw": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "metric_registration_independently_verified": false,
+    "raw_odometry_across_boots_reused": false,
+    "retained_labels": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "newly_captured_labels": [
+      "5"
+    ]
+  },
+  "distance_type": "Euclidean distance in fixed-start odometry, not shortest path",
+  "independent_ground_truth": false,
+  "trajectories_included": false,
+  "scale_bar_m": 5,
+  "goals": [
+    {
+      "goal_label": "1",
+      "new_goal": false,
+      "fixed_start_x_m": 2.976295047359577,
+      "fixed_start_y_m": 1.6749293355328907,
+      "saved_yaw_rad": -0.16456907985919206,
+      "straight_distance_m": 3.415218951687548,
+      "map_overlay_x_m": 2.9412722777946336,
+      "map_overlay_y_m": 1.749771164407135,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "2",
+      "new_goal": false,
+      "fixed_start_x_m": 4.806585606214698,
+      "fixed_start_y_m": -2.4196024419508197,
+      "saved_yaw_rad": 0.3229949009230366,
+      "straight_distance_m": 5.38123974256534,
+      "map_overlay_x_m": 5.057074300042438,
+      "map_overlay_y_m": -2.2047876996521936,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "3",
+      "new_goal": false,
+      "fixed_start_x_m": 9.299617046185157,
+      "fixed_start_y_m": 0.4242188621915379,
+      "saved_yaw_rad": -0.20163110700574816,
+      "straight_distance_m": 9.309287773440921,
+      "map_overlay_x_m": 9.337319203771505,
+      "map_overlay_y_m": 0.9502328540935793,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "4",
+      "new_goal": false,
+      "fixed_start_x_m": 10.613861243952254,
+      "fixed_start_y_m": -3.886405544069355,
+      "saved_yaw_rad": -0.6353824513828922,
+      "straight_distance_m": 11.303017232528875,
+      "map_overlay_x_m": 10.953682718867837,
+      "map_overlay_y_m": -3.256439176179519,
+      "success_radius_m": 1.0
+    },
+    {
+      "goal_label": "5",
+      "new_goal": true,
+      "fixed_start_x_m": 15.604041406638608,
+      "fixed_start_y_m": -4.0795725388639035,
+      "saved_yaw_rad": -0.025079491567807866,
+      "straight_distance_m": 16.128515750680364,
+      "map_overlay_x_m": 15.945007799321619,
+      "map_overlay_y_m": -3.0955495084584173,
+      "success_radius_m": 1.0
+    }
+  ],
+  "output_sha256": {
+    "2d_goals_map_new5.png": "8d02ada3eb56e0217e8f1763b027a822e9606d00707f6a376ee10d38ea7dc354",
+    "2d_goals_map_new5.pdf": "cb420fd3ff6046079cb5ae4f09e25b8a14d7ad9c7acd61cf391af081f84ab74d",
+    "2d_goals_map_new5.csv": "f3400e8228ca2772721bae7fdeee7a9cc0686291889f5e9f34dc684e8f8d9e4c"
+  }
+}

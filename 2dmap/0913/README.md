@@ -24,14 +24,16 @@
 | **Goal #2** | `Waypoint_2` | **+4.807** | **-2.420** | $+18.5^\circ$ ($+0.323\text{ rad}$) | **5.38 m** | 1.0 m | 좌측 하단 복도 통로 |
 | **Goal #3** | `Waypoint_3` | **+9.300** | **+0.424** | $-11.6^\circ$ ($-0.202\text{ rad}$) | **9.31 m** | 1.0 m | 중앙 교차로 중심부 |
 | **Goal #4** | `Waypoint_4` | **+10.614** | **-3.886** | $-36.4^\circ$ ($-0.635\text{ rad}$) | **11.30 m** | 1.0 m | 우하단 삼각 루프 복도 코너 |
-| **Goal #5** | `Waypoint_5` | **+7.955** | **+4.189** | $+82.8^\circ$ ($+1.445\text{ rad}$) | **8.99 m** | 1.0 m | 상단 북측 복도 분기점 |
+| **Goal #5 (NEW)** | `Waypoint_5` | **+15.604** | **-4.080** | $-1.4^\circ$ ($-0.025\text{ rad}$) | **16.13 m** | 1.0 m | **최장거리 원거리 골 (우측 복도 끝)** |
+| *(구 Goal #5)* | - | *+7.955* | *+4.189* | *+82.8°* | *8.99 m* | *1.0 m* | *북측 복도 분기점 (초기 후보)* |
 
 *공식 설정 파일: `config/navigation_goals.json`, `config/navigation_goals.yaml`*  
-*원본 레코드: `s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/goal-plan.json`*
+*원본 레코드: `s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913/goal-plan.json`*
 
 ---
 
 ## 📂 파일 구성
+- `2d_goals_map_new5.png` / `.pdf` / `.csv` / `.json`: **Goal 5를 16.13m 장거리로 갱신한 최신 5-Goal 플롯**
 - `2d.png`: 5cm 해상도 정제 2D 점유 격자 지도 (Occupancy Grid)
 - `0833.pgm`: ROS 2 Map Server 표준 호환 PGM 파일
 - `0833.yaml`: ROS 2 Map Server 메타데이터 YAML 설정
@@ -42,4 +44,6 @@
 - `2d_clean_goals_map.png`: **ICRA 논문 Fig. 6 스타일** 고대비 복도 지도 (라이다 모래/점군 노이즈 완전 제거, 5m 스케일바, 범례 포함)
 - `2d_wall_only_goals_map.png`: **CAD 스타일 벽면 전용** 지도 (순백 배경 + 선명한 검은 벽면 + 5개 골 마커)
 - `fig_five_goals.pdf`: 논문 집필용 고해상도 벡터 PDF
+- `fig6_five_goals_trajectories.png` / `.pdf`: 골별 실주행 궤적 오버레이 플롯
+- `all_0913_trajectories_map.png` / `.pdf`: 전체 15개 트라이얼 순환 주행 맵
 - `navigation_goals.json` / `navigation_goals.yaml`: 5개 골 포즈 공식 정의
