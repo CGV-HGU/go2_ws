@@ -1,0 +1,1 @@
+These are reviewed Jetson working-copy snapshots, not a complete fresh-host deployment bundle. Preparation also uses the pinned local images and preserved local trial template. No robot motion was run during this preparation. Raw VLM image payloads are retained locally and excluded from this Git export.

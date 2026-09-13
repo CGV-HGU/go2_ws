@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "rows": 5,
+  "payload_image_bytes": 691215,
+  "image_sha256": "ab3956f03d7db68ade4e46fb9ca376512a44085c3c098b8a52480f8714f1c0af",
+  "writer_duration_s": [
+    0.008761406000303396,
+    0.00820813099926454,
+    0.008072636999713723,
+    0.008133887999974831,
+    0.008162881999851379
+  ],
+  "network_requests": 0,
+  "scope": "Installed writer round trip using recorded image bytes; not a VLM inference or new driving result"
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "full_goals": 5,
+  "direct_goals": 5,
+  "retries": 1,
+  "physical_runs": 0,
+  "synthetic_trial_wrappers_disabled": true,
+  "scope": "Real Docker image and compose validation, synthetic coordinates only"
+}

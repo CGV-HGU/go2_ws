@@ -1,0 +1,33 @@
+{
+  "schema": "escape-five-goal-campaign-v1",
+  "campaign_id": "4ee7aa05055b46f6a833d6ade8963292",
+  "created_unix": 1789290931.0881336,
+  "status": "awaiting_mapping",
+  "required_goals": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "pose_method": "fixed_start_odometry",
+  "same_marked_start_each_episode": true,
+  "validation": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/candidate-validation.json",
+  "navigation_image": "sha256:a92b920649fabdc2ba7b894f9e75a68454596cc997d70825d3214349a305cf14",
+  "physical_drive_validated": false,
+  "free_disk_bytes_at_prepare": 228643184640,
+  "trials": [],
+  "primary_method": "full",
+  "comparison_method": "direct_goal",
+  "camera": {
+    "image": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+    "compose": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/camera.compose.json",
+    "sha256": {
+      "camera.compose.json": "cfe17c20ddf3a4275d391381b7141a18ebe8ec92a10f63b7d1860e0da5996cdf",
+      "camera-config/0-cyclonedds.xml": "75deefe8ed7e17a818dd4f157ec4ab70db1e2f31664c0db203505d18cbbdceb4",
+      "camera-config/1-calibration/camera_intrinsics.yaml": "2fedc1b02115f90fb1aa01e8d4ed23fec6679c9699de82eb468a303afe4381e7",
+      "camera-config/1-calibration/extrinsics.json": "b33256a963394bd64741feae40af10a1e102b49bae3d869ee78cab0a993ad991",
+      "camera-config/1-calibration/manifest.json": "b3ad5188ce9d724d36ae5953c1dfce2b9b4cf63e06a8bcd86ef2a486c616bd52"
+    }
+  }
+}

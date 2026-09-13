@@ -1,0 +1,10 @@
+{
+  "checked_unix": 1789291538.346589,
+  "model_ids": [
+    "qwen3.5-9b-instruct"
+  ],
+  "configured_model": "qwen3.5-9b-instruct",
+  "configured_model_listed": true,
+  "elapsed_s": 0.05653036600051564,
+  "inference_requested": false
+}

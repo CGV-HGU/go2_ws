@@ -1,5 +1,7 @@
 # 2026-09-13 Unitree Go2 실제 로봇 네비게이션 실험 결과 보고서 (SR & SPL 분석)
 
+> 다음 기록용 실험: [새 매핑·목표 5개·에피소드 기록 준비](five_goal_recording_prep/README.md). 새 지도와 실제 목표 캡처를 기다리는 상태이며 준비 과정에서 로봇을 움직이지 않았습니다.
+
 > 후속 검토: [Jetson 로그 분석·수정·ESCAPE/Direct 비교 준비](jetson_review/README.md). 기존 수치의 측정 기준과 제한은 해당 문서에 구분했습니다. 다음 단계는 에피소드 주행이며, 추가 지표 검토는 주행 후 진행합니다.
 
 본 보고서는 2026년 9월 13일 Unitree Go2 실제 로봇 플랫폼에서 수행된 **Full 비동기 S2E-VLM 네비게이션 6회 주행 평가**의 공식 학술 벤치마크 지표(**SR: Success Rate, SPL: Success weighted by Path Length**) 및 세부 주행 궤적 데이터를 정리한 결과입니다.
