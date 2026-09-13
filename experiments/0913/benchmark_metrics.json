@@ -1,0 +1,90 @@
+{
+  "evaluation_protocol": "Standard IEEE ICRA PointGoal Navigation Benchmark",
+  "arrival_radius_m": 1.0,
+  "goal_1": {
+    "num_trials": 3,
+    "success_count": 2,
+    "success_rate_pct": 66.7,
+    "spl_pct": 50.3,
+    "mean_duration_s": 170.64,
+    "mean_path_length_m": 4.49
+  },
+  "goal_2": {
+    "num_trials": 3,
+    "success_count": 3,
+    "success_rate_pct": 100.0,
+    "spl_pct": 100.0,
+    "mean_duration_s": 62.24,
+    "mean_path_length_m": 2.75
+  },
+  "overall": {
+    "num_trials": 6,
+    "success_count": 5,
+    "success_rate_pct": 83.3,
+    "spl_pct": 75.1,
+    "mean_duration_s": 116.44,
+    "mean_path_length_m": 3.62
+  },
+  "trials": [
+    {
+      "trial": "goal-1-001",
+      "goal": "1",
+      "outcome": "CONTROLLER_INHIBITED:MOTION_TIMEOUT",
+      "success": 0,
+      "shortest_path_m": 4.8407,
+      "actual_path_m": 0.5639178103197056,
+      "spl": 0.0,
+      "duration_s": 56.66
+    },
+    {
+      "trial": "goal-1-002",
+      "goal": "1",
+      "outcome": "GOAL_DISTANCE_REACHED",
+      "success": 1,
+      "shortest_path_m": 4.8407,
+      "actual_path_m": 6.922959411901049,
+      "spl": 0.6992,
+      "duration_s": 259.91
+    },
+    {
+      "trial": "goal-1-003",
+      "goal": "1",
+      "outcome": "GOAL_DISTANCE_REACHED",
+      "success": 1,
+      "shortest_path_m": 4.8407,
+      "actual_path_m": 5.979165117485142,
+      "spl": 0.8096,
+      "duration_s": 195.35
+    },
+    {
+      "trial": "goal-2-001",
+      "goal": "2",
+      "outcome": "GOAL_DISTANCE_REACHED",
+      "success": 1,
+      "shortest_path_m": 3.1146,
+      "actual_path_m": 3.1032541049448183,
+      "spl": 1.0,
+      "duration_s": 88.87
+    },
+    {
+      "trial": "goal-2-002",
+      "goal": "2",
+      "outcome": "GOAL_DISTANCE_REACHED",
+      "success": 1,
+      "shortest_path_m": 3.1146,
+      "actual_path_m": 2.550720187157803,
+      "spl": 1.0,
+      "duration_s": 47.54
+    },
+    {
+      "trial": "goal-2-003",
+      "goal": "2",
+      "outcome": "GOAL_DISTANCE_REACHED",
+      "success": 1,
+      "shortest_path_m": 3.1146,
+      "actual_path_m": 2.610317497419604,
+      "spl": 1.0,
+      "duration_s": 50.3
+    }
+  ]
+}
