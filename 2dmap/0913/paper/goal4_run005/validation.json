@@ -1,0 +1,30 @@
+{
+  "points": {
+    "full-goal-4-009": {
+      "samples": 5359,
+      "max_xy_difference_m": 0.0,
+      "max_time_difference_s": 0.0,
+      "all_original_samples_preserved": true
+    },
+    "direct_goal-goal-4-005": {
+      "samples": 1028,
+      "max_xy_difference_m": 0.0,
+      "max_time_difference_s": 0.0,
+      "all_original_samples_preserved": true
+    }
+  },
+  "scale": {
+    "complete_footprint_with_margin_xy_m": [
+      11.909999999999995,
+      3.105428571428571,
+      13.089999999999998,
+      3.8888571428571437
+    ],
+    "inspected_map_cells": 442,
+    "overlapping_white_cells": 0,
+    "backing_rectangle": false,
+    "same_horizontal_vertical_scale": true,
+    "scale_length_m": 1.0,
+    "scale_length_original_map_pixels": 20.0
+  }
+}
