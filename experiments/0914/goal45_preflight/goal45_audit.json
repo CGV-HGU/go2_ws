@@ -1,0 +1,793 @@
+{
+  "checked_at_utc": "2026-09-14T06:59:54.226327+00:00",
+  "map": {
+    "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/mapping/map.db",
+    "sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+    "quick_check": "ok",
+    "nodes": 365,
+    "link_rows": 904,
+    "nonempty_ground_truth_blob_rows": 365,
+    "all_ground_truth_blobs_zero_filled": true,
+    "external_ground_truth_available": false
+  },
+  "goals": [
+    {
+      "label": "4",
+      "fixed_start_x_m": 10.613861243952254,
+      "fixed_start_y_m": -3.886405544069355,
+      "straight_distance_m": 11.303017232528875,
+      "bearing_from_marked_forward_deg": -20.110872111226776,
+      "saved_yaw_rad_not_enforced": -0.6353824513828922,
+      "map_overlay_xy_m": [
+        10.953682718867837,
+        -3.2564391761795184
+      ],
+      "projected_cell_value": 255,
+      "projected_cells_within_1m": {
+        "205": 412,
+        "255": 851
+      },
+      "physical_goal_accuracy_verified": false
+    },
+    {
+      "label": "5",
+      "fixed_start_x_m": 14.44344518101375,
+      "fixed_start_y_m": -6.559550669508374,
+      "straight_distance_m": 15.863190526586923,
+      "bearing_from_marked_forward_deg": -24.425371330423797,
+      "saved_yaw_rad_not_enforced": -1.6412689551238642,
+      "map_overlay_xy_m": [
+        14.963043312330639,
+        -5.651526987564609
+      ],
+      "projected_cell_value": 255,
+      "projected_cells_within_1m": {
+        "205": 4,
+        "255": 1252
+      },
+      "physical_goal_accuracy_verified": false
+    }
+  ],
+  "retained_goals": [
+    {
+      "label": "1",
+      "difference_to_success_campaign_m": 0.0
+    },
+    {
+      "label": "2",
+      "difference_to_success_campaign_m": 0.0
+    },
+    {
+      "label": "3",
+      "difference_to_success_campaign_m": 0.0
+    },
+    {
+      "label": "4",
+      "difference_to_success_campaign_m": 0.0
+    }
+  ],
+  "goal5_capture_recomputed_exactly": true,
+  "transforms": [
+    {
+      "label": "4",
+      "episode_start": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dispatch_xy": [
+        10.613861243952254,
+        -3.886405544069355
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "4",
+      "episode_start": [
+        3.0,
+        -2.0,
+        1.5707963267948966
+      ],
+      "dispatch_xy": [
+        6.886405544069355,
+        8.613861243952254
+      ],
+      "roundtrip_error_m": 4.440892098500626e-16
+    },
+    {
+      "label": "4",
+      "episode_start": [
+        -5.0,
+        2.0,
+        -1.5707963267948966
+      ],
+      "dispatch_xy": [
+        -8.886405544069355,
+        -8.613861243952254
+      ],
+      "roundtrip_error_m": 4.440892098500626e-16
+    },
+    {
+      "label": "4",
+      "episode_start": [
+        3.0,
+        4.0,
+        3.141592653589793
+      ],
+      "dispatch_xy": [
+        -7.613861243952253,
+        7.886405544069356
+      ],
+      "roundtrip_error_m": 4.440892098500626e-16
+    },
+    {
+      "label": "4",
+      "episode_start": [
+        1.4,
+        -3.7,
+        0.606
+      ],
+      "dispatch_xy": [
+        12.337517568804959,
+        -0.8488760127052402
+      ],
+      "roundtrip_error_m": 4.440892098500626e-16
+    },
+    {
+      "label": "4",
+      "episode_start": [
+        100.0,
+        -100.0,
+        -2.9
+      ],
+      "dispatch_xy": [
+        88.76456484194767,
+        -98.76582198688908
+      ],
+      "roundtrip_error_m": 5.617333549722722e-15
+    },
+    {
+      "label": "5",
+      "episode_start": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dispatch_xy": [
+        14.44344518101375,
+        -6.559550669508374
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "5",
+      "episode_start": [
+        3.0,
+        -2.0,
+        1.5707963267948966
+      ],
+      "dispatch_xy": [
+        9.559550669508376,
+        12.44344518101375
+      ],
+      "roundtrip_error_m": 8.881784197001252e-16
+    },
+    {
+      "label": "5",
+      "episode_start": [
+        -5.0,
+        2.0,
+        -1.5707963267948966
+      ],
+      "dispatch_xy": [
+        -11.559550669508372,
+        -12.44344518101375
+      ],
+      "roundtrip_error_m": 8.881784197001252e-16
+    },
+    {
+      "label": "5",
+      "episode_start": [
+        3.0,
+        4.0,
+        3.141592653589793
+      ],
+      "dispatch_xy": [
+        -11.44344518101375,
+        10.559550669508376
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "5",
+      "episode_start": [
+        1.4,
+        -3.7,
+        0.606
+      ],
+      "dispatch_xy": [
+        17.007760172029634,
+        -0.8647511405164874
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "5",
+      "episode_start": [
+        100.0,
+        -100.0,
+        -2.9
+      ],
+      "dispatch_xy": [
+        84.40665087097919,
+        -97.08653528882485
+      ],
+      "roundtrip_error_m": 5.402578411571407e-15
+    }
+  ],
+  "return_closure": {
+    "captured_unix": 1789312514.6237013,
+    "host_boot_id": "00640e90-abe3-4851-97f5-babb2b6bd36c",
+    "odom_publisher_gid": "01104671307a873a2ca3760b00002f03",
+    "origin_sha256": "d07f297432c942224039b0b168f60c054dff71727164eb8b0ddfd75686b7bde3",
+    "operator_statement": "지금 돌아왔고 거의 시작점과 오차가 거의 없어",
+    "operator_reports_same_marked_start": true,
+    "physical_offset_independently_measured": false,
+    "return_pose_in_odom": [
+      1.67557692527771,
+      -2.355221748352051,
+      0.5112668698892258
+    ],
+    "return_fixed_start_xy_m": {
+      "x": -0.07528878279296529,
+      "y": -0.4616263457892584
+    },
+    "position_closure_error_m": 0.467725650292124,
+    "heading_closure_error_deg": 5.43013126772671,
+    "source_snapshot_sha256": "a154adbea6ede0f6e630d32608bf19f1f406812794315de7bcb38734d1a1d7c5",
+    "new_goal_activated": false
+  },
+  "frame_registration": {
+    "method": "operator_confirmed_same_marked_physical_start_and_heading",
+    "operator_statement": "지금 정렬해두었어",
+    "source_origin_id": "654bff43686741c4aa4bd9339d8d765f",
+    "destination_origin_id": "e250a1e39e164ab99d65668678c87362",
+    "assumed_fixed_start_transform_xy_yaw": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "metric_registration_independently_verified": false,
+    "raw_odometry_across_boots_reused": false,
+    "retained_labels": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "newly_captured_labels": [
+      "5"
+    ]
+  },
+  "prepared_trials": [
+    {
+      "run": "full-goal-4-004",
+      "validation": {
+        "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-004",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "look_execution": "forward_0p2",
+        "offline_checks_passed": true,
+        "physical_drive_validated": false
+      },
+      "artifact_check_only": true,
+      "conditions": {
+        "navigation": "full",
+        "execution": "async_true",
+        "look_execution": "forward_0p2",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "goal_label": "4",
+        "success_radius_m": 1.0,
+        "initial_motion_enabled": false,
+        "max_duration_s": 1800,
+        "turn_speed_radps": 0.8,
+        "minimum_rotate_speed_radps": 0.8,
+        "rotate_settle_window_s": 0.35,
+        "rotate_min_timeout_s": 15.0,
+        "rotate_recoil_limit_deg": 10.0,
+        "record_model_inputs": true,
+        "recorder_max_duration_s": 2040,
+        "forward_speed_mps": 0.5,
+        "observation_turn_speed_radps": 0.8,
+        "localization_method": "fixed_start_odometry",
+        "fixed_start_origin_id": "e250a1e39e164ab99d65668678c87362",
+        "requires_marked_start_before_each_episode": true,
+        "icp_corrections_used": false
+      },
+      "images": {
+        "escape": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+        "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+        "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+        "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+        "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+      },
+      "manifest_unchanged": true
+    },
+    {
+      "run": "full-goal-5-002",
+      "validation": {
+        "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-5-002",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "look_execution": "forward_0p2",
+        "offline_checks_passed": true,
+        "physical_drive_validated": false
+      },
+      "artifact_check_only": true,
+      "conditions": {
+        "navigation": "full",
+        "execution": "async_true",
+        "look_execution": "forward_0p2",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "goal_label": "5",
+        "success_radius_m": 1.0,
+        "initial_motion_enabled": false,
+        "max_duration_s": 1800,
+        "turn_speed_radps": 0.8,
+        "minimum_rotate_speed_radps": 0.8,
+        "rotate_settle_window_s": 0.35,
+        "rotate_min_timeout_s": 15.0,
+        "rotate_recoil_limit_deg": 10.0,
+        "record_model_inputs": true,
+        "recorder_max_duration_s": 2040,
+        "forward_speed_mps": 0.5,
+        "observation_turn_speed_radps": 0.8,
+        "localization_method": "fixed_start_odometry",
+        "fixed_start_origin_id": "e250a1e39e164ab99d65668678c87362",
+        "requires_marked_start_before_each_episode": true,
+        "icp_corrections_used": false
+      },
+      "images": {
+        "escape": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+        "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+        "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+        "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+        "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+      },
+      "manifest_unchanged": true
+    },
+    {
+      "run": "direct_goal-goal-4-007",
+      "validation": {
+        "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-007",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "look_execution": "forward_0p2",
+        "offline_checks_passed": true,
+        "physical_drive_validated": false
+      },
+      "artifact_check_only": true,
+      "conditions": {
+        "navigation": "direct_goal",
+        "execution": "async_true",
+        "look_execution": "forward_0p2",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "goal_label": "4",
+        "success_radius_m": 1.0,
+        "initial_motion_enabled": false,
+        "max_duration_s": 1800,
+        "turn_speed_radps": 0.8,
+        "minimum_rotate_speed_radps": 0.8,
+        "rotate_settle_window_s": 0.35,
+        "rotate_min_timeout_s": 15.0,
+        "rotate_recoil_limit_deg": 10.0,
+        "record_model_inputs": true,
+        "recorder_max_duration_s": 2040,
+        "forward_speed_mps": 0.5,
+        "observation_turn_speed_radps": 0.8,
+        "localization_method": "fixed_start_odometry",
+        "fixed_start_origin_id": "e250a1e39e164ab99d65668678c87362",
+        "requires_marked_start_before_each_episode": true,
+        "icp_corrections_used": false,
+        "direct_goal_max_policy_steps": 500,
+        "vlm_calls_expected": 0,
+        "full_observation_sweeps_enabled": false
+      },
+      "images": {
+        "escape": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+        "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+        "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+        "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+        "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+      },
+      "manifest_unchanged": true
+    },
+    {
+      "run": "direct_goal-goal-5-002",
+      "validation": {
+        "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-5-002",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "look_execution": "forward_0p2",
+        "offline_checks_passed": true,
+        "physical_drive_validated": false
+      },
+      "artifact_check_only": true,
+      "conditions": {
+        "navigation": "direct_goal",
+        "execution": "async_true",
+        "look_execution": "forward_0p2",
+        "goal_frame": "odom",
+        "goal_distance_m": null,
+        "goal_label": "5",
+        "success_radius_m": 1.0,
+        "initial_motion_enabled": false,
+        "max_duration_s": 1800,
+        "turn_speed_radps": 0.8,
+        "minimum_rotate_speed_radps": 0.8,
+        "rotate_settle_window_s": 0.35,
+        "rotate_min_timeout_s": 15.0,
+        "rotate_recoil_limit_deg": 10.0,
+        "record_model_inputs": true,
+        "recorder_max_duration_s": 2040,
+        "forward_speed_mps": 0.5,
+        "observation_turn_speed_radps": 0.8,
+        "localization_method": "fixed_start_odometry",
+        "fixed_start_origin_id": "e250a1e39e164ab99d65668678c87362",
+        "requires_marked_start_before_each_episode": true,
+        "icp_corrections_used": false,
+        "direct_goal_max_policy_steps": 500,
+        "vlm_calls_expected": 0,
+        "full_observation_sweeps_enabled": false
+      },
+      "images": {
+        "escape": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+        "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+        "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+        "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+        "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+      },
+      "manifest_unchanged": true
+    }
+  ],
+  "ours_goal4_history": [
+    {
+      "campaign": "original5",
+      "run": "full-goal-4-002",
+      "started": "False",
+      "start_kst": "",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "INCOMPLETE",
+      "odom_radius_reached": "",
+      "archive_success": "",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "",
+      "final_goal_distance_m": "",
+      "minimum_goal_distance_m": "",
+      "odom_path_10hz_m": "",
+      "odom_path_5hz_m": "",
+      "odom_path_20hz_m": "",
+      "pose_samples": "0",
+      "odom_samples": "0",
+      "forward_speed_mps": "",
+      "turn_speed_radps": "0.5",
+      "look_execution": "forward_0p1",
+      "max_duration_s": "360",
+      "vlm_calls": "0",
+      "vlm_errors": "0",
+      "policy_outputs": "0",
+      "raw_action_counts": "{}",
+      "policy_final_action": "",
+      "policy_stop_source": "",
+      "recording_integrity_passed": "False",
+      "recording_issues": "no recorded observation:image; missing: /home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-002/full5m/runtime/events.jsonl; missing: full5m/runtime/result.json; native topic empty: /s2e/robot/sensors/cloud; native topic empty: /s2e/robot/sensors/odom; native topic empty: /s2e/robot/sensors/imu",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:a92b920649fabdc2ba7b894f9e75a68454596cc997d70825d3214349a305cf14",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "prestart_excluded_from_driving_denominator",
+      "operator_intervention_reviewed": "",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "",
+      "autonomous_path_use_status": "field_context_unverified"
+    },
+    {
+      "campaign": "original5",
+      "run": "full-goal-4-004",
+      "started": "True",
+      "start_kst": "2026-09-13T20:01:31.634111+09:00",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "CONTROLLER_INHIBITED:MOTION_TIMEOUT",
+      "odom_radius_reached": "0",
+      "archive_success": "0",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "344.905694432",
+      "final_goal_distance_m": "5.331369876861572",
+      "minimum_goal_distance_m": "5.321143627166748",
+      "odom_path_10hz_m": "11.085061577606346",
+      "odom_path_5hz_m": "10.686749810054621",
+      "odom_path_20hz_m": "11.262155302938611",
+      "pose_samples": "10947",
+      "odom_samples": "6091",
+      "forward_speed_mps": "",
+      "turn_speed_radps": "0.5",
+      "look_execution": "forward_0p1",
+      "max_duration_s": "360",
+      "vlm_calls": "127",
+      "vlm_errors": "0",
+      "policy_outputs": "53",
+      "raw_action_counts": "{\"look_down\": 30, \"right\": 3, \"stop\": 3, \"left\": 2, \"forward\": 15}",
+      "policy_final_action": "forward",
+      "policy_stop_source": "model",
+      "recording_integrity_passed": "True",
+      "recording_issues": "",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:a92b920649fabdc2ba7b894f9e75a68454596cc997d70825d3214349a305cf14",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "descriptive_recording; field_or_physical_arrival_review_pending; shortest_path_reference_missing",
+      "operator_intervention_reviewed": "",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "",
+      "autonomous_path_use_status": "field_context_unverified"
+    },
+    {
+      "campaign": "original5",
+      "run": "full-goal-4-006",
+      "started": "True",
+      "start_kst": "2026-09-13T20:20:36.091004+09:00",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "CONTROLLER_INHIBITED:COMMAND_TRANSPORT_FAILED",
+      "odom_radius_reached": "0",
+      "archive_success": "0",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "4.353863794999597",
+      "final_goal_distance_m": "11.302820205688477",
+      "minimum_goal_distance_m": "11.302783012390137",
+      "odom_path_10hz_m": "0.002442493204091497",
+      "odom_path_5hz_m": "0.0012438269858292186",
+      "odom_path_20hz_m": "0.003185190518063582",
+      "pose_samples": "135",
+      "odom_samples": "78",
+      "forward_speed_mps": "0.5",
+      "turn_speed_radps": "0.6",
+      "look_execution": "forward_0p2",
+      "max_duration_s": "360",
+      "vlm_calls": "0",
+      "vlm_errors": "0",
+      "policy_outputs": "0",
+      "raw_action_counts": "{}",
+      "policy_final_action": "",
+      "policy_stop_source": "",
+      "recording_integrity_passed": "True",
+      "recording_issues": "",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:1e4b3b64eaeaf301bd3a38c17f9474d3c7f8f803a6a5501aa5c6931f3cbe2339",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "descriptive_recording; field_or_physical_arrival_review_pending; shortest_path_reference_missing",
+      "operator_intervention_reviewed": "",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "",
+      "autonomous_path_use_status": "field_context_unverified"
+    },
+    {
+      "campaign": "original5",
+      "run": "full-goal-4-007",
+      "started": "True",
+      "start_kst": "2026-09-13T20:30:42.497896+09:00",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "CONTROLLER_INHIBITED:MOTION_TIMEOUT",
+      "odom_radius_reached": "0",
+      "archive_success": "0",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "301.1586913639994",
+      "final_goal_distance_m": "4.5316925048828125",
+      "minimum_goal_distance_m": "4.460921764373779",
+      "odom_path_10hz_m": "11.793220619891354",
+      "odom_path_5hz_m": "11.372376141977773",
+      "odom_path_20hz_m": "11.990385868707289",
+      "pose_samples": "9281",
+      "odom_samples": "5340",
+      "forward_speed_mps": "0.5",
+      "turn_speed_radps": "0.6",
+      "look_execution": "forward_0p2",
+      "max_duration_s": "360",
+      "vlm_calls": "101",
+      "vlm_errors": "0",
+      "policy_outputs": "42",
+      "raw_action_counts": "{\"look_down\": 24, \"stop\": 1, \"left\": 4, \"right\": 2, \"forward\": 11}",
+      "policy_final_action": "forward",
+      "policy_stop_source": "model",
+      "recording_integrity_passed": "True",
+      "recording_issues": "",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:5a393b3092c0604954cf07b97a5376ab490343cddeb6c56312c4fe993a790654",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "descriptive_recording; field_or_physical_arrival_review_pending; shortest_path_reference_missing",
+      "operator_intervention_reviewed": "",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "",
+      "autonomous_path_use_status": "field_context_unverified"
+    },
+    {
+      "campaign": "original5",
+      "run": "full-goal-4-009",
+      "started": "True",
+      "start_kst": "2026-09-13T21:59:28.406394+09:00",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "GOAL_DISTANCE_REACHED",
+      "odom_radius_reached": "1",
+      "archive_success": "",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "302.3542648999992",
+      "final_goal_distance_m": "0.9839638471603394",
+      "minimum_goal_distance_m": "0.9839638471603394",
+      "odom_path_10hz_m": "14.96849839810426",
+      "odom_path_5hz_m": "14.579998810063172",
+      "odom_path_20hz_m": "15.186129956500402",
+      "pose_samples": "9214",
+      "odom_samples": "5359",
+      "forward_speed_mps": "0.5",
+      "turn_speed_radps": "0.8",
+      "look_execution": "forward_0p2",
+      "max_duration_s": "360",
+      "vlm_calls": "131",
+      "vlm_errors": "0",
+      "policy_outputs": "54",
+      "raw_action_counts": "{\"look_down\": 20, \"forward\": 29, \"right\": 3, \"left\": 2}",
+      "policy_final_action": "forward",
+      "policy_stop_source": "model",
+      "recording_integrity_passed": "True",
+      "recording_issues": "",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "descriptive_recording; field_or_physical_arrival_review_pending; shortest_path_reference_missing",
+      "operator_intervention_reviewed": "",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "",
+      "autonomous_path_use_status": "field_context_unverified"
+    },
+    {
+      "campaign": "recaptured5",
+      "run": "full-goal-4-002",
+      "started": "True",
+      "start_kst": "2026-09-14T00:52:16.471213+09:00",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "CONTROLLER_INHIBITED:LOCALIZED_POSE_STALE",
+      "odom_radius_reached": "0",
+      "archive_success": "0",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "124.27812773900041",
+      "final_goal_distance_m": "6.2302470207214355",
+      "minimum_goal_distance_m": "6.2302470207214355",
+      "odom_path_10hz_m": "6.656622299534619",
+      "odom_path_5hz_m": "6.499371444482862",
+      "odom_path_20hz_m": "6.749593094919289",
+      "pose_samples": "3590",
+      "odom_samples": "2142",
+      "forward_speed_mps": "0.5",
+      "turn_speed_radps": "0.8",
+      "look_execution": "forward_0p2",
+      "max_duration_s": "360",
+      "vlm_calls": "49",
+      "vlm_errors": "0",
+      "policy_outputs": "24",
+      "raw_action_counts": "{\"look_down\": 8, \"forward\": 14, \"left\": 1, \"right\": 1}",
+      "policy_final_action": "forward",
+      "policy_stop_source": "model",
+      "recording_integrity_passed": "False",
+      "recording_issues": "Full policy trace missing: sweep_scheduler_trace.jsonl",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "descriptive_recording; field_or_physical_arrival_review_pending; shortest_path_reference_missing",
+      "operator_intervention_reviewed": "",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "",
+      "autonomous_path_use_status": "field_context_unverified"
+    },
+    {
+      "campaign": "recaptured5",
+      "run": "full-goal-4-003",
+      "started": "True",
+      "start_kst": "2026-09-14T00:56:17.058222+09:00",
+      "navigation": "full",
+      "goal": "4",
+      "result_reason": "CONTROLLER_INHIBITED:NODE_UNAVAILABLE:rtab_pointgoal_adapter",
+      "odom_radius_reached": "0",
+      "archive_success": "0",
+      "paper_success": "",
+      "paper_spl": "",
+      "duration_s": "312.57429455500005",
+      "final_goal_distance_m": "52.435916900634766",
+      "minimum_goal_distance_m": "6.180042266845703",
+      "odom_path_10hz_m": "63.42702609723435",
+      "odom_path_5hz_m": "63.16984718675499",
+      "odom_path_20hz_m": "63.879131476990366",
+      "pose_samples": "9584",
+      "odom_samples": "5534",
+      "forward_speed_mps": "0.5",
+      "turn_speed_radps": "0.8",
+      "look_execution": "forward_0p2",
+      "max_duration_s": "360",
+      "vlm_calls": "25",
+      "vlm_errors": "14",
+      "policy_outputs": "16",
+      "raw_action_counts": "{\"look_down\": 2, \"forward\": 12, \"left\": 1, \"stop\": 1}",
+      "policy_final_action": "stop",
+      "policy_stop_source": "model",
+      "recording_integrity_passed": "False",
+      "recording_issues": "Full policy trace missing: sweep_scheduler_trace.jsonl",
+      "field_report_status": "awaiting_field_report",
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "checkpoint_sha256": "0b1faff7631962351bbbfe8cb115a3a03069f33fab499865f887ffbb5a3cabe3",
+      "evaluation_map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+      "metric_use": "network_stall_then_confirmed_manual_relocation; autonomous_path_invalid; intervention_failure_for_end_to_end_protocol",
+      "operator_intervention_reviewed": "True",
+      "autonomous_path_usable": "False",
+      "provisional_protocol_success": "0",
+      "autonomous_path_use_status": "manual_intervention_not_an_autonomous_length"
+    }
+  ],
+  "recording_space": {
+    "free_bytes": 70629097472,
+    "episode_max_duration_s": 1800,
+    "runner_required_bytes": 67360522240,
+    "one_episode_preflight_space_passes": true,
+    "two_worst_case_episodes_bytes_including_one_reserve": 123983626240,
+    "two_worst_case_episodes_fit": false
+  },
+  "remap_for_current_fixed_start_navigation_required": false,
+  "remap_reason": "Frozen DB is unchanged and structurally valid; navigation uses fixed-start odometry. This does not verify global localization, physical goal accuracy, current obstacles, or SPL reference quality.",
+  "physical_commands_sent": 0,
+  "map_or_goal_files_changed": false,
+  "runtime_source_changed": false,
+  "checks_passed": true,
+  "real_drive_ready": false,
+  "input_sha256": {
+    "/home/unitree/s2e-vlm-async-framework-minimal/scripts/fixed_start_goals.py": "1d712ee9a390dc822fea62312ef633e770513848af6ae43c69835b21b3bebd86",
+    "/home/unitree/s2e-vlm-async-framework-minimal/scripts/run_saved_robot_goal.py": "3ba3b646cfa37c3108a56150cb90728f10dbcc1fdf45b734d9cc21c3bbd19528",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/campaign.json": "b40304ba442ed5a94c043a3931661df2299d5c80a2e2e0c3a6aeafd317583db0",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/mapping/map.db": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+    "/home/unitree/go2_ws_antarctica/experiments/0914/night_log_review/episodes/original5/full-goal-4-009/evidence/goal-plan.json": "c9c4c71bedef00a9b53cb13265d617809beec0be8c0d798cdd587e1fdefa9498",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913/goal5-recapture-20260914-000716/goals/5.json": "70c37218fe70d44ded745774c0bc4c206c42c5d18398153ded3eaec72521ad01",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913/goal5-recapture-20260914-000716/goals/origin.json": "be480e79f077745391429c0e56c578b927a8231952075b93cd96092884d470d1",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913/goal5-recapture-20260914-000716/goals/5.snapshot.json": "e2baa2ebbc76e46fcdda96823d807df7acf0dc1f4e5a7edb1d041c580116de0e",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/provenance/return-closure.json": "1de0b49fe2d251166c616607f5698c32e2ae5a10d58d3a2623cbd4ef2bfa4fee",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/provenance/frame-registration.json": "9a181084e80d3dba3f3800ab8b2031084af25aab1fb1ac491e5f06a7c9b314b9",
+    "/home/unitree/go2_ws_antarctica/2dmap/0914/2d_goals_map_recaptured5.json": "5892e4f35a7fd6eb22df9ab002e7b5ec2d157f379f16dba6dd2d26fb697c1155",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/map-review/review.json": "afc6820f9320587d2b489ccaf388e045f65d581fb826daac3b7ca23f4889abd2",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/map-review/projected-local-cells.npy": "e030cd6ea8b87f88f651e7af1412815a7f1193d4d2ddf171294b41249c002bc3",
+    "/home/unitree/s2e-vlm-async-framework-minimal/scripts/validate_robot_pointgoal_trial.py": "1ca742447c03e5c42ddfdfd1aed3261bdb87b860c660572c68230380a36bcacd",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-004/manifest.json": "9d343b12108d76dfe0dcfba699f4d64e847cc6caab7a1b73c882999e72a36e69",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-004/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-5-002/manifest.json": "22f956edb43e23708ecdaf76eb9fa877d922d489b47eb0e2372fc0dd2cb5cc39",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-5-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-007/manifest.json": "f02cfad82fcab64225e6c57e0ff5d29b73189b9808d5fafc84a6c09b66c28315",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-007/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-5-002/manifest.json": "372721d4ce82e10c235bd71162a35ccc50a39b58977fac4a4474c17b06da1300",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-5-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/go2_ws_antarctica/experiments/0914/night_log_review/episodes_summary.csv": "27b34ca60a0de8b964f12575c772baf7e526db6c89ad2abb4c5d202b40921cb0"
+  }
+}

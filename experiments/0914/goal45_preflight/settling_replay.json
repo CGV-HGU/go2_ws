@@ -1,0 +1,84 @@
+{
+  "recorded_tick_count": 405,
+  "source_sha256": "d857da194660700f688ceeca70284bef9aaf87e8340a6fda81481ebbbaedec14",
+  "installed_motion_path": "/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_robot/motion.py",
+  "installed_motion_sha256": "169bd83f81aaa3e3287b7207cd68adff9d2e2582a26e28e35ad77f1456b18f27",
+  "installed_baseline_reproduced": true,
+  "results": [
+    {
+      "terminal": "MOTION_TIMEOUT",
+      "elapsed_s": 20.295888468999692,
+      "assumed_linear_speed": 0.0,
+      "first_angular_command_difference_s": null,
+      "remaining_error_deg": 1.8386980591113384,
+      "max_later_recorded_error_deg": null,
+      "spread_deg": 0.25,
+      "yaw_rate_limit": 0.1
+    },
+    {
+      "terminal": "MOTION_TIMEOUT",
+      "elapsed_s": 20.295888468999692,
+      "assumed_linear_speed": 0.0,
+      "first_angular_command_difference_s": null,
+      "remaining_error_deg": 1.8386980591113384,
+      "max_later_recorded_error_deg": null,
+      "spread_deg": 0.25,
+      "yaw_rate_limit": 0.15
+    },
+    {
+      "terminal": "MOTION_TIMEOUT",
+      "elapsed_s": 20.295888468999692,
+      "assumed_linear_speed": 0.0,
+      "first_angular_command_difference_s": null,
+      "remaining_error_deg": 1.8386980591113384,
+      "max_later_recorded_error_deg": null,
+      "spread_deg": 0.5,
+      "yaw_rate_limit": 0.1
+    },
+    {
+      "terminal": "MOTION_TIMEOUT",
+      "elapsed_s": 20.295888468999692,
+      "assumed_linear_speed": 0.0,
+      "first_angular_command_difference_s": null,
+      "remaining_error_deg": 1.8386980591113384,
+      "max_later_recorded_error_deg": null,
+      "spread_deg": 0.5,
+      "yaw_rate_limit": 0.15
+    },
+    {
+      "terminal": "OK",
+      "elapsed_s": 11.93918664299963,
+      "assumed_linear_speed": 0.0,
+      "first_angular_command_difference_s": null,
+      "remaining_error_deg": 2.043341871435068,
+      "max_later_recorded_error_deg": 2.7868878083473594,
+      "spread_deg": 1.0,
+      "yaw_rate_limit": 0.1
+    },
+    {
+      "terminal": "OK",
+      "elapsed_s": 2.8322866789999352,
+      "assumed_linear_speed": 0.0,
+      "first_angular_command_difference_s": null,
+      "remaining_error_deg": -1.1213718719330565,
+      "max_later_recorded_error_deg": 2.8581681616952226,
+      "spread_deg": 1.0,
+      "yaw_rate_limit": 0.15
+    }
+  ],
+  "nonstationary_speed_still_blocks": {
+    "terminal": "MOTION_TIMEOUT",
+    "elapsed_s": 20.295888468999692,
+    "assumed_linear_speed": 0.08,
+    "first_angular_command_difference_s": null,
+    "remaining_error_deg": 1.8386980591113384,
+    "max_later_recorded_error_deg": null
+  },
+  "concurrent_heading_hold_test": {
+    "linear": 0.1,
+    "angular": -0.10471975511965977
+  },
+  "physical_commands": 0,
+  "production_source_modified": false,
+  "limitation": "Exact angular command replay with synthetic zero translation/speed, not exact full odometry/controller replay. Earlier ACK candidates require measured speed validation and physical testing; no threshold recommendation or runtime change is implied."
+}

@@ -1,0 +1,41 @@
+{
+  "recorded_at_utc": "2026-09-14T07:08:03.871575+00:00",
+  "cwd": "/home/unitree/go2_ws_antarctica",
+  "runtime": "/home/unitree/s2e-vlm-async-framework-minimal",
+  "timezone": "Asia/Seoul",
+  "physical_commands_sent": 0,
+  "test_container_flags": [
+    "--network",
+    "none",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--user",
+    "1000:1000"
+  ],
+  "ros_domains": [
+    224,
+    225
+  ],
+  "ros_log_dir": "/tmp/ros",
+  "tested_modules": "candidate files overlaid read-only on installed image; built image subsequently verified byte-identical",
+  "parent_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+  "candidate_image": "sha256:2fc034b16066c3e0aaf170d164825903fbfc1f48122ced32411c616868428d40",
+  "source_patch": "candidate.patch",
+  "host_audit_command": "python3 experiments/0914/goal45_preflight/audit_goal45.py",
+  "image_build_command": "docker build --pull=false --network none -f candidate.Dockerfile -t escape-navigation:goal45-sensor-candidate-20260914 .",
+  "note": "Artifact times below are file modification times, not exact test start times. Initial test/build failures preserved. No active campaign or runtime source changed.",
+  "artifact_mtime_utc": {
+    "candidate-build-localbase.log": "2026-09-14T07:02:41.261830+00:00",
+    "candidate-build.log": "2026-09-14T07:01:55.652822+00:00",
+    "candidate-final-tests.log": "2026-09-14T07:00:00.638230+00:00",
+    "candidate-image-validation.log": "2026-09-14T07:03:37.583061+00:00",
+    "candidate-tests.log": "2026-09-14T06:52:22.266770+00:00",
+    "candidate-tests2.log": "2026-09-14T06:57:33.858790+00:00",
+    "goal45-audit.log": "2026-09-14T06:59:54.222083+00:00",
+    "motion-replay.log": "2026-09-14T07:00:34.394999+00:00",
+    "sensor-candidate.log": "2026-09-14T06:56:20.653006+00:00"
+  }
+}

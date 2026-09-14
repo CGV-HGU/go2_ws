@@ -1,0 +1,30 @@
+.....................................................F.................. [ 29%]
+........................................................................ [ 58%]
+........................................................................ [ 87%]
+...............................                                          [100%]
+=================================== FAILURES ===================================
+___________ test_sensor_fault_is_latched_and_stops_before_next_move ____________
+
+node = (<s2e_vlm_robot.action_executor_node.ActionExecutorNode object at 0xffff6da3aba0>, <Mock id='281472521183376'>)
+
+    def test_sensor_fault_is_latched_and_stops_before_next_move(node):
+        n, transport = node
+        enable(n)
+        n._on_command(command(n))
+        invalid = Odometry()
+        invalid.header.stamp = n.get_clock().now().to_msg()
+        invalid.header.frame_id = 'odom'
+        invalid.child_frame_id = 'base_link'
+        n._on_odom(invalid)  # Zero quaternion cannot be a usable odometry sample.
+>       assert n._pending_sensor_fault == 'INVALID_ODOMETRY'
+E       AssertionError: assert '' == 'INVALID_ODOMETRY'
+E         - INVALID_ODOMETRY
+
+/candidate-tests/test_sensor_mailbox.py:54: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+[INFO] [1789369052.987718756] [go2_action_executor]: Full ESCAPE motion boundary ready; motion disabled
+--------------------------- Captured stderr teardown ---------------------------
+[INFO] [1789369052.997734261] [go2_action_executor]: robot_motion_event {"event":"terminal","episode_id":"episode","command_id":"cmd","kind":"translate","target":0.25,"measured_progress":0.0,"elapsed_s":0.0077984909999031515,"status":"SHUTDOWN","collision_feedback_available":false,"odom_stamp_ns":1789369052989187495}
+=========================== short test summary info ============================
+FAILED ../candidate-tests/test_sensor_mailbox.py::test_sensor_fault_is_latched_and_stops_before_next_move
+1 failed, 246 passed in 7.99s

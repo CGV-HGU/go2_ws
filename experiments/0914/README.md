@@ -6,6 +6,7 @@
 - [PixelNav 반대 방향 주행·원본 118단계 재생 대조](pixnav_direction_review/README.md)
 - [팀 공유용 PixelNav 정량 평가·4번 5회 결과·1·2·3번 주행 로직 점검](pixnav_quantitative_evaluation/README.md)
 - [실패 후속 분석: Ours 2번 탈출 모드·Direct 33번째 종료 제한·남은 로직 점검](pixnav_failure_followup/README.md)
+- [4번 재현·5번 좌표·재매핑 필요성·센서/회전 수정 후보 검증](goal45_preflight/README.md)
 - [전체 제한 1800초 후속 검토](jetson_timeout_review.md)
 - [1800초 적용·기록기 상한 수정·새 10회차 준비 검증](episode_timeout_1800/README.md)
 - [로그 용량·18.2GB 정리 후보·필수 기록 범위](storage_review/README.md)

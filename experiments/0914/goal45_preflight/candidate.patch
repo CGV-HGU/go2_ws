@@ -1,0 +1,400 @@
+--- a/src/s2e_vlm_robot/s2e_vlm_robot/motion.py
++++ b/src/s2e_vlm_robot/s2e_vlm_robot/motion.py
+@@ -42,6 +42,7 @@
+     settle_samples: int = 2
+     rotation_settle_timeout: float = 2.0
+     rotation_settle_window: float = 0.0
++    rotation_settle_spread: float = math.radians(.25)
+     rotation_recoil_limit: float = 0.0  # Zero retains the original tolerance-sized cap.
+     stop_speed: float = 0.06
+     stop_yaw_rate: float = 0.10
+@@ -54,6 +55,8 @@
+                 raise ValueError("INVALID_MOTION_LIMIT:" + name)
+         if self.rotation_recoil_limit > math.radians(10):
+             raise ValueError("rotation recoil limit exceeds 10 degrees")
++        if self.rotation_settle_spread > math.radians(1):
++            raise ValueError("rotation settling spread exceeds 1 degree")
+         if self.minimum_turn_speed > self.angular_speed:
+             raise ValueError("minimum turn speed exceeds maximum")
+         if not isinstance(self.settle_samples, int):
+@@ -189,7 +192,7 @@
+                     len(window) >= 2
+                     and window[-1][0]-window[0][0] + 1e-9 >= self.limits.rotation_settle_window
+                     and max(p for _, p in window)-min(p for _, p in window)
+-                        <= min(self.tolerance/2, math.radians(.25))
++                        <= min(self.tolerance/2, self.limits.rotation_settle_spread)
+                 )
+                 if self.settled < self.limits.settle_samples or not stable_window:
+                     # A noisy angle crossing must not restart the gait while
+--- a/src/s2e_vlm_robot/s2e_vlm_robot/action_executor_node.py
++++ b/src/s2e_vlm_robot/s2e_vlm_robot/action_executor_node.py
+@@ -13,7 +13,7 @@
+ from nav_msgs.msg import Odometry
+ from sensor_msgs.msg import Image
+ from rclpy.action import ActionServer, CancelResponse, GoalResponse
+-from rclpy.callback_groups import ReentrantCallbackGroup
++from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
+ from rclpy.executors import MultiThreadedExecutor
+ from rclpy.node import Node
+ from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy, qos_profile_sensor_data
+@@ -38,6 +38,7 @@
+             "rotate_proportional_gain": 1.2, "rotate_settle_samples": 2,
+             "rotate_settle_timeout_s": 2.0,
+             "rotate_settle_window_s": 0.0,
++            "rotate_settle_spread_deg": 0.25,
+             "rotate_recoil_limit_deg": 0.0,
+             "rotate_min_timeout_s": 0.0,
+             "max_forward_distance_m": 0.25, "max_turn_angle_deg": 30.0,
+@@ -62,11 +63,18 @@
+             settle_samples=int(self._positive("rotate_settle_samples")),
+             rotation_settle_timeout=self._positive("rotate_settle_timeout_s"),
+             rotation_settle_window=float(self._p("rotate_settle_window_s")),
++            rotation_settle_spread=math.radians(float(self._p("rotate_settle_spread_deg"))),
+             rotation_recoil_limit=math.radians(float(self._p("rotate_recoil_limit_deg"))),
+             acceleration=self._positive("linear_acceleration_mps2"),
+             odom_timeout=self._positive("odom_timeout_s"))
+         self._client = SportClient(str(self._p("command_socket_path")), self._positive("socket_timeout_s"))
+         self._lock = threading.RLock()
++        # Sensor reception never waits for Sport I/O or publishes action results.
++        # Control callbacks retain their ordering under _lock; a sensor fault is
++        # latched until the next control tick disables motion.
++        self._sensor_lock = threading.RLock()
++        self._sensor_group = MutuallyExclusiveCallbackGroup()
++        self._pending_sensor_fault = ""
+         self._motion_enabled = False
+         self._enabled_after = 0
+         self._active = None
+@@ -108,16 +116,16 @@
+         self.create_subscription(HabitatActionCommand, "/s2e/controller/habitat_action", self._on_command, reliable)
+         self.create_subscription(NavigationTask, "/s2e/task", self._on_task, task_qos)
+         self.create_subscription(PointGoal, "/s2e/sensors/pointgoal", self._on_pointgoal, qos_profile_sensor_data)
+-        self.create_subscription(Odometry, str(self._p("odometry_topic")), self._on_odom, qos_profile_sensor_data)
+-        self.create_subscription(StampedPose, "/s2e/odometry/pose", self._on_pose, qos_profile_sensor_data)
+-        self.create_subscription(Image, "/s2e/sensors/camera/image", self._on_image, qos_profile_sensor_data)
++        self.create_subscription(Odometry, str(self._p("odometry_topic")), self._on_odom, qos_profile_sensor_data, callback_group=self._sensor_group)
++        self.create_subscription(StampedPose, "/s2e/odometry/pose", self._on_pose, qos_profile_sensor_data, callback_group=self._sensor_group)
++        self.create_subscription(Image, "/s2e/sensors/camera/image", self._on_image, qos_profile_sensor_data, callback_group=self._sensor_group)
+         # Point clouds and aggregate SLAM sensor health are not policy or
+         # actuation inputs. The pose and RGB streams are validated directly.
+         planner = str(self._p('planner_status_node_name'))
+         if planner not in ('vlm_node','direct_goal_pixnav'):
+             raise ValueError('invalid planner_status_node_name')
+         for topic in ("/s2e/status/"+planner, "/s2e/status/pixnav_runtime_node", "/s2e/status/sweep_scheduler_node", "/s2e/robot/observation_status"):
+-            self.create_subscription(NodeStatus, topic, self._on_health, reliable)
++            self.create_subscription(NodeStatus, topic, self._on_health, reliable, callback_group=self._sensor_group)
+         self.create_subscription(SweepCommand, "/s2e/sweep/command", self._on_sweep_command, reliable)
+         self.create_subscription(SweepAck, "/s2e/sweep/ack", self._on_sweep_ack, reliable)
+         emergency = ReentrantCallbackGroup()
+@@ -139,7 +147,7 @@
+         return value
+ 
+     def _on_odom(self, message):
+-        with self._lock:
++        with self._sensor_lock:
+             try:
+                 value = odom_sample(message, time.monotonic())
+                 age = (self.get_clock().now().nanoseconds - value.stamp_ns) * 1e-9
+@@ -147,7 +155,7 @@
+                     return
+                 if self._odom and value.stamp_ns <= self._odom.stamp_ns:
+                     if value.stamp_ns < self._odom.stamp_ns:
+-                        self._fault("ODOM_CLOCK_RESET")
++                        self._pending_sensor_fault = self._pending_sensor_fault or "ODOM_CLOCK_RESET"
+                     return
+                 # Some odometry publishers leave twist at zero. Derive a second
+                 # velocity estimate over ~100 ms so zero-filled twist cannot
+@@ -163,10 +171,10 @@
+                 self._odom = value
+                 self._odoms.append(value)
+             except ValueError:
+-                self._fault("INVALID_ODOMETRY")
++                self._pending_sensor_fault = self._pending_sensor_fault or "INVALID_ODOMETRY"
+ 
+     def _on_pose(self, message):
+-        with self._lock:
++        with self._sensor_lock:
+             age = (self.get_clock().now().nanoseconds-stamp_ns(message.header.stamp))*1e-9
+             try:
+                 yaw_from_quaternion(message.pose.orientation)
+@@ -178,28 +186,34 @@
+                 return
+             if self._last_pose is None or stamp_ns(message.header.stamp) > stamp_ns(self._last_pose.header.stamp):
+                 self._last_pose = message
+-                self._flush_result()
++                # The control timer flushes after acquiring a causal fresh pose.
+ 
+     def _on_image(self, message):
+         stamp = stamp_ns(message.header.stamp)
+         age = (self.get_clock().now().nanoseconds - stamp) * 1e-9
+-        with self._lock:
++        with self._sensor_lock:
+             if stamp > self._camera_stamp and -0.1 <= age < self._positive("camera_timeout_s"):
+                 self._camera_stamp = stamp
+                 self._camera_received = time.monotonic()
+ 
+     def _on_health(self, message):
+         age = (self.get_clock().now().nanoseconds-stamp_ns(message.header.stamp))*1e-9
+-        with self._lock:
++        with self._sensor_lock:
+             if -0.1 <= age < 3.0:
+                 self._health[message.node_name] = (time.monotonic(), message.is_healthy)
+ 
+     def _admission_error(self, now):
+-        if self._odom is None or now-self._odom.received_s > self._limits.odom_timeout:
++        with self._sensor_lock:
++            odom, pose = self._odom, self._last_pose
++            camera_received, health = self._camera_received, dict(self._health)
++            pending_fault = self._pending_sensor_fault
++        if pending_fault:
++            return pending_fault
++        if odom is None or now-odom.received_s > self._limits.odom_timeout:
+             return "ODOM_STALE"
+-        if self._last_pose is None or not -0.1 <= (self.get_clock().now().nanoseconds-stamp_ns(self._last_pose.header.stamp))*1e-9 <= self._limits.odom_timeout:
++        if pose is None or not -0.1 <= (self.get_clock().now().nanoseconds-stamp_ns(pose.header.stamp))*1e-9 <= self._limits.odom_timeout:
+             return "LOCALIZED_POSE_STALE"
+-        if now-self._camera_received > self._positive("camera_timeout_s"):
++        if now-camera_received > self._positive("camera_timeout_s"):
+             return "CAMERA_STALE"
+         planner = str(self._p('planner_status_node_name'))
+         required_nodes = (planner, "pixnav_runtime_node")
+@@ -207,7 +221,7 @@
+             required_nodes += ("sweep_scheduler_node",)
+         required_nodes += ("rtab_pointgoal_adapter",)
+         for name in required_nodes:
+-            receipt, healthy = self._health.get(name, (0, False))
++            receipt, healthy = health.get(name, (0, False))
+             if not healthy or now-receipt > 3.0:
+                 return "NODE_UNAVAILABLE:" + name
+         return ""
+@@ -486,6 +500,12 @@
+ 
+     def _tick(self):
+         with self._lock:
++            with self._sensor_lock:
++                sensor_fault = self._pending_sensor_fault
++                self._pending_sensor_fault = ""
++            if sensor_fault:
++                self._fault(sensor_fault)
++                return
+             now = time.monotonic()
+             if self._motion_enabled:
+                 error = self._admission_error(now)
+@@ -506,13 +526,18 @@
+             self._tick_body(now)
+             # Return completion can construct a new macro after a socket poll.
+             # Never step that macro with the timer's earlier timestamp.
++            # Capture the sample before the clock: reception can now run while
++            # this callback is active, so re-reading _odom after now can produce
++            # a sample received in that timestamp's future.
++            with self._sensor_lock:
++                motion_sample = self._odom
+             now = time.monotonic()
+             active = self._active
+             if active is not None:
+                 if self._rotate_handle and self._rotate_handle.is_cancel_requested:
+                     self._finish(active.finish("CANCELED"))
+                     return
+-                output = active.step(self._odom, now=now, permitted=self._motion_enabled)
++                output = active.step(motion_sample, now=now, permitted=self._motion_enabled)
+                 if output.terminal:
+                     self._finish(output)
+                 else:
+@@ -530,13 +555,13 @@
+                                 "target": active.target, "measured_progress": active.progress,
+                                 "elapsed_s": now-active.started,
+                                 "reference_yaw_rad": active.heading_yaw,
+-                                "measured_yaw_rad": self._odom.yaw,
+-                                "heading_error_rad": wrap(active.heading_yaw-self._odom.yaw),
++                                "measured_yaw_rad": motion_sample.yaw,
++                                "heading_error_rad": wrap(active.heading_yaw-motion_sample.yaw),
+                                 "linear_command_mps": output.linear,
+                                 "angular_command_radps": output.angular,
+-                                "measured_yaw_rate_radps": self._odom.yaw_rate,
++                                "measured_yaw_rate_radps": motion_sample.yaw_rate,
+                                 "transport_accepted": True,
+-                                "odom_stamp_ns": self._odom.stamp_ns,
++                                "odom_stamp_ns": motion_sample.stamp_ns,
+                             }, separators=(",", ":")))
+                         if active.kind == "rotate":
+                             self.get_logger().info("robot_motion_event " + json.dumps({
+@@ -547,8 +572,8 @@
+                                 "total_budget_s": active.deadline-active.started,
+                                 "angular_command_radps": output.angular,
+                                 "phase": "settling" if active.rotation_settling else "tracking",
+-                                "measured_yaw_rate_radps": self._odom.yaw_rate,
+-                                "odom_stamp_ns": self._odom.stamp_ns,
++                                "measured_yaw_rate_radps": motion_sample.yaw_rate,
++                                "odom_stamp_ns": motion_sample.stamp_ns,
+                             }, separators=(",", ":")))
+                         if self._rotate_handle:
+                             feedback = Rotate.Feedback()
+--- a/src/s2e_vlm_robot/launch/robot_escape.launch.py
++++ b/src/s2e_vlm_robot/launch/robot_escape.launch.py
+@@ -52,6 +52,7 @@
+             DeclareLaunchArgument("minimum_rotate_speed_radps", default_value="0.40"),
+             DeclareLaunchArgument("turn_speed_radps", default_value="0.45"),
+             DeclareLaunchArgument("rotate_settle_window_s", default_value="0.0"),
++            DeclareLaunchArgument("rotate_settle_spread_deg", default_value="0.25"),
+             DeclareLaunchArgument("rotate_recoil_limit_deg", default_value="0.0"),
+             DeclareLaunchArgument("rotate_min_timeout_s", default_value="0.0"),
+             DeclareLaunchArgument(
+@@ -128,6 +129,7 @@
+                         "minimum_rotate_speed_radps": ParameterValue(LaunchConfiguration("minimum_rotate_speed_radps"), value_type=float),
+                         "turn_speed_radps": ParameterValue(LaunchConfiguration("turn_speed_radps"), value_type=float),
+                         "rotate_settle_window_s": ParameterValue(LaunchConfiguration("rotate_settle_window_s"), value_type=float),
++                        "rotate_settle_spread_deg": ParameterValue(LaunchConfiguration("rotate_settle_spread_deg"), value_type=float),
+                         "rotate_recoil_limit_deg": ParameterValue(LaunchConfiguration("rotate_recoil_limit_deg"), value_type=float),
+                         "rotate_min_timeout_s": ParameterValue(LaunchConfiguration("rotate_min_timeout_s"), value_type=float),
+                         'planner_status_node_name': ParameterValue(PythonExpression([
+--- a/src/s2e_vlm_robot/test/test_robot_boundary.py
++++ b/src/s2e_vlm_robot/test/test_robot_boundary.py
+@@ -309,6 +309,7 @@
+     pose.pose.orientation.w = 1.
+     pose.status = "OK"
+     n._on_pose(pose)
++    n._tick()  # Sensor receipt defers result delivery to the control timer.
+     result = n._result_publisher.publish.call_args.args[0]
+     assert result.executed and not result.collided
+     assert result.pose_after.header == pose.header
+@@ -506,6 +507,7 @@
+     pose.pose.orientation.w = 1.
+     pose.status = "OK"
+     n._on_pose(pose)
++    n._tick()  # Sensor receipt defers result delivery to the control timer.
+     n._pause_if_ready()
+     assert n._ack_publisher.publish.call_args.args[0].ack == SweepAck.CONTROLLER_QUIESCENT
+     n._on_command(command(n, identity="late-command"))
+--- /dev/null
++++ b/src/s2e_vlm_robot/test/test_sensor_mailbox.py
+@@ -0,0 +1,131 @@
++"""Concurrency/fault regressions for the isolated sensor-reception candidate."""
++import math
++import threading
++import time
++from types import SimpleNamespace as NS
++
++import pytest
++from nav_msgs.msg import Odometry
++from s2e_vlm_msgs.msg import StampedPose
++from s2e_vlm_robot.motion import MotionLimits, MotionSample, MeasuredMotion
++from test_robot_boundary import node, enable, command
++
++
++def pose(n):
++    p = StampedPose()
++    p.header.stamp = n.get_clock().now().to_msg()
++    p.header.frame_id = 'robot_origin'
++    p.pose.orientation.w = 1.
++    p.status = 'OK'
++    return p
++
++
++def test_pose_reception_completes_while_control_lock_is_held(node):
++    n, _ = node
++    held, release, received = threading.Event(), threading.Event(), threading.Event()
++    def hold_control():
++        with n._lock:
++            held.set()
++            release.wait(2.)
++    thread = threading.Thread(target=hold_control)
++    thread.start()
++    assert held.wait(1.)
++    p = pose(n)
++    worker = threading.Thread(target=lambda: (n._on_pose(p), received.set()))
++    worker.start()
++    try:
++        assert received.wait(.3), 'Sensor callback waited for the held control lock'
++        assert n._last_pose.header == p.header
++    finally:
++        release.set()
++        thread.join(2.)
++        worker.join(2.)
++
++
++def test_sensor_fault_is_latched_and_stops_before_next_move(node):
++    n, transport = node
++    enable(n)
++    n._on_command(command(n))
++    invalid = Odometry()
++    invalid.header.stamp = n.get_clock().now().to_msg()
++    invalid.header.frame_id = 'odom'
++    invalid.child_frame_id = 'base_link'
++    invalid.pose.pose.orientation.w = 0.
++    n._on_odom(invalid)  # Zero quaternion cannot be a usable odometry sample.
++    assert n._pending_sensor_fault == 'INVALID_ODOMETRY'
++    assert n._admission_error(time.monotonic()) == 'INVALID_ODOMETRY'
++    n._tick()
++    assert not n._motion_enabled and n._active is None
++    assert n._last_fault == 'INVALID_ODOMETRY'
++    transport.move.assert_not_called()
++    assert transport.stop.called
++
++
++def test_disable_waits_for_inflight_move_then_prevents_any_later_move(node):
++    n, transport = node
++    enable(n)
++    n._on_command(command(n))
++    entered, release, disabled = threading.Event(), threading.Event(), threading.Event()
++    events = []
++    def move(*_):
++        events.append('move_begin')
++        entered.set()
++        assert release.wait(2.)
++        events.append('move_end')
++    def disable():
++        result = n._set_motion_enabled(NS(data=False), NS())
++        assert result.success
++        events.append('disable_ack')
++        disabled.set()
++    transport.move.side_effect = move
++    transport.stop.side_effect = lambda: events.append('stop')
++    control = threading.Thread(target=n._tick)
++    control.start()
++    stopper = None
++    try:
++        assert entered.wait(1.)
++        n._on_pose(pose(n))  # Reception remains possible during blocked Move.
++        stopper = threading.Thread(target=disable)
++        stopper.start()
++        release.set()
++        assert disabled.wait(1.)
++        control.join(1.)
++        stopper.join(1.)
++        count = transport.move.call_count
++        n._tick()
++        assert transport.move.call_count == count == 1
++        assert events.index('move_end') < events.index('disable_ack')
++        assert not n._motion_enabled
++    finally:
++        release.set()
++        control.join(2.)
++        if stopper is not None:
++            stopper.join(2.)
++
++
++@pytest.mark.parametrize('spread', [0., -1., float('nan'), math.radians(1.01)])
++def test_invalid_rest_spread_is_rejected(spread):
++    with pytest.raises(ValueError):
++        MotionLimits(rotation_settle_spread=spread)
++
++
++@pytest.mark.parametrize('sign', [-1., 1.])
++def test_one_degree_window_accepts_bounded_noise_but_not_continuing_drift(sign):
++    def sample(t, angle, rate=0.):
++        return MotionSample(1+round(t*1e9), t, 0., 0., math.radians(sign*angle), 0., sign*rate)
++    limits = MotionLimits(rotation_settle_window=.35, rotation_settle_spread=math.radians(1.))
++    drift = MeasuredMotion(kind='rotate', target=sign*math.radians(30), sample=sample(0, 0), now=0., timeout=15., limits=limits)
++    drift.step(sample(1., 29., .2), now=1.)
++    # Recorded recoil regression: 0.18 degrees per 50ms is not rest.
++    for i in range(1, 16):
++        t=1.+i*.05
++        assert not drift.step(sample(t, 29.-i*.18, -.06), now=t).terminal
++    noise = MeasuredMotion(kind='rotate', target=sign*math.radians(30), sample=sample(0, 0), now=0., timeout=15., limits=limits)
++    noise.step(sample(1., 29., .2), now=1.)
++    for i in range(1, 12):
++        t=1.+i*.05
++        out=noise.step(sample(t, 29.4 + (.2 if i%2 else -.2), .08), now=t)
++        if out.terminal:
++            break
++    assert out.terminal == 'OK'
++    assert abs(out.progress-noise.target) <= noise.tolerance

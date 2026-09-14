@@ -1,0 +1,33 @@
+..................F.....................F............................... [ 30%]
+........................................................................ [ 60%]
+........................................................................ [ 90%]
+......................                                                   [100%]
+=================================== FAILURES ===================================
+________ test_result_waits_for_causal_pose_without_synthetic_collision _________
+
+node = (<s2e_vlm_robot.action_executor_node.ActionExecutorNode object at 0xffff73de5310>, <Mock id='281472625700752'>)
+
+>   ???
+E   AttributeError: 'NoneType' object has no attribute 'args'
+
+/work/src/s2e_vlm_robot/test/test_robot_boundary.py:312: AttributeError
+---------------------------- Captured stderr setup -----------------------------
+[INFO] [1789368736.587988050] [go2_action_executor]: Full ESCAPE motion boundary ready; motion disabled
+----------------------------- Captured stderr call -----------------------------
+[INFO] [1789368736.590273554] [go2_action_executor]: robot_motion_event {"event":"terminal","episode_id":"episode","command_id":"cmd","kind":"translate","target":0.25,"measured_progress":0.0,"elapsed_s":0.0002017649999288551,"status":"OK","collision_feedback_available":false,"odom_stamp_ns":1789368736588212536}
+________ test_sweep_waits_for_measured_boundary_and_fences_late_actions ________
+
+node = (<s2e_vlm_robot.action_executor_node.ActionExecutorNode object at 0xffff7255e6f0>, <Mock id='281472626358752'>)
+
+>   ???
+E   AttributeError: 'NoneType' object has no attribute 'args'
+
+/work/src/s2e_vlm_robot/test/test_robot_boundary.py:510: AttributeError
+---------------------------- Captured stderr setup -----------------------------
+[INFO] [1789368737.462200970] [go2_action_executor]: Full ESCAPE motion boundary ready; motion disabled
+----------------------------- Captured stderr call -----------------------------
+[INFO] [1789368737.464627502] [go2_action_executor]: robot_motion_event {"event":"terminal","episode_id":"episode","command_id":"cmd","kind":"translate","target":0.25,"measured_progress":0.0,"elapsed_s":0.00031402500007970957,"status":"OK","collision_feedback_available":false,"odom_stamp_ns":1789368737462445905}
+=========================== short test summary info ============================
+FAILED ../tests/test_robot_boundary.py::test_result_waits_for_causal_pose_without_synthetic_collision
+FAILED ../tests/test_robot_boundary.py::test_sweep_waits_for_measured_boundary_and_fences_late_actions
+2 failed, 236 passed in 8.28s

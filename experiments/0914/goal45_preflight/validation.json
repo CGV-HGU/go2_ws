@@ -1,0 +1,20 @@
+{
+  "recorded_at_utc": "2026-09-14T07:08:03.871128+00:00",
+  "candidate_image": "sha256:2fc034b16066c3e0aaf170d164825903fbfc1f48122ced32411c616868428d40",
+  "active_campaign_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+  "candidate_active": false,
+  "current_production_sources_unchanged": {
+    "src/s2e_vlm_robot/s2e_vlm_robot/motion.py": true,
+    "src/s2e_vlm_robot/s2e_vlm_robot/action_executor_node.py": true,
+    "src/s2e_vlm_robot/launch/robot_escape.launch.py": true
+  },
+  "candidate_patch_apply_check_passed": true,
+  "unit_tests_passed": 247,
+  "actual_ros_delay_cases_passed": 4,
+  "prepared_goal45_configs_checked": 4,
+  "map_database_and_goal_plan_unchanged": true,
+  "local_report_links_valid": true,
+  "python_syntax_valid": true,
+  "physical_commands_sent": 0,
+  "real_drive_ready": false
+}

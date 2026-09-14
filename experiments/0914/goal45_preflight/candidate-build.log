@@ -1,0 +1,18 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from candidate.Dockerfile
+#1 transferring dockerfile: 363B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98
+#2 ERROR: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+------
+ > [internal] load metadata for docker.io/library/sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98:
+------
+candidate.Dockerfile:1
+--------------------
+   1 | >>> FROM sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98
+   2 |     COPY candidate/motion.py candidate/action_executor_node.py /opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_robot/
+   3 |     COPY candidate/robot_escape.launch.py /opt/s2e-robot-minimal/share/s2e_vlm_robot/launch/robot_escape.launch.py
+--------------------
+ERROR: failed to solve: sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98: failed to resolve source metadata for docker.io/library/sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed

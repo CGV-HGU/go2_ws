@@ -1,0 +1,7 @@
+[INFO] [1789368947.983585633] [go2_action_executor]: Full ESCAPE motion boundary ready; motion disabled
+{"delay_s": 0.08, "separate_sensor_group": false, "command_rate_hz": 20.0, "mock_moves": 93, "fault": "", "maximum_pose_age_s": 0.04201477771008301, "sample_count": 94, "independent_pose_samples": 231}
+{"delay_s": 0.095, "separate_sensor_group": false, "command_rate_hz": 20.0, "mock_moves": 79, "fault": "", "maximum_pose_age_s": 0.04288324873974603, "sample_count": 80, "independent_pose_samples": 232}
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+{"delay_s": 0.095, "separate_sensor_group": false, "command_rate_hz": 20.0, "mock_moves": 79, "fault": "", "maximum_pose_age_s": 0.04249963788232414, "sample_count": 80, "independent_pose_samples": 230}
+{"delay_s": 0.15, "separate_sensor_group": false, "command_rate_hz": 20.0, "mock_moves": 52, "fault": "", "maximum_pose_age_s": 0.04187077974267572, "sample_count": 53, "independent_pose_samples": 231}

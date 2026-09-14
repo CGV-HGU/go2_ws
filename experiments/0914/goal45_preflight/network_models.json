@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-09-14T06:58:53.684619+00:00",
+  "cases": [
+    {
+      "http_status": 200,
+      "elapsed_s": 0.09833058599997457,
+      "model_ids": [
+        "qwen3.5-9b-instruct"
+      ]
+    },
+    {
+      "http_status": 200,
+      "elapsed_s": 0.0997802199999569,
+      "model_ids": [
+        "qwen3.5-9b-instruct"
+      ]
+    },
+    {
+      "http_status": 200,
+      "elapsed_s": 0.04939577899995129,
+      "model_ids": [
+        "qwen3.5-9b-instruct"
+      ]
+    }
+  ],
+  "scope": "Read-only model-list endpoint; not vision-inference latency or future field Wi-Fi reliability."
+}

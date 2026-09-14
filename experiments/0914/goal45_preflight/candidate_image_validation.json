@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "source_sha256": {
+    "motion.py": "169bd83f81aaa3e3287b7207cd68adff9d2e2582a26e28e35ad77f1456b18f27",
+    "action_executor_node.py": "33220fe6b0a1973a6a70d7ae24e5e2621b42a6b04f4daf85e2df200270982f80",
+    "robot_escape.launch.py": "6ad24f3a6c76eb69fdf4ec98c0a79531112f2d30127eb0f1de9f1b27842eec3b"
+  },
+  "configured_spread_deg": 1.0,
+  "stop_yaw_rate_unchanged": 0.1,
+  "angle_tolerance_unchanged_deg": 3.0,
+  "motion_enabled": false,
+  "physical_commands_sent": 0,
+  "scope": "Installed immutable candidate image, actual node parameter constructor, mocked Sport, launch parameter source wiring. Not launched navigation or live sensor test."
+}
