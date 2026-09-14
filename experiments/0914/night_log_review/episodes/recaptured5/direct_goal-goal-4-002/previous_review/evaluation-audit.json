@@ -1,0 +1,57 @@
+{
+  "episode": "robot-pointnav-f6cdf9ba1816-1",
+  "trial_id": "direct_goal-goal-4-002",
+  "goal_label": "4",
+  "evaluation_role": "matched real-robot Direct PixelNav baseline with 20 cm look substitution",
+  "started": true,
+  "goal_published": true,
+  "terminal_cause": "raw PixelNav STOP (action 0) at policy step 21, not 360 s timeout or 500-step limit",
+  "raw_policy_action_ids": {
+    "5": 10,
+    "1": 10,
+    "0": 1
+  },
+  "action_results": {
+    "move_forward:EXECUTED": 20
+  },
+  "vlm_calls": 0,
+  "success": 0,
+  "success_radius_m": 1.0,
+  "remaining_distance_m": 7.46298360824585,
+  "minimum_recorded_goal_distance_m": 7.454061508178711,
+  "duration_s": 35.39607037799988,
+  "path_length_10hz_odom_m": 4.908258956244584,
+  "recording_integrity_passed": true,
+  "pose_csv": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-002/odom-trajectory.csv",
+  "pose_csv_sha256": "6e47e7e519308766a13fa9f5d85316b16205796babd4e19725be9804af260608",
+  "spl_export": null,
+  "spl_export_pending_reason": "No reviewed shortest-path reference supplied",
+  "previous_prestart_trial_started": false,
+  "previous_prestart_trial_in_sr_denominator": false,
+  "field_report": {
+    "status": "confirmed_by_operator_followup",
+    "direct_intervention": false,
+    "contact": false,
+    "obstruction": false,
+    "physical_within_goal_radius_verified": null,
+    "physical_final_distance_m": null,
+    "measurement_method": null,
+    "operator_comment": "개입·접촉·진로 방해 모두 없었음"
+  },
+  "field_clarification_requested": true,
+  "independent_goal_ground_truth": false,
+  "comparison_limit": "One started baseline failure is quantitative episode evidence, not an aggregate claim of method superiority. Use paired goals, start placement, settings and declared inclusion rules; retain successes and failures.",
+  "original_field_report": {
+    "status": "received_partial",
+    "direct_intervention": null,
+    "contact": null,
+    "obstruction": null,
+    "physical_within_goal_radius_verified": null,
+    "physical_final_distance_m": null,
+    "measurement_method": null,
+    "operator_comment": "0"
+  },
+  "field_clarification_resolved": true,
+  "field_confirmation_file": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/quick-results/direct-goal-4-002-evaluation/field-report-confirmation.json",
+  "field_confirmation_sha256": "08dd3a1ded991324a3c0174d264abd84b12fe17bd6e7a2a63ac538eb8973e5e6"
+}

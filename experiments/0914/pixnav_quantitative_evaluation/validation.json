@@ -1,0 +1,23 @@
+{
+  "checked_at_utc": "2026-09-14T04:49:30.138146+00:00",
+  "passed": true,
+  "source_hashes_verified_against_previous_sealed_bundles": 56,
+  "source_hash_mismatches": [],
+  "independent_event_metric_recomputations": 5,
+  "path_sampling_rates_hz": [
+    5,
+    10,
+    20
+  ],
+  "prior_metric_tolerance": 1e-06,
+  "policy_outputs_checked": 118,
+  "executed_action_mappings_checked": 113,
+  "prestart_failure_excluded_only_from_navigation_denominator": true,
+  "unconfirmed_field_reports_retained": 4,
+  "real_robot_commands_sent": 0,
+  "runtime_configuration_changed": false,
+  "scope": "Recomputed logged outcomes, lengths and timings; no new physical test or counterfactual policy replay.",
+  "markdown_links_checked": true,
+  "markdown_table_matches_csv_generation": true,
+  "analysis_python_syntax_checked": true
+}

@@ -1,0 +1,7 @@
+campaign,run,goal_label,goal_published,driving_denominator,field_context,reason
+recaptured5,direct_goal-goal-4-002,4,True,True,confirmed_no_intervention_contact_obstruction,PIXNAV_TERMINAL_BEFORE_GOAL
+recaptured5,direct_goal-goal-4-003,4,True,True,unconfirmed,PIXNAV_TERMINAL_BEFORE_GOAL
+recaptured5,direct_goal-goal-4-004,4,True,True,unconfirmed,PIXNAV_TERMINAL_BEFORE_GOAL
+recaptured5,direct_goal-goal-4-005,4,True,True,unconfirmed,PIXNAV_TERMINAL_BEFORE_GOAL
+recaptured5,direct_goal-goal-4-006,4,True,True,unconfirmed,PIXNAV_TERMINAL_BEFORE_GOAL
+recaptured5,direct_goal-goal-4-001,4,False,False,not_applicable_prestart,ERROR:NODE_UNAVAILABLE:sweep_scheduler_node

@@ -1,0 +1,22 @@
+{
+  "created_at_kst": "2026-09-14T09:12:07.457761+09:00",
+  "scope": "offline analysis and export only; no runtime configuration or motion changes; no commit/push",
+  "commands": [
+    "python3 export_review.py",
+    "python3 network_evidence.py",
+    "python3 make_review_figures.py",
+    "python3 finalize_review.py"
+  ],
+  "repositories": {
+    "go2_ws_antarctica": {
+      "path": "/home/unitree/go2_ws_antarctica",
+      "head": "36bc032510bb6f9044a24feeb76e33d62505f416",
+      "branch": "antarctica"
+    },
+    "runtime_repo": {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal",
+      "head": "abad1ffa471ff4b98ce0a7ee2c2d35c043375f90",
+      "branch": "robot-minimal"
+    }
+  }
+}

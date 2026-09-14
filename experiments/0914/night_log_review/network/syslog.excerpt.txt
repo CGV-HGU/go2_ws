@@ -1,0 +1,645 @@
+11795911: Sep 13 00:06:14 ubuntu wpa_supplicant[785]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11795929: Sep 13 00:06:15 ubuntu NetworkManager[681]: <info>  [1789225575.0028] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11795948: Sep 13 00:06:16 ubuntu wpa_supplicant[785]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11795949: Sep 13 00:06:23 ubuntu wpa_supplicant[785]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11795953: Sep 13 00:06:33 ubuntu wpa_supplicant[785]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11795970: Sep 13 00:06:35 ubuntu NetworkManager[681]: <info>  [1789225595.7366] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11796015: Sep 13 00:06:35 ubuntu NetworkManager[681]: <info>  [1789225595.8145] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11796016: Sep 13 00:06:35 ubuntu NetworkManager[681]: <info>  [1789225595.8173] device (wlan0): Activation: successful, device activated.
+11799239: Sep 13 01:12:23 ubuntu wpa_supplicant[617]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11800774: Sep 13 09:25:40 ubuntu wpa_supplicant[617]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=15
+11800781: Sep 13 09:25:41 ubuntu wpa_supplicant[617]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11800782: Sep 13 09:25:50 ubuntu wpa_supplicant[617]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11800784: Sep 13 09:25:50 ubuntu wpa_supplicant[617]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5240 MHz)
+11800812: Sep 13 09:26:38 ubuntu wpa_supplicant[617]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5200 MHz)
+11807449: Sep 13 14:03:31 ubuntu wpa_supplicant[712]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5200 MHz)
+11807470: Sep 13 14:03:34 ubuntu wpa_supplicant[712]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11807488: Sep 13 14:03:34 ubuntu NetworkManager[606]: <info>  [1789275814.0836] device (wlan0): Activation: starting connection 'Dreamerjoe-5G' ([UUID])
+11807503: Sep 13 14:03:35 ubuntu wpa_supplicant[712]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11807513: Sep 13 14:03:39 ubuntu NetworkManager[606]: <info>  [1789275819.1645] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11807539: Sep 13 14:03:52 ubuntu wpa_supplicant[712]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11807557: Sep 13 14:03:54 ubuntu NetworkManager[606]: <info>  [1789275834.7029] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11807602: Sep 13 14:03:54 ubuntu NetworkManager[606]: <info>  [1789275834.7548] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11807603: Sep 13 14:03:54 ubuntu NetworkManager[606]: <info>  [1789275834.7559] device (wlan0): Activation: successful, device activated.
+11807826: Sep 13 14:06:58 ubuntu wpa_supplicant[712]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11807831: Sep 13 14:09:24 ubuntu wpa_supplicant[712]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=0
+11807843: Sep 13 14:09:25 ubuntu wpa_supplicant[712]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11807845: Sep 13 14:09:37 ubuntu wpa_supplicant[712]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11807846: Sep 13 14:09:39 ubuntu NetworkManager[606]: <warn>  [1789276179.3940] device (wlan0): link timed out.
+11807847: Sep 13 14:09:39 ubuntu NetworkManager[606]: <info>  [1789276179.3941] device (wlan0): state change: activated -> failed (reason 'ssid-not-found', sys-iface-state: 'managed')
+11807849: Sep 13 14:09:39 ubuntu NetworkManager[606]: <warn>  [1789276179.3982] device (wlan0): Activation: failed for connection 'Ultra'
+11807850: Sep 13 14:09:39 ubuntu NetworkManager[606]: <info>  [1789276179.4004] device (wlan0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+11812076: Sep 13 16:47:45 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11812081: Sep 13 16:47:45 ubuntu NetworkManager[610]: <info>  [1789285665.4822] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11812086: Sep 13 16:47:45 ubuntu NetworkManager[610]: <info>  [1789285665.4881] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11812173: Sep 13 16:48:04 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11812175: Sep 13 16:48:04 ubuntu NetworkManager[610]: <info>  [1789285684.9832] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11812189: Sep 13 16:48:04 ubuntu wpa_supplicant[715]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11812201: Sep 13 16:48:16 ubuntu wpa_supplicant[715]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11812203: Sep 13 16:48:16 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11812218: Sep 13 16:48:18 ubuntu NetworkManager[610]: <info>  [1789285698.0432] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11812263: Sep 13 16:48:20 ubuntu NetworkManager[610]: <info>  [1789285700.1088] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11812264: Sep 13 16:48:20 ubuntu NetworkManager[610]: <info>  [1789285700.1097] device (wlan0): Activation: successful, device activated.
+11812416: Sep 13 16:50:17 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11812423: Sep 13 16:50:17 ubuntu NetworkManager[610]: <info>  [1789285817.3126] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11812428: Sep 13 16:50:17 ubuntu NetworkManager[610]: <info>  [1789285817.4234] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11812512: Sep 13 16:50:36 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11812514: Sep 13 16:50:36 ubuntu NetworkManager[610]: <info>  [1789285836.7888] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11812528: Sep 13 16:50:36 ubuntu wpa_supplicant[715]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11812544: Sep 13 16:50:38 ubuntu NetworkManager[610]: <info>  [1789285838.9833] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11812589: Sep 13 16:50:39 ubuntu NetworkManager[610]: <info>  [1789285839.0341] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11812590: Sep 13 16:50:39 ubuntu NetworkManager[610]: <info>  [1789285839.0350] device (wlan0): Activation: successful, device activated.
+11812658: Sep 13 16:51:04 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11812663: Sep 13 16:51:04 ubuntu NetworkManager[610]: <info>  [1789285864.2361] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11812668: Sep 13 16:51:04 ubuntu NetworkManager[610]: <info>  [1789285864.3448] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11815780: Sep 13 16:51:28 ubuntu wpa_supplicant[715]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11815782: Sep 13 16:51:28 ubuntu NetworkManager[610]: <info>  [1789285888.5820] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11815796: Sep 13 16:51:28 ubuntu wpa_supplicant[715]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11815812: Sep 13 16:51:30 ubuntu NetworkManager[610]: <info>  [1789285890.7543] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11815857: Sep 13 16:51:30 ubuntu NetworkManager[610]: <info>  [1789285890.8557] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11815858: Sep 13 16:51:30 ubuntu NetworkManager[610]: <info>  [1789285890.8566] device (wlan0): Activation: successful, device activated.
+11818130: Sep 13 16:55:10 ubuntu wpa_supplicant[720]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=1
+11818230: Sep 13 16:55:25 ubuntu NetworkManager[615]: <warn>  [1789286125.5377] device (wlan0): link timed out.
+11818231: Sep 13 16:55:25 ubuntu NetworkManager[615]: <info>  [1789286125.5378] device (wlan0): state change: activated -> failed (reason 'ssid-not-found', sys-iface-state: 'managed')
+11818232: Sep 13 16:55:25 ubuntu NetworkManager[615]: <warn>  [1789286125.5415] device (wlan0): Activation: failed for connection 'Ultra'
+11818233: Sep 13 16:55:25 ubuntu NetworkManager[615]: <info>  [1789286125.5437] device (wlan0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+11818263: Sep 13 16:55:34 ubuntu NetworkManager[615]: <info>  [1789286134.6063] device (wlan0): Activation: starting connection 'HGU_WLAN' ([UUID])
+11818281: Sep 13 16:55:34 ubuntu wpa_supplicant[720]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5200 MHz)
+11818306: Sep 13 16:55:37 ubuntu NetworkManager[615]: <info>  [1789286137.0388] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "HGU_WLAN"
+11818349: Sep 13 16:55:40 ubuntu NetworkManager[615]: <info>  [1789286140.0866] policy: set 'HGU_WLAN' (wlan0) as default for IPv4 routing and DNS
+11818350: Sep 13 16:55:40 ubuntu NetworkManager[615]: <info>  [1789286140.0876] device (wlan0): Activation: successful, device activated.
+11822984: Sep 13 18:32:06 ubuntu wpa_supplicant[710]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5220 MHz)
+11823000: Sep 13 18:32:16 ubuntu wpa_supplicant[710]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5200 MHz)
+11823017: Sep 13 18:32:45 ubuntu wpa_supplicant[710]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11823071: Sep 13 18:32:47 ubuntu wpa_supplicant[710]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11823078: Sep 13 18:32:47 ubuntu NetworkManager[603]: <info>  [1789291967.8262] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11823088: Sep 13 18:32:47 ubuntu NetworkManager[603]: <info>  [1789291967.8934] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11823180: Sep 13 18:33:07 ubuntu wpa_supplicant[710]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11823182: Sep 13 18:33:07 ubuntu NetworkManager[603]: <info>  [1789291987.5382] device (wlan0): Activation: starting connection 'HGU_WLAN' ([UUID])
+11823200: Sep 13 18:33:07 ubuntu wpa_supplicant[710]: wlan0: Trying to associate with [MAC] (SSID='HGU_WLAN' freq=5220 MHz)
+11823223: Sep 13 18:33:09 ubuntu NetworkManager[603]: <info>  [1789291989.8919] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "HGU_WLAN"
+11823266: Sep 13 18:33:12 ubuntu NetworkManager[603]: <info>  [1789291992.9353] policy: set 'HGU_WLAN' (wlan0) as default for IPv4 routing and DNS
+11823267: Sep 13 18:33:12 ubuntu NetworkManager[603]: <info>  [1789291992.9363] device (wlan0): Activation: successful, device activated.
+11823307: Sep 13 18:34:45 ubuntu wpa_supplicant[710]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11823308: Sep 13 18:34:52 ubuntu wpa_supplicant[710]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11828813: Sep 13 21:52:10 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11828818: Sep 13 21:52:10 ubuntu NetworkManager[600]: <info>  [1789303930.4252] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11828825: Sep 13 21:52:10 ubuntu NetworkManager[600]: <info>  [1789303930.4365] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11828910: Sep 13 21:52:29 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11828912: Sep 13 21:52:29 ubuntu NetworkManager[600]: <info>  [1789303949.9302] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11828926: Sep 13 21:52:29 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11828938: Sep 13 21:52:41 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11828954: Sep 13 21:52:43 ubuntu NetworkManager[600]: <info>  [1789303963.0837] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11828999: Sep 13 21:52:45 ubuntu NetworkManager[600]: <info>  [1789303965.2086] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11829000: Sep 13 21:52:45 ubuntu NetworkManager[600]: <info>  [1789303965.2096] device (wlan0): Activation: successful, device activated.
+11829335: Sep 13 22:11:36 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11829342: Sep 13 22:11:36 ubuntu NetworkManager[600]: <info>  [1789305096.9198] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11829347: Sep 13 22:11:36 ubuntu NetworkManager[600]: <info>  [1789305096.9523] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11829528: Sep 13 22:12:09 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11829530: Sep 13 22:12:09 ubuntu NetworkManager[600]: <info>  [1789305129.4343] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11829544: Sep 13 22:12:09 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11829557: Sep 13 22:12:20 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11829573: Sep 13 22:12:22 ubuntu NetworkManager[600]: <info>  [1789305142.4172] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11829618: Sep 13 22:12:22 ubuntu NetworkManager[600]: <info>  [1789305142.4786] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11829619: Sep 13 22:12:22 ubuntu NetworkManager[600]: <info>  [1789305142.4795] device (wlan0): Activation: successful, device activated.
+11829689: Sep 13 22:12:32 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11829696: Sep 13 22:12:32 ubuntu NetworkManager[600]: <info>  [1789305152.3477] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11829701: Sep 13 22:12:32 ubuntu NetworkManager[600]: <info>  [1789305152.4028] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11829781: Sep 13 22:12:51 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11829783: Sep 13 22:12:51 ubuntu NetworkManager[600]: <info>  [1789305171.8765] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11829797: Sep 13 22:12:51 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11829808: Sep 13 22:13:03 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11829809: Sep 13 22:13:03 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11829825: Sep 13 22:13:04 ubuntu NetworkManager[600]: <info>  [1789305184.9036] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11829870: Sep 13 22:13:06 ubuntu NetworkManager[600]: <info>  [1789305186.9623] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11829871: Sep 13 22:13:06 ubuntu NetworkManager[600]: <info>  [1789305186.9634] device (wlan0): Activation: successful, device activated.
+11829975: Sep 13 22:13:20 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11830759: Sep 13 22:13:20 ubuntu NetworkManager[600]: <info>  [1789305200.4218] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11831969: Sep 13 22:13:20 ubuntu NetworkManager[600]: <info>  [1789305200.4922] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11832054: Sep 13 22:13:39 ubuntu wpa_supplicant[777]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11832056: Sep 13 22:13:39 ubuntu NetworkManager[600]: <info>  [1789305219.9234] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11832070: Sep 13 22:13:39 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11832081: Sep 13 22:13:51 ubuntu wpa_supplicant[777]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11832097: Sep 13 22:13:52 ubuntu NetworkManager[600]: <info>  [1789305232.9344] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11832142: Sep 13 22:13:55 ubuntu NetworkManager[600]: <info>  [1789305235.1065] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11832143: Sep 13 22:13:55 ubuntu NetworkManager[600]: <info>  [1789305235.1074] device (wlan0): Activation: successful, device activated.
+11837477: Sep 13 23:31:11 ubuntu wpa_supplicant[613]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11837478: Sep 13 23:31:19 ubuntu wpa_supplicant[613]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11837504: Sep 13 23:32:22 ubuntu wpa_supplicant[613]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11837505: Sep 13 23:32:30 ubuntu wpa_supplicant[613]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11837563: Sep 13 23:32:55 ubuntu wpa_supplicant[613]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11837568: Sep 13 23:32:55 ubuntu NetworkManager[514]: <info>  [1789309975.0971] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11837574: Sep 13 23:32:55 ubuntu NetworkManager[514]: <info>  [1789309975.1564] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11840189: Sep 13 23:52:53 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11840194: Sep 13 23:52:53 ubuntu NetworkManager[610]: <info>  [1789311173.6947] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11840199: Sep 13 23:52:53 ubuntu NetworkManager[610]: <info>  [1789311173.7297] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11840286: Sep 13 23:53:13 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11840288: Sep 13 23:53:13 ubuntu NetworkManager[610]: <info>  [1789311193.2515] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11840302: Sep 13 23:53:13 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11840314: Sep 13 23:53:24 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11840315: Sep 13 23:53:24 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11840331: Sep 13 23:53:26 ubuntu NetworkManager[610]: <info>  [1789311206.4406] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11840376: Sep 13 23:53:26 ubuntu NetworkManager[610]: <info>  [1789311206.4940] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11840377: Sep 13 23:53:26 ubuntu NetworkManager[610]: <info>  [1789311206.4953] device (wlan0): Activation: successful, device activated.
+11840566: Sep 14 00:13:39 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11840571: Sep 14 00:13:39 ubuntu NetworkManager[610]: <info>  [1789312419.6981] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11840576: Sep 14 00:13:39 ubuntu NetworkManager[610]: <info>  [1789312419.7297] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11840662: Sep 14 00:13:59 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11840664: Sep 14 00:13:59 ubuntu NetworkManager[610]: <info>  [1789312439.2042] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11840678: Sep 14 00:13:59 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11840696: Sep 14 00:14:01 ubuntu NetworkManager[610]: <info>  [1789312441.3616] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11840741: Sep 14 00:14:01 ubuntu NetworkManager[610]: <info>  [1789312441.4438] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11840742: Sep 14 00:14:01 ubuntu NetworkManager[610]: <info>  [1789312441.4448] device (wlan0): Activation: successful, device activated.
+11841185: Sep 14 00:41:11 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11841190: Sep 14 00:41:11 ubuntu NetworkManager[610]: <info>  [1789314071.6202] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11841195: Sep 14 00:41:11 ubuntu NetworkManager[610]: <info>  [1789314071.7020] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11841281: Sep 14 00:41:31 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11841283: Sep 14 00:41:31 ubuntu NetworkManager[610]: <info>  [1789314091.2205] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11841297: Sep 14 00:41:31 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11841310: Sep 14 00:41:42 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11841326: Sep 14 00:41:44 ubuntu NetworkManager[610]: <info>  [1789314104.2545] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11841371: Sep 14 00:41:44 ubuntu NetworkManager[610]: <info>  [1789314104.3204] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11841372: Sep 14 00:41:44 ubuntu NetworkManager[610]: <info>  [1789314104.3214] device (wlan0): Activation: successful, device activated.
+11841531: Sep 14 00:43:52 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11841536: Sep 14 00:43:52 ubuntu NetworkManager[610]: <info>  [1789314232.8730] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11841541: Sep 14 00:43:52 ubuntu NetworkManager[610]: <info>  [1789314232.9569] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11841625: Sep 14 00:44:12 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11841627: Sep 14 00:44:12 ubuntu NetworkManager[610]: <info>  [1789314252.3657] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11841641: Sep 14 00:44:12 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11841654: Sep 14 00:44:23 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11841670: Sep 14 00:44:25 ubuntu NetworkManager[610]: <info>  [1789314265.4415] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11841715: Sep 14 00:44:25 ubuntu NetworkManager[610]: <info>  [1789314265.4902] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11841716: Sep 14 00:44:25 ubuntu NetworkManager[610]: <info>  [1789314265.4912] device (wlan0): Activation: successful, device activated.
+11842048: Sep 14 00:50:44 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11842055: Sep 14 00:50:44 ubuntu NetworkManager[610]: <info>  [1789314644.6303] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11842060: Sep 14 00:50:44 ubuntu NetworkManager[610]: <info>  [1789314644.6662] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11842116: Sep 14 00:51:01 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11842118: Sep 14 00:51:01 ubuntu NetworkManager[610]: <info>  [1789314661.9841] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11842132: Sep 14 00:51:01 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11842148: Sep 14 00:51:04 ubuntu NetworkManager[610]: <info>  [1789314664.0752] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11842193: Sep 14 00:51:04 ubuntu NetworkManager[610]: <info>  [1789314664.1245] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11842194: Sep 14 00:51:04 ubuntu NetworkManager[610]: <info>  [1789314664.1256] device (wlan0): Activation: successful, device activated.
+11842362: Sep 14 00:57:42 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11842363: Sep 14 00:57:50 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=0
+11842369: Sep 14 00:58:06 ubuntu NetworkManager[610]: <warn>  [1789315086.2576] device (wlan0): link timed out.
+11842370: Sep 14 00:58:06 ubuntu NetworkManager[610]: <info>  [1789315086.2577] device (wlan0): state change: activated -> failed (reason 'ssid-not-found', sys-iface-state: 'managed')
+11842371: Sep 14 00:58:06 ubuntu NetworkManager[610]: <warn>  [1789315086.2608] device (wlan0): Activation: failed for connection 'Ultra'
+11842372: Sep 14 00:58:06 ubuntu NetworkManager[610]: <info>  [1789315086.2673] device (wlan0): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
+11842454: Sep 14 01:00:26 ubuntu NetworkManager[610]: <info>  [1789315226.9680] device (wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11842455: Sep 14 01:00:26 ubuntu NetworkManager[610]: <info>  [1789315226.9704] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11842609: Sep 14 01:01:24 ubuntu NetworkManager[610]: <info>  [1789315284.5034] device (wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11842610: Sep 14 01:01:24 ubuntu NetworkManager[610]: <info>  [1789315284.5065] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11845698: Sep 14 01:01:31 ubuntu NetworkManager[610]: <info>  [1789315291.4773] device (wlan0): state change: unavailable -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11845942: Sep 14 01:02:28 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11845944: Sep 14 01:02:28 ubuntu NetworkManager[610]: <info>  [1789315348.2465] device (wlan0): Activation: starting connection 'Ultra' ([UUID])
+11845958: Sep 14 01:02:28 ubuntu wpa_supplicant[714]: wlan0: Trying to associate with [MAC] (SSID='Ultra' freq=2412 MHz)
+11845974: Sep 14 01:02:30 ubuntu NetworkManager[610]: <info>  [1789315350.2259] device (wlan0): Activation: (wifi) Stage 2 of 5 (Device Configure) successful. Connected to wireless network "Ultra"
+11846019: Sep 14 01:02:30 ubuntu NetworkManager[610]: <info>  [1789315350.3356] policy: set 'Ultra' (wlan0) as default for IPv4 routing and DNS
+11846020: Sep 14 01:02:30 ubuntu NetworkManager[610]: <info>  [1789315350.3365] device (wlan0): Activation: successful, device activated.
+11848102: Sep 14 01:02:53 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1
+11848109: Sep 14 01:02:53 ubuntu NetworkManager[610]: <info>  [1789315373.7907] device (wlan0): state change: activated -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11848115: Sep 14 01:02:53 ubuntu NetworkManager[610]: <info>  [1789315373.8412] device (p2p-dev-wlan0): state change: disconnected -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11848159: Sep 14 01:02:57 ubuntu NetworkManager[610]: <info>  [1789315377.0486] device (wlan0): state change: unavailable -> unmanaged (reason 'removed', sys-iface-state: 'removed')
+11879986: Sep 14 01:14:47 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11879990: Sep 14 01:14:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11879996: Sep 14 01:15:51 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11879999: Sep 14 01:15:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880004: Sep 14 01:16:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880006: Sep 14 01:17:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880012: Sep 14 01:17:56 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880013: Sep 14 01:18:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880017: Sep 14 01:19:00 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880023: Sep 14 01:19:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880028: Sep 14 01:20:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880029: Sep 14 01:20:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880034: Sep 14 01:21:05 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880035: Sep 14 01:22:16 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880039: Sep 14 01:23:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880040: Sep 14 01:23:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880046: Sep 14 01:24:14 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880047: Sep 14 01:24:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880049: Sep 14 01:25:18 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880051: Sep 14 01:25:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880053: Sep 14 01:26:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880054: Sep 14 01:26:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880057: Sep 14 01:27:23 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880058: Sep 14 01:27:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880066: Sep 14 01:29:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880067: Sep 14 01:30:40 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880071: Sep 14 01:31:36 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880073: Sep 14 01:31:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880077: Sep 14 01:32:39 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880079: Sep 14 01:32:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880082: Sep 14 01:33:41 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880085: Sep 14 01:33:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880093: Sep 14 01:34:45 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880094: Sep 14 01:34:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880099: Sep 14 01:35:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880100: Sep 14 01:35:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880105: Sep 14 01:36:50 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880106: Sep 14 01:36:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880112: Sep 14 01:38:57 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880114: Sep 14 01:39:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880115: Sep 14 01:41:03 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880117: Sep 14 01:41:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880123: Sep 14 01:42:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880124: Sep 14 01:42:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880129: Sep 14 01:43:08 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880130: Sep 14 01:43:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880134: Sep 14 01:44:12 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880136: Sep 14 01:44:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880142: Sep 14 01:45:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880143: Sep 14 01:45:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880148: Sep 14 01:46:17 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880149: Sep 14 01:46:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880154: Sep 14 01:47:21 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880155: Sep 14 01:47:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880160: Sep 14 01:48:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880161: Sep 14 01:48:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880166: Sep 14 01:49:26 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880167: Sep 14 01:49:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880170: Sep 14 01:50:30 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880172: Sep 14 01:50:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880177: Sep 14 01:51:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880178: Sep 14 01:51:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880180: Sep 14 01:52:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880181: Sep 14 01:52:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880186: Sep 14 01:54:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880187: Sep 14 01:54:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880192: Sep 14 01:55:44 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880193: Sep 14 01:55:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880197: Sep 14 01:56:48 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880199: Sep 14 01:56:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880204: Sep 14 01:57:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880205: Sep 14 01:57:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880208: Sep 14 01:58:53 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880209: Sep 14 01:59:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880212: Sep 14 01:59:57 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880213: Sep 14 02:00:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880218: Sep 14 02:01:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880220: Sep 14 02:01:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880225: Sep 14 02:02:02 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880227: Sep 14 02:02:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880232: Sep 14 02:03:06 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880233: Sep 14 02:03:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880238: Sep 14 02:04:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880239: Sep 14 02:04:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880244: Sep 14 02:05:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880246: Sep 14 02:05:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880248: Sep 14 02:06:15 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880249: Sep 14 02:08:28 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880252: Sep 14 02:09:24 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880253: Sep 14 02:09:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880258: Sep 14 02:10:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880259: Sep 14 02:10:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880264: Sep 14 02:11:29 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880265: Sep 14 02:11:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880267: Sep 14 02:12:33 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880269: Sep 14 02:12:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880276: Sep 14 02:13:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880277: Sep 14 02:13:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880287: Sep 14 02:15:42 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880289: Sep 14 02:15:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880293: Sep 14 02:16:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880295: Sep 14 02:16:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880301: Sep 14 02:17:47 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880302: Sep 14 02:17:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880305: Sep 14 02:18:51 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880306: Sep 14 02:18:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880311: Sep 14 02:19:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880312: Sep 14 02:20:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880315: Sep 14 02:20:56 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880485: Sep 14 03:31:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880490: Sep 14 03:32:21 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880491: Sep 14 03:32:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880497: Sep 14 03:33:24 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880499: Sep 14 03:33:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880506: Sep 14 03:35:30 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880507: Sep 14 03:35:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880510: Sep 14 03:36:33 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880511: Sep 14 03:38:46 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880514: Sep 14 03:39:42 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880515: Sep 14 03:41:55 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880517: Sep 14 03:42:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880519: Sep 14 03:42:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880520: Sep 14 03:44:01 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880523: Sep 14 03:44:57 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880525: Sep 14 03:45:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880529: Sep 14 03:46:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880530: Sep 14 03:46:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880533: Sep 14 03:47:02 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880534: Sep 14 03:48:13 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880539: Sep 14 03:49:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880540: Sep 14 03:49:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880543: Sep 14 03:50:11 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880544: Sep 14 03:50:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880550: Sep 14 03:51:15 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880552: Sep 14 03:51:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880553: Sep 14 03:53:28 ubuntu wpa_supplicant[895]: message repeated 4 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880556: Sep 14 03:54:24 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880557: Sep 14 03:54:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880559: Sep 14 03:56:29 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880561: Sep 14 03:56:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880562: Sep 14 03:57:40 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880565: Sep 14 03:58:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880566: Sep 14 03:58:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880569: Sep 14 03:59:38 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880570: Sep 14 03:59:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880574: Sep 14 04:00:42 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880575: Sep 14 04:00:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880580: Sep 14 04:01:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880582: Sep 14 04:01:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880585: Sep 14 04:02:47 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880586: Sep 14 04:02:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880593: Sep 14 04:04:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880594: Sep 14 04:05:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880599: Sep 14 04:05:56 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880600: Sep 14 04:06:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880603: Sep 14 04:07:00 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880604: Sep 14 04:07:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880609: Sep 14 04:08:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880611: Sep 14 04:08:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880615: Sep 14 04:09:05 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880616: Sep 14 04:09:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880619: Sep 14 04:10:09 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880620: Sep 14 04:11:19 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880623: Sep 14 04:12:14 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880624: Sep 14 04:12:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880631: Sep 14 04:13:18 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880632: Sep 14 04:13:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880635: Sep 14 04:14:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880636: Sep 14 04:15:23 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880639: Sep 14 04:15:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880642: Sep 14 04:16:27 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880643: Sep 14 04:16:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880653: Sep 14 04:18:32 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880654: Sep 14 04:18:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880657: Sep 14 04:19:36 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880658: Sep 14 04:20:46 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880663: Sep 14 04:21:41 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880665: Sep 14 04:21:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880670: Sep 14 04:22:45 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880671: Sep 14 04:22:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880675: Sep 14 04:23:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880678: Sep 14 04:23:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880679: Sep 14 04:24:58 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880682: Sep 14 04:25:54 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880683: Sep 14 04:27:04 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880686: Sep 14 04:27:59 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880687: Sep 14 04:29:10 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880690: Sep 14 04:30:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880691: Sep 14 04:30:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880697: Sep 14 04:31:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880699: Sep 14 04:31:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880702: Sep 14 04:32:12 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880703: Sep 14 04:33:22 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880706: Sep 14 04:34:17 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880707: Sep 14 04:37:34 ubuntu wpa_supplicant[895]: message repeated 7 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880712: Sep 14 04:38:30 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880713: Sep 14 04:38:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880718: Sep 14 04:39:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880719: Sep 14 04:42:49 ubuntu wpa_supplicant[895]: message repeated 7 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880723: Sep 14 04:44:48 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880725: Sep 14 04:44:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880730: Sep 14 04:45:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880731: Sep 14 04:49:07 ubuntu wpa_supplicant[895]: message repeated 7 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880734: Sep 14 04:50:02 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880735: Sep 14 04:50:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880740: Sep 14 04:51:06 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880741: Sep 14 04:51:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880746: Sep 14 04:52:09 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880747: Sep 14 04:53:19 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880750: Sep 14 04:54:15 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880751: Sep 14 04:54:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880758: Sep 14 04:56:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880759: Sep 14 04:56:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880762: Sep 14 04:57:24 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880763: Sep 14 04:57:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880766: Sep 14 04:58:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880768: Sep 14 04:58:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880772: Sep 14 04:59:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880773: Sep 14 05:02:38 ubuntu wpa_supplicant[895]: message repeated 4 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880775: Sep 14 05:02:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880777: Sep 14 05:03:42 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880778: Sep 14 05:03:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880783: Sep 14 05:04:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880784: Sep 14 05:04:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880787: Sep 14 05:05:47 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880788: Sep 14 05:05:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880791: Sep 14 05:06:51 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880793: Sep 14 05:06:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880797: Sep 14 05:07:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880799: Sep 14 05:08:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880803: Sep 14 05:08:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880804: Sep 14 05:09:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880809: Sep 14 05:10:00 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880810: Sep 14 05:12:13 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880815: Sep 14 05:13:09 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880816: Sep 14 05:13:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880821: Sep 14 05:14:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880822: Sep 14 05:14:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880827: Sep 14 05:15:14 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880828: Sep 14 05:15:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880833: Sep 14 05:16:18 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880834: Sep 14 05:16:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880840: Sep 14 05:17:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880841: Sep 14 05:17:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880846: Sep 14 05:18:23 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880847: Sep 14 05:18:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880851: Sep 14 05:19:27 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880852: Sep 14 05:19:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880856: Sep 14 05:20:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880858: Sep 14 05:20:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880863: Sep 14 05:21:32 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880864: Sep 14 05:21:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880870: Sep 14 05:23:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880871: Sep 14 05:23:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880875: Sep 14 05:24:41 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880877: Sep 14 05:24:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880882: Sep 14 05:25:45 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880883: Sep 14 05:26:55 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880886: Sep 14 05:27:50 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880887: Sep 14 05:27:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880890: Sep 14 05:28:54 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880891: Sep 14 05:29:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880896: Sep 14 05:29:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880897: Sep 14 05:30:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880903: Sep 14 05:32:03 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880904: Sep 14 05:32:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880909: Sep 14 05:33:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880911: Sep 14 05:33:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880916: Sep 14 05:34:08 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880917: Sep 14 05:34:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880921: Sep 14 05:35:12 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880923: Sep 14 05:35:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880927: Sep 14 05:36:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880928: Sep 14 05:36:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880930: Sep 14 05:37:17 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880931: Sep 14 05:37:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880936: Sep 14 05:38:21 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880938: Sep 14 05:38:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880942: Sep 14 05:39:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880943: Sep 14 05:40:34 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880951: Sep 14 05:42:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880953: Sep 14 05:42:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880954: Sep 14 05:43:43 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880957: Sep 14 05:44:39 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880958: Sep 14 05:48:58 ubuntu wpa_supplicant[895]: message repeated 9 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880961: Sep 14 05:49:53 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880962: Sep 14 05:51:04 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11880965: Sep 14 05:52:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880966: Sep 14 05:52:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880971: Sep 14 05:54:06 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880972: Sep 14 05:54:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880975: Sep 14 05:55:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880976: Sep 14 05:55:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880981: Sep 14 05:56:11 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880982: Sep 14 05:56:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880987: Sep 14 05:57:15 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880990: Sep 14 05:57:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880993: Sep 14 05:58:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880994: Sep 14 05:58:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880997: Sep 14 05:59:20 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11880998: Sep 14 05:59:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881003: Sep 14 06:00:24 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881005: Sep 14 06:00:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881007: Sep 14 06:01:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881008: Sep 14 06:01:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881013: Sep 14 06:02:29 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881015: Sep 14 06:02:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881021: Sep 14 06:04:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881022: Sep 14 06:05:46 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881025: Sep 14 06:06:42 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881027: Sep 14 06:06:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881034: Sep 14 06:07:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881035: Sep 14 06:08:55 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881038: Sep 14 06:09:51 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881039: Sep 14 06:09:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881043: Sep 14 06:10:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881044: Sep 14 06:12:04 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881047: Sep 14 06:13:00 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881048: Sep 14 06:13:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881051: Sep 14 06:15:05 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881052: Sep 14 06:15:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881057: Sep 14 06:16:09 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881058: Sep 14 06:16:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881064: Sep 14 06:17:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881065: Sep 14 06:17:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881070: Sep 14 06:18:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881071: Sep 14 06:18:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881076: Sep 14 06:19:18 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881077: Sep 14 06:21:31 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881080: Sep 14 06:22:27 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881081: Sep 14 06:22:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881084: Sep 14 06:23:30 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881085: Sep 14 06:23:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881088: Sep 14 06:24:32 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881089: Sep 14 06:24:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881091: Sep 14 06:25:36 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881093: Sep 14 06:25:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881095: Sep 14 06:26:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881096: Sep 14 06:26:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881101: Sep 14 06:28:45 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881102: Sep 14 06:28:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881105: Sep 14 06:29:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881106: Sep 14 06:32:01 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881109: Sep 14 06:32:58 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881110: Sep 14 06:33:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881112: Sep 14 06:33:59 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881114: Sep 14 06:34:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881115: Sep 14 06:36:13 ubuntu wpa_supplicant[895]: message repeated 4 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881118: Sep 14 06:37:08 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881119: Sep 14 06:37:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881122: Sep 14 06:38:12 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881123: Sep 14 06:38:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881126: Sep 14 06:39:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881127: Sep 14 06:43:34 ubuntu wpa_supplicant[895]: message repeated 9 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881130: Sep 14 06:44:30 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881131: Sep 14 06:47:39 ubuntu wpa_supplicant[895]: message repeated 4 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881133: Sep 14 06:47:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881135: Sep 14 06:48:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881136: Sep 14 06:48:49 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881139: Sep 14 06:49:44 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881140: Sep 14 06:51:58 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881143: Sep 14 06:52:53 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881144: Sep 14 06:54:04 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881147: Sep 14 06:55:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881148: Sep 14 06:57:13 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881151: Sep 14 06:58:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881152: Sep 14 06:58:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881154: Sep 14 06:59:11 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881156: Sep 14 06:59:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881157: Sep 14 07:02:28 ubuntu wpa_supplicant[895]: message repeated 6 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881160: Sep 14 07:04:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881161: Sep 14 07:05:29 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881163: Sep 14 07:05:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881173: Sep 14 07:07:36 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881174: Sep 14 07:08:46 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881177: Sep 14 07:09:42 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881178: Sep 14 07:14:01 ubuntu wpa_supplicant[895]: message repeated 9 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881181: Sep 14 07:14:56 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881182: Sep 14 07:15:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881187: Sep 14 07:16:00 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881188: Sep 14 07:16:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881192: Sep 14 07:17:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881194: Sep 14 07:17:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881199: Sep 14 07:18:05 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881201: Sep 14 07:18:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881202: Sep 14 07:19:09 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881205: Sep 14 07:19:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881206: Sep 14 07:20:19 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881209: Sep 14 07:21:14 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881210: Sep 14 07:21:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881213: Sep 14 07:22:18 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881214: Sep 14 07:22:25 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881217: Sep 14 07:23:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881218: Sep 14 07:23:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881221: Sep 14 07:24:23 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881222: Sep 14 07:25:34 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881225: Sep 14 07:26:31 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881226: Sep 14 07:27:40 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881235: Sep 14 07:29:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881236: Sep 14 07:29:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881238: Sep 14 07:30:41 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881239: Sep 14 07:33:58 ubuntu wpa_supplicant[895]: message repeated 5 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881242: Sep 14 07:34:54 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881243: Sep 14 07:36:04 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881246: Sep 14 07:36:59 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881247: Sep 14 07:37:07 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881250: Sep 14 07:38:03 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881251: Sep 14 07:39:07 ubuntu wpa_supplicant[895]: message repeated 2 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881253: Sep 14 07:39:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881255: Sep 14 07:40:08 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881256: Sep 14 07:40:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881259: Sep 14 07:42:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881260: Sep 14 07:43:25 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881263: Sep 14 07:44:21 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881264: Sep 14 07:44:28 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881271: Sep 14 07:46:26 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881272: Sep 14 07:46:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881277: Sep 14 07:47:30 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881278: Sep 14 07:47:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881281: Sep 14 07:48:34 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881284: Sep 14 07:48:40 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881288: Sep 14 07:49:37 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881290: Sep 14 07:49:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881294: Sep 14 07:50:39 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881295: Sep 14 07:50:46 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881297: Sep 14 07:51:43 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881298: Sep 14 07:52:52 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881301: Sep 14 07:53:48 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881302: Sep 14 07:53:55 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881305: Sep 14 07:54:52 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881306: Sep 14 07:56:01 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881308: Sep 14 07:56:57 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881310: Sep 14 07:57:04 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881313: Sep 14 07:58:01 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881314: Sep 14 07:59:10 ubuntu wpa_supplicant[895]: message repeated 3 times: [ wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD]
+11881317: Sep 14 08:00:06 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881318: Sep 14 08:00:13 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881323: Sep 14 08:01:10 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881326: Sep 14 08:01:16 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881330: Sep 14 08:02:11 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881331: Sep 14 08:02:19 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881335: Sep 14 08:03:15 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD
+11881336: Sep 14 08:03:22 ubuntu wpa_supplicant[895]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=DRIVER type=WORLD

@@ -1,0 +1,49 @@
+{
+  "samples": [
+    {
+      "campaign": "recording-five-goals-20260913",
+      "run": "full-goal-4-009",
+      "total_bytes": 7307747985,
+      "groups": {
+        "native-inputs": 6834319570,
+        "full5m/policy-inputs": 26034800,
+        "full5m/observation-recording": 402395983,
+        "full5m/runtime": 14676541
+      }
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "full-goal-4-002",
+      "total_bytes": 3405005299,
+      "groups": {
+        "native-inputs": 3202170434,
+        "full5m/policy-inputs": 11774849,
+        "full5m/observation-recording": 172441504,
+        "full5m/runtime": 5958534
+      }
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "full-goal-4-003",
+      "total_bytes": 6731354538,
+      "groups": {
+        "native-inputs": 6273368713,
+        "full5m/policy-inputs": 6576862,
+        "full5m/observation-recording": 414850123,
+        "full5m/runtime": 15027574
+      }
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-006",
+      "total_bytes": 1072129743,
+      "groups": {
+        "native-inputs": 1009649697,
+        "full5m/policy-inputs": 6343667,
+        "full5m/observation-recording": 51246347,
+        "full5m/runtime": 1563326
+      }
+    }
+  ],
+  "free_bytes": 70885281792
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "event": "terminal",
+    "episode_id": "robot-pointnav-79b8a12cfa7c-1",
+    "command_id": "rotate",
+    "kind": "rotate",
+    "target": -0.35018574292675786,
+    "measured_progress": -0.00017583341876992176,
+    "elapsed_s": 0.0550424840002961,
+    "status": "COMMAND_TRANSPORT_FAILED",
+    "collision_feedback_available": false,
+    "odom_stamp_ns": 1789298440089787008,
+    "log_unix_s": 1789298440.1250694
+  }
+]

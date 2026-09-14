@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "issues": [],
+  "exported_evidence_files_verified": 792,
+  "original_manifest_hash_matches": 681,
+  "original_manifest_hash_mismatches": [],
+  "episode_metric_checks": 27,
+  "started_episodes": 24,
+  "prestart_or_incomplete": 3,
+  "direct_model_STOP_checks": 5,
+  "manually_relocated_run_excluded_from_autonomous_path": true,
+  "final_paper_SPL_unset": true,
+  "bundle_bytes": 286698269,
+  "largest_file_bytes": 20676925,
+  "scope": "Copied evidence hashes and gzip payloads checked; existing metric calculation independently matched archived values. Entire large rosbag corpus not reread; runtime/hardware not retested.",
+  "markdown_local_links_passed": true,
+  "analysis_python_syntax_passed": true,
+  "operator_usb_replug_disclosed": true
+}

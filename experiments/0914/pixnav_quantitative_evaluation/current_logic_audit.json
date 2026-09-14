@@ -1,0 +1,362 @@
+{
+  "checked_at_utc": "2026-09-14T04:45:06.990317+00:00",
+  "scope": "Current goal 1..3 prepared profiles and pure fixed-start coordinate conversion; not closed-loop navigation.",
+  "current_prepared_profiles": 6,
+  "coordinate_roundtrip_cases": 12,
+  "contract_checks_passed": true,
+  "selected_goal_geometry": [
+    {
+      "label": "1",
+      "x_m": 2.976295047359577,
+      "y_m": 1.6749293355328907,
+      "initial_euclidean_distance_m": 3.415218951687548,
+      "initial_bearing_deg": 29.368915619341077,
+      "final_yaw_scored": false,
+      "physical_visibility_verified": false
+    },
+    {
+      "label": "2",
+      "x_m": 4.806585606214698,
+      "y_m": -2.4196024419508197,
+      "initial_euclidean_distance_m": 5.38123974256534,
+      "initial_bearing_deg": -26.720372171035724,
+      "final_yaw_scored": false,
+      "physical_visibility_verified": false
+    },
+    {
+      "label": "3",
+      "x_m": 9.299617046185157,
+      "y_m": 0.4242188621915379,
+      "initial_euclidean_distance_m": 9.309287773440921,
+      "initial_bearing_deg": 2.61184002821382,
+      "final_yaw_scored": false,
+      "physical_visibility_verified": false
+    }
+  ],
+  "roundtrip_results": [
+    {
+      "label": "1",
+      "episode_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "1",
+      "episode_origin": [
+        3.2,
+        -1.7,
+        1.5707963267948966
+      ],
+      "roundtrip_error_m": 2.220446049250313e-16
+    },
+    {
+      "label": "1",
+      "episode_origin": [
+        -8.0,
+        2.0,
+        -1.5707963267948966
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "1",
+      "episode_origin": [
+        1.0,
+        2.0,
+        3.141592653589793
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "2",
+      "episode_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "2",
+      "episode_origin": [
+        3.2,
+        -1.7,
+        1.5707963267948966
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "2",
+      "episode_origin": [
+        -8.0,
+        2.0,
+        -1.5707963267948966
+      ],
+      "roundtrip_error_m": 8.881784197001252e-16
+    },
+    {
+      "label": "2",
+      "episode_origin": [
+        1.0,
+        2.0,
+        3.141592653589793
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "3",
+      "episode_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "roundtrip_error_m": 0.0
+    },
+    {
+      "label": "3",
+      "episode_origin": [
+        3.2,
+        -1.7,
+        1.5707963267948966
+      ],
+      "roundtrip_error_m": 1.1102230246251565e-16
+    },
+    {
+      "label": "3",
+      "episode_origin": [
+        -8.0,
+        2.0,
+        -1.5707963267948966
+      ],
+      "roundtrip_error_m": 7.771561172376096e-16
+    },
+    {
+      "label": "3",
+      "episode_origin": [
+        1.0,
+        2.0,
+        3.141592653589793
+      ],
+      "roundtrip_error_m": 1.6653345369377348e-16
+    }
+  ],
+  "prepared": [
+    {
+      "run": "full-goal-1-002",
+      "navigation": "full",
+      "goal_label": "1",
+      "goal_xy_m": {
+        "x": 2.976295047359577,
+        "y": 1.6749293355328907
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "look_execution": "forward_0p2",
+      "forward_speed_mps": 0.5,
+      "turn_speed_radps": 0.8,
+      "success_radius_m": 1.0,
+      "max_duration_s": 1800,
+      "final_yaw_requested": false,
+      "icp_corrections_used": false,
+      "direct_max_policy_steps": null,
+      "local_policy_ttl_ms_explicit_override": null,
+      "actual_drive_evidence": false
+    },
+    {
+      "run": "direct_goal-goal-1-002",
+      "navigation": "direct_goal",
+      "goal_label": "1",
+      "goal_xy_m": {
+        "x": 2.976295047359577,
+        "y": 1.6749293355328907
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "look_execution": "forward_0p2",
+      "forward_speed_mps": 0.5,
+      "turn_speed_radps": 0.8,
+      "success_radius_m": 1.0,
+      "max_duration_s": 1800,
+      "final_yaw_requested": false,
+      "icp_corrections_used": false,
+      "direct_max_policy_steps": 500,
+      "local_policy_ttl_ms_explicit_override": null,
+      "actual_drive_evidence": false
+    },
+    {
+      "run": "full-goal-2-002",
+      "navigation": "full",
+      "goal_label": "2",
+      "goal_xy_m": {
+        "x": 4.806585606214698,
+        "y": -2.4196024419508197
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "look_execution": "forward_0p2",
+      "forward_speed_mps": 0.5,
+      "turn_speed_radps": 0.8,
+      "success_radius_m": 1.0,
+      "max_duration_s": 1800,
+      "final_yaw_requested": false,
+      "icp_corrections_used": false,
+      "direct_max_policy_steps": null,
+      "local_policy_ttl_ms_explicit_override": null,
+      "actual_drive_evidence": false
+    },
+    {
+      "run": "direct_goal-goal-2-002",
+      "navigation": "direct_goal",
+      "goal_label": "2",
+      "goal_xy_m": {
+        "x": 4.806585606214698,
+        "y": -2.4196024419508197
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "look_execution": "forward_0p2",
+      "forward_speed_mps": 0.5,
+      "turn_speed_radps": 0.8,
+      "success_radius_m": 1.0,
+      "max_duration_s": 1800,
+      "final_yaw_requested": false,
+      "icp_corrections_used": false,
+      "direct_max_policy_steps": 500,
+      "local_policy_ttl_ms_explicit_override": null,
+      "actual_drive_evidence": false
+    },
+    {
+      "run": "full-goal-3-002",
+      "navigation": "full",
+      "goal_label": "3",
+      "goal_xy_m": {
+        "x": 9.299617046185157,
+        "y": 0.4242188621915379
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "look_execution": "forward_0p2",
+      "forward_speed_mps": 0.5,
+      "turn_speed_radps": 0.8,
+      "success_radius_m": 1.0,
+      "max_duration_s": 1800,
+      "final_yaw_requested": false,
+      "icp_corrections_used": false,
+      "direct_max_policy_steps": null,
+      "local_policy_ttl_ms_explicit_override": null,
+      "actual_drive_evidence": false
+    },
+    {
+      "run": "direct_goal-goal-3-002",
+      "navigation": "direct_goal",
+      "goal_label": "3",
+      "goal_xy_m": {
+        "x": 9.299617046185157,
+        "y": 0.4242188621915379
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "look_execution": "forward_0p2",
+      "forward_speed_mps": 0.5,
+      "turn_speed_radps": 0.8,
+      "success_radius_m": 1.0,
+      "max_duration_s": 1800,
+      "final_yaw_requested": false,
+      "icp_corrections_used": false,
+      "direct_max_policy_steps": 500,
+      "local_policy_ttl_ms_explicit_override": null,
+      "actual_drive_evidence": false
+    }
+  ],
+  "actual_direct_inventory": [
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-001",
+      "goal_label": "4",
+      "goal_published": false,
+      "reason": "ERROR:NODE_UNAVAILABLE:sweep_scheduler_node"
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-002",
+      "goal_label": "4",
+      "goal_published": true,
+      "reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-003",
+      "goal_label": "4",
+      "goal_published": true,
+      "reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-004",
+      "goal_label": "4",
+      "goal_published": true,
+      "reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-005",
+      "goal_label": "4",
+      "goal_published": true,
+      "reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "campaign": "recording-five-goals-recaptured5-20260914",
+      "run": "direct_goal-goal-4-006",
+      "goal_label": "4",
+      "goal_published": true,
+      "reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    }
+  ],
+  "known_fault_source_files_unchanged": {
+    "motion.py": true,
+    "action_executor_node.py": true,
+    "sport_client.py": true
+  },
+  "direct_policy_ttl_default_ms": 300000,
+  "known_unfixed_issues": [
+    "rotation_settle_timeout",
+    "blocking_transport_sensor_processing_contention",
+    "direct_policy_300s_vs_episode_1800s"
+  ],
+  "possible_for_goals_1_2_3": true,
+  "physical_visibility_verified": false,
+  "code_proven_correct_for_all_driving": false,
+  "runtime_modified": false,
+  "note": "Same shared executor/runtime paths serve all goal labels. The three reproduced faults were not fixed by this quantitative evaluation.",
+  "source_sha256": {
+    "/home/unitree/s2e-vlm-async-framework-minimal/scripts/fixed_start_goals.py": "1d712ee9a390dc822fea62312ef633e770513848af6ae43c69835b21b3bebd86",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-1-002/manifest.json": "c0dbb8764a6ec9e9253498eea2f81ca49e80665e47cd9320c41c5eccfc7bc559",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-1-002/compose.trial.yaml": "b8105d42ca4fc684a3670e958c89342838738538642e25334ccedf0dff722d86",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-1-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-1-002/manifest.json": "4bf6812ad49ef69ef377b0cd8e5d9919b74707f31fb235697e9ba44aaf296fb6",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-1-002/compose.trial.yaml": "e7be660c6a0064b4a9725e96cb0dbb482dd37710db9722c4f97e4f2591a378a9",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-1-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-2-002/manifest.json": "b5a70f27f69ad4eb2ea345da394643fa14d84f3173d10cf1e5ecb1fe2182f1a8",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-2-002/compose.trial.yaml": "b8105d42ca4fc684a3670e958c89342838738538642e25334ccedf0dff722d86",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-2-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-2-002/manifest.json": "e89c72f48714a3237bd578dfbd1062e7165c1c18e1d6603219cb8572f5c8db4a",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-2-002/compose.trial.yaml": "e7be660c6a0064b4a9725e96cb0dbb482dd37710db9722c4f97e4f2591a378a9",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-2-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-3-002/manifest.json": "07081892e95bb8d523006fb5b127469552c69760c96adc6761bfb6296508d907",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-3-002/compose.trial.yaml": "b8105d42ca4fc684a3670e958c89342838738538642e25334ccedf0dff722d86",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-3-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-3-002/manifest.json": "c53b4d4071f300bb32d49cd44f07f0524b97a41fdbe6469514cf8700a4dd35d6",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-3-002/compose.trial.yaml": "e7be660c6a0064b4a9725e96cb0dbb482dd37710db9722c4f97e4f2591a378a9",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-3-002/goal-plan.json": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/motion.py": "b5f9b7448fe5ca7e8b3dd733411bb0b41f6f5dff601834c673b5f57abc2f5217",
+    "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/action_executor_node.py": "600f252368427554841140314c3884ceb198f88642a899ae0424adf0267b0ca9",
+    "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/sport_client.py": "4f5459efb8a137025e938043d5a17bda687933d74ebee6c9362267acd9da905d",
+    "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_nodes/s2e_vlm_nodes/runtime/pixnav.py": "b42d527b7f9a50bfb202142e5802c727da2a28ef2838fd80790de55705b6eab6",
+    "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/direct_goal.py": "06226400556e9ffa54c6812dec03147ff464651565952cc09d6d4248cd8af996",
+    "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/direct_goal_node.py": "5efa0292728b9bca79a595cd19213b5f5844b94f0f8f5ef882122572edb4ae0d",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-001/full5m/runtime/result.json": "02b041b9e7038e397d8319b5b20d788da9b118348bd9f5c1fc7c11043bf8ffe5",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-002/full5m/runtime/result.json": "7c9607c8a4a1c0b4e76324f23c23bc3e53940f352faef08191fd9011f3166e2a",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-003/full5m/runtime/result.json": "ad331c00a4ddd4ef271ef757383e0131a7c2962330f44a31c776c1cd43d8390c",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-004/full5m/runtime/result.json": "0be32d7775c4b9e57db77832efd6d1d46d871c261a4f6b1192d4d89cfe8c8642",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-005/full5m/runtime/result.json": "19347646b3187ab063f15960ea1ace8d97fdbb2afd2f83395208b93782ad8807",
+    "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-006/full5m/runtime/result.json": "a1eac445cec1b1ccc61bd4127677c721f9c0047615b429d997ccfebf8c27fb2a"
+  }
+}

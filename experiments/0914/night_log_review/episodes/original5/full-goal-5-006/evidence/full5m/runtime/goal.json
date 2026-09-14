@@ -1,0 +1,22 @@
+{
+  "origin_x": 2.3884999752044678,
+  "origin_y": -1.8883979320526123,
+  "heading_rad": -2.8330087557949013,
+  "goal_x": -3.918166977669833,
+  "goal_y": -8.29565486191294,
+  "distance_m": 8.990383163120468,
+  "continuing_original_goal": false,
+  "origin_age_s": 0.017477767,
+  "frame": "odom",
+  "goal_label": "5",
+  "success_criterion": "distance within configured PointGoal radius; final yaw is not controlled",
+  "navigation_mode": "full",
+  "look_execution": "forward_0p2",
+  "localization_method": "fixed_start_odometry",
+  "fixed_start_origin_id": "a1b045fe1b4a4e82ab035129dfd5facd",
+  "fixed_start_goal_xy": {
+    "x": 7.954715341948388,
+    "y": 4.189211530621359
+  },
+  "physical_arrival_verified": false
+}

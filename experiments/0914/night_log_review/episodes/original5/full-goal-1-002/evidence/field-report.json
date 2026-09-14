@@ -1,0 +1,14 @@
+{
+  "status": "received",
+  "direct_intervention": false,
+  "contact": false,
+  "obstruction": false,
+  "physical_within_goal_radius_verified": null,
+  "physical_final_distance_m": null,
+  "measurement_method": "operator_visual_estimate",
+  "operator_comment": "1m부근에 멈췄고 개입 접촉 진로 방해도 없었어",
+  "reported_unix": 1789294929.9788575,
+  "operator_estimated_final_distance_m": 1.0,
+  "operator_reported_near_goal_radius": true,
+  "numeric_distance_measured": false
+}

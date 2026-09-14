@@ -1,0 +1,587 @@
+FFFFFFFFFF                                                               [100%]
+=================================== FAILURES ===================================
+_ test_direct_goal_one_session_through_real_ros_callbacks[physical-goal_xy0-expected0-BODY_LOOK_LIMIT_REACHED] _
+
+mode = 'physical', goal_xy = (5.0, 0.0), expected = ['look_down', 'look_up']
+reason = 'BODY_LOOK_LIMIT_REACHED'
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+            rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+>           direct=DirectGoalNode();pixel=PixNavRuntimeNode(NODE_CONTRACT,worker=worker);io=Node('direct_goal_synthetic_io')
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <s2e_vlm_robot.direct_goal_node.DirectGoalNode object at 0xffff97d29940>
+
+    def __init__(self):
+        super().__init__('direct_goal_pixnav')
+        self.task=None;self.goal=None;self.pg=None;self.sent=None;self.terminal=None
+        self.images=OrderedDict();self.calibrations=OrderedDict();self.pointgoals=OrderedDict();self.poses=NonfutureTimestampBuffer(capacity=64)
+        self.pixel_status=None;self.error=''
+        _,self.extrinsic=_load_pixnav_camera_projection_contract()
+>       if self.extrinsic is None:raise ValueError('DIRECT_GOAL_CAMERA_CONTRACT_MISSING')
+E       ValueError: DIRECT_GOAL_CAMERA_CONTRACT_MISSING
+
+/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_robot/direct_goal_node.py:32: ValueError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p1-goal_xy1-expected1-] _
+
+mode = 'forward_0p1', goal_xy = (5.0, 0.0)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p1-goal_xy2-expected2-] _
+
+mode = 'forward_0p1', goal_xy = (3.96820189446, -2.7723220065)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p1-goal_xy3-expected3-] _
+
+mode = 'forward_0p1', goal_xy = (2.84914973007, 1.25823633873)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy4-expected4-] _
+
+mode = 'forward_0p2', goal_xy = (2.97629504736, 1.67492933553)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy5-expected5-] _
+
+mode = 'forward_0p2', goal_xy = (4.80658560621, -2.41960244195)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy6-expected6-] _
+
+mode = 'forward_0p2', goal_xy = (9.299617, 0.424219)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy7-expected7-] _
+
+mode = 'forward_0p2', goal_xy = (10.613861, -3.886406)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy8-expected8-] _
+
+mode = 'forward_0p2', goal_xy = (7.954715, 4.189212)
+expected = ['move_forward', 'move_forward'], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+_ test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy9-expected9-] _
+
+mode = 'forward_0p2', goal_xy = (5.0, 0.0), expected = [], reason = ''
+
+    @pytest.mark.parametrize('mode,goal_xy,expected,reason',[
+        ('physical',(5.,0.),['look_down','look_up'],'BODY_LOOK_LIMIT_REACHED'),
+        ('forward_0p1',(5.,0.),['move_forward','move_forward'],''),
+        ('forward_0p1',(3.96820189446,-2.77232200650),['move_forward','move_forward'],''),
+        ('forward_0p1',(2.84914973007,1.25823633873),['move_forward','move_forward'],''),
+        ('forward_0p2',(2.97629504736,1.67492933553),['move_forward','move_forward'],''),
+        ('forward_0p2',(4.80658560621,-2.41960244195),['move_forward','move_forward'],''),
+        ('forward_0p2',(9.299617,.424219),['move_forward','move_forward'],''),
+        ('forward_0p2',(10.613861,-3.886406),['move_forward','move_forward'],''),
+        ('forward_0p2',(7.954715,4.189212),['move_forward','move_forward'],''),
+        ('forward_0p2',(5.,0.),[],''),
+    ])
+    def test_direct_goal_one_session_through_real_ros_callbacks(mode,goal_xy,expected,reason):
+        assert os.environ.get('ROS_DOMAIN_ID')=='214'
+        with patch.dict(os.environ,{'S2E_RUNTIME_ROLE':'robot_full','S2E_SENSOR_PROFILE':'robot',
+            'S2E_SENSOR_CONFIG_DIR':'/work/config/sensors','PIXNAV_PHYSICAL_BODY_LOOK':'true',
+            'PIXNAV_FIXED_CAMERA_NOOP':'false','PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK':'false',
+            'PIXNAV_FIXED_CAMERA_VIEW_ZOOM':'1','PIXNAV_LOOK_EXECUTION':mode,
+            'PIXNAV_EXECUTION_MODE':'async_true','PIXNAV_MAX_GO_STEPS':'500'}):
+>           rclpy.init();worker=SequenceWorker(('look_down','look_down','stop') if expected else ('stop',));worker.backend_identity=identity()
+
+/verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0xffff97c70980>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None) -> None:
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+>               raise RuntimeError('Context.init() must only be called once')
+E               RuntimeError: Context.init() must only be called once
+
+/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py:97: RuntimeError
+---------- generated xml file: /out/direct-graph-corrected-domain.xml ----------
+=========================== short test summary info ============================
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[physical-goal_xy0-expected0-BODY_LOOK_LIMIT_REACHED]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p1-goal_xy1-expected1-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p1-goal_xy2-expected2-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p1-goal_xy3-expected3-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy4-expected4-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy5-expected5-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy6-expected6-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy7-expected7-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy8-expected8-]
+FAILED ../verification/src/s2e_vlm_nodes/test/test_robot_direct_goal_graph.py::test_direct_goal_one_session_through_real_ros_callbacks[forward_0p2-goal_xy9-expected9-]
+10 failed in 1.21s

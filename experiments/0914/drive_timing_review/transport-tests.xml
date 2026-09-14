@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="0" failures="23" hostname="8a779fbe7aa7" name="pytest" skipped="0" tests="71" time="6.631" timestamp="2026-09-14T01:34:20.848914"><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="11" name="test_explicit_ping_hands_back_from_probe_to_preexisting_executor" time="0.209"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="39" name="test_failed_readiness_ping_invalidates_cached_client_session" time="0.207"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="61" name="test_failed_body_cannot_be_replaced_without_explicit_rearm[watchdog]" time="0.207"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="61" name="test_failed_body_cannot_be_replaced_without_explicit_rearm[remote]" time="0.207"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="61" name="test_failed_body_cannot_be_replaced_without_explicit_rearm[external]" time="0.206"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="61" name="test_failed_body_cannot_be_replaced_without_explicit_rearm[api_rejected]" time="0.209"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="61" name="test_failed_body_cannot_be_replaced_without_explicit_rearm[sensor_stale]" time="0.208"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="141" name="test_body_wire_protocol_preserves_identity_state_and_requires_session" time="0.208"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="164" name="test_move_cannot_overwrite_pose_and_failed_lease_cannot_resume_euler" time="0.004"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="182" name="test_pose_lease_and_operator_stop_do_not_depend_on_upstream_executor[watchdog]" time="0.007"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="182" name="test_pose_lease_and_operator_stop_do_not_depend_on_upstream_executor[remote]" time="0.004"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="182" name="test_pose_lease_and_operator_stop_do_not_depend_on_upstream_executor[external]" time="0.004"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[watchdog-PITCHING]" time="0.004"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[watchdog-OBSERVING]" time="0.004"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[watchdog-RETURNING]" time="0.003"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[watchdog-WAIT_LOCOMOTION]" time="0.003"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[remote-PITCHING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[remote-OBSERVING]" time="0.004"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[remote-RETURNING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[remote-WAIT_LOCOMOTION]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[external-PITCHING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[external-OBSERVING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[external-RETURNING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[external-WAIT_LOCOMOTION]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[api_rejected-PITCHING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[api_rejected-OBSERVING]" time="0.003"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[api_rejected-RETURNING]" time="0.003"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[api_rejected-WAIT_LOCOMOTION]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[sensor_stale-PITCHING]" time="0.003"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[sensor_stale-OBSERVING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[sensor_stale-RETURNING]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="200" name="test_body_failure_in_each_phase_stops_without_waiting_for_upstream[sensor_stale-WAIT_LOCOMOTION]" time="0.003"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="241" name="test_stale_restart_or_overspeed_cannot_move[changes0]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="241" name="test_stale_restart_or_overspeed_cannot_move[changes1]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="241" name="test_stale_restart_or_overspeed_cannot_move[changes2]" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="248" name="test_stop_is_published_before_reply_and_cannot_be_overwritten" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="256" name="test_duplicate_stops_but_builtin_publishers_do_not_veto_local_owner" time="0.002"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="266" name="test_command_owner_lock_rejects_second_server_and_recovers" time="0.406"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="281" name="test_watchdog_runs_without_ros_executor" time="0.064"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="298" name="test_jazzy_client_and_foxy_server_binary_contract" time="0.207"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="319" name="test_real_process_signal_releases_socket_without_forced_kill[SIGINT]" time="0.872"></testcase><testcase classname="test.test_command_boundary" file="test/test_command_boundary.py" line="319" name="test_real_process_signal_releases_socket_without_forced_kill[SIGTERM]" time="0.832"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="12" name="test_real_wire_at_configured_limits_is_accepted[0.0-0.6]" time="0.210"><failure message="s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1">tmp_path = PosixPath(&apos;/tmp/pytest-of-unknown/pytest-0/test_real_wire_at_configured_l0&apos;)
+linear = 0.0, angular = 0.6
+
+    @pytest.mark.parametrize(&apos;linear,angular&apos;,[(0.,.6),(0.,-.6),(.5,.6),(-.5,-.6),(.5,0.),(-.5,0.)])
+    def test_real_wire_at_configured_limits_is_accepted(tmp_path,linear,angular):
+        node=driver();server=CommandServer(str(tmp_path/&apos;boundary.sock&apos;),node);server.start()
+        try:
+            client=SportClient(server.socket_path,timeout_s=.2);client.ping()
+&gt;           client.move(linear,angular)
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;s2e_vlm_robot.sport_client.SportClient object at 0xffffa51cde80&gt;
+linear_x_mps = 0.0, angular_z_radps = 0.6
+
+    def move(self, linear_x_mps: float, angular_z_radps: float) -&gt; None:
+        values = (float(linear_x_mps), float(angular_z_radps))
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError(&quot;velocity must be finite&quot;)
+        if not self._session_id:
+            raise SportClientError(&quot;Sport Move requires an explicit readiness ping&quot;)
+        session_id, result = self._call(
+            _MOVE,
+            linear_x_mps=values[0],
+            angular_z_radps=values[1],
+        )
+        if session_id != self._session_id:
+            self._session_id = 0
+            raise SportClientError(&quot;Sport server restarted; motion must be re-enabled&quot;)
+        if result != 0:
+&gt;           raise SportClientError(&quot;Sport Move failed with code %d&quot; % result)
+E           s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1
+
+/opt/s2e-robot-shared/s2e_vlm_robot/sport_client.py:89: SportClientError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="12" name="test_real_wire_at_configured_limits_is_accepted[0.0--0.6]" time="0.205"><failure message="s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1">tmp_path = PosixPath(&apos;/tmp/pytest-of-unknown/pytest-0/test_real_wire_at_configured_l1&apos;)
+linear = 0.0, angular = -0.6
+
+    @pytest.mark.parametrize(&apos;linear,angular&apos;,[(0.,.6),(0.,-.6),(.5,.6),(-.5,-.6),(.5,0.),(-.5,0.)])
+    def test_real_wire_at_configured_limits_is_accepted(tmp_path,linear,angular):
+        node=driver();server=CommandServer(str(tmp_path/&apos;boundary.sock&apos;),node);server.start()
+        try:
+            client=SportClient(server.socket_path,timeout_s=.2);client.ping()
+&gt;           client.move(linear,angular)
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;s2e_vlm_robot.sport_client.SportClient object at 0xffffa51d59a0&gt;
+linear_x_mps = 0.0, angular_z_radps = -0.6
+
+    def move(self, linear_x_mps: float, angular_z_radps: float) -&gt; None:
+        values = (float(linear_x_mps), float(angular_z_radps))
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError(&quot;velocity must be finite&quot;)
+        if not self._session_id:
+            raise SportClientError(&quot;Sport Move requires an explicit readiness ping&quot;)
+        session_id, result = self._call(
+            _MOVE,
+            linear_x_mps=values[0],
+            angular_z_radps=values[1],
+        )
+        if session_id != self._session_id:
+            self._session_id = 0
+            raise SportClientError(&quot;Sport server restarted; motion must be re-enabled&quot;)
+        if result != 0:
+&gt;           raise SportClientError(&quot;Sport Move failed with code %d&quot; % result)
+E           s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1
+
+/opt/s2e-robot-shared/s2e_vlm_robot/sport_client.py:89: SportClientError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="12" name="test_real_wire_at_configured_limits_is_accepted[0.5-0.6]" time="0.205"><failure message="s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1">tmp_path = PosixPath(&apos;/tmp/pytest-of-unknown/pytest-0/test_real_wire_at_configured_l2&apos;)
+linear = 0.5, angular = 0.6
+
+    @pytest.mark.parametrize(&apos;linear,angular&apos;,[(0.,.6),(0.,-.6),(.5,.6),(-.5,-.6),(.5,0.),(-.5,0.)])
+    def test_real_wire_at_configured_limits_is_accepted(tmp_path,linear,angular):
+        node=driver();server=CommandServer(str(tmp_path/&apos;boundary.sock&apos;),node);server.start()
+        try:
+            client=SportClient(server.socket_path,timeout_s=.2);client.ping()
+&gt;           client.move(linear,angular)
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;s2e_vlm_robot.sport_client.SportClient object at 0xffffa5109220&gt;
+linear_x_mps = 0.5, angular_z_radps = 0.6
+
+    def move(self, linear_x_mps: float, angular_z_radps: float) -&gt; None:
+        values = (float(linear_x_mps), float(angular_z_radps))
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError(&quot;velocity must be finite&quot;)
+        if not self._session_id:
+            raise SportClientError(&quot;Sport Move requires an explicit readiness ping&quot;)
+        session_id, result = self._call(
+            _MOVE,
+            linear_x_mps=values[0],
+            angular_z_radps=values[1],
+        )
+        if session_id != self._session_id:
+            self._session_id = 0
+            raise SportClientError(&quot;Sport server restarted; motion must be re-enabled&quot;)
+        if result != 0:
+&gt;           raise SportClientError(&quot;Sport Move failed with code %d&quot; % result)
+E           s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1
+
+/opt/s2e-robot-shared/s2e_vlm_robot/sport_client.py:89: SportClientError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="12" name="test_real_wire_at_configured_limits_is_accepted[-0.5--0.6]" time="0.207"><failure message="s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1">tmp_path = PosixPath(&apos;/tmp/pytest-of-unknown/pytest-0/test_real_wire_at_configured_l3&apos;)
+linear = -0.5, angular = -0.6
+
+    @pytest.mark.parametrize(&apos;linear,angular&apos;,[(0.,.6),(0.,-.6),(.5,.6),(-.5,-.6),(.5,0.),(-.5,0.)])
+    def test_real_wire_at_configured_limits_is_accepted(tmp_path,linear,angular):
+        node=driver();server=CommandServer(str(tmp_path/&apos;boundary.sock&apos;),node);server.start()
+        try:
+            client=SportClient(server.socket_path,timeout_s=.2);client.ping()
+&gt;           client.move(linear,angular)
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;s2e_vlm_robot.sport_client.SportClient object at 0xffffa51c6940&gt;
+linear_x_mps = -0.5, angular_z_radps = -0.6
+
+    def move(self, linear_x_mps: float, angular_z_radps: float) -&gt; None:
+        values = (float(linear_x_mps), float(angular_z_radps))
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError(&quot;velocity must be finite&quot;)
+        if not self._session_id:
+            raise SportClientError(&quot;Sport Move requires an explicit readiness ping&quot;)
+        session_id, result = self._call(
+            _MOVE,
+            linear_x_mps=values[0],
+            angular_z_radps=values[1],
+        )
+        if session_id != self._session_id:
+            self._session_id = 0
+            raise SportClientError(&quot;Sport server restarted; motion must be re-enabled&quot;)
+        if result != 0:
+&gt;           raise SportClientError(&quot;Sport Move failed with code %d&quot; % result)
+E           s2e_vlm_robot.sport_client.SportClientError: Sport Move failed with code -1
+
+/opt/s2e-robot-shared/s2e_vlm_robot/sport_client.py:89: SportClientError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="12" name="test_real_wire_at_configured_limits_is_accepted[0.5-0.0]" time="0.208"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="12" name="test_real_wire_at_configured_limits_is_accepted[-0.5-0.0]" time="0.208"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="30" name="test_real_wire_over_limit_still_rejected[0.0-0.61]" time="0.207"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="30" name="test_real_wire_over_limit_still_rejected[0.0--0.61]" time="0.207"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="30" name="test_real_wire_over_limit_still_rejected[0.51-0.0]" time="0.005"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="30" name="test_real_wire_over_limit_still_rejected[-0.51-0.0]" time="0.005"></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[0.0]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 0.0
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-0.0]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -0.0
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[0.5]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 0.5
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-0.5]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -0.5
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[0.6]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 0.6
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-0.6]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -0.6
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[0.2]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 0.2
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-0.2]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -0.2
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[0.59]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 0.59
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-0.59]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -0.59
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[1e-46]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 1e-46
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-1e-46]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -1e-46
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[1e-40]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 1e-40
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="42" name="test_encoded_velocity_never_rounds_away_from_zero[-1e-40]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -1e-40
+
+    @pytest.mark.parametrize(&apos;value&apos;,[0.,-0.,.5,-.5,.6,-.6,.2,-.2,.59,-.59,1e-46,-1e-46,1e-40,-1e-40])
+    def test_encoded_velocity_never_rounds_away_from_zero(value):
+&gt;       encoded=sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:45: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="51" name="test_unrepresentable_velocity_is_rejected[nan]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = nan
+
+    @pytest.mark.parametrize(&apos;value&apos;,[float(&apos;nan&apos;),float(&apos;inf&apos;),-float(&apos;inf&apos;),1e100,-1e100])
+    def test_unrepresentable_velocity_is_rejected(value):
+&gt;       with pytest.raises(ValueError):sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:54: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="51" name="test_unrepresentable_velocity_is_rejected[inf]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = inf
+
+    @pytest.mark.parametrize(&apos;value&apos;,[float(&apos;nan&apos;),float(&apos;inf&apos;),-float(&apos;inf&apos;),1e100,-1e100])
+    def test_unrepresentable_velocity_is_rejected(value):
+&gt;       with pytest.raises(ValueError):sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:54: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="51" name="test_unrepresentable_velocity_is_rejected[-inf]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -inf
+
+    @pytest.mark.parametrize(&apos;value&apos;,[float(&apos;nan&apos;),float(&apos;inf&apos;),-float(&apos;inf&apos;),1e100,-1e100])
+    def test_unrepresentable_velocity_is_rejected(value):
+&gt;       with pytest.raises(ValueError):sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:54: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="51" name="test_unrepresentable_velocity_is_rejected[1e+100]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = 1e+100
+
+    @pytest.mark.parametrize(&apos;value&apos;,[float(&apos;nan&apos;),float(&apos;inf&apos;),-float(&apos;inf&apos;),1e100,-1e100])
+    def test_unrepresentable_velocity_is_rejected(value):
+&gt;       with pytest.raises(ValueError):sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:54: AttributeError</failure></testcase><testcase classname="test.test_wire_velocity_boundary" file="test/test_wire_velocity_boundary.py" line="51" name="test_unrepresentable_velocity_is_rejected[-1e+100]" time="0.001"><failure message="AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;">value = -1e+100
+
+    @pytest.mark.parametrize(&apos;value&apos;,[float(&apos;nan&apos;),float(&apos;inf&apos;),-float(&apos;inf&apos;),1e100,-1e100])
+    def test_unrepresentable_velocity_is_rejected(value):
+&gt;       with pytest.raises(ValueError):sport_client._wire_velocity(value)
+E       AttributeError: module &apos;s2e_vlm_robot.sport_client&apos; has no attribute &apos;_wire_velocity&apos;
+
+/verification/src/s2e_unitree_foxy/test/test_wire_velocity_boundary.py:54: AttributeError</failure></testcase></testsuite></testsuites>

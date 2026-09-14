@@ -1,0 +1,75 @@
+{
+  "source_note": "syslog year inferred from experimental date; boot-time wall-clock resets exist; retain raw lines and kernel monotonic times",
+  "event_count": 978,
+  "late_usb_disconnect_count": 23,
+  "late_wifi_disconnects": [
+    {
+      "source": "/var/log/syslog",
+      "line": 11840566,
+      "kst": "2026-09-14T00:13:39+09:00",
+      "unix_s": 1789312419.0,
+      "kind": "wifi",
+      "text": "Sep 14 00:13:39 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1"
+    },
+    {
+      "source": "/var/log/syslog",
+      "line": 11841185,
+      "kst": "2026-09-14T00:41:11+09:00",
+      "unix_s": 1789314071.0,
+      "kind": "wifi",
+      "text": "Sep 14 00:41:11 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1"
+    },
+    {
+      "source": "/var/log/syslog",
+      "line": 11841531,
+      "kst": "2026-09-14T00:43:52+09:00",
+      "unix_s": 1789314232.0,
+      "kind": "wifi",
+      "text": "Sep 14 00:43:52 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1"
+    },
+    {
+      "source": "/var/log/syslog",
+      "line": 11842048,
+      "kst": "2026-09-14T00:50:44+09:00",
+      "unix_s": 1789314644.0,
+      "kind": "wifi",
+      "text": "Sep 14 00:50:44 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1"
+    },
+    {
+      "source": "/var/log/syslog",
+      "line": 11842363,
+      "kst": "2026-09-14T00:57:50+09:00",
+      "unix_s": 1789315070.0,
+      "kind": "wifi",
+      "text": "Sep 14 00:57:50 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=0"
+    },
+    {
+      "source": "/var/log/syslog",
+      "line": 11848102,
+      "kst": "2026-09-14T01:02:53+09:00",
+      "unix_s": 1789315373.0,
+      "kind": "wifi",
+      "text": "Sep 14 01:02:53 ubuntu wpa_supplicant[714]: wlan0: CTRL-EVENT-DISCONNECTED bssid=[MAC] reason=3 locally_generated=1"
+    }
+  ],
+  "late_connection_failures": [
+    {
+      "source": "/var/log/syslog",
+      "line": 11842371,
+      "kst": "2026-09-14T00:58:06+09:00",
+      "unix_s": 1789315086.0,
+      "kind": "wifi",
+      "text": "Sep 14 00:58:06 ubuntu NetworkManager[610]: <warn>  [1789315086.2608] device (wlan0): Activation: failed for connection 'Ultra'"
+    }
+  ],
+  "association_during_latest_full_trials": "Ultra, active from 00:51:04; disconnected at 00:57:50; failed ssid-not-found at 00:58:06",
+  "causal_limit": "Timeout request timing does not separate Wi-Fi, VPN, server queue or model execution. Operator confirmed unplugging/replugging the USB adapter; exact times unknown. USB removal count is not spontaneous failure count.",
+  "current_readonly_observation": {
+    "date": "2026-09-14",
+    "wifi_power_save": "on",
+    "usb_1_2_power_control": "on",
+    "usb_1_2_autosuspend_delay_ms": -1000
+  },
+  "interpretation": "USB runtime autosuspend is disabled for this device; Wi-Fi power save is enabled. Neither identifies the historical root cause alone.",
+  "operator_replugged_usb_wifi": true
+}

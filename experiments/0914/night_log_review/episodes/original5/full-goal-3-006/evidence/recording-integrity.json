@@ -1,0 +1,52 @@
+{
+  "schema": "escape-recording-integrity-v1",
+  "checked_unix": 1789300401.2965984,
+  "live_preflight": false,
+  "started": true,
+  "outcome": "CONTROLLER_INHIBITED:MOTION_TIMEOUT",
+  "passed": false,
+  "issues": [
+    "Full policy trace missing: sweep_scheduler_trace.jsonl"
+  ],
+  "stream_counts": {
+    "body": {
+      "sport": 4140,
+      "low": 10010,
+      "recorder_finished": 1
+    },
+    "camera": {
+      "recorder_started": 1,
+      "time_sync_status": 3115,
+      "raw_image_header": 3115,
+      "recorder_finished": 1
+    },
+    "observation": {
+      "image_receipt": 3041,
+      "image": 396
+    },
+    "operator": {
+      "odom": 3688,
+      "control_pose": 6622,
+      "status": 2135,
+      "motion_enable": 1,
+      "fixed_start_binding": 1,
+      "goal_published": 1,
+      "task": 1,
+      "pointgoal": 2906,
+      "command": 40,
+      "result": 40,
+      "direct_stop": 1,
+      "motion_disable": 1
+    },
+    "policy_steps": 38
+  },
+  "native_topic_counts": {
+    "/tf_static": 1,
+    "/s2e/robot/sensors/imu": 51560,
+    "/s2e/robot/sensors/cloud": 3310,
+    "/s2e/robot/sensors/odom": 32172,
+    "/robot_nav/sensors/front_camera/camera_info": 3215,
+    "/robot_nav/sensors/front_camera/image_raw": 3215
+  },
+  "note": "File/subscription/receipt checks; not proof of zero transport loss or physical success. Missing artifacts are preserved as incomplete records."
+}

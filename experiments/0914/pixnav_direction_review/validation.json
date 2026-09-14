@@ -1,0 +1,24 @@
+{
+  "completed_at": "2026-09-14T09:32:37.634040+09:00",
+  "git_root_commit": "36bc032510bb6f9044a24feeb76e33d62505f416",
+  "runtime_repo_commit": "abad1ffa471ff4b98ce0a7ee2c2d35c043375f90",
+  "runtime_commit_is_not_clean_deployment_identity": true,
+  "native_installed_source_matches_workspace": true,
+  "policy_image": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+  "reference_revisions": {
+    "upstream": "5d890445ab9f8e72d54d36256ebea4baa88695bd",
+    "official": "f7077a4cfc3fc0d320f73beafcda75375dc1ddb0"
+  },
+  "camera_contract_sha256": {
+    "direct_goal-goal-4-002": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4",
+    "direct_goal-goal-4-003": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4",
+    "direct_goal-goal-4-004": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4",
+    "direct_goal-goal-4-005": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4",
+    "direct_goal-goal-4-006": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4"
+  },
+  "motion_requested": false,
+  "runtime_files_modified": false,
+  "network_settings_modified": false,
+  "pushed": false,
+  "validation_scope": "Recorded-input inference parity and action-to-odometry sign audit only; not real-world readiness or baseline input validity."
+}

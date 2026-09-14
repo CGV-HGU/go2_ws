@@ -1,0 +1,33 @@
+[INFO] [1789349885.832250773] [go2_action_executor]: Full ESCAPE motion boundary ready; motion disabled
+[ERROR] [1789349886.411820596] [go2_action_executor]: Motion disabled: ODOM_STALE
+{"delay_s": 0.08, "separate_sensor_group": false, "mock_moves": 6, "fault": "ODOM_STALE", "maximum_pose_age_s": 0.5327037262770996, "sample_count": 8, "independent_pose_samples": 17}
+[ERROR] [1789349887.032511524] [go2_action_executor]: Motion disabled: ODOM_STALE
+{"delay_s": 0.08, "separate_sensor_group": false, "mock_moves": 6, "fault": "ODOM_STALE", "maximum_pose_age_s": 0.522320698022461, "sample_count": 8, "independent_pose_samples": 17}
+[ERROR] [1789349887.668757676] [go2_action_executor]: Motion disabled: LOCALIZED_POSE_STALE
+{"delay_s": 0.08, "separate_sensor_group": true, "mock_moves": 6, "fault": "LOCALIZED_POSE_STALE", "maximum_pose_age_s": 0.5227754415534668, "sample_count": 8, "independent_pose_samples": 17}
+[ERROR] [1789349888.302131094] [go2_action_executor]: Motion disabled: LOCALIZED_POSE_STALE
+{"delay_s": 0.08, "separate_sensor_group": true, "mock_moves": 6, "fault": "LOCALIZED_POSE_STALE", "maximum_pose_age_s": 0.5250163689891357, "sample_count": 8, "independent_pose_samples": 17}
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+{"delay_s": 0.02, "separate_sensor_group": true, "mock_moves": 161, "fault": "", "maximum_pose_age_s": 0.04338781431750488, "sample_count": 162, "independent_pose_samples": 232}
+[ERROR] [1789349897.031057673] [go2_action_executor]: Motion disabled: LOCALIZED_POSE_STALE
+{"delay_s": 0.095, "separate_sensor_group": true, "mock_moves": 5, "fault": "LOCALIZED_POSE_STALE", "maximum_pose_age_s": 0.5129001326364746, "sample_count": 7, "independent_pose_samples": 17}
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested

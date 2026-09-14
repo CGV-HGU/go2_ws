@@ -1,0 +1,20 @@
+{
+  "confirmed_unix": 1789313973.5325167,
+  "trial_id": "direct_goal-goal-4-002",
+  "source": "User reply in this task",
+  "operator_statement": "개입·접촉·진로 방해 모두 없었음",
+  "direct_intervention": false,
+  "contact": false,
+  "obstruction": false,
+  "original_field_report": {
+    "status": "received_partial",
+    "direct_intervention": null,
+    "contact": null,
+    "obstruction": null,
+    "physical_within_goal_radius_verified": null,
+    "physical_final_distance_m": null,
+    "measurement_method": null,
+    "operator_comment": "0"
+  },
+  "raw_archive_preserved": true
+}

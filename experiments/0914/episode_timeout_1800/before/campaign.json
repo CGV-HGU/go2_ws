@@ -1,0 +1,250 @@
+{
+  "schema": "escape-five-goal-campaign-v1",
+  "campaign_id": "80bf2e8fb62648deb43b107d22a6b836",
+  "created_unix": 1789312585.4752526,
+  "status": "goals_sealed",
+  "required_goals": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ],
+  "pose_method": "fixed_start_odometry",
+  "same_marked_start_each_episode": true,
+  "validation": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/direct-admission-fix/candidate-validation.json",
+  "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+  "physical_drive_validated": false,
+  "free_disk_bytes_at_prepare": 95874768896,
+  "primary_method": "full",
+  "comparison_method": "direct_goal",
+  "camera": {
+    "image": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+    "compose": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/camera.compose.json",
+    "sha256": {
+      "camera.compose.json": "cfe17c20ddf3a4275d391381b7141a18ebe8ec92a10f63b7d1860e0da5996cdf",
+      "camera-config/0-cyclonedds.xml": "75deefe8ed7e17a818dd4f157ec4ab70db1e2f31664c0db203505d18cbbdceb4",
+      "camera-config/1-calibration/camera_intrinsics.yaml": "2fedc1b02115f90fb1aa01e8d4ed23fec6679c9699de82eb468a303afe4381e7",
+      "camera-config/1-calibration/extrinsics.json": "b33256a963394bd64741feae40af10a1e102b49bae3d869ee78cab0a993ad991",
+      "camera-config/1-calibration/manifest.json": "b3ad5188ce9d724d36ae5953c1dfce2b9b4cf63e06a8bcd86ef2a486c616bd52"
+    }
+  },
+  "goal_plan_sha256": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+  "map_database": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/mapping/map.db",
+  "map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+  "origin_id": "e250a1e39e164ab99d65668678c87362",
+  "icp_corrections_used": false,
+  "trial_settings": {
+    "look": "forward_0p2",
+    "turn_speed_radps": 0.8
+  },
+  "runtime_revision": "look20-turn08-return3-direct-admission-20260914",
+  "goal_set_derivation": {
+    "source_campaign": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913",
+    "source_campaign_id": "5421aeb68b744631b2436402a6a5b3a5",
+    "source_goal_plan_sha256": "69781f18c387d396246bcc451997e756e934474a60f1ad123c96abf0a47991a7",
+    "provenance_file": "provenance/frame-registration.json",
+    "new_goal_capture": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913/goal5-recapture-20260914-000716/goals/5.json",
+    "return_closure_file": "provenance/return-closure.json",
+    "return_position_error_m": 0.467725650292124,
+    "return_heading_error_deg": 5.43013126772671,
+    "drift_correction_applied": false,
+    "existing_map_reused": true,
+    "remapped": false
+  },
+  "trials": [
+    {
+      "trial_id": "full-goal-1-001",
+      "goal_label": "1",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-1-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "full-goal-2-001",
+      "goal_label": "2",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-2-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "full-goal-3-001",
+      "goal_label": "3",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-3-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "full-goal-4-001",
+      "goal_label": "4",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "full-goal-5-001",
+      "goal_label": "5",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-5-001",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/full-goal-5-001",
+      "recording_complete": true,
+      "started": true,
+      "episode_id": "robot-pointnav-e35f6d530777-1",
+      "result_reason": "CONTROLLER_INHIBITED:MOTION_TIMEOUT"
+    },
+    {
+      "trial_id": "direct_goal-goal-1-001",
+      "goal_label": "1",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-1-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "direct_goal-goal-2-001",
+      "goal_label": "2",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-2-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "direct_goal-goal-3-001",
+      "goal_label": "3",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-3-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-001",
+      "goal_label": "4",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-001",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-001",
+      "recording_complete": true,
+      "started": false,
+      "episode_id": null,
+      "result_reason": "ERROR:NODE_UNAVAILABLE:sweep_scheduler_node"
+    },
+    {
+      "trial_id": "direct_goal-goal-5-001",
+      "goal_label": "5",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-5-001",
+      "status": "prepared"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-002",
+      "goal_label": "4",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-002",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-002",
+      "recording_complete": true,
+      "started": true,
+      "episode_id": "robot-pointnav-f6cdf9ba1816-1",
+      "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-003",
+      "goal_label": "4",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-003",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-003",
+      "recording_complete": true,
+      "started": true,
+      "episode_id": "robot-pointnav-2ff43678aaa3-1",
+      "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-004",
+      "goal_label": "4",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-004",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-004",
+      "recording_complete": true,
+      "started": true,
+      "episode_id": "robot-pointnav-69ae49f67dd6-1",
+      "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-005",
+      "goal_label": "4",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-005",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-005",
+      "recording_complete": true,
+      "started": true,
+      "episode_id": "robot-pointnav-5e059fcf0f39-1",
+      "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-006",
+      "goal_label": "4",
+      "method": "direct_goal",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-006",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/direct_goal-goal-4-006",
+      "recording_complete": true,
+      "started": true,
+      "episode_id": "robot-pointnav-1d2c70eeacf4-1",
+      "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL"
+    },
+    {
+      "trial_id": "full-goal-4-002",
+      "goal_label": "4",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-002",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/full-goal-4-002",
+      "recording_complete": false,
+      "started": true,
+      "episode_id": "robot-pointnav-0602686e1261-1",
+      "result_reason": "CONTROLLER_INHIBITED:LOCALIZED_POSE_STALE"
+    },
+    {
+      "trial_id": "full-goal-4-003",
+      "goal_label": "4",
+      "method": "full",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-003",
+      "status": "archived",
+      "archive": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/archives/full-goal-4-003",
+      "recording_complete": false,
+      "started": true,
+      "episode_id": "robot-pointnav-fe53567f8a20-1",
+      "result_reason": "CONTROLLER_INHIBITED:NODE_UNAVAILABLE:rtab_pointgoal_adapter"
+    }
+  ],
+  "runtime_amendments": [
+    {
+      "completed_unix": 1789313696.2148223,
+      "reason": "Direct motion enable incorrectly required absent Full sweep scheduler",
+      "failed_trial": "direct_goal-goal-4-001",
+      "failed_trial_goal_published": false,
+      "parent_navigation_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c",
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98",
+      "parent_validation": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/candidate-validation.json",
+      "parent_validation_sha256": "d90b521153d1b4162de4a24511300081ac08d51504531de6da5259c46c3acd79",
+      "changed_source": "src/s2e_vlm_robot/s2e_vlm_robot/action_executor_node.py",
+      "before_sha256": "6f2848abf80eda2b0bb03f0965d2b4a52cf231d73322381b14ddf31569af5fc3",
+      "after_sha256": "600f252368427554841140314c3884ceb198f88642a899ae0424adf0267b0ca9",
+      "scope": "Dependency check only: require sweep scheduler for vlm_node planner; preserve every shared input and other node check. Motion dynamics, turn speed, look substitution, sensor and recording setup unchanged.",
+      "verification": {
+        "baseline_cases": 14,
+        "baseline_failures": 4,
+        "executor_and_boundary_passed": 66,
+        "launch_passed": 2,
+        "operator_passed": 27,
+        "unique_postfix_passed": 95,
+        "initial_launch_test_setup_error": "Mounted test path lacked /launch; rerun two launch cases using installed launch path passed",
+        "network": "none",
+        "sport_transport": "recording mock; no actuator commands",
+        "evidence": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/direct-admission-fix"
+      },
+      "physical_drive_validated": false
+    }
+  ]
+}

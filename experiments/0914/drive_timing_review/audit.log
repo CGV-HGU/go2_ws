@@ -1,0 +1,209 @@
+{
+  "episodes": 24,
+  "macros": 1121,
+  "statistics": {
+    "forward": {
+      "elapsed_s": {
+        "count": 216,
+        "median": 1.3962999719999516,
+        "p95": 1.525566328750017,
+        "minimum": 1.2293743570007791,
+        "maximum": 1.6480016560001332
+      },
+      "measured_progress_per_macro_s": {
+        "count": 216,
+        "median": 0.18690647678432604,
+        "p95": 0.20826004839242612,
+        "minimum": 0.15483752500353373,
+        "maximum": 0.21546544181920027
+      },
+      "moving_twist_mps": {
+        "count": 216,
+        "median": 0.2607749987944721,
+        "p95": 0.31392344044676823,
+        "minimum": 0.1839501679437997,
+        "maximum": 0.3405893504558806
+      },
+      "measured_turn_rate_radps": {
+        "count": 0
+      },
+      "zero_command_s": {
+        "count": 216,
+        "median": 0.30430186750027133,
+        "p95": 0.44718070699991586,
+        "minimum": 0.19333132700012357,
+        "maximum": 0.5616672670000753
+      },
+      "result_receipt_delay_s": {
+        "count": 216,
+        "median": 0.04632997512817383,
+        "p95": 0.09754258394241333,
+        "minimum": 0.0021059513092041016,
+        "maximum": 0.15662884712219238
+      },
+      "command_receipt_to_start_s": {
+        "count": 216,
+        "median": 0.001872420310974121,
+        "p95": 0.019675016403198242,
+        "minimum": -0.03681445121765137,
+        "maximum": 0.03199887275695801
+      }
+    },
+    "look_forward_10cm": {
+      "elapsed_s": {
+        "count": 0
+      },
+      "measured_progress_per_macro_s": {
+        "count": 0
+      },
+      "moving_twist_mps": {
+        "count": 0
+      },
+      "measured_turn_rate_radps": {
+        "count": 0
+      },
+      "zero_command_s": {
+        "count": 0
+      },
+      "result_receipt_delay_s": {
+        "count": 0
+      },
+      "command_receipt_to_start_s": {
+        "count": 0
+      }
+    },
+    "look_forward_20cm": {
+      "elapsed_s": {
+        "count": 178,
+        "median": 1.2694011699993553,
+        "p95": 1.464646537449812,
+        "minimum": 1.1259121250004682,
+        "maximum": 1.8047551679992466
+      },
+      "measured_progress_per_macro_s": {
+        "count": 178,
+        "median": 0.16800988209619167,
+        "p95": 0.18952047479547207,
+        "minimum": 0.11680877359664882,
+        "maximum": 0.19858593783305786
+      },
+      "moving_twist_mps": {
+        "count": 178,
+        "median": 0.2325506004245783,
+        "p95": 0.2834415645761386,
+        "minimum": 0.15779092142213047,
+        "maximum": 0.310913247352107
+      },
+      "measured_turn_rate_radps": {
+        "count": 0
+      },
+      "zero_command_s": {
+        "count": 178,
+        "median": 0.30473699849972036,
+        "p95": 0.4600202937491986,
+        "minimum": 0.16442501200026527,
+        "maximum": 0.6565279390001706
+      },
+      "result_receipt_delay_s": {
+        "count": 178,
+        "median": 0.0424809455871582,
+        "p95": 0.09109053611755377,
+        "minimum": 0.0013587474822998047,
+        "maximum": 0.20846152305603027
+      },
+      "command_receipt_to_start_s": {
+        "count": 178,
+        "median": 0.002417325973510742,
+        "p95": 0.015010285377502444,
+        "minimum": -0.036806583404541016,
+        "maximum": 0.029755115509033203
+      }
+    },
+    "observation_or_alignment_turn": {
+      "elapsed_s": {
+        "count": 167,
+        "median": 3.1292801550007425,
+        "p95": 8.954105464400731,
+        "minimum": 0.4143009459999121,
+        "maximum": 13.22650017900014
+      },
+      "measured_progress_per_macro_s": {
+        "count": 167,
+        "median": 0.22571781583620756,
+        "p95": 0.414045801785935,
+        "minimum": 0.0003778797297010131,
+        "maximum": 0.5021469718193361
+      },
+      "moving_twist_mps": {
+        "count": 0
+      },
+      "measured_turn_rate_radps": {
+        "count": 164,
+        "median": 0.5741975111834676,
+        "p95": 0.6502667957172273,
+        "minimum": 0.0063915858045220375,
+        "maximum": 0.6764428615570068
+      },
+      "zero_command_s": {
+        "count": 167,
+        "median": 1.462256355000136,
+        "p95": 6.731855132601321,
+        "minimum": 0.3873125150003034,
+        "maximum": 11.656445837999854
+      },
+      "result_receipt_delay_s": {
+        "count": 0
+      },
+      "command_receipt_to_start_s": {
+        "count": 0
+      }
+    },
+    "policy_turn": {
+      "elapsed_s": {
+        "count": 106,
+        "median": 2.9028386545001013,
+        "p95": 6.7502471395002885,
+        "minimum": 1.4170717990000412,
+        "maximum": 9.512395982000271
+      },
+      "measured_progress_per_macro_s": {
+        "count": 106,
+        "median": 0.17063214731201695,
+        "p95": 0.31352466216735064,
+        "minimum": 0.05757055956308143,
+        "maximum": 0.3935539304584247
+      },
+      "moving_twist_mps": {
+        "count": 0
+      },
+      "measured_turn_rate_radps": {
+        "count": 106,
+        "median": 0.56044394734246,
+        "p95": 0.6577224988951699,
+        "minimum": 0.43462783098220825,
+        "maximum": 0.7009439468383789
+      },
+      "zero_command_s": {
+        "count": 106,
+        "median": 1.8118175409995274,
+        "p95": 5.334638406500119,
+        "minimum": 0.5569576520010742,
+        "maximum": 7.596572401999765
+      },
+      "result_receipt_delay_s": {
+        "count": 106,
+        "median": 0.04388701915740967,
+        "p95": 0.09917223453521729,
+        "minimum": 0.0022585391998291016,
+        "maximum": 0.13336586952209473
+      },
+      "command_receipt_to_start_s": {
+        "count": 106,
+        "median": 0.0013217926025390625,
+        "p95": 0.017120957374572754,
+        "minimum": -0.032431840896606445,
+        "maximum": 0.056177377700805664
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-009/native-inputs/native-inputs_0.mcap",
+  "source_bytes": 537825424,
+  "derived_bytes": 777505,
+  "original_counts": {
+    "/robot_nav/sensors/front_camera/camera_info": 337,
+    "/robot_nav/sensors/front_camera/image_raw": 337,
+    "/s2e/robot/sensors/odom": 2721,
+    "/s2e/robot/sensors/imu": 4104,
+    "/s2e/robot/sensors/cloud": 295,
+    "/tf_static": 1
+  },
+  "retained_counts": {
+    "/robot_nav/sensors/front_camera/camera_info": 337,
+    "/s2e/robot/sensors/odom": 2721,
+    "/s2e/robot/sensors/imu": 4104,
+    "/tf_static": 1
+  },
+  "retained_topic_timestamp_payload_sha256": {
+    "/robot_nav/sensors/front_camera/camera_info": "003284275c86a1e15f9bc50af2b533267fbbeac72aef96926cd81fd8b275f3ac",
+    "/s2e/robot/sensors/odom": "8d15a1be63c85ce853bc9619a49273371283024185cb84397845712d124f827f",
+    "/s2e/robot/sensors/imu": "954b1bcb41a5f3f41e60fef5744efab219aa816e34fcc1a23c4ee1982b9a36ad",
+    "/tf_static": "43a5b5926a18c086eee57813da934c1f28980c4e31a58443e8b773c48ce56b89"
+  },
+  "retained_streams_exact": true,
+  "source_modified": false,
+  "network": "none",
+  "physical_commands": 0,
+  "elapsed_s": 3.1847710729998653,
+  "scope": "Single bag segment derived-copy proof only. Not a validated live compact recording profile. Runtime control pose, task/commands, model inputs and operator annotations live outside this sample and must also be retained."
+}

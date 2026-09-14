@@ -1,0 +1,2 @@
+finished_utc,finished_kst,approximate_finish_t_s,approximate_begin_t_s,call_type,latency_s,model,error_code,error_message,response_headers_wait_s
+2026-09-13T12:21:29Z,2026-09-13T21:21:29+09:00,34.05653190612793,33.31845951080322,candidate_screener,0.7380723749993194,qwen3.5-9b-instruct,,,0.7377159440002288

@@ -1,0 +1,58 @@
+{
+  "run": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-2-007",
+  "episode_id": null,
+  "started": false,
+  "result_reason": "INCOMPLETE",
+  "success_radius_m": null,
+  "success": null,
+  "field_report": {
+    "status": "awaiting_field_report",
+    "direct_intervention": null,
+    "contact": null,
+    "obstruction": null,
+    "physical_within_goal_radius_verified": null,
+    "physical_final_distance_m": null,
+    "measurement_method": null,
+    "operator_comment": null
+  },
+  "path_length": null,
+  "spl_estimate": null,
+  "metric_warnings": [
+    "Shortest path unmeasured; SPL left unset"
+  ],
+  "ground_truth_available": false,
+  "arrival_mode": "automatic_distance_stop",
+  "images": {
+    "escape": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c",
+    "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+    "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+    "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+    "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+  },
+  "runtime_conditions": {
+    "navigation": "full",
+    "execution": "async_true",
+    "look_execution": "forward_0p2",
+    "goal_frame": "odom",
+    "goal_distance_m": null,
+    "goal_label": "2",
+    "success_radius_m": 1.0,
+    "initial_motion_enabled": false,
+    "max_duration_s": 360,
+    "turn_speed_radps": 0.8,
+    "minimum_rotate_speed_radps": 0.8,
+    "rotate_settle_window_s": 0.35,
+    "rotate_min_timeout_s": 15.0,
+    "rotate_recoil_limit_deg": 10.0,
+    "record_model_inputs": true,
+    "forward_speed_mps": 0.5,
+    "observation_turn_speed_radps": 0.8,
+    "localization_method": "fixed_start_odometry",
+    "fixed_start_origin_id": "a1b045fe1b4a4e82ab035129dfd5facd",
+    "requires_marked_start_before_each_episode": true,
+    "icp_corrections_used": false
+  },
+  "vlm_http": {},
+  "vlm_timing_note": "HTTP latency per request, not complete decision or exclusive waiting time",
+  "action_results": {}
+}

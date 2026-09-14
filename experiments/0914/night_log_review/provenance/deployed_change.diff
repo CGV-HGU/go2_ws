@@ -1,0 +1,16 @@
+--- success-image
++++ later-image
+@@ -201,7 +201,12 @@
+             return "LOCALIZED_POSE_STALE"
+         if now-self._camera_received > self._positive("camera_timeout_s"):
+             return "CAMERA_STALE"
+-        for name in (str(self._p('planner_status_node_name')), "pixnav_runtime_node", "sweep_scheduler_node", "rtab_pointgoal_adapter"):
++        planner = str(self._p('planner_status_node_name'))
++        required_nodes = (planner, "pixnav_runtime_node")
++        if planner == "vlm_node":
++            required_nodes += ("sweep_scheduler_node",)
++        required_nodes += ("rtab_pointgoal_adapter",)
++        for name in required_nodes:
+             receipt, healthy = self._health.get(name, (0, False))
+             if not healthy or now-receipt > 3.0:
+                 return "NODE_UNAVAILABLE:" + name

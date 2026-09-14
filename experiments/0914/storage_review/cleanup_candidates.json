@@ -1,0 +1,883 @@
+{
+  "source_bags_deleted": false,
+  "candidates": [
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag",
+      "classification": "generated_offline_load_test_bag",
+      "action": "candidate_only_not_deleted",
+      "files": 27,
+      "bytes": 13989031006,
+      "allocated_file_bytes": 13989199872,
+      "inventory": [
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/metadata.yaml",
+          "bytes": 12507,
+          "mtime_ns": 1789274621866094964,
+          "sha256": "7071d830f9a7376551b281c41d9b5ea110ea346d1322f30b6ccba4ffc9c3826c"
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_0.mcap",
+          "bytes": 538239704,
+          "mtime_ns": 1789274042386536789
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_1.mcap",
+          "bytes": 538237127,
+          "mtime_ns": 1789274065446836966
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_10.mcap",
+          "bytes": 538132021,
+          "mtime_ns": 1789274275045569273
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_11.mcap",
+          "bytes": 538210008,
+          "mtime_ns": 1789274298113870214
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_12.mcap",
+          "bytes": 538218498,
+          "mtime_ns": 1789274321178171124
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_13.mcap",
+          "bytes": 538222993,
+          "mtime_ns": 1789274344250472156
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_14.mcap",
+          "bytes": 538210222,
+          "mtime_ns": 1789274367318773150
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_15.mcap",
+          "bytes": 538228514,
+          "mtime_ns": 1789274390387074156
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_16.mcap",
+          "bytes": 538211955,
+          "mtime_ns": 1789274413459375225
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_17.mcap",
+          "bytes": 538218533,
+          "mtime_ns": 1789274436519676146
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_18.mcap",
+          "bytes": 538195375,
+          "mtime_ns": 1789274459587977178
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_19.mcap",
+          "bytes": 538229978,
+          "mtime_ns": 1789274482648278111
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_2.mcap",
+          "bytes": 538228361,
+          "mtime_ns": 1789274088519137430
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_20.mcap",
+          "bytes": 538212255,
+          "mtime_ns": 1789274505720579206
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_21.mcap",
+          "bytes": 538223133,
+          "mtime_ns": 1789274528788880253
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_22.mcap",
+          "bytes": 538228782,
+          "mtime_ns": 1789274551845181147
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_23.mcap",
+          "bytes": 538224269,
+          "mtime_ns": 1789274574929482410
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_24.mcap",
+          "bytes": 538228364,
+          "mtime_ns": 1789274597977783204
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_25.mcap",
+          "bytes": 533536768,
+          "mtime_ns": 1789274621858094859
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_3.mcap",
+          "bytes": 538216247,
+          "mtime_ns": 1789274111579437847
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_4.mcap",
+          "bytes": 538200970,
+          "mtime_ns": 1789274134647738458
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_5.mcap",
+          "bytes": 538272848,
+          "mtime_ns": 1789274159720065269
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_6.mcap",
+          "bytes": 538247655,
+          "mtime_ns": 1789274182788366024
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_7.mcap",
+          "bytes": 538205363,
+          "mtime_ns": 1789274205852666778
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_8.mcap",
+          "bytes": 538222840,
+          "mtime_ns": 1789274228916967576
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-bag/native-bag_9.mcap",
+          "bytes": 538215716,
+          "mtime_ns": 1789274251985268462
+        }
+      ]
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-bag",
+      "classification": "generated_offline_load_test_bag",
+      "action": "candidate_only_not_deleted",
+      "files": 5,
+      "bytes": 2140831311,
+      "allocated_file_bytes": 2140856320,
+      "inventory": [
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-bag/metadata.yaml",
+          "bytes": 8478,
+          "mtime_ns": 1789273966497550213,
+          "sha256": "816a62bb370b2008ee2717b4e96d688c25aad56abf8861cacd9120c36862bab0"
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-bag/native-bag_0.mcap",
+          "bytes": 537495314,
+          "mtime_ns": 1789273896764646387
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-bag/native-bag_1.mcap",
+          "bytes": 537706505,
+          "mtime_ns": 1789273919828944941
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-bag/native-bag_2.mcap",
+          "bytes": 537546686,
+          "mtime_ns": 1789273942889243849
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-bag/native-bag_3.mcap",
+          "bytes": 528074328,
+          "mtime_ns": 1789273966485550057
+        }
+      ]
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/bag",
+      "classification": "generated_offline_load_test_bag",
+      "action": "candidate_only_not_deleted",
+      "files": 3,
+      "bytes": 1048278098,
+      "allocated_file_bytes": 1048293376,
+      "inventory": [
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/bag/bag_0.mcap",
+          "bytes": 537339072,
+          "mtime_ns": 1789257955571713891
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/bag/bag_1.mcap",
+          "bytes": 510934555,
+          "mtime_ns": 1789257977988416409
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/bag/metadata.yaml",
+          "bytes": 4471,
+          "mtime_ns": 1789257977992416534,
+          "sha256": "04d4788d3fd375156310da200f1f18f1e982191cb111b0c31c27e44396b8e23e"
+        }
+      ]
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/bag",
+      "classification": "generated_offline_load_test_bag",
+      "action": "candidate_only_not_deleted",
+      "files": 2,
+      "bytes": 995434999,
+      "allocated_file_bytes": 995446784,
+      "inventory": [
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/bag/bag_0.mcap",
+          "bytes": 995430726,
+          "mtime_ns": 1789257845824275813
+        },
+        {
+          "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/bag/metadata.yaml",
+          "bytes": 4273,
+          "mtime_ns": 1789257845828275938,
+          "sha256": "6b60c7deaa67d9733109b28811ed5b3e82bf177545345916dc22d078c75a997a"
+        }
+      ]
+    }
+  ],
+  "total_candidate_bytes": 18173575414,
+  "supporting_diagnostics_to_preserve": [
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/analysis-command.json",
+      "bytes": 390,
+      "sha256": "e236dae573c4798a4020d82a43eb029bdc07c99c713ce7f05aafe7ff45aea38d"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/analyze_bag.py",
+      "bytes": 2167,
+      "sha256": "42092ceda5ba61f4bcfbea780efda0897fa397af7b6567be0c2fae6b1f3d40fe"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/bag-analysis.json",
+      "bytes": 99532,
+      "sha256": "4cdef32c7a6f24ccd36e0a4e748e771b57e2c0af34c65b46b96026b0476ed110"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/camera-contract.json",
+      "bytes": 1031,
+      "sha256": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/commands.json",
+      "bytes": 3450,
+      "sha256": "d9efba33ed4eb02b79c7d8c7f5fb719ce472f6699e7eb50132a8df17a5e5ccb6"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/deadlock_recovery_config.json",
+      "bytes": 481,
+      "sha256": "61e84c16bb9efa68a2096090e26615aa39627d91596485316b9ac4849d6dcb05"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/exit-codes.json",
+      "bytes": 35,
+      "sha256": "a27af703fae867624ab2154167a00635bd8dcb64844cc69960e63d93541b4948"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/fake_executor.py",
+      "bytes": 958,
+      "sha256": "c767d0d6e50bdc38f92f470fd0fecd9e8f99adcbd440e0bcbdcae060f156f499"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/fixture-result.json",
+      "bytes": 1898,
+      "sha256": "8308868fc0708079a6a4785a80e0a23c29e1081d8f377237448c8fab68091493"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/fixture.py",
+      "bytes": 7413,
+      "sha256": "98b25a5329d0eb0852eb79129c27b58e254aeb8495371a2073fd050ec9765727"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/host-samples.json",
+      "bytes": 611765,
+      "sha256": "f03fb8c14e94a9ec7448521f587458e537d6535199148b56935c5274dfa9eebe"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/http_fixture.py",
+      "bytes": 2859,
+      "sha256": "6d96e6b3b9d4170273f69668851bd7a5a1c93f18f9de3c8029048852637c6ae7"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/launch.py",
+      "bytes": 3565,
+      "sha256": "ad2309a3f925f0bfc5ccf97fad04ac75fc0719ba4547893dbd26bde9a2c5e72b"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native-result.json",
+      "bytes": 27,
+      "sha256": "a66a3cab63a59aa1709d3f852379f514693265bc95f3f1601e0f14e33bb284fa"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/native.py",
+      "bytes": 1782,
+      "sha256": "6d1cc8483e537874097593ef08f3c1885cd0fc57d964a6bdc10447aab02a1eca"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/navigation-template.json",
+      "bytes": 1108,
+      "sha256": "913d5a40f04ab47d4a45551f9acad25bf7a603a08c13ec1a5a58ab22b8d93eee"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/preservation-check.json",
+      "bytes": 661,
+      "sha256": "feae4a42030e51cb6eb5213d801ddec72753a20b64897c3d7c67a7cca3f184b8"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/review.json",
+      "bytes": 117422,
+      "sha256": "c4c73d4e0974928ce3347f19ac203239f7370095486c46df953fc4a870cde17a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/runtime-env.json",
+      "bytes": 4191,
+      "sha256": "904c4bc7b334598bdf5d6026b8a2442f9db1910df9fe47e73ae71a3af9d445df"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/supervisor-result.json",
+      "bytes": 204,
+      "sha256": "6783983fa5d2c860df56def86597bfc6943893dad42d310d07884acdf2a2b723"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/supervisor.py",
+      "bytes": 2946,
+      "sha256": "bfe7eb6183ef08b2bcccd873b9ca956bc35c2d6a32b4fa02620df177c7721b9d"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/qualification01/velocity.json",
+      "bytes": 84,
+      "sha256": "9c46ba7ab6855136208b4ed2178193748524692a9a547b26d79703d37d9c5870"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/camera-contract.json",
+      "bytes": 1031,
+      "sha256": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/commands.json",
+      "bytes": 3422,
+      "sha256": "09d45f893f45dfbfdc739edfc39f62398172ad26e98bb2279ce4d56d65ce8073"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/deadlock_recovery_config.json",
+      "bytes": 481,
+      "sha256": "61e84c16bb9efa68a2096090e26615aa39627d91596485316b9ac4849d6dcb05"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/exit-codes.json",
+      "bytes": 35,
+      "sha256": "a27af703fae867624ab2154167a00635bd8dcb64844cc69960e63d93541b4948"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/fake_executor.py",
+      "bytes": 958,
+      "sha256": "c767d0d6e50bdc38f92f470fd0fecd9e8f99adcbd440e0bcbdcae060f156f499"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/fixture-result.json",
+      "bytes": 1886,
+      "sha256": "1e5077cd6f6d40feac5d56e823ac5bcb600d0c84f5c063a91ff3e1d82f33e962"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/fixture.py",
+      "bytes": 7259,
+      "sha256": "5434d54f7a33766fcd53c25e42a4175e38ed6ac6487476e4bd660a0871b168b9"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/host-samples.json",
+      "bytes": 99259,
+      "sha256": "0dbb9760a71198a258a9de91c6bdd9bc235b24b5ae05afc2ae7f4350233fe1ce"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/http_fixture.py",
+      "bytes": 2859,
+      "sha256": "6d96e6b3b9d4170273f69668851bd7a5a1c93f18f9de3c8029048852637c6ae7"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/launch.py",
+      "bytes": 3565,
+      "sha256": "ad2309a3f925f0bfc5ccf97fad04ac75fc0719ba4547893dbd26bde9a2c5e72b"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native-result.json",
+      "bytes": 27,
+      "sha256": "a66a3cab63a59aa1709d3f852379f514693265bc95f3f1601e0f14e33bb284fa"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/native.py",
+      "bytes": 1782,
+      "sha256": "6d1cc8483e537874097593ef08f3c1885cd0fc57d964a6bdc10447aab02a1eca"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/navigation-template.json",
+      "bytes": 1108,
+      "sha256": "913d5a40f04ab47d4a45551f9acad25bf7a603a08c13ec1a5a58ab22b8d93eee"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/runtime-env.json",
+      "bytes": 4191,
+      "sha256": "13088472293c6a8c1b6ddf1a8f51d09980bb843b439f26f3f7b66c731b5fb43b"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/supervisor-result.json",
+      "bytes": 204,
+      "sha256": "6783983fa5d2c860df56def86597bfc6943893dad42d310d07884acdf2a2b723"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/supervisor.py",
+      "bytes": 2946,
+      "sha256": "82c0865d1584f9a5f52f6d09937a8abfa62206076841554f4a17b7968c1ffd04"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/full-stack-soak/setup01/velocity.json",
+      "bytes": 84,
+      "sha256": "1c258ffab05c84e3bb1da6b907691ebb8d045d18814c32ad3553e91ad5372f52"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/bag-result.json",
+      "bytes": 1325,
+      "sha256": "22d6d7cba046930770a1f769e64d8e7a8d08029b40c2a0a61ba35b006ee377af"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/bag.py",
+      "bytes": 4394,
+      "sha256": "a285d8fc3c3bff354168f5c9a9c1127eb31ea5e0d915b6aa1e608e42019898c9"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/commands.json",
+      "bytes": 2327,
+      "sha256": "793bba38c101cb06e1f3a83f88cc7d858b6b315fb9b5229c94f357de91b3a4db"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/gpu-result.json",
+      "bytes": 717,
+      "sha256": "989ebd6d1f30fefc35b18fa3f430a48638c566a51c935c7030c31934fec6d3c8"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/gpu-rounds.json",
+      "bytes": 29335,
+      "sha256": "9e20fe3a97c6e4dfaea073011a265b75bae396f4f8eb1bf5f3919615bd9a4606"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/gpu.py",
+      "bytes": 2561,
+      "sha256": "1a1ba23c0a88b90f91e8e9dcd70ca46be738308b88129d32ced61b54a7cd1865"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/host-samples.json",
+      "bytes": 69117,
+      "sha256": "e47fe6c331b47d33d9a44748841903a81f7c64f8a2c7b456066fb93cdeb18e48"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/launch.py",
+      "bytes": 2878,
+      "sha256": "3703900a9b737fc7053643b8d17b681f01489eb46a030c9542698e328b8f904a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-00.json",
+      "bytes": 8594,
+      "sha256": "5abbaeeb5043975ae8fb7954dc83320f265c4deb19ff825877867b953618c573"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-01.json",
+      "bytes": 8595,
+      "sha256": "bcdc0f712367937c88ca8a5ded158798cf7189533c8802e7de1568e48eec0181"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-02.json",
+      "bytes": 8595,
+      "sha256": "a7fe1b5478bba93367817fa8ad37f42a181bf6eebefb39e034374ae1bf649be5"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-03.json",
+      "bytes": 8595,
+      "sha256": "28d6052ce06cca5d8ecaabefc11f4bf6a5dc884a2d62a05afcfaba411c8324f9"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-04.json",
+      "bytes": 8595,
+      "sha256": "dac9b625c267729cddecea2f772ebb82ada8f81a724f96a1ca1bb185c34b6bd5"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-05.json",
+      "bytes": 8594,
+      "sha256": "07665da91f7016d31307bdcb68d121888383ba5118a34ee69039367ea81c2ab3"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-06.json",
+      "bytes": 8595,
+      "sha256": "b67c2c62c4ea0ff4511745acd76e564af02346223918b31bdfa99c90012ae764"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-07.json",
+      "bytes": 8595,
+      "sha256": "73b3b69f3145758eabc87a8d320e95a5980542117836a7418d362b612ad41e68"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-08.json",
+      "bytes": 8595,
+      "sha256": "10a21cbabe7068d00c11ecc7b780a3a2021e97e8aa620df5416e2eb4566162da"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-09.json",
+      "bytes": 8595,
+      "sha256": "61010eb32f8373abde2fdfdb14492abc95489688d13465c8fa79853207ae0920"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-10.json",
+      "bytes": 8595,
+      "sha256": "24b23ca120c93ac344f2cc1cdae8cf9ccdb24f31bede9e2534ab27167420725a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-11.json",
+      "bytes": 8595,
+      "sha256": "4d877930a7ecc18534b6d2371dbbd4a6cb625b74765a5d9f1b0cf17d6226e5a5"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-12.json",
+      "bytes": 8595,
+      "sha256": "ade0c3e0201a22236d18426ebb0ef03f8affb8cf7a0414d26d9b3b898d15c01b"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-13.json",
+      "bytes": 8595,
+      "sha256": "6421a4bdf2c156bbfd98c5dc9e6de22f7cae99269f96d4b0b9a01a7d79ee9abf"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-14.json",
+      "bytes": 8594,
+      "sha256": "87787d4788a021e9ba248040598bec6b6abf652402266aa2a5a189ebc99545a6"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-15.json",
+      "bytes": 8595,
+      "sha256": "e4f860e275d9fe632eb7888ec68fa183bc1dd8cd6650246eca1b849f44bb972a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-16.json",
+      "bytes": 8594,
+      "sha256": "763e480a3cfaf9a8e83d306a0d61407b5a469e6777a5b45dbd85290b06a00cbd"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-17.json",
+      "bytes": 8594,
+      "sha256": "c05c3e262833dcfaae275745d372823cbc133a54da36deb61013cb200fad4f1b"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-18.json",
+      "bytes": 8595,
+      "sha256": "aef3065a0910e26c61a74d432230d8b00f021d9cfb2ffb6bd202d16a9d5466ae"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-19.json",
+      "bytes": 8595,
+      "sha256": "a21095c7b2e72c388d504c918772268559913f682e572be23b11ffbe8acb3104"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-20.json",
+      "bytes": 8594,
+      "sha256": "9f8c434f8ac34dcf2d839bb468ce4460c4a1ce4a953483b046284fc4c2a0c771"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-21.json",
+      "bytes": 8594,
+      "sha256": "59bc3c151f9949ef3e210e889392f298da565519e15f18428d59326fda891cfa"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-22.json",
+      "bytes": 8595,
+      "sha256": "88354bd8303f76d8c8e1679d5bb0c89f6c516dc92c051e7af107a54ba8519085"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-23.json",
+      "bytes": 8595,
+      "sha256": "92053950a58cac0adec333d8044487a4077bc56975c7a3bc34df36a2871daeb5"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-24.json",
+      "bytes": 8595,
+      "sha256": "c98c03300663ecdf2f10c4259191e9885710bd40348ccedff5893d02d4a89451"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-25.json",
+      "bytes": 8595,
+      "sha256": "614d65ef1952c84a5f95514a05becdd6ed70d9ad3a3d4d804127f72ccc7ef7e3"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-26.json",
+      "bytes": 8595,
+      "sha256": "e1e9c900ea3d31eb834dd7b0142a3b5547b923824dc701f6d1a18b683f510df6"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-27.json",
+      "bytes": 8595,
+      "sha256": "c9ca5c3e66277aa48daea9b7f08a55dedcbd954cf37e5206dd6aab13d77fb3a6"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-28.json",
+      "bytes": 8595,
+      "sha256": "ae82b8a1416688472cdb312be9165dd93e54315bb48209cba0367bab110d009e"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-29.json",
+      "bytes": 8595,
+      "sha256": "ba5cee38d3a0789dc30624ad8b42d4a0bc0fdaee94b586d06b81d12c0d3619de"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-30.json",
+      "bytes": 8594,
+      "sha256": "54cce720cd38e1af5ffa4c22f7bcd2fc16656ec2ea2bc52c783218b881a889b4"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-31.json",
+      "bytes": 8595,
+      "sha256": "8dcf6a9ce2810cb68077ac8cc408ca69f4d41a11b761eae61966f605135f6369"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-32.json",
+      "bytes": 8594,
+      "sha256": "13812ccda4b26952222f4328537659ab535936f09a527a4f796475cd27ac6781"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-33.json",
+      "bytes": 8595,
+      "sha256": "d066c8ed6c0af23b40413f5e115c18f11c5b15f2787986a9f1057fe5f112a75c"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-34.json",
+      "bytes": 8595,
+      "sha256": "98d76def67aea60b5e248daf33d303d040fe7ead5ab840429f77b3f23f9d766f"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load-cyclone/policy-35.json",
+      "bytes": 8594,
+      "sha256": "a6590e4916545d2a5ef78caebc384fb5f6ad5e90b35472aef0f37dcdd5804b59"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/bag-result.json",
+      "bytes": 1362,
+      "sha256": "9c0bde61f71e5c5f7216797bafabad06c0c7042466893333226a611e158e7563"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/bag.py",
+      "bytes": 4365,
+      "sha256": "b17495191a18f73f456922524d37a59557749f2277be18fabe921a962f4f8173"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/commands.json",
+      "bytes": 2281,
+      "sha256": "4d90d9e6135d2969f79af13258b0c8dc056f419eb9d9a79acba80c10d5bbf780"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/gpu-result.json",
+      "bytes": 715,
+      "sha256": "b10b6ae5fa9b21d2b12345265940f2f861862befd55e1af2002c52143340e084"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/gpu-rounds.json",
+      "bytes": 31000,
+      "sha256": "cfa771bb80b1f13df07ed7e36891d977aea8e4db7d80705392aef936323c8fee"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/gpu.py",
+      "bytes": 2561,
+      "sha256": "1a1ba23c0a88b90f91e8e9dcd70ca46be738308b88129d32ced61b54a7cd1865"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/host-samples.json",
+      "bytes": 69112,
+      "sha256": "9ae7283f8341488d6ed0808766221490eb7365b622dadb929e6cb8c0c3c554f6"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/launch.py",
+      "bytes": 2840,
+      "sha256": "48b8f518adcf5dc083f21bb425346309c5b1659589079dbf62ccf9bfb8459997"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-00.json",
+      "bytes": 8594,
+      "sha256": "7b816be3bccc5ee39ea8390261e95e9b02d3f5ef729d4f08de18dc148822f5fa"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-01.json",
+      "bytes": 8595,
+      "sha256": "9dad9fc953aed2d1d530f9c73c1664e4bd19bf7c4f6471be879e97c23431d1c6"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-02.json",
+      "bytes": 8595,
+      "sha256": "83d49f1bdf1be0c562a86e82aa965cfce9904bd356b584b4164c1de1f615125a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-03.json",
+      "bytes": 8595,
+      "sha256": "d7f598dc6bd6842bd2993f80e933c8c38548b964d0c2c7d83728b3a8c21f6a50"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-04.json",
+      "bytes": 8595,
+      "sha256": "70fda78b75868a749336fd9081633de0fe6268befe1e54715a6a2a2b04b23ceb"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-05.json",
+      "bytes": 8594,
+      "sha256": "3a1fee543e371a15293f996f8a7d373bd7abc26ca594ec3b097da1da62b3bb0e"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-06.json",
+      "bytes": 8594,
+      "sha256": "2fd704be1299e0d1226e3f9d8592d59ccbd3281637936704f371aea2abd806cc"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-07.json",
+      "bytes": 8595,
+      "sha256": "535bac6b5988e07f0546d6e4a88afb12d633029630e70c6a0d454d5af0d7568e"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-08.json",
+      "bytes": 8595,
+      "sha256": "c585d63fc23529d4b5deea65b00dff03d3635c235a5ee293a73e5faa9df61328"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-09.json",
+      "bytes": 8595,
+      "sha256": "7093fe7bcff21cff76687e0e28db4e80ee4cc290fca6e7986ece6f3576d4bcd2"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-10.json",
+      "bytes": 8595,
+      "sha256": "a59a974b8b92870faed5b03a411e9b6da1a6097839bb0660c48b21d023b1a866"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-11.json",
+      "bytes": 8595,
+      "sha256": "b96b4c730a4d77a13c19652837e4de3d6eba75ba0912171d0621f5b4b542d97a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-12.json",
+      "bytes": 8594,
+      "sha256": "2321cf86e5793e280cc531c9d77e15fc4383d580bc93ec77bb32f29d16bfb2ff"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-13.json",
+      "bytes": 8595,
+      "sha256": "8760bdac9ad5ebe51281851aed855f5ee9551e0c1c27d1357d52bb4929c065fb"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-14.json",
+      "bytes": 8594,
+      "sha256": "fc86b37cd68cce0be195caf710ee7f835de5c0ef0d7a1f6d9a8b416c14deb9a1"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-15.json",
+      "bytes": 8595,
+      "sha256": "df079a37e1d4161ee349e8cf01599d54fe7557dd82477b66316ea65a2b7b9aab"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-16.json",
+      "bytes": 8595,
+      "sha256": "e86d8f0bb7ec4455adb173e3409a13773caa4d9b4557f9634b748cdbe3f4e92c"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-17.json",
+      "bytes": 8594,
+      "sha256": "a19523805f908013429696a756bca8b1cb524db91e7c3550c741ab55e8e2a671"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-18.json",
+      "bytes": 8595,
+      "sha256": "5576b2a7d3745115c9c2106dc6f43a321659e36712a5809c0972d0bfea47d7e4"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-19.json",
+      "bytes": 8595,
+      "sha256": "eeec54832fad2384f2214927b0e8102cd6945e825208bd41a949b8844b5e8330"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-20.json",
+      "bytes": 8595,
+      "sha256": "60bf012e6b09e89e23246a06f331ba1854f800f3cd9b54edc62652041066d68e"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-21.json",
+      "bytes": 8593,
+      "sha256": "daea1ad3cfa397dc82bc038fd64aac7e2300b032e80900448c02e93829d6d76f"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-22.json",
+      "bytes": 8595,
+      "sha256": "86b7411a9ca0cc809410fa1103bf3241501390337217910bf7a0a8ae690c46d5"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-23.json",
+      "bytes": 8595,
+      "sha256": "0b6002fcd145900b82815020752f9f5f7fec41830428229c865230226ea24e6f"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-24.json",
+      "bytes": 8595,
+      "sha256": "35ed34a1cfe271d217cc246215dcb49624760350866cb69ef0dfd4abfffa52ec"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-25.json",
+      "bytes": 8595,
+      "sha256": "097d239b35c052c5d68097fafd5b7b358f6274628dbfdaaee5ee66a3cc220fd3"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-26.json",
+      "bytes": 8595,
+      "sha256": "279d6d5948e0437b24c807f4545ae1968761dff0f7b4df6073d40ccd36a5c0b2"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-27.json",
+      "bytes": 8594,
+      "sha256": "56c47e5d3c9e36f6c2e6c0261d930ca1029deb72bb1712293f97f972eb83390f"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-28.json",
+      "bytes": 8595,
+      "sha256": "2c66c77ceb5fdeb0e8eec8101d0217a30e19966cba7519ef566424d53d5d8d70"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-29.json",
+      "bytes": 8595,
+      "sha256": "9ce1a5bc0752d846fea89a39b74db61fcc277b50c1ca7340f87ef0e0ca1bdd8a"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-30.json",
+      "bytes": 8594,
+      "sha256": "1ddf5e096a7d95da61522e5b1911953febcab25082e04e6bee600ba067006ce1"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-31.json",
+      "bytes": 8594,
+      "sha256": "513de76d728b3352419b0719100b7384e349c5a9c2dea596c3fa385dfa7bfca2"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-32.json",
+      "bytes": 8595,
+      "sha256": "2991fd7ea2e113051bd8d06f1d7392e60cccd073bf9306b7e6252b4f1913273e"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-33.json",
+      "bytes": 8595,
+      "sha256": "689932ed2b3d7462c753c645af5796d41cc14dbe23f3dfe13099b1aa8938a283"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-34.json",
+      "bytes": 8595,
+      "sha256": "f293cb630c9bae269b6bec443c9c860fa9ac2a681eb731827037730d14993b3c"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-35.json",
+      "bytes": 8595,
+      "sha256": "34c4155e8fd00c1c7bb0be64106e138a8373b2a1c7b85f461e4ede42af7ad080"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-36.json",
+      "bytes": 8595,
+      "sha256": "3c94baeaddf3f1f64d1e89e35e15f846c86475a0c82a274451de49005fb102c2"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913/concurrent-load/policy-37.json",
+      "bytes": 8595,
+      "sha256": "4be2bceae493c0c8a1228a06666e86123651d40ae050ddb4fdc647d06688071e"
+    }
+  ],
+  "limitation": "Generated payload can be regenerated, but an exact old transport trace cannot; keep historical reports including failed tests. No large payload hash pass performed."
+}

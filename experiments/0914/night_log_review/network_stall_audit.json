@@ -1,0 +1,10 @@
+{
+  "failed_http_requests": 14,
+  "timeout_duration_sum_s": 420.4714529514313,
+  "approximate_union_of_failed_request_intervals_s": 150.09712839126587,
+  "interval_time_precision_note": "Completion timestamps are whole UTC seconds; starts reconstructed by subtracting measured latency. Parallel requests overlap; summed durations are not stopped duration.",
+  "manual_relocation_confirmed": true,
+  "manual_relocation_start_time_known": false,
+  "failure_sequence": "First request timeout completed 00:57:43; Wi-Fi disconnect logged 00:57:50; link failure at 00:58:06; parallel verification timeouts continued through 01:00:15; operator relocated robot before ODOMETRY_JUMP termination at 01:01:29.",
+  "causal_limit": "Network unavailability is directly corroborated for the later stall. First timeout predates the logged link-down event; exact onset and pure server latency are not established."
+}

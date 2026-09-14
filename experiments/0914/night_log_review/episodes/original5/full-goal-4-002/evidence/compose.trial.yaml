@@ -1,0 +1,78 @@
+services:
+  escape:
+    environment:
+      PIXNAV_POLICY_CAMERA_MODE: calibrated_4_3
+      PIXNAV_FIXED_CAMERA_CALIBRATION_PATH: /etc/s2e-robot/camera-contract.json
+      PIXNAV_PHYSICAL_BODY_LOOK: 'true'
+      PIXNAV_FIXED_CAMERA_NOOP: 'false'
+      PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK: 'false'
+      PIXNAV_FIXED_CAMERA_VIEW_ZOOM: '1'
+      PIXNAV_ALLOWED_ACTIONS: stop,move_forward,turn_left,turn_right,look_up,look_down
+      ROBOT_MOTION_ENABLED: 'false'
+      ESCAPE_RUN_DIR: /trial/full5m/policy-trace
+      ROBOT_NAVIGATION_MODE: full
+      PIXNAV_LOOK_EXECUTION: forward_0p1
+    volumes:
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}/camera-contract.json:/etc/s2e-robot/camera-contract.json:ro
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}:/trial
+    restart: 'no'
+    image: sha256:a92b920649fabdc2ba7b894f9e75a68454596cc997d70825d3214349a305cf14
+    command:
+    - bash
+    - -lc
+    - source /opt/ros/jazzy/setup.bash && source /opt/s2e-robot-minimal/setup.bash
+      && exec ros2 launch s2e_vlm_robot robot_escape.launch.py motion_enabled:=false
+      navigation_mode:=full look_execution:=forward_0p1 pose_source:=odometry record_model_inputs:=true
+      sensor_input_enabled:=true success_distance_m:=1.0 minimum_rotate_speed_radps:=0.5
+      turn_speed_radps:=0.5 rotate_settle_window_s:=0.35 rotate_min_timeout_s:=15.0
+      rotate_recoil_limit_deg:=10.0
+  pixnav:
+    environment:
+      PIXNAV_POLICY_CAMERA_MODE: calibrated_4_3
+      PIXNAV_FIXED_CAMERA_CALIBRATION_PATH: /etc/s2e-robot/camera-contract.json
+      PIXNAV_PHYSICAL_BODY_LOOK: 'true'
+      PIXNAV_FIXED_CAMERA_NOOP: 'false'
+      PIXNAV_FIXED_CAMERA_VIEW_ON_LOOK: 'false'
+      PIXNAV_FIXED_CAMERA_VIEW_ZOOM: '1'
+      PIXNAV_ALLOWED_ACTIONS: stop,move_forward,turn_left,turn_right,look_up,look_down
+      PIXNAV_EVIDENCE_DIR: /trial/full5m/policy-inputs
+    volumes:
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}/camera-contract.json:/etc/s2e-robot/camera-contract.json:ro
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}:/trial
+    restart: 'no'
+    image: sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f
+  unitree-command:
+    image: sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2
+    restart: 'no'
+    environment:
+      UNITREE_BODY_LOOK_PROFILE: attained18
+    volumes:
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}:/trial
+  camera:
+    image: sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8
+    volumes:
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}:/trial
+  native-recording:
+    image: sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28
+    network_mode: host
+    init: true
+    restart: 'no'
+    cpus: 2.0
+    stop_signal: SIGINT
+    stop_grace_period: 45s
+    entrypoint:
+    - bash
+    - -lc
+    environment:
+      ROS_DOMAIN_ID: '0'
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+      CYCLONEDDS_URI: file:///trial/recording-cyclonedds.xml
+      ROS_LOG_DIR: /trial/native-ros-log
+    volumes:
+    - ${ESCAPE_TRIAL_DIR:?set a fresh trial directory}:/trial
+    command:
+    - source /opt/ros/jazzy/setup.bash && exec ros2 bag record --storage mcap --storage-preset-profile
+      zstd_fast --disable-keyboard-controls --max-bag-size 536870912 --output /trial/native-inputs
+      --topics /robot_nav/sensors/front_camera/image_raw /robot_nav/sensors/front_camera/camera_info
+      /s2e/mapping/cloud /s2e/robot/sensors/cloud /s2e/robot/sensors/odom /s2e/robot/sensors/imu
+      /tf /tf_static /rtabmap/localization_pose /rtabmap/info

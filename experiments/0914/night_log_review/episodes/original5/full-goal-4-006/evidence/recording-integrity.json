@@ -1,0 +1,48 @@
+{
+  "schema": "escape-recording-integrity-v1",
+  "checked_unix": 1789298463.6965196,
+  "live_preflight": false,
+  "started": true,
+  "outcome": "CONTROLLER_INHIBITED:COMMAND_TRANSPORT_FAILED",
+  "passed": true,
+  "issues": [],
+  "stream_counts": {
+    "body": {
+      "low": 859,
+      "sport": 359,
+      "recorder_finished": 1
+    },
+    "camera": {
+      "recorder_started": 1,
+      "time_sync_status": 268,
+      "raw_image_header": 267,
+      "recorder_finished": 1
+    },
+    "observation": {
+      "image_receipt": 199,
+      "image": 28
+    },
+    "operator": {
+      "odom": 169,
+      "control_pose": 289,
+      "status": 96,
+      "motion_enable": 1,
+      "fixed_start_binding": 1,
+      "goal_published": 1,
+      "task": 1,
+      "pointgoal": 62,
+      "direct_stop": 1,
+      "motion_disable": 1
+    },
+    "policy_steps": 0
+  },
+  "native_topic_counts": {
+    "/tf_static": 1,
+    "/s2e/robot/sensors/imu": 3406,
+    "/s2e/robot/sensors/cloud": 249,
+    "/s2e/robot/sensors/odom": 2260,
+    "/robot_nav/sensors/front_camera/camera_info": 311,
+    "/robot_nav/sensors/front_camera/image_raw": 311
+  },
+  "note": "File/subscription/receipt checks; not proof of zero transport loss or physical success. Missing artifacts are preserved as incomplete records."
+}

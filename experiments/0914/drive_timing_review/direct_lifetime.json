@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "seconds_since_admission": 299.0,
+      "runtime_ttl_ms": 300000,
+      "max_policy_steps": 500,
+      "command": "move_forward",
+      "error": "",
+      "worker_step_calls": 1
+    },
+    {
+      "seconds_since_admission": 301.0,
+      "runtime_ttl_ms": 300000,
+      "max_policy_steps": 500,
+      "command": null,
+      "error": "LOCAL_POLICY_EXPIRED",
+      "worker_step_calls": 0
+    },
+    {
+      "seconds_since_admission": 1799.0,
+      "runtime_ttl_ms": 300000,
+      "max_policy_steps": 500,
+      "command": null,
+      "error": "LOCAL_POLICY_EXPIRED",
+      "worker_step_calls": 0
+    }
+  ],
+  "physical_commands": 0,
+  "interpretation": "300s active local session lifetime persists despite 1800s operator episode cap. These are different layers. Existing <71s Direct model STOP trials were not caused by this expiry. No runtime settings were changed."
+}

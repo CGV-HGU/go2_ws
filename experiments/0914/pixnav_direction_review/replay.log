@@ -1,0 +1,38 @@
+/usr/local/lib/python3.8/dist-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/usr/local/lib/python3.8/dist-packages/torch/nn/modules/activation.py:1144: UserWarning: Converting mask without torch.bool dtype to bool; this will negatively affect performance. Prefer to use a boolean mask directly. (Triggered internally at /opt/pytorch/pytorch/aten/src/ATen/native/transformers/attention.cpp:150.)
+  return torch._native_multi_head_attention(
+{"reference": "upstream", "run": "direct_goal-goal-4-002", "steps": 21, "action_mismatches": 0}
+{"reference": "upstream", "run": "direct_goal-goal-4-003", "steps": 31, "action_mismatches": 0}
+{"reference": "upstream", "run": "direct_goal-goal-4-004", "steps": 29, "action_mismatches": 0}
+{"reference": "upstream", "run": "direct_goal-goal-4-005", "steps": 21, "action_mismatches": 0}
+{"reference": "upstream", "run": "direct_goal-goal-4-006", "steps": 16, "action_mismatches": 0}
+{"reference": "official", "run": "direct_goal-goal-4-002", "steps": 21, "action_mismatches": 0}
+{"reference": "official", "run": "direct_goal-goal-4-003", "steps": 31, "action_mismatches": 0}
+{"reference": "official", "run": "direct_goal-goal-4-004", "steps": 29, "action_mismatches": 0}
+{"reference": "official", "run": "direct_goal-goal-4-005", "steps": 21, "action_mismatches": 0}
+{"reference": "official", "run": "direct_goal-goal-4-006", "steps": 16, "action_mismatches": 0}
+{
+  "upstream": {
+    "steps": 118,
+    "action_mismatches": 0,
+    "native_recording_mismatches": 0,
+    "strict_output_mismatches": 0,
+    "max_abs_difference": {
+      "logits": 0.0,
+      "distance": 0.0,
+      "goal": 0.0
+    }
+  },
+  "official": {
+    "steps": 118,
+    "action_mismatches": 0,
+    "native_recording_mismatches": 0,
+    "strict_output_mismatches": 118,
+    "max_abs_difference": {
+      "logits": 0.00771784782409668,
+      "distance": 0.0011205673217773438,
+      "goal": 0.00023418664932250977
+    }
+  }
+}

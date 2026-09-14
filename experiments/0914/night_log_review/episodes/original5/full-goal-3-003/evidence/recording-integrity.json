@@ -1,0 +1,53 @@
+{
+  "schema": "escape-recording-integrity-v1",
+  "checked_unix": 1789296436.009999,
+  "live_preflight": false,
+  "started": true,
+  "outcome": "CONTROLLER_INHIBITED:NO_MOTION_PROGRESS",
+  "passed": true,
+  "issues": [],
+  "stream_counts": {
+    "body": {
+      "sport": 4776,
+      "low": 11533,
+      "remote": 13,
+      "recorder_finished": 1
+    },
+    "camera": {
+      "recorder_started": 1,
+      "time_sync_status": 3594,
+      "raw_image_header": 3594,
+      "recorder_finished": 1
+    },
+    "observation": {
+      "image_receipt": 3516,
+      "image": 458,
+      "sweep_command": 4,
+      "sweep_ack": 7
+    },
+    "operator": {
+      "odom": 4015,
+      "control_pose": 6895,
+      "status": 2324,
+      "motion_enable": 1,
+      "fixed_start_binding": 1,
+      "goal_published": 1,
+      "task": 1,
+      "pointgoal": 3204,
+      "command": 45,
+      "result": 45,
+      "direct_stop": 1,
+      "motion_disable": 1
+    },
+    "policy_steps": 42
+  },
+  "native_topic_counts": {
+    "/tf_static": 1,
+    "/s2e/robot/sensors/imu": 60014,
+    "/s2e/robot/sensors/cloud": 3841,
+    "/s2e/robot/sensors/odom": 37350,
+    "/robot_nav/sensors/front_camera/image_raw": 3641,
+    "/robot_nav/sensors/front_camera/camera_info": 3642
+  },
+  "note": "File/subscription/receipt checks; not proof of zero transport loss or physical success. Missing artifacts are preserved as incomplete records."
+}

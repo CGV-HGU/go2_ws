@@ -1,0 +1,378 @@
+--- a/scripts/prepare_robot_pointgoal_trial.py
++++ b/scripts/prepare_robot_pointgoal_trial.py
+@@ -16,7 +16,7 @@
+ def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+ 
+ 
+-def prepare(output,*,distance=None,map_plan=None,fixed_start_plan=None,goal_label=None,localization_run=None,look='forward_0p1',turn_speed_radps=.5,navigation_image='escape-navigation:map-control-20260913',navigation_mode='full'):
++def prepare(output,*,distance=None,map_plan=None,fixed_start_plan=None,goal_label=None,localization_run=None,look='forward_0p1',turn_speed_radps=.5,navigation_image='escape-navigation:map-control-20260913',navigation_mode='full',max_duration_s=None):
+     if navigation_mode not in ('full','direct_goal'):raise ValueError('Unsupported navigation mode')
+     if look not in ('forward_0p05','forward_0p1','forward_0p2'):raise ValueError('Unsupported look execution')
+     if isinstance(turn_speed_radps,bool) or not math.isfinite(turn_speed_radps) or not 0 < turn_speed_radps <= .8:
+@@ -25,6 +25,10 @@
+     if distance is not None and distance not in (5,10):raise ValueError('Prepared straight trials are 5m or 10m')
+     map_mode=map_plan is not None
+     fixed_mode=fixed_start_plan is not None
++    duration=(360 if map_mode or fixed_mode or distance==10 else 180) if max_duration_s is None else max_duration_s
++    if isinstance(duration,bool) or not math.isfinite(duration) or not 0<duration<=1800:
++        raise ValueError('trial duration must be within (0,1800] seconds')
++    recorder_duration=max(600,duration+240)
+     plan=None
+     if fixed_mode:
+         from fixed_start_goals import validate_plan
+@@ -45,6 +49,12 @@
+     for name in old['sha256']:
+         source=TEMPLATE/name;target=output/name;target.parent.mkdir(parents=True,exist_ok=True)
+         shutil.copy2(source,target)
++    for name in ('full5m/record_body.py','full5m/observe_camera_and_sweep.py'):
++        target=output/name;source=target.read_text()
++        if source.count('time.monotonic()-start<600')!=1:
++            raise ValueError('Unexpected recorder deadline in template: '+name)
++        target.write_text(source.replace('time.monotonic()-start<600',
++                          'time.monotonic()-start<'+format(recorder_duration,'g')))
+     nav=subprocess.check_output(['docker','image','inspect','--format','{{.Id}}',navigation_image],text=True).strip()
+     for name in ('robot_pointgoal_trial.py','capture_robot_goal.py','fixed_start_goals.py'):
+         shutil.copy2(REPO/'scripts'/name,output/'full5m'/name)
+@@ -91,13 +101,14 @@
+     if fixed_mode:
+         shutil.copy2(fixed_start_plan,output/'goal-plan.json')
+     (output/'compose.trial.yaml').write_text(yaml.safe_dump(overlay,sort_keys=False))
+-    duration=360 if map_mode or fixed_mode or distance==10 else 180
+     args=('--map-plan /trial/goal-plan.json --goal-label '+str(goal_label)) if map_mode else '--distance-m '+str(distance)
+     if fixed_mode:args='--fixed-start-plan /trial/goal-plan.json --goal-label '+str(goal_label)
+     wrapper=(TEMPLATE/'run_trial.sh').read_text()
+     wrapper=wrapper.replace("for name,digest in m['sha256'].items():", "for name,digest in m['external_config_sha256'].items():\n assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,name\nfor name,digest in m['sha256'].items():")
+-    wrapper=wrapper.replace('compose.5m.yaml','compose.trial.yaml').replace('--distance-m 5 --navigation-mode full',args+' --navigation-mode full --max-duration-s '+str(duration)).replace('240s docker compose',str(duration+60)+'s docker compose')
++    wrapper=wrapper.replace('compose.5m.yaml','compose.trial.yaml').replace('--distance-m 5 --navigation-mode full',args+' --navigation-mode full --max-duration-s '+format(duration,'g')).replace('240s docker compose',format(duration+60,'g')+'s docker compose')
+     wrapper=wrapper.replace('--navigation-mode full','--navigation-mode '+navigation_mode)
++    wrapper=wrapper.replace('record_camera_timing.py --output /trial/full5m/camera-timing',
++                            'record_camera_timing.py --output /trial/full5m/camera-timing --duration-s '+format(recorder_duration,'g'))
+     wrapper=wrapper.replace('# Physical Full 5m run.','# Physical Full PointGoal run.')
+     wrapper=wrapper.replace('dc up -d --no-deps unitree-command pixnav escape',
+                             'dc up -d --no-deps native-recording unitree-command pixnav escape')
+@@ -130,6 +141,7 @@
+     m['native_input_archive']=str(output/'native-inputs')
+     m['native_recording_scope']='Common read-only camera/cloud/odom/IMU/TF bag; verify in-drive topic coverage after every episode.'
+     m['runtime_conditions']['record_model_inputs']=True
++    m['runtime_conditions']['recorder_max_duration_s']=recorder_duration
+     m['runtime_conditions']['forward_speed_mps']=.5
+     m['runtime_conditions']['observation_turn_speed_radps']=turn_speed_radps
+     if fixed_mode:
+@@ -150,7 +162,8 @@
+     p.add_argument('--turn-speed-radps',type=float,default=.5)
+     p.add_argument('--navigation-image',default='escape-navigation:map-control-20260913')
+     p.add_argument('--navigation-mode',choices=('full','direct_goal'),default='full')
+-    a=p.parse_args();print(json.dumps(prepare(a.output,distance=a.distance_m,map_plan=a.map_plan,fixed_start_plan=a.fixed_start_plan,goal_label=a.goal_label,localization_run=a.localization_run,look=a.look,turn_speed_radps=a.turn_speed_radps,navigation_image=a.navigation_image,navigation_mode=a.navigation_mode),indent=2))
++    p.add_argument('--max-duration-s',type=float,help='Episode limit from goal publication; up to 1800 seconds')
++    a=p.parse_args();print(json.dumps(prepare(a.output,distance=a.distance_m,map_plan=a.map_plan,fixed_start_plan=a.fixed_start_plan,goal_label=a.goal_label,localization_run=a.localization_run,look=a.look,turn_speed_radps=a.turn_speed_radps,navigation_image=a.navigation_image,navigation_mode=a.navigation_mode,max_duration_s=a.max_duration_s),indent=2))
+ 
+ 
+ if __name__=='__main__':main()
+--- a/scripts/validate_robot_pointgoal_trial.py
++++ b/scripts/validate_robot_pointgoal_trial.py
+@@ -3,12 +3,45 @@
+ import argparse
+ import hashlib
+ import json
++import math
+ import os
+ from pathlib import Path
+ import shlex
++import re
+ import subprocess
+ 
+ REPO=Path(__file__).resolve().parents[1]
++
++
++def validate_timing(conditions,wrapper,settings):
++    duration=conditions['max_duration_s']
++    if isinstance(duration,bool) or not math.isfinite(duration) or not 0<duration<=1800:
++        raise ValueError('Invalid prepared episode duration')
++    if 'max_duration_s' in settings and duration!=settings['max_duration_s']:
++        raise ValueError('Episode duration differs from the selected campaign condition')
++    args=re.findall(r'--max-duration-s\s+([^\s\'\"]+)',wrapper)
++    outer=re.findall(r'timeout --signal=TERM --kill-after=10s ([0-9.]+)s docker compose',wrapper)
++    if len(args)!=1 or float(args[0])!=duration:
++        raise ValueError('Operator duration differs from the prepared condition')
++    if len(outer)!=1 or float(outer[0])!=duration+60:
++        raise ValueError('Wrapper duration does not preserve operator startup/stop time')
++
++
++def validate_recorder_timing(root,conditions,wrapper):
++    duration=conditions.get('recorder_max_duration_s')
++    if duration is None:
++        if conditions['max_duration_s']>360:
++            raise ValueError('Long episodes require explicit recorder deadlines')
++        return  # Preserve older immutable short profiles.
++    if duration!=max(600,conditions['max_duration_s']+240):
++        raise ValueError('Recorder deadline does not cover the full episode and shutdown')
++    args=re.findall(r'record_camera_timing.py --output /trial/full5m/camera-timing --duration-s ([0-9.]+)',wrapper)
++    if len(args)!=1 or float(args[0])!=duration:
++        raise ValueError('Camera timing recorder has a shorter or missing deadline')
++    for name in ('full5m/record_body.py','full5m/observe_camera_and_sweep.py'):
++        limits=re.findall(r'time.monotonic\(\)-start<([0-9.]+)',(root/name).read_text())
++        if len(limits)!=1 or float(limits[0])!=duration:
++            raise ValueError('Recorder deadline mismatch: '+name)
+ 
+ 
+ def validate(root,results):
+@@ -44,6 +77,8 @@
+     command=' '.join(services['escape'].get('command') or [])
+     launch_values=dict(token.split(':=',1) for token in shlex.split(command) if ':=' in token)
+     settings=result.get('runtime_settings',{})
++    validate_timing(conditions,(root/'run_trial.sh').read_text(),settings)
++    validate_recorder_timing(root,conditions,(root/'run_trial.sh').read_text())
+     if settings and (conditions['look_execution']!=settings['look']
+                      or conditions['turn_speed_radps']!=settings['turn_speed_radps']):
+         raise ValueError('Trial differs from the selected campaign speed/look condition')
+--- a/scripts/robot_pointgoal_trial.py
++++ b/scripts/robot_pointgoal_trial.py
+@@ -16,7 +16,7 @@
+ required_nodes=('go2_action_executor',planner_name,'pixnav_runtime_node','rtab_pointgoal_adapter')
+ if args.navigation_mode=='full':required_nodes+=('sweep_scheduler_node',)
+ if args.distance_m is not None and (not math.isfinite(args.distance_m) or args.distance_m<=0): raise ValueError('positive finite distance required')
+-if not math.isfinite(args.max_duration_s) or not 0<args.max_duration_s<=900: raise ValueError('trial duration must be within (0,900] seconds')
++if not math.isfinite(args.max_duration_s) or not 0<args.max_duration_s<=1800: raise ValueError('trial duration must be within (0,1800] seconds')
+ if (args.map_plan or args.fixed_start_plan) and not args.goal_label: parser.error('Saved goal plans require --goal-label')
+ from pathlib import Path
+ import rclpy
+--- a/scripts/run_saved_robot_goal.py
++++ b/scripts/run_saved_robot_goal.py
+@@ -4,6 +4,7 @@
+ import fcntl
+ import hashlib
+ import json
++import math
+ import os
+ from pathlib import Path
+ import select
+@@ -73,7 +74,8 @@
+             continue
+         if (manifest.get('images', {}).get('escape') != c['navigation_image']
+                 or conditions.get('look_execution', 'forward_0p1') != settings.get('look', 'forward_0p1')
+-                or conditions.get('turn_speed_radps', .5) != settings.get('turn_speed_radps', .5)):
++                or conditions.get('turn_speed_radps', .5) != settings.get('turn_speed_radps', .5)
++                or conditions.get('max_duration_s', 360) != settings.get('max_duration_s', 360)):
+             continue
+         try:
+             campaign.validate_trial(run, c['validation'])
+@@ -193,7 +195,23 @@
+         print(f"{d['elapsed_s']:6.0f}초 | 목표까지 {distance} | {mode}", flush=True)
+ 
+ 
++def runner_timeout_s(run):
++    # Older prepared profiles had a 360s episode / 540s supervisor limit.
++    duration = read(Path(run) / 'manifest.json', {}).get('runtime_conditions', {}).get('max_duration_s', 360)
++    if isinstance(duration, bool) or not math.isfinite(duration) or not 0 < duration <= 1800:
++        raise ValueError('Invalid recorded episode time limit')
++    return duration + 180  # Preserve bounded startup and recorder shutdown time.
++
++
++def required_recording_space_bytes(duration):
++    # Recent Full episodes recorded 22-28 MB/s, mainly raw cloud/camera MCAP.
++    # Keep the existing reserve and allow 30 MiB/s for newly extended episodes.
++    reserve = 10 * 1024**3
++    return reserve if duration <= 360 else reserve + math.ceil(duration * 30 * 1024**2)
++
++
+ def execute(run, plan, confirmed_unix, *, start_goal=True):
++    overall_timeout = runner_timeout_s(run)
+     supervisor = Supervisor(run)
+     old = {s: signal.signal(s, supervisor.signal) for s in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)}
+     save(STATE / 'active.json', dict(run=str(run), pid=os.getpid(), started_unix=time.time()))
+@@ -239,7 +257,7 @@
+                                 break
+                             progress(line)
+                 elapsed = time.monotonic() - started
+-                if supervisor.stop_at is None and ((not dispatched and elapsed > 100) or elapsed > 540):
++                if supervisor.stop_at is None and ((not dispatched and elapsed > 100) or elapsed > overall_timeout):
+                     supervisor.stop('runner_timeout')
+                 supervisor.fallback()
+                 time.sleep(.2)
+@@ -382,8 +400,10 @@
+         confirmed = time.time()  # Actual operator invocation/selection; never refresh while waiting.
+         if active_services():
+             raise RuntimeError('기존 주행/기록 서비스가 실행 중입니다. 먼저 해당 회차를 종료하세요.')
+-        if shutil.disk_usage(root).free < 10 * 1024**3:
+-            raise RuntimeError('로그 저장 공간이 10GiB 미만입니다. 이전 로그를 보존한 채 공간을 확보하세요.')
++        duration = c.get('trial_settings', {}).get('max_duration_s', 360)
++        required_space = required_recording_space_bytes(duration)
++        if shutil.disk_usage(root).free < required_space:
++            raise RuntimeError(f'{duration:g}초 회차의 로그 저장 예상 여유 공간 {required_space/1024**3:.1f}GiB가 필요합니다. 이전 로그를 보존한 채 공간을 확보하세요.')
+         print(f'{label}번 준비: 표시한 (0,0)과 원래 방향에 배치하고, 공간·비상정지를 확보한 상태에서 실행하는 명령입니다.', flush=True)
+         entry = prepared_trial(root, label, args.navigation_mode)
+         c, plan = load_campaign(root)
+@@ -394,7 +414,7 @@
+         conditions = read(run / 'manifest.json')['runtime_conditions']
+         look_cm = {'forward_0p05':5, 'forward_0p1':10, 'forward_0p2':20}[conditions['look_execution']]
+         method_name = 'Full 비동기' if args.navigation_mode == 'full' else 'Direct PixelNav (VLM 호출 없음)'
+-        print(f"{method_name} / 룩 동작 {look_cm}cm 전진 대체 / 전진 0.5m/s / 회전 {conditions['turn_speed_radps']}rad/s / 도착 반경 1m / 최대 360초", flush=True)
++        print(f"{method_name} / 룩 동작 {look_cm}cm 전진 대체 / 전진 0.5m/s / 회전 {conditions['turn_speed_radps']}rad/s / 도착 반경 1m / 최대 {conditions['max_duration_s']:g}초", flush=True)
+         save(run / 'operator-invocation.json', dict(goal_label=label, navigation_mode=args.navigation_mode, confirmed_unix=confirmed,
+              runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              coordinate_contract='Same marked physical start and heading; capture current odom and reanchor once'))
+--- a/scripts/test_run_saved_robot_goal.py
++++ b/scripts/test_run_saved_robot_goal.py
+@@ -151,6 +151,26 @@
+         assert condition['turn_speed_radps'] == speed
+         assert runner.prepared_trial(collected, prior['goal_label'])['path'] == new['path']
+         assert not (Path(prior['path']) / 'USED').exists()
++
++
++@pytest.mark.parametrize('method', ['full', 'direct_goal'])
++def test_longer_episode_replaces_prepared_attempt_without_rewriting_old_evidence(collected, monkeypatch, method):
++    campaign = runner.campaign
++    campaign.bind_goals(collected)
++    monkeypatch.setattr(campaign, 'prepare_trial', fake_prepare)
++    monkeypatch.setattr(campaign, 'validate_trial', lambda *args: None)
++    old = runner.prepared_trial(collected, '4', method)
++    old_manifest = Path(old['path'])/'manifest.json'
++    original = old_manifest.read_bytes()
++    c = campaign.read(collected/'campaign.json')
++    c['trial_settings'] = {'max_duration_s':1800}
++    campaign.write(collected/'campaign.json', c)
++    new = runner.prepared_trial(collected, '4', method)
++    assert new['path'] != old['path']
++    assert old_manifest.read_bytes() == original
++    assert runner.read(Path(new['path'])/'manifest.json')['runtime_conditions']['max_duration_s'] == 1800
++    assert runner.runner_timeout_s(Path(new['path'])) == 1980
++    assert runner.prepared_trial(collected, '4', method)['path'] == new['path']
+ 
+ 
+ @pytest.mark.parametrize('condition', ['cancel', 'stop', 'expired', 'valid'])
+--- a/scripts/test_robot_goal_campaign.py
++++ b/scripts/test_robot_goal_campaign.py
+@@ -61,7 +61,7 @@
+ def fake_prepare(out,**kw):
+     out.mkdir();campaign.write(out/'manifest.json',dict(sha256={},images={'escape':kw['navigation_image']},runtime_conditions={
+         'navigation':kw['navigation_mode'],'look_execution':kw.get('look','forward_0p1'),
+-        'turn_speed_radps':kw.get('turn_speed_radps',.5)}))
++        'turn_speed_radps':kw.get('turn_speed_radps',.5),'max_duration_s':kw.get('max_duration_s',360)}))
+     (out/'goal-plan.json').write_bytes(Path(kw['fixed_start_plan']).read_bytes())
+ 
+ 
+--- a/scripts/test_robot_pointgoal_trial.py
++++ b/scripts/test_robot_pointgoal_trial.py
+@@ -30,7 +30,7 @@
+     source = source.replace("Path('/trial/START_GOAL')", 'Path('+repr(str(tmp_path/'START_GOAL'))+')')
+     assert repr_path in source
+ 
+-    def run(scenario, mode='full', distance=5., map_mode=False, fixed_mode=False):
++    def run(scenario, mode='full', distance=5., map_mode=False, fixed_mode=False, duration=None):
+         state = NS(t=10., enabled=False, published=None, sent=0., callbacks={},
+                    calls=[], direct_stops=0, publisher_calls=0)
+         if scenario == 'stop_before_start':
+@@ -45,7 +45,7 @@
+                 callback(msg)
+ 
+         def spin(*_, **__):
+-            state.t += .1
++            state.t += 61. if scenario == 'episode_timeout' and state.published else .1
+             odom = Odometry()
+             odom.header.stamp = stamp(); odom.header.frame_id = 'odom'
+             odom.child_frame_id = 'base_link'
+@@ -77,7 +77,7 @@
+                 msg = NodeStatus(); msg.node_name = name; msg.header.stamp = stamp()
+                 msg.is_healthy = True; msg.active_mode = 'IDLE'
+                 msg.state = 'IDLE' if state.enabled else 'INHIBITED'
+-                if name=='direct_goal_pixnav' and state.published:
++                if name=='direct_goal_pixnav' and state.published and scenario!='episode_timeout':
+                     msg.state='TERMINAL'
+                 emit('/s2e/controller/status', msg)
+             pg = PointGoal(); pg.header.stamp = stamp(); pg.episode_id = 'previous-goal'
+@@ -88,7 +88,7 @@
+                 task.episode_id = 'new-goal'; task.task_type = 'PointNav'
+                 emit('/s2e/task', task); pg.episode_id = task.episode_id
+             emit('/s2e/sensors/pointgoal', pg)
+-            if state.published and scenario != 'success' and state.t-state.sent > .5:
++            if state.published and scenario not in ('success','episode_timeout') and state.t-state.sent > .5:
+                 (tmp_path/'STOP').touch()
+             if scenario == 'enable_timeout':
+                 (tmp_path/'STOP').touch() if state.calls else None
+@@ -162,6 +162,8 @@
+             (tmp_path/'START_GOAL').write_text(json.dumps(confirmation))
+             (tmp_path/'plan.json').write_text(json.dumps(plan))
+             argv=['trial','--fixed-start-plan',str(tmp_path/'plan.json'),'--goal-label','1','--navigation-mode',mode]
++        if duration is not None:
++            argv.extend(['--max-duration-s',str(duration)])
+         monkeypatch.setattr(sys, 'argv', argv)
+         code = 0
+         try:
+@@ -203,6 +205,22 @@
+     state,result,code=run_trial('success','direct_goal')
+     assert result['reason']=='GOAL_DISTANCE_REACHED' and code==0
+     assert state.calls==[True,False]
++
++
++@pytest.mark.parametrize('mode', ['full','direct_goal'])
++def test_thirty_minute_episode_survives_old_limits_then_stops_and_records(run_trial, mode):
++    state,result,code=run_trial('episode_timeout',mode,fixed_mode=True,duration=1800)
++    assert 1800 < state.t-state.sent <= 1861
++    assert result['reason']=='TRIAL_TIME_LIMIT' and result['max_duration_s']==1800
++    assert result['goal_published'] and result['shutdown_service_confirmed']
++    assert state.calls==[True,False] and state.direct_stops==1 and code!=0
++
++
++def test_longer_limit_preserves_direct_model_stop(run_trial):
++    state,result,code=run_trial('direct_terminal','direct_goal',duration=1800)
++    assert result['reason']=='PIXNAV_TERMINAL_BEFORE_GOAL'
++    assert state.t-state.sent < 1 and result['max_duration_s']==1800
++    assert state.calls==[True,False] and state.direct_stops==1 and code!=0
+ 
+ 
+ @pytest.mark.parametrize('scenario', ['disable_unavailable','enable_timeout'])
+--- a/scripts/test_robot_trial_timing.py
++++ b/scripts/test_robot_trial_timing.py
+@@ -0,0 +1,52 @@
++"""Cross-check episode, shell and supervisor limits without ROS or motion."""
++import pytest
++from prepare_robot_pointgoal_trial import prepare
++from validate_robot_pointgoal_trial import validate_timing, validate_recorder_timing
++from run_saved_robot_goal import runner_timeout_s, required_recording_space_bytes, save
++
++
++@pytest.mark.parametrize('duration', [180,360,1800])
++def test_three_timeout_layers_agree(tmp_path, duration):
++    wrapper = ('timeout --signal=TERM --kill-after=10s '+str(duration+60)+
++               's docker compose exec --max-duration-s '+str(duration))
++    settings = {'max_duration_s':duration}
++    validate_timing(settings,wrapper,settings)
++    save(tmp_path/'manifest.json',{'runtime_conditions':settings})
++    assert runner_timeout_s(tmp_path)==duration+180
++
++
++def test_long_episode_storage_budget_covers_observed_full_recording_rate():
++    assert required_recording_space_bytes(360)==10*1024**3
++    assert required_recording_space_bytes(1800)>=1800*28_000_000+10*1024**3
++
++
++@pytest.mark.parametrize('duration', [0,-1,1801,float('nan'),float('inf'),True])
++def test_invalid_duration_cannot_prepare_artifacts_or_start_runner(tmp_path, duration):
++    target=tmp_path/'trial'
++    with pytest.raises(ValueError):
++        prepare(target,distance=5,max_duration_s=duration)
++    assert not target.exists()
++    save(tmp_path/'manifest.json',{'runtime_conditions':{'max_duration_s':duration}})
++    with pytest.raises(ValueError):runner_timeout_s(tmp_path)
++
++
++@pytest.mark.parametrize('operator,outer,selected', [(360,1860,1800),(1800,420,1800),(1800,1860,360)])
++def test_stale_timeout_in_any_layer_is_rejected(operator, outer, selected):
++    wrapper=f'timeout --signal=TERM --kill-after=10s {outer}s docker compose exec --max-duration-s {operator}'
++    with pytest.raises(ValueError):
++        validate_timing({'max_duration_s':1800},wrapper,{'max_duration_s':selected})
++
++
++@pytest.mark.parametrize('stale', [None,'body','observation','camera'])
++def test_recorder_cannot_silently_end_at_ten_minutes(tmp_path, stale):
++    (tmp_path/'full5m').mkdir()
++    for kind,name in [('body','record_body.py'),('observation','observe_camera_and_sweep.py')]:
++        limit=600 if stale==kind else 2040
++        (tmp_path/'full5m'/name).write_text(f'while time.monotonic()-start<{limit}: pass\n')
++    camera_limit=600 if stale=='camera' else 2040
++    wrapper=f'record_camera_timing.py --output /trial/full5m/camera-timing --duration-s {camera_limit}'
++    conditions={'max_duration_s':1800,'recorder_max_duration_s':2040}
++    if stale:
++        with pytest.raises(ValueError):validate_recorder_timing(tmp_path,conditions,wrapper)
++    else:
++        validate_recorder_timing(tmp_path,conditions,wrapper)

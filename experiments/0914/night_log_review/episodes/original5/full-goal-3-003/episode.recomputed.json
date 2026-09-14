@@ -1,0 +1,100 @@
+{
+  "run": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-3-003",
+  "episode_id": "robot-pointnav-2a5a27df6a4b-1",
+  "started": true,
+  "result_reason": "CONTROLLER_INHIBITED:NO_MOTION_PROGRESS",
+  "success_radius_m": 1.0,
+  "success": 0,
+  "field_report": {
+    "status": "received",
+    "direct_intervention": true,
+    "contact": null,
+    "obstruction": null,
+    "physical_within_goal_radius_verified": null,
+    "physical_final_distance_m": null,
+    "measurement_method": "operator_report",
+    "operator_comment": "지금 의자에 박을것 같아서 강제종료했어",
+    "operator_reported_stop_reason": "collision_risk_near_chair",
+    "operator_reported_hazard": "chair",
+    "physical_contact_confirmed": null,
+    "reported_unix": 1789296418.4425943,
+    "termination_classification": "operator_intervention_collision_risk"
+  },
+  "path_length": {
+    "5hz_m": 7.886601645712554,
+    "10hz_m": 8.11782538345623,
+    "20hz_m": 8.229055033477865,
+    "raw_samples_m": 8.337345041753842,
+    "last_sample_before_stop_s": 0.0,
+    "max_receipt_gap_s": 0.10500546999992366,
+    "source": "continuous odom XY, fixed receipt-time resampling, no denoising",
+    "boundary": "goal publication to direct StopMove request; post-stop settling excluded"
+  },
+  "spl_estimate": null,
+  "metric_warnings": [
+    "Shortest path unmeasured; SPL left unset"
+  ],
+  "ground_truth_available": false,
+  "arrival_mode": "automatic_distance_stop",
+  "images": {
+    "escape": "sha256:a92b920649fabdc2ba7b894f9e75a68454596cc997d70825d3214349a305cf14",
+    "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+    "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+    "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+    "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+  },
+  "runtime_conditions": {
+    "navigation": "full",
+    "execution": "async_true",
+    "look_execution": "forward_0p1",
+    "goal_frame": "odom",
+    "goal_distance_m": null,
+    "goal_label": "3",
+    "success_radius_m": 1.0,
+    "initial_motion_enabled": false,
+    "max_duration_s": 360,
+    "turn_speed_radps": 0.5,
+    "minimum_rotate_speed_radps": 0.5,
+    "rotate_settle_window_s": 0.35,
+    "rotate_min_timeout_s": 15.0,
+    "rotate_recoil_limit_deg": 10.0,
+    "record_model_inputs": true,
+    "localization_method": "fixed_start_odometry",
+    "fixed_start_origin_id": "a1b045fe1b4a4e82ab035129dfd5facd",
+    "requires_marked_start_before_each_episode": true,
+    "icp_corrections_used": false
+  },
+  "elapsed_to_stop_s": 224.69271815599996,
+  "minimum_recorded_goal_distance_m": 4.103095531463623,
+  "first_radius_entry_s": null,
+  "vlm_http": {
+    "candidate_screener": {
+      "count": 12,
+      "errors": 0,
+      "p50_s": 0.5857006480000564,
+      "p95_s": 0.6139553860002707,
+      "max_s": 0.6310261349999564
+    },
+    "navigation": {
+      "count": 14,
+      "errors": 0,
+      "p50_s": 2.8425826319999032,
+      "p95_s": 3.0208251160001964,
+      "max_s": 3.0929183800003557
+    },
+    "point_verifier": {
+      "count": 84,
+      "errors": 0,
+      "p50_s": 0.6311565070000142,
+      "p95_s": 0.8546089209999082,
+      "max_s": 1.0162054399997942
+    }
+  },
+  "vlm_timing_note": "HTTP latency per request, not complete decision or exclusive waiting time",
+  "action_results": {
+    "move_forward:EXECUTED": 38,
+    "turn_left:EXECUTED": 3,
+    "turn_right:EXECUTED": 3,
+    "move_forward:FAILED": 1
+  }
+}

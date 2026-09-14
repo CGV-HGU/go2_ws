@@ -1,0 +1,49 @@
+{
+  "source": "recording-five-goals-20260913/episodes/full-goal-4-009/native-inputs/native-inputs_0.mcap",
+  "file_bytes": 537825424,
+  "topics": {
+    "/robot_nav/sensors/front_camera/camera_info": {
+      "messages": 337,
+      "serialized_bytes": 129408,
+      "max_message_bytes": 384,
+      "first_ns": 1789304352327646108,
+      "last_ns": 1789304375902817816
+    },
+    "/robot_nav/sensors/front_camera/image_raw": {
+      "messages": 337,
+      "serialized_bytes": 931761864,
+      "max_message_bytes": 2764872,
+      "first_ns": 1789304352327709247,
+      "last_ns": 1789304375901851923
+    },
+    "/s2e/robot/sensors/odom": {
+      "messages": 2721,
+      "serialized_bytes": 1970004,
+      "max_message_bytes": 724,
+      "first_ns": 1789304356732677028,
+      "last_ns": 1789304375896586053
+    },
+    "/s2e/robot/sensors/imu": {
+      "messages": 4104,
+      "serialized_bytes": 1329696,
+      "max_message_bytes": 324,
+      "first_ns": 1789304356738781554,
+      "last_ns": 1789304375901118230
+    },
+    "/s2e/robot/sensors/cloud": {
+      "messages": 295,
+      "serialized_bytes": 110429680,
+      "max_message_bytes": 386832,
+      "first_ns": 1789304356752896920,
+      "last_ns": 1789304375847827190
+    },
+    "/tf_static": {
+      "messages": 1,
+      "serialized_bytes": 108,
+      "max_message_bytes": 108,
+      "first_ns": 1789304357084227504,
+      "last_ns": 1789304357084227504
+    }
+  },
+  "elapsed_s": 3.264195751999978
+}

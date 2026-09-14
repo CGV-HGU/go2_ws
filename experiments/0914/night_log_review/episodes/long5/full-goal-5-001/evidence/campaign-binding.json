@@ -1,0 +1,11 @@
+{
+  "campaign_id": "5421aeb68b744631b2436402a6a5b3a5",
+  "map_database": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/mapping/map.db",
+  "map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+  "goal_plan_sha256": "69781f18c387d396246bcc451997e756e934474a60f1ad123c96abf0a47991a7",
+  "origin_id": "654bff43686741c4aa4bd9339d8d765f",
+  "trial_id": "full-goal-5-001",
+  "goal_label": "5",
+  "method": "full",
+  "pose_method": "fixed_start_odometry"
+}

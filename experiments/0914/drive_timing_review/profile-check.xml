@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="0.059" timestamp="2026-09-14T01:33:29.768749" hostname="09085a28a535"><testcase classname="test.test_full_profile" name="test_full_profile_preserves_every_maintained_policy_method" time="0.022" /></testsuite></testsuites>

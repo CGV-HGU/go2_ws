@@ -1,0 +1,1847 @@
+[
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.471038579940796
+    ],
+    "effective_logits": [
+      -0.8554723858833313,
+      -1.2850914001464844,
+      -0.6033982634544373,
+      -0.23171138763427734,
+      -5.805889129638672,
+      7.516489028930664
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.4628091392189947,
+      0.550455093781302
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:8a3a1792cbb1526ed7ed9a894b7b14838fae962eb3ba78779b04ae86c3ac9934",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:2c8197c0597736e502df7f9be25471822053d91e8d29afdec013b926d8fa02f6",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -0.8554723858833313,
+      -1.2850914001464844,
+      -0.6033982634544373,
+      -0.23171138763427734,
+      -5.805889129638672,
+      7.516489028930664
+    ],
+    "session_index": 1,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.049787759780884
+    ],
+    "effective_logits": [
+      -7.08781099319458,
+      0.963329017162323,
+      2.171945571899414,
+      -1.7149980068206787,
+      -5.230752944946289,
+      4.769689559936523
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.30988218235364745,
+      0.5809340363690637
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:1c03a0afe4721967f3f332b0982126ad22a47788215d2d6c7648d6519a1edc69",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:bc26da5aad4affb152886ff56167474d8cbb7b0428ea0621dd41980c851373a9",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.08781099319458,
+      0.963329017162323,
+      2.171945571899414,
+      -1.7149980068206787,
+      -5.230752944946289,
+      4.769689559936523
+    ],
+    "session_index": 1,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.7752368450164795
+    ],
+    "effective_logits": [
+      -7.411262035369873,
+      2.427126884460449,
+      1.6674184799194336,
+      -0.7186018228530884,
+      -5.282186508178711,
+      2.4348652362823486
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.38386140041687444,
+      0.62610529018924
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:c09e749585c96064c5f034e370fbb4bbd2032fb8ff57c777170b7fe320430a67",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:6ec5acc2f1e7d17233e19c739ed7f4a854b8a49be7aa576d192969bd19008567",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.411262035369873,
+      2.427126884460449,
+      1.6674184799194336,
+      -0.7186018228530884,
+      -5.282186508178711,
+      2.4348652362823486
+    ],
+    "session_index": 1,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.1324620246887207
+    ],
+    "effective_logits": [
+      1.531351923942566,
+      1.9667890071868896,
+      0.08208952844142914,
+      -0.6792157888412476,
+      -4.862929821014404,
+      -0.02560805156826973
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.54149149109884,
+      0.6759800045109211
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:69002b66114d6cfc0841786d61b024faad689981a7a7b58de45f5208665dd17c",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:286a69746a1fb95dadf74f420df16a7d4811dd0a329437bbfa8144527d85a3b8",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      1.531351923942566,
+      1.9667890071868896,
+      0.08208952844142914,
+      -0.6792157888412476,
+      -4.862929821014404,
+      -0.02560805156826973
+    ],
+    "session_index": 1,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.9403011798858643
+    ],
+    "effective_logits": [
+      1.9038028717041016,
+      -2.147984266281128,
+      -2.2156054973602295,
+      -1.33882737159729,
+      -5.237010955810547,
+      10.519390106201172
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5165016416164774,
+      0.6682338306759524
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:150d5e4145e03de084357a45d82d51a3a3442f17b731109f6bef22faaa7cfe0d",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:2ed0d15eb439390acd3629f4bd4266b3c001fcd92f5c73848498601247dbf04d",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      1.9038028717041016,
+      -2.147984266281128,
+      -2.2156054973602295,
+      -1.33882737159729,
+      -5.237010955810547,
+      10.519390106201172
+    ],
+    "session_index": 2,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.7182681560516357
+    ],
+    "effective_logits": [
+      -2.677145004272461,
+      -0.9309720396995544,
+      0.031908974051475525,
+      -0.21369200944900513,
+      -6.1306376457214355,
+      7.183947563171387
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.36230203922815296,
+      0.6694413471120286
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:80e37c084b8936f2583bee585d52a7bb1356284ae6d159515bb823a378f900ff",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:b0a76dceb27fab5ca43bbae765408a84f202751a795c7819643412049eebba0b",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -2.677145004272461,
+      -0.9309720396995544,
+      0.031908974051475525,
+      -0.21369200944900513,
+      -6.1306376457214355,
+      7.183947563171387
+    ],
+    "session_index": 2,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 3,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.3542463779449463
+    ],
+    "effective_logits": [
+      -7.43034029006958,
+      1.4426023960113525,
+      0.9061879515647888,
+      2.4078543186187744,
+      -5.587610721588135,
+      0.17552787065505981
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.2577787643395761,
+      0.6318028824987384
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:b8f13759e8dddfb44252a65fec851885137dc1ad5fc885a3e5c4bdbe07534c1e",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:9d6c4892d60a3f6be34cf06d953a92ff3bb60cffd1addaba6203368fee6b6b18",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.43034029006958,
+      1.4426023960113525,
+      0.9061879515647888,
+      2.4078543186187744,
+      -5.587610721588135,
+      0.17552787065505981
+    ],
+    "session_index": 2,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 3,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.1835262775421143
+    ],
+    "effective_logits": [
+      -7.601884365081787,
+      0.8776088953018188,
+      -0.2872559130191803,
+      6.388912677764893,
+      -5.546905517578125,
+      -2.1345553398132324
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.15502430991919228,
+      0.6063737606386488
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:a2af7aa6d8c442f1f5e4b32abb58944c942caf7521c37d46b7e79bcfd300b31f",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:a2c68815fdc120a978d45e5ed5b3631250d5b9c6c8d7c631a3f7687c6f5cf68e",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.601884365081787,
+      0.8776088953018188,
+      -0.2872559130191803,
+      6.388912677764893,
+      -5.546905517578125,
+      -2.1345553398132324
+    ],
+    "session_index": 2,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      4.1835408210754395
+    ],
+    "effective_logits": [
+      -0.12135432660579681,
+      -1.3818573951721191,
+      -1.3139688968658447,
+      -0.08963741362094879,
+      -5.544101715087891,
+      7.605384826660156
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5798783313896598,
+      0.5767590926165299
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:9c16d752c5d17eba531f9d3df4f9667fe7e3c394f8dbbe8cbb96c8e2ba036888",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:bd82f822931fd5dc1991eccc20ba1387039a0f83b3ef0de345ea974095e14031",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -0.12135432660579681,
+      -1.3818573951721191,
+      -1.3139688968658447,
+      -0.08963741362094879,
+      -5.544101715087891,
+      7.605384826660156
+    ],
+    "session_index": 3,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      4.051514625549316
+    ],
+    "effective_logits": [
+      -4.654793739318848,
+      0.14082445204257965,
+      0.030197307467460632,
+      0.3612079620361328,
+      -6.212038993835449,
+      6.080831050872803
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.45414230797685023,
+      0.5372818672707276
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:01edbc9dd8e997e3466c827a9a6f1f13a224c44996fc921cf352a84fa73cae8a",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:7273975fcd71ae757dbc4e8e8c8993a36556bf053c0478603f5f667a63989064",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -4.654793739318848,
+      0.14082445204257965,
+      0.030197307467460632,
+      0.3612079620361328,
+      -6.212038993835449,
+      6.080831050872803
+    ],
+    "session_index": 3,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.175147771835327
+    ],
+    "effective_logits": [
+      -7.5398688316345215,
+      4.291802406311035,
+      -0.05552332103252411,
+      2.9466488361358643,
+      -5.828371524810791,
+      -1.7301467657089233
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.44444365737027014,
+      0.5575968857270859
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:50ebcb63b713ee535acefad554c5143b099d750730b3bbc061ce4394577aee0a",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:b17ff05d52165379fb57a06bb2b383f280f517ae333ccefe9017ddd0bffe325b",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.5398688316345215,
+      4.291802406311035,
+      -0.05552332103252411,
+      2.9466488361358643,
+      -5.828371524810791,
+      -1.7301467657089233
+    ],
+    "session_index": 3,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.9790871143341064
+    ],
+    "effective_logits": [
+      -8.236154556274414,
+      3.9673235416412354,
+      1.9341740608215332,
+      3.2019054889678955,
+      -7.189037322998047,
+      -1.507120132446289
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.43777640492063336,
+      0.4716073799516775
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:f1982f2681f815d05dd85c009ae9c0f0b831d4eec60692915c75ee77ac572508",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:a72f7bd43f5b35cf507de0ab02b75dd377325479c0dc5bfd03190eb2d6734386",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -8.236154556274414,
+      3.9673235416412354,
+      1.9341740608215332,
+      3.2019054889678955,
+      -7.189037322998047,
+      -1.507120132446289
+    ],
+    "session_index": 3,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.9090569019317627
+    ],
+    "effective_logits": [
+      -1.1908739805221558,
+      0.3921128809452057,
+      -1.0528799295425415,
+      0.8052104115486145,
+      -4.151894569396973,
+      2.3165252208709717
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5856662966181917,
+      0.6273640367552316
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:dc953e298c75fb618c54607f03ca2505fb327859aa0bc550e363f5c3efbc56ef",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:d6c789960acd37de58b0f7b4aaf641f62c42e2dede3edcb6a6e3fe989a0c3b61",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -1.1908739805221558,
+      0.3921128809452057,
+      -1.0528799295425415,
+      0.8052104115486145,
+      -4.151894569396973,
+      2.3165252208709717
+    ],
+    "session_index": 4,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.0101442337036133
+    ],
+    "effective_logits": [
+      -6.960513591766357,
+      2.1690845489501953,
+      1.2124195098876953,
+      1.1206289529800415,
+      -5.709059715270996,
+      1.1704565286636353
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5089206515395317,
+      0.6051032534167462
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:d75b1c4b311fd7c0a7dfdeafe5f5ef6841d9aa930b2f663ee73f7a9822495e3a",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:705f8c0189caec9861651cf21db055158dbf1b2fd63dd4d587a9dd103a1e978b",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -6.960513591766357,
+      2.1690845489501953,
+      1.2124195098876953,
+      1.1206289529800415,
+      -5.709059715270996,
+      1.1704565286636353
+    ],
+    "session_index": 4,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.848944664001465
+    ],
+    "effective_logits": [
+      -7.444543361663818,
+      2.6466846466064453,
+      1.630654215812683,
+      0.21177703142166138,
+      -5.437975883483887,
+      1.5152745246887207
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.4816274360189196,
+      0.595132890080545
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:ac6d83177816f2d8010c9f49d0fbafe84017b76a4b996fbc69c11b07fdaa6476",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:0f1c0dcef440963f177db2d610c0189ac717b61a17ce02765800153d2c501675",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.444543361663818,
+      2.6466846466064453,
+      1.630654215812683,
+      0.21177703142166138,
+      -5.437975883483887,
+      1.5152745246887207
+    ],
+    "session_index": 4,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.5123019218444824
+    ],
+    "effective_logits": [
+      -6.8497819900512695,
+      3.4641339778900146,
+      2.8579602241516113,
+      1.1269711256027222,
+      -6.008570671081543,
+      -2.1725151538848877
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5204197813496613,
+      0.5809037437705051
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:f007fbf56b87ba1de1ac68d1d76f8c751f59ed3864aa464fbd0f66483e7124d3",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:59e84010ef6703acf3a0e3d32c0304a6d1ebabb134f91edd66c4ce7653a1e925",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -6.8497819900512695,
+      3.4641339778900146,
+      2.8579602241516113,
+      1.1269711256027222,
+      -6.008570671081543,
+      -2.1725151538848877
+    ],
+    "session_index": 4,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.251802921295166
+    ],
+    "effective_logits": [
+      -2.346853256225586,
+      -0.9281765222549438,
+      1.429208517074585,
+      -0.3642706274986267,
+      -5.943323135375977,
+      4.788522720336914
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5605088280904711,
+      0.589954637644572
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:72553279ba0c32c10241d4bb6cad3205c4b0bf7ac82a06360b225ac1fb38a330",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:1b89e019d57027c94df82e47c45e8126db135ea4bc7b0fb826927bbfd7c8dbf8",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -2.346853256225586,
+      -0.9281765222549438,
+      1.429208517074585,
+      -0.3642706274986267,
+      -5.943323135375977,
+      4.788522720336914
+    ],
+    "session_index": 5,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.8788251876831055
+    ],
+    "effective_logits": [
+      -6.506198883056641,
+      1.1375951766967773,
+      0.1260080486536026,
+      1.2893526554107666,
+      -6.3542704582214355,
+      4.428031921386719
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.4646081334912422,
+      0.6083546292967525
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:5dddb441e8105e73018d1f458b3fcdedfe4ffece05ec30cae3452f7ac1389ad6",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:8115864d3c84206a21c99e3a5b46764239a5d08476fe3d1967d012acacf686f8",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -6.506198883056641,
+      1.1375951766967773,
+      0.1260080486536026,
+      1.2893526554107666,
+      -6.3542704582214355,
+      4.428031921386719
+    ],
+    "session_index": 5,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 2,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      3.044722318649292
+    ],
+    "effective_logits": [
+      -7.218266010284424,
+      0.6515333652496338,
+      2.752451181411743,
+      1.3224550485610962,
+      -6.273696422576904,
+      1.3324569463729858
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.35770801816359793,
+      0.570386955413832
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:de35f9800619f6c5aac4d68c49d8eb3a84b180d0a4d65158beed1e6a532ba2de",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:8b5910e713330676b4d0492530ddcc37899940ad25bf323dfdd2f43e3cfceda7",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.218266010284424,
+      0.6515333652496338,
+      2.752451181411743,
+      1.3224550485610962,
+      -6.273696422576904,
+      1.3324569463729858
+    ],
+    "session_index": 5,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.981343984603882
+    ],
+    "effective_logits": [
+      -2.131176471710205,
+      1.1938663721084595,
+      -0.07936082780361176,
+      -0.46875253319740295,
+      -6.203293323516846,
+      4.570598125457764
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5917213118920566,
+      0.5941298486847402
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:55d44c61157e88b0161fe3b07008614a352a4b7bf7e5dedb5372e66eed5bb356",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:73695b9105b4546db617416409a6d60f977a8f8eeb1291fe2eb951f931a36e9e",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -2.131176471710205,
+      1.1938663721084595,
+      -0.07936082780361176,
+      -0.46875253319740295,
+      -6.203293323516846,
+      4.570598125457764
+    ],
+    "session_index": 6,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.562973737716675
+    ],
+    "effective_logits": [
+      -7.896694660186768,
+      4.516060829162598,
+      -0.06639297306537628,
+      1.0783976316452026,
+      -5.309229850769043,
+      0.1520996391773224
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5471246076912101,
+      0.6380052920536295
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:759fac3f564848bb7ca0b0655b4014ef51e0a2a70d21ff87bc0c074e0be6ecc0",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:7c2ab11c50e10b7e0b28e41d9a528bf4d284e75021b29a08ab2e33e5fd9c1ad6",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.896694660186768,
+      4.516060829162598,
+      -0.06639297306537628,
+      1.0783976316452026,
+      -5.309229850769043,
+      0.1520996391773224
+    ],
+    "session_index": 6,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.3202016353607178
+    ],
+    "effective_logits": [
+      -8.422135353088379,
+      6.343120098114014,
+      -2.0524895191192627,
+      2.7419564723968506,
+      -4.25187873840332,
+      -3.1498208045959473
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.538070446968279,
+      0.6600383463276559
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:8962d4e07b5944a0437c1251de7f9dbf6b401630a9fd4a2fecf41e0431557606",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:342252cf31d23c73aa704f07f8cff076923e3db56c2b077daa6f50edd31493f0",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -8.422135353088379,
+      6.343120098114014,
+      -2.0524895191192627,
+      2.7419564723968506,
+      -4.25187873840332,
+      -3.1498208045959473
+    ],
+    "session_index": 6,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.2602312564849854
+    ],
+    "effective_logits": [
+      -7.753265857696533,
+      4.176474094390869,
+      0.1919211894273758,
+      1.700417399406433,
+      -4.837283134460449,
+      -1.7702138423919678
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5552637537459126,
+      0.6826280716481373
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:30e47e08bfe5c4a4a08dc7436405922bae13518e8f351234a4f4fc2f380ffd29",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:04b7e9e389bebb7987fdbcaee5cb79d1eb859e5ba6dd99718d677b3b1c56a8ce",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -7.753265857696533,
+      4.176474094390869,
+      0.1919211894273758,
+      1.700417399406433,
+      -4.837283134460449,
+      -1.7702138423919678
+    ],
+    "session_index": 6,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 0,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.7431537508964539
+    ],
+    "effective_logits": [
+      3.131699800491333,
+      -0.23128874599933624,
+      -0.7911903262138367,
+      -1.2155207395553589,
+      -2.081038236618042,
+      0.9098749160766602
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.8070461512136281,
+      0.49468151956146356
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:bad7a04cc876eea55f908f56dfdcb57e1074af66fbf7f545d0b8781fe8494b8e",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:929f97780839aea5a45ad589ce912609529c925ff63c9008ce405ce27556c323",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      3.131699800491333,
+      -0.23128874599933624,
+      -0.7911903262138367,
+      -1.2155207395553589,
+      -2.081038236618042,
+      0.9098749160766602
+    ],
+    "session_index": 7,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 0,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.6351379752159119
+    ],
+    "effective_logits": [
+      1.7533208131790161,
+      1.0346994400024414,
+      -1.917670488357544,
+      -1.5160919427871704,
+      -1.0288437604904175,
+      0.7455333471298218
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.9522809857433957,
+      0.5234521377822715
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:85c7d869b4f39f78be78cbb359bdbb6dc98a81c1ee3d30b4c5a8bbb4b58567a2",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:d885f1fff7a33f63610f425a52f8201890a6857389d471d1fcd62fc9072d14fc",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      1.7533208131790161,
+      1.0346994400024414,
+      -1.917670488357544,
+      -1.5160919427871704,
+      -1.0288437604904175,
+      0.7455333471298218
+    ],
+    "session_index": 8,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      1.4092562198638916
+    ],
+    "effective_logits": [
+      3.1469216346740723,
+      -1.2882187366485596,
+      -3.7149477005004883,
+      -2.5833327770233154,
+      -2.9309942722320557,
+      9.29665470123291
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.702678408029612,
+      0.5671102763044413
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:fa7dadb22fe7c1de2cd78b38e13a489fcbc46a58eb4bdb547df02f4c54f0b6e7",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:9a3af619ab44455aafa1f0cf6a6e4ff8c1d1b5f93f0da9adac6a2b237cf35469",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      3.1469216346740723,
+      -1.2882187366485596,
+      -3.7149477005004883,
+      -2.5833327770233154,
+      -2.9309942722320557,
+      9.29665470123291
+    ],
+    "session_index": 9,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      1.3194901943206787
+    ],
+    "effective_logits": [
+      0.9456713795661926,
+      -0.7214157581329346,
+      -3.647080421447754,
+      -2.7048418521881104,
+      -3.1991734504699707,
+      10.730056762695312
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5868180093359426,
+      0.5673249973706956
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:54dff923a133c28031c6b24ccf8239b1da0888eba14e2e200754a91df9b1c00a",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:00d11b53105d98742bd1586da140d504af2fe2661c8a67132fe936abedd91701",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      0.9456713795661926,
+      -0.7214157581329346,
+      -3.647080421447754,
+      -2.7048418521881104,
+      -3.1991734504699707,
+      10.730056762695312
+    ],
+    "session_index": 9,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.9412927031517029
+    ],
+    "effective_logits": [
+      -5.992815017700195,
+      2.7247471809387207,
+      -0.9695019721984863,
+      -0.7495243549346924,
+      -2.775007963180542,
+      2.166449546813965
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.6366565804297355,
+      0.5683640335012586
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:5eefa3b3393e679dcaa54fa114c4b19ba827cdca5f2fed90dde1e8074f59c58b",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:31a0f94cb2e7094cb2902c21d152b7678eea07a3c4569b5b97e2a69078e3e3cc",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -5.992815017700195,
+      2.7247471809387207,
+      -0.9695019721984863,
+      -0.7495243549346924,
+      -2.775007963180542,
+      2.166449546813965
+    ],
+    "session_index": 9,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.675700843334198
+    ],
+    "effective_logits": [
+      -2.608591079711914,
+      3.4828357696533203,
+      -2.191741943359375,
+      -2.0803956985473633,
+      -1.9698240756988525,
+      2.298250198364258
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.7325542754677347,
+      0.5450401581451196
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:2416fc7151b1e1cd227d76bb3d925eab1bd57884a03a3a65378970e7e77b9b19",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:9b72b6ef6deb4ba31efc4a3e4ad251ac51208e0f79e4dc473632e179a71d017e",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -2.608591079711914,
+      3.4828357696533203,
+      -2.191741943359375,
+      -2.0803956985473633,
+      -1.9698240756988525,
+      2.298250198364258
+    ],
+    "session_index": 9,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.6802078485488892
+    ],
+    "effective_logits": [
+      -5.7181077003479,
+      4.832117080688477,
+      0.021719038486480713,
+      -0.9721523523330688,
+      -3.203964948654175,
+      -1.1747075319290161
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.6399016898996478,
+      0.5182919718095554
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:fc8f0941b5fdfe4f4e214d1a68b18bff890db145e27d9a2055337bfac538959c",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:1e15cde22797060c7e24ea622d9f8985eefcfa42a7c835d022c8f59b29c4b507",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -5.7181077003479,
+      4.832117080688477,
+      0.021719038486480713,
+      -0.9721523523330688,
+      -3.203964948654175,
+      -1.1747075319290161
+    ],
+    "session_index": 9,
+    "step_index": 4,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.5171000361442566
+    ],
+    "effective_logits": [
+      -3.9745662212371826,
+      2.636293649673462,
+      0.7823933959007263,
+      -0.9642857313156128,
+      -1.6039150953292847,
+      -2.20988130569458
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.7473096220339146,
+      0.5547853761973273
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:fb0644d88ff112d6ecb3ee9dc82628490a47f7c30999f8079aed0ed74720be85",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:7979edbf9909a55fd9e5be04566d48d667552e418c956af1e1942845ce333d12",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -3.9745662212371826,
+      2.636293649673462,
+      0.7823933959007263,
+      -0.9642857313156128,
+      -1.6039150953292847,
+      -2.20988130569458
+    ],
+    "session_index": 9,
+    "step_index": 5,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.38991445302963257
+    ],
+    "effective_logits": [
+      -1.5215681791305542,
+      0.1311805695295334,
+      -0.7310831546783447,
+      -1.0773037672042847,
+      -0.5749881863594055,
+      1.0575406551361084
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.8333869317972042,
+      0.5412847223346845
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:87d9f6d65a7feb1bdd7a25c0e49eb263c7c52ed6cbb8b07ed8e2e23f954690e0",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:319129e42e1d00b031e3bc3b2d32a837b360b8fb060baffbf9096819f8fe33f5",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -1.5215681791305542,
+      0.1311805695295334,
+      -0.7310831546783447,
+      -1.0773037672042847,
+      -0.5749881863594055,
+      1.0575406551361084
+    ],
+    "session_index": 9,
+    "step_index": 6,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.23238787055015564
+    ],
+    "effective_logits": [
+      -1.4582477807998657,
+      2.8459928035736084,
+      -1.0547962188720703,
+      -1.5522361993789673,
+      -0.13124732673168182,
+      -2.396096706390381
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.9032042438047279,
+      0.5580176855594172
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:68ea22d63428575fc466f3c1217128b3522ded0ad7b73c51b8c09274e52c473e",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:b00e8c1d1b8375bcbbfe07b7925d87f7614b89ab085ce7c5d9ea18908b3f8c49",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -1.4582477807998657,
+      2.8459928035736084,
+      -1.0547962188720703,
+      -1.5522361993789673,
+      -0.13124732673168182,
+      -2.396096706390381
+    ],
+    "session_index": 9,
+    "step_index": 7,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.38569504022598267
+    ],
+    "effective_logits": [
+      -0.5089583992958069,
+      2.91011118888855,
+      -1.0210926532745361,
+      0.43909046053886414,
+      -0.6125196218490601,
+      -4.8352460861206055
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.8942268243314787,
+      0.5393100458401097
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:63a409e7a2ba4ed4cbffc0ab2fc082b0ebed940adea787e5790012e6bbd46c57",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:06bacad0dae2e0a04871a099f522bd3209fb92bfc38baa4b29ee1cab9c91fc9d",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -0.5089583992958069,
+      2.91011118888855,
+      -1.0210926532745361,
+      0.43909046053886414,
+      -0.6125196218490601,
+      -4.8352460861206055
+    ],
+    "session_index": 9,
+    "step_index": 8,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 1,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.32985907793045044
+    ],
+    "effective_logits": [
+      0.5180802941322327,
+      1.1694660186767578,
+      -2.007596731185913,
+      0.2544539272785187,
+      0.6182019114494324,
+      -3.507962942123413
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.8338535566095121,
+      0.5280601765983165
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:3e273e7da0250bb71b4101e11a8706467f8c96c1723eab21ed526f482e90933e",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:4d3b127dc74054cc3b68ddb85b58fa68d63ca7b7c9aae3ebce770673d8683582",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      0.5180802941322327,
+      1.1694660186767578,
+      -2.007596731185913,
+      0.2544539272785187,
+      0.6182019114494324,
+      -3.507962942123413
+    ],
+    "session_index": 9,
+    "step_index": 9,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 0,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.24418145418167114
+    ],
+    "effective_logits": [
+      3.0351812839508057,
+      1.3428782224655151,
+      -1.7378339767456055,
+      -0.5660384893417358,
+      -0.7448530197143555,
+      -2.5479695796966553
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.8241830899990419,
+      0.5017780953491047
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:ab612b41d845d9e4d71128f1a94ecb2ca2a55eeb4adb44a1f9deb7d923d2b073",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:daa8b64695bb5cd3290dbbe7c67f5ad90b979af54800db756ad9d1fd9d27ffef",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      3.0351812839508057,
+      1.3428782224655151,
+      -1.7378339767456055,
+      -0.5660384893417358,
+      -0.7448530197143555,
+      -2.5479695796966553
+    ],
+    "session_index": 9,
+    "step_index": 10,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.752345561981201
+    ],
+    "effective_logits": [
+      5.419981956481934,
+      -2.973670244216919,
+      -2.8879342079162598,
+      -2.3979578018188477,
+      -3.270143985748291,
+      9.523799896240234
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.6123187939806617,
+      0.5038478371456268
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:9a98315db6f5fa67421e2ed5813d8ffcbbf29fa3f712f2c4b6ad53cd29caafb5",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:b94b6f5ea43283779af4b4f27289421622f2973dc80b7e2504ed20ce1cf871d0",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      5.419981956481934,
+      -2.973670244216919,
+      -2.8879342079162598,
+      -2.3979578018188477,
+      -3.270143985748291,
+      9.523799896240234
+    ],
+    "session_index": 10,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      2.330142021179199
+    ],
+    "effective_logits": [
+      1.1645312309265137,
+      -1.6468216180801392,
+      -2.2731809616088867,
+      -1.5330077409744263,
+      -3.3774476051330566,
+      7.670809745788574
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.4933368024027716,
+      0.49159541653535826
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:03764e21091595f1fff4e60a7302f27d3dda72b57e52d0c010415178301cc33f",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:27025ce13b56048b2cde4c263232381856415aca96bc9cf78e5eb84967c8c184",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      1.1645312309265137,
+      -1.6468216180801392,
+      -2.2731809616088867,
+      -1.5330077409744263,
+      -3.3774476051330566,
+      7.670809745788574
+    ],
+    "session_index": 10,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      1.4654808044433594
+    ],
+    "effective_logits": [
+      -0.470253586769104,
+      0.09750128537416458,
+      -0.8574879169464111,
+      -1.767419695854187,
+      -2.7571310997009277,
+      4.618218898773193
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.4518309530081964,
+      0.521720470295252
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:2b7b6c87537b9823929eb9807fd62b62f23e77e16d3cd3f0a689f0b72ea1894f",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:989211f2e0c27fe7a3fe82ae26ef671694a410a1f4068af79c646a4198a866f6",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -0.470253586769104,
+      0.09750128537416458,
+      -0.8574879169464111,
+      -1.767419695854187,
+      -2.7571310997009277,
+      4.618218898773193
+    ],
+    "session_index": 10,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 3,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      1.2514853477478027
+    ],
+    "effective_logits": [
+      -4.100539207458496,
+      0.4259861409664154,
+      0.7291845679283142,
+      1.1457377672195435,
+      -2.364825963973999,
+      -0.09269607067108154
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.2750726603636002,
+      0.5078643684268744
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:3078ba7fe76e4f193eaa5cb51f1adb412b6ed2b8809c3a5570b385fc4421af07",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:45a9229b4512832e3caa6365eae2a40b170362f65deb34da82293899147edab9",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -4.100539207458496,
+      0.4259861409664154,
+      0.7291845679283142,
+      1.1457377672195435,
+      -2.364825963973999,
+      -0.09269607067108154
+    ],
+    "session_index": 10,
+    "step_index": 3,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      1.6688519716262817
+    ],
+    "effective_logits": [
+      3.9769718647003174,
+      -2.1996357440948486,
+      -1.4365873336791992,
+      -2.4193575382232666,
+      -2.5961384773254395,
+      6.5517988204956055
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.5839703862769219,
+      0.4183421442623459
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:9240b1800efbf354cb3ba887b1d5ffdd3ccb9fff64a2cbbd4acf60bce90ec440",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:7601df8eeae562a5e0c8b84cbf4411adc7440cd371ac0e14e166346e08bd2379",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      3.9769718647003174,
+      -2.1996357440948486,
+      -1.4365873336791992,
+      -2.4193575382232666,
+      -2.5961384773254395,
+      6.5517988204956055
+    ],
+    "session_index": 11,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 5,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      1.6310365200042725
+    ],
+    "effective_logits": [
+      -1.6518763303756714,
+      -0.7597596645355225,
+      0.16798274219036102,
+      -1.9671885967254639,
+      -3.5167956352233887,
+      5.612759590148926
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.3771286921954501,
+      0.4088287091370513
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:95977c8e73edcbff62167b95f5f1e6d5b1402a7b619561672ef418ceb1cfcb8f",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:77b08f1de8e16e3d614d1c10cd451e539ee8921442dbaf5b8ef5091f88f06d83",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -1.6518763303756714,
+      -0.7597596645355225,
+      0.16798274219036102,
+      -1.9671885967254639,
+      -3.5167956352233887,
+      5.612759590148926
+    ],
+    "session_index": 11,
+    "step_index": 1,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 2,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.9847512245178223
+    ],
+    "effective_logits": [
+      -4.913091659545898,
+      1.6393767595291138,
+      2.603196620941162,
+      -2.8133881092071533,
+      -3.201279878616333,
+      2.080554246902466
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.2896299170941073,
+      0.40218068654777406
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:15e0d3d1045d287141a8b0844a5787285a7f9fc97265ac959029ec049546fdbc",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:1f1462c209da0400e246a3633034e218939b76f33a120cb3816083480f3189a2",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      -4.913091659545898,
+      1.6393767595291138,
+      2.603196620941162,
+      -2.8133881092071533,
+      -3.201279878616333,
+      2.080554246902466
+    ],
+    "session_index": 11,
+    "step_index": 2,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 0,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.47256243228912354
+    ],
+    "effective_logits": [
+      3.9350838661193848,
+      -0.840397298336029,
+      -1.5907485485076904,
+      -2.1706278324127197,
+      -0.5855428576469421,
+      2.953230619430542
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.818414666466443,
+      0.48419451150205006
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:0e4527633d36ef9ae62194289549d305b6fc57ff3fb68b46f35df825db6326de",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:2f90c4e777928d30def8ef01fc17da91ba2a47b24f373e8dc62710178c24ee3b",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      3.9350838661193848,
+      -0.840397298336029,
+      -1.5907485485076904,
+      -2.1706278324127197,
+      -0.5855428576469421,
+      2.953230619430542
+    ],
+    "session_index": 12,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  },
+  {
+    "action": 0,
+    "collide": false,
+    "digital_view_changed": false,
+    "distance_prediction": [
+      0.14451810717582703
+    ],
+    "effective_logits": [
+      6.911013603210449,
+      -1.0037661790847778,
+      -2.173720359802246,
+      -2.4107563495635986,
+      -1.262078881263733,
+      3.470043659210205
+    ],
+    "fixed_camera_view_on_look": false,
+    "goal_prediction": [
+      0.7819493866775291,
+      0.4939643200166171
+    ],
+    "next_policy_view_zoom": 1.0,
+    "next_virtual_pitch_deg": 0.0,
+    "observation_ref": "sha256:7a937aea80e4ee792fc9e287d7350861c72400afddf084cc3931a8b9c5497244",
+    "physical_camera_action_executed": null,
+    "policy_camera_mode": "calibrated_4_3",
+    "policy_view_ref": "sha256:cdd1dc88375cae48958ef58b52419dc17f2513c996e94c25521c56756c08a031",
+    "policy_view_zoom": 1.0,
+    "raw_logits": [
+      6.911013603210449,
+      -1.0037661790847778,
+      -2.173720359802246,
+      -2.4107563495635986,
+      -1.262078881263733,
+      3.470043659210205
+    ],
+    "session_index": 13,
+    "step_index": 0,
+    "stop_source": "model",
+    "virtual_pitch_deg": 0.0,
+    "session_directory": "77f692be632c46e19bab0672b7c6b3e2"
+  }
+]

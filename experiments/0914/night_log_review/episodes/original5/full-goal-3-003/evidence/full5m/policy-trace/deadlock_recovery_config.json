@@ -1,0 +1,15 @@
+{
+  "deadlock_memory_enabled": true,
+  "minimum_recovery_displacement_m": 0.25,
+  "observation_max_abs_pitch_deg": 30.0,
+  "observation_max_mean_luma": 253.0,
+  "observation_max_translation_m": 0.35,
+  "observation_min_mean_luma": 2.0,
+  "oscillation_angle_deg": 120.0,
+  "policy_starvation_coverage_stalls": 3,
+  "policy_starvation_failure_streak": 6,
+  "policy_starvation_full_sweeps": 1,
+  "recovery_policy": "off",
+  "stagnation_outcomes": 2,
+  "translation_epsilon_m": 0.08
+}

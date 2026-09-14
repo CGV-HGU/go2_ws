@@ -1,0 +1,7 @@
+{
+  "goal_label": "5",
+  "navigation_mode": "full",
+  "confirmed_unix": 1789312845.145869,
+  "runner_sha256": "0b55168315297851597fda376fd15dbeec5cd1d245f7285c5661a0e701c6a435",
+  "coordinate_contract": "Same marked physical start and heading; capture current odom and reanchor once"
+}

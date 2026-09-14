@@ -1,0 +1,38 @@
+{
+  "schema": "escape-recording-integrity-v1",
+  "checked_unix": 1789303980.828576,
+  "live_preflight": false,
+  "started": false,
+  "outcome": null,
+  "passed": false,
+  "issues": [
+    "no recorded observation:image",
+    "missing: /home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-2-007/full5m/runtime/events.jsonl",
+    "missing: full5m/runtime/result.json",
+    "native topic empty: /s2e/robot/sensors/cloud",
+    "native topic empty: /s2e/robot/sensors/odom",
+    "native topic empty: /s2e/robot/sensors/imu"
+  ],
+  "stream_counts": {
+    "body": {
+      "low": 28,
+      "sport": 13,
+      "recorder_finished": 1
+    },
+    "camera": {
+      "recorder_started": 1,
+      "time_sync_status": 7,
+      "raw_image_header": 7,
+      "recorder_finished": 1
+    },
+    "observation": {},
+    "operator": {},
+    "policy_steps": 0
+  },
+  "native_topic_counts": {
+    "/tf_static": 0,
+    "/robot_nav/sensors/front_camera/camera_info": 115,
+    "/robot_nav/sensors/front_camera/image_raw": 115
+  },
+  "note": "File/subscription/receipt checks; not proof of zero transport loss or physical success. Missing artifacts are preserved as incomplete records."
+}

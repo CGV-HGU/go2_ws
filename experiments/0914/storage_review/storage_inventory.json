@@ -1,0 +1,937 @@
+{
+  "checked_at": "2026-09-14T09:59:33.043041+09:00",
+  "source_root": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data",
+  "source_modified": false,
+  "usage_method": "os.walk/stat, symlinks excluded; logical sizes and allocated file blocks; directory blocks not counted",
+  "filesystem": {
+    "total_bytes": 502985183232,
+    "available_bytes": 70890815488
+  },
+  "local_data": [
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913",
+      "files": 10774,
+      "bytes": 124544665231,
+      "allocated_file_bytes": 124561772544
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-daylight-map-20260913",
+      "files": 554,
+      "bytes": 40659072876,
+      "allocated_file_bytes": 40660656128
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914",
+      "files": 3418,
+      "bytes": 24639422593,
+      "allocated_file_bytes": 24645029888
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-comprehensive-audit-20260913",
+      "files": 19738,
+      "bytes": 23225029921,
+      "allocated_file_bytes": 23274340352
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/reuse-night-map-20260913-second-check",
+      "files": 76,
+      "bytes": 22520133016,
+      "allocated_file_bytes": 22520483840
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/manual-pose-capture-20260910",
+      "files": 7942,
+      "bytes": 21062709487,
+      "allocated_file_bytes": 21093883904
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-long5-20260913",
+      "files": 1195,
+      "bytes": 8108374930,
+      "allocated_file_bytes": 8110374912
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-full-area-map-20260913",
+      "files": 30,
+      "bytes": 6159304320,
+      "allocated_file_bytes": 6159409152
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/live-localization-20260913-daylight-1421",
+      "files": 57,
+      "bytes": 2728282620,
+      "allocated_file_bytes": 2728435712
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-terminal-campaign-20260912",
+      "files": 2039,
+      "bytes": 2448221553,
+      "allocated_file_bytes": 2450993152
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/drive-campaign-20260911T070003Z",
+      "files": 4168,
+      "bytes": 2012243975,
+      "allocated_file_bytes": 2018545664
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-preflight-complete-20260912",
+      "files": 845,
+      "bytes": 1871391504,
+      "allocated_file_bytes": 1873313792
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-start-goals-20260913",
+      "files": 2568,
+      "bytes": 1705648686,
+      "allocated_file_bytes": 1709191168
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-campaign-20260912",
+      "files": 2663,
+      "bytes": 1500437974,
+      "allocated_file_bytes": 1504055296
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-goal-campaign-audit-20260912",
+      "files": 541,
+      "bytes": 1182533929,
+      "allocated_file_bytes": 1183719424
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-handoff-20260912",
+      "files": 7,
+      "bytes": 936615388,
+      "allocated_file_bytes": 936636416
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/old-map-fixedstart-goals-20260913",
+      "files": 971,
+      "bytes": 798230049,
+      "allocated_file_bytes": 799617024
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-staged-view-20260909-195215",
+      "files": 1340,
+      "bytes": 635179299,
+      "allocated_file_bytes": 637562880
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-disconnect-audit-20260912",
+      "files": 112,
+      "bytes": 633929797,
+      "allocated_file_bytes": 634179584
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-body-look15-20260910T110147Z",
+      "files": 761,
+      "bytes": 499752359,
+      "allocated_file_bytes": 500666368
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-rtab-live-replay-20260912",
+      "files": 136,
+      "bytes": 495438688,
+      "allocated_file_bytes": 495747072
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-speed-compare-20260912",
+      "files": 825,
+      "bytes": 369041081,
+      "allocated_file_bytes": 370151424
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-contact-diagnostic-20260909-192302",
+      "files": 781,
+      "bytes": 340247272,
+      "allocated_file_bytes": 341741568
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/localization-only-20260909-120019",
+      "files": 168,
+      "bytes": 319462785,
+      "allocated_file_bytes": 319823872
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/localization-only-20260909-113043",
+      "files": 28,
+      "bytes": 268988329,
+      "allocated_file_bytes": 269058048
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-live-followup-20260910T061054Z",
+      "files": 419,
+      "bytes": 210559796,
+      "allocated_file_bytes": 211263488
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-heading-hold-20260910",
+      "files": 350,
+      "bytes": 207088962,
+      "allocated_file_bytes": 207585280
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/physical-body-look18-20260910T140758Z",
+      "files": 295,
+      "bytes": 191645209,
+      "allocated_file_bytes": 191975424
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-15deg-20260910",
+      "files": 129,
+      "bytes": 186470660,
+      "allocated_file_bytes": 186908672
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-retest-20260910T072715Z",
+      "files": 310,
+      "bytes": 162721483,
+      "allocated_file_bytes": 163196928
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-attained-look-20260910T143357Z",
+      "files": 269,
+      "bytes": 157197750,
+      "allocated_file_bytes": 157540352
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-registration-audit-20260913",
+      "files": 41,
+      "bytes": 135834639,
+      "allocated_file_bytes": 135876608
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/physical-attained-look-20260910T143032Z",
+      "files": 213,
+      "bytes": 134522362,
+      "allocated_file_bytes": 134762496
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/direct-goal-retry-20260911T065240Z",
+      "files": 200,
+      "bytes": 108201795,
+      "allocated_file_bytes": 108474368
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/episode-archives-20260912",
+      "files": 4,
+      "bytes": 104741836,
+      "allocated_file_bytes": 104747008
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/boot-inference-check-20260912-2113",
+      "files": 523,
+      "bytes": 94312814,
+      "allocated_file_bytes": 95535104
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/localization-only-20260907-171557",
+      "files": 14,
+      "bytes": 75925689,
+      "allocated_file_bytes": 75960320
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/live-observation-fix-20260909",
+      "files": 431,
+      "bytes": 70170386,
+      "allocated_file_bytes": 71192576
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/look-noop-validation-20260909",
+      "files": 450,
+      "bytes": 64103305,
+      "allocated_file_bytes": 65343488
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-after-stretch-retry-20260909-190601",
+      "files": 315,
+      "bytes": 62277053,
+      "allocated_file_bytes": 63102976
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-direct-goal-20260911T055407Z",
+      "files": 293,
+      "bytes": 60837203,
+      "allocated_file_bytes": 61370368
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/idle-audit-20260907-1124",
+      "files": 26,
+      "bytes": 55922712,
+      "allocated_file_bytes": 55975936
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/straight-heading-hold-20260910",
+      "files": 91,
+      "bytes": 51438121,
+      "allocated_file_bytes": 51560448
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-sweep-fix-20260909-162259",
+      "files": 249,
+      "bytes": 50617115,
+      "allocated_file_bytes": 51302400
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-terminal-audit-20260912",
+      "files": 127,
+      "bytes": 48843317,
+      "allocated_file_bytes": 49152000
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/stretch-probe-20260909",
+      "files": 27,
+      "bytes": 36824339,
+      "allocated_file_bytes": 36900864
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/map-free-validation-20260907",
+      "files": 78,
+      "bytes": 36057175,
+      "allocated_file_bytes": 36249600
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-noop-20260909-153022",
+      "files": 209,
+      "bytes": 35792522,
+      "allocated_file_bytes": 36347904
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-pitch-probe-20260909-181610",
+      "files": 35,
+      "bytes": 32534000,
+      "allocated_file_bytes": 32641024
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/robot-full-validation",
+      "files": 21,
+      "bytes": 30131152,
+      "allocated_file_bytes": 30183424
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fresh-goal-image-probe-20260909",
+      "files": 35,
+      "bytes": 28719712,
+      "allocated_file_bytes": 28794880
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/episode-archives-20260913",
+      "files": 10,
+      "bytes": 27921667,
+      "allocated_file_bytes": 27938816
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260909-124843",
+      "files": 135,
+      "bytes": 26872114,
+      "allocated_file_bytes": 27238400
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/robot-integration-fix-20260908-152843",
+      "files": 460,
+      "bytes": 20958151,
+      "allocated_file_bytes": 22106112
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-offline-audit-20260909",
+      "files": 120,
+      "bytes": 18766176,
+      "allocated_file_bytes": 19087360
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/pre-drive-qualification-20260910",
+      "files": 267,
+      "bytes": 13643401,
+      "allocated_file_bytes": 14323712
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-distance-audit-20260912T000620KST",
+      "files": 410,
+      "bytes": 13028380,
+      "allocated_file_bytes": 13942784
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-look-up-20260910T093131Z",
+      "files": 11,
+      "bytes": 12192672,
+      "allocated_file_bytes": 12226560
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-observed-return-20260910T092922Z",
+      "files": 11,
+      "bytes": 12134563,
+      "allocated_file_bytes": 12169216
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-auto-stop-return-20260910T092410Z",
+      "files": 11,
+      "bytes": 12105168,
+      "allocated_file_bytes": 12140544
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-post-drive-20260913",
+      "files": 568,
+      "bytes": 11061479,
+      "allocated_file_bytes": 12513280
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-ramp-down-20260910T091209Z",
+      "files": 12,
+      "bytes": 10878808,
+      "allocated_file_bytes": 10911744
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-view-retry-20260909-180639",
+      "files": 86,
+      "bytes": 10691663,
+      "allocated_file_bytes": 10915840
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-feedback-return-20260910T092146Z",
+      "files": 9,
+      "bytes": 10036159,
+      "allocated_file_bytes": 10063872
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/live-feedback-replan-20260910",
+      "files": 44,
+      "bytes": 9708324,
+      "allocated_file_bytes": 9814016
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/pixnav-reference-audit-20260910",
+      "files": 416,
+      "bytes": 9611478,
+      "allocated_file_bytes": 10600448
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-smooth-return-20260910T091831Z",
+      "files": 9,
+      "bytes": 9325453,
+      "allocated_file_bytes": 9351168
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/look-action-noop-audit-20260909",
+      "files": 61,
+      "bytes": 8624420,
+      "allocated_file_bytes": 8790016
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-deep-handoff-20260911T134302Z",
+      "files": 394,
+      "bytes": 8440495,
+      "allocated_file_bytes": 9334784
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-expanded-audit-20260912",
+      "files": 432,
+      "bytes": 8325430,
+      "allocated_file_bytes": 9306112
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-camera-contract-fix-20260910",
+      "files": 46,
+      "bytes": 8209781,
+      "allocated_file_bytes": 8323072
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-five-checks-20260911T132117Z",
+      "files": 372,
+      "bytes": 7841106,
+      "allocated_file_bytes": 8691712
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-post-campaign-20260911T121745Z",
+      "files": 360,
+      "bytes": 7784542,
+      "allocated_file_bytes": 8597504
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-3m-20260907-170700",
+      "files": 27,
+      "bytes": 7712656,
+      "allocated_file_bytes": 7786496
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-transition-audit-20260912",
+      "files": 413,
+      "bytes": 7550726,
+      "allocated_file_bytes": 8466432
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-camera-audit-20260909-130212",
+      "files": 45,
+      "bytes": 7368825,
+      "allocated_file_bytes": 7471104
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-look-forward-focus-20260911T144021Z",
+      "files": 366,
+      "bytes": 7143098,
+      "allocated_file_bytes": 7958528
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/five-goal-recording-prep-20260913",
+      "files": 529,
+      "bytes": 7023372,
+      "allocated_file_bytes": 8253440
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-camera-recovery-20260910",
+      "files": 44,
+      "bytes": 6842627,
+      "allocated_file_bytes": 6955008
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-100hz-down-20260910T090922Z",
+      "files": 8,
+      "bytes": 6178857,
+      "allocated_file_bytes": 6205440
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-pose-down-20260910T090833Z",
+      "files": 8,
+      "bytes": 5956364,
+      "allocated_file_bytes": 5980160
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/async-response-fix-20260909",
+      "files": 44,
+      "bytes": 5944214,
+      "allocated_file_bytes": 6049792
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/look-alternatives-20260910",
+      "files": 23,
+      "bytes": 5940412,
+      "allocated_file_bytes": 5992448
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907",
+      "files": 44,
+      "bytes": 4336298,
+      "allocated_file_bytes": 4448256
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-offline-replay-20260909",
+      "files": 26,
+      "bytes": 3770069,
+      "allocated_file_bytes": 3837952
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-3m-20260907-165629",
+      "files": 26,
+      "bytes": 3593777,
+      "allocated_file_bytes": 3661824
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-coverage-audit-20260910T122158Z",
+      "files": 87,
+      "bytes": 3534348,
+      "allocated_file_bytes": 3764224
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-camera-head-experiment-20260910",
+      "files": 17,
+      "bytes": 3309908,
+      "allocated_file_bytes": 3334144
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-pair-down-20260910T085022Z",
+      "files": 5,
+      "bytes": 3079163,
+      "allocated_file_bytes": 3092480
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-down-20260910T084806Z",
+      "files": 5,
+      "bytes": 3063106,
+      "allocated_file_bytes": 3076096
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/fixed-camera-view-20260909",
+      "files": 43,
+      "bytes": 3015708,
+      "allocated_file_bytes": 3112960
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-pitch-lowlevel-feasibility-20260909",
+      "files": 8,
+      "bytes": 2970643,
+      "allocated_file_bytes": 2990080
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-3m-20260907-163615",
+      "files": 23,
+      "bytes": 2962912,
+      "allocated_file_bytes": 3014656
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907-152653-retry2",
+      "files": 13,
+      "bytes": 2476789,
+      "allocated_file_bytes": 2506752
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/mapgoal-latency-audit-20260912",
+      "files": 31,
+      "bytes": 2095415,
+      "allocated_file_bytes": 2162688
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907-152653",
+      "files": 13,
+      "bytes": 2064503,
+      "allocated_file_bytes": 2093056
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/look-causal-isolation-20260910",
+      "files": 4,
+      "bytes": 2026565,
+      "allocated_file_bytes": 2035712
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-timeout-15s-20260907-170353",
+      "files": 38,
+      "bytes": 1968258,
+      "allocated_file_bytes": 2076672
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907-153252-resume",
+      "files": 9,
+      "bytes": 1954402,
+      "allocated_file_bytes": 1982464
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-offline-continuation-20260909",
+      "files": 48,
+      "bytes": 1947401,
+      "allocated_file_bytes": 2068480
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-3m-continue-20260907-171150",
+      "files": 25,
+      "bytes": 1819913,
+      "allocated_file_bytes": 1884160
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-preturn-fix-20260909-160047",
+      "files": 30,
+      "bytes": 1660504,
+      "allocated_file_bytes": 1732608
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-3m-20260907-162257",
+      "files": 19,
+      "bytes": 1415604,
+      "allocated_file_bytes": 1458176
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/git-handoff-20260909",
+      "files": 4,
+      "bytes": 1347076,
+      "allocated_file_bytes": 1355776
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907-152653-retry1",
+      "files": 7,
+      "bytes": 1270604,
+      "allocated_file_bytes": 1290240
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-body-look-integration-20260910",
+      "files": 60,
+      "bytes": 1258065,
+      "allocated_file_bytes": 1429504
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-precharge-fixes-20260910T115035Z",
+      "files": 75,
+      "bytes": 1214954,
+      "allocated_file_bytes": 1421312
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/robot-boot-check-20260912T0610Z",
+      "files": 13,
+      "bytes": 958174,
+      "allocated_file_bytes": 991232
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-handoff-20260913-mapgoal",
+      "files": 16,
+      "bytes": 958037,
+      "allocated_file_bytes": 978944
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-full-budget-20260912",
+      "files": 9,
+      "bytes": 945699,
+      "allocated_file_bytes": 966656
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-after-stretch-20260909-190137",
+      "files": 21,
+      "bytes": 944970,
+      "allocated_file_bytes": 995328
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-api-definition-20260910",
+      "files": 12,
+      "bytes": 940879,
+      "allocated_file_bytes": 962560
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/live-ready-20260911T063910Z",
+      "files": 8,
+      "bytes": 931157,
+      "allocated_file_bytes": 946176
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/look-neutral-return-20260910",
+      "files": 4,
+      "bytes": 903287,
+      "allocated_file_bytes": 913408
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/sweep-failure-fix-20260909",
+      "files": 9,
+      "bytes": 844824,
+      "allocated_file_bytes": 868352
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-3m-20260907-165034",
+      "files": 15,
+      "bytes": 830764,
+      "allocated_file_bytes": 872448
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-recovery-audit-20260910T125021Z",
+      "files": 37,
+      "bytes": 759636,
+      "allocated_file_bytes": 851968
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907-153837-retry",
+      "files": 11,
+      "bytes": 647512,
+      "allocated_file_bytes": 679936
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/goal-conditioning-probe-20260909",
+      "files": 5,
+      "bytes": 588009,
+      "allocated_file_bytes": 598016
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/full-drive-5m-20260907-154007-retry",
+      "files": 11,
+      "bytes": 578921,
+      "allocated_file_bytes": 610304
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/goal-frame-fix-20260909",
+      "files": 30,
+      "bytes": 503527,
+      "allocated_file_bytes": 577536
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/drive-log-review-20260908",
+      "files": 13,
+      "bytes": 411440,
+      "allocated_file_bytes": 442368
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/lidar-control-removal-20260907-162859",
+      "files": 60,
+      "bytes": 366641,
+      "allocated_file_bytes": 520192
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/robot-launch-readiness-20260910T133524Z",
+      "files": 53,
+      "bytes": 312238,
+      "allocated_file_bytes": 475136
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-old-map-goals-20260913",
+      "files": 19,
+      "bytes": 279046,
+      "allocated_file_bytes": 323584
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/mapping-preparation-20260907",
+      "files": 11,
+      "bytes": 268877,
+      "allocated_file_bytes": 307200
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/preturn-observation-fix-20260909",
+      "files": 8,
+      "bytes": 249758,
+      "allocated_file_bytes": 270336
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-deadband-fix-20260907-165317",
+      "files": 29,
+      "bytes": 162662,
+      "allocated_file_bytes": 245760
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-stability-fix-20260912",
+      "files": 11,
+      "bytes": 160556,
+      "allocated_file_bytes": 188416
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-settling-fix-20260907-164441",
+      "files": 31,
+      "bytes": 159491,
+      "allocated_file_bytes": 241664
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/localization-diagnosis-20260909-121949",
+      "files": 4,
+      "bytes": 155331,
+      "allocated_file_bytes": 163840
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-replay-20260909",
+      "files": 13,
+      "bytes": 141711,
+      "allocated_file_bytes": 163840
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-speed-audit-20260912",
+      "files": 4,
+      "bytes": 137610,
+      "allocated_file_bytes": 147456
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/attained-body-look-20260910T142308Z",
+      "files": 25,
+      "bytes": 118195,
+      "allocated_file_bytes": 188416
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-full-20260912-ordered-pose",
+      "files": 29,
+      "bytes": 107733,
+      "allocated_file_bytes": 167936
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-slow-approach-20260912",
+      "files": 7,
+      "bytes": 105632,
+      "allocated_file_bytes": 122880
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-zero-hold-20260912",
+      "files": 7,
+      "bytes": 103665,
+      "allocated_file_bytes": 122880
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-recoil-fix-20260912",
+      "files": 22,
+      "bytes": 90400,
+      "allocated_file_bytes": 147456
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-look-implementation-20260910",
+      "files": 12,
+      "bytes": 80031,
+      "allocated_file_bytes": 114688
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/heading-hold-20260910",
+      "files": 6,
+      "bytes": 68787,
+      "allocated_file_bytes": 81920
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-pitch-api-audit-20260909",
+      "files": 13,
+      "bytes": 56945,
+      "allocated_file_bytes": 86016
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-measured-bias-20260912",
+      "files": 5,
+      "bytes": 53111,
+      "allocated_file_bytes": 69632
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-rest-margin-20260912",
+      "files": 5,
+      "bytes": 52030,
+      "allocated_file_bytes": 65536
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/goal-geometry-causal-audit-20260910",
+      "files": 6,
+      "bytes": 45954,
+      "allocated_file_bytes": 57344
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/rotation-half-rad-20260912",
+      "files": 6,
+      "bytes": 45077,
+      "allocated_file_bytes": 61440
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/body-pitch-strategy-20260910",
+      "files": 8,
+      "bytes": 26560,
+      "allocated_file_bytes": 45056
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/boot-readonly-check-20260912-2107",
+      "files": 7,
+      "bytes": 9109,
+      "allocated_file_bytes": 24576
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/goal-audit-20260909-121055",
+      "files": 2,
+      "bytes": 6046,
+      "allocated_file_bytes": 12288
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-training-feasibility-20260910",
+      "files": 2,
+      "bytes": 5706,
+      "allocated_file_bytes": 12288
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/measured-preturn-20260909",
+      "files": 5,
+      "bytes": 4414,
+      "allocated_file_bytes": 20480
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/prepared-map-goals-20260912",
+      "files": 1,
+      "bytes": 2083,
+      "allocated_file_bytes": 4096
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/jetson-followup-20260911",
+      "files": 4,
+      "bytes": 1199,
+      "allocated_file_bytes": 16384
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/saved-goal-operator",
+      "files": 1,
+      "bytes": 0,
+      "allocated_file_bytes": 0
+    }
+  ],
+  "campaign_episode_totals": {
+    "recording-five-goals-20260913": 88093878383,
+    "recording-five-goals-long5-20260913": 8103653306,
+    "recording-five-goals-recaptured5-20260914": 24636266829
+  },
+  "result_files": 25,
+  "episode_directories": 83
+}

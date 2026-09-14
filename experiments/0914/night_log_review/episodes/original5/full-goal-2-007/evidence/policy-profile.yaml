@@ -1,0 +1,121 @@
+schema_version: navigation_run_v1
+
+run:
+  task: pointnav
+  executor: pixnav
+  mode: async
+  profile: release
+  start_episode_index: 0
+  episode_count: 5
+  max_steps: 600
+  episode_timeout_s: 1800
+  ros_domain_id: 180
+
+model:
+  backend: live_vlm
+  adapter: live
+  endpoint: http://server-02.cgv:8000/v1/chat/completions
+  name: qwen3.5-9b-instruct
+  timeout_s: 120
+  max_retries: 3
+  max_tokens: 1024
+  data_parallel_rank: 0
+  api_key_env: VLM_API_KEY
+
+isolation:
+  experiment_id: obs-timing-fixed40-v3-qwen35-9b
+  worker_id: worker-01
+  compose_project_name: obs-timing-fixed40-v3-qwen35-9b-worker-01
+  gpu_device_ids: ["0"]
+  exclusive_gpu: false
+  ros_localhost_only: true
+  rmw_implementation: rmw_fastrtps_cpp
+  ipc_mode: host
+  image_tag: latest
+  reference_runtime_tag: 5d89044
+  output_root: .local-data/vlm-s2e/outputs
+  dataset_root: .local-data/vlm-s2e/datasets
+  hm3d_root: .local-data/vlm-s2e/versioned_data/hm3d-0.2/hm3d
+  s2e_checkpoint: .local-data/vlm-s2e/checkpoints/s2e/best.pt
+  s2e_checkpoint_sha256: ccee3f00ed876fa252586f40ddf2775501ba2f582548483cb2e6897cfd24aac6
+  pixnav_checkpoint: .local-data/vlm-s2e/checkpoints/pixelnav_A.ckpt
+
+policy:
+  common:
+    VLM_POINT_VERIFIER_CONCURRENCY: 4
+    VLM_PAPER_OBSERVATION_VARIANT: adaptive
+    VLM_PAPER_OBSERVATION_TIMING_VARIANT: adaptive
+    VLM_PAPER_OBSERVATION_PERIOD_SEGMENTS: 1
+    VLM_ADAPTIVE_OBSERVATION_WATCHDOG_SEGMENTS: 3
+    VLM_ADAPTIVE_OBSERVATION_MAX_GOAL_BEARING_DEG: 90
+    VLM_ADAPTIVE_IMPROVED_METRIC_STOP_GUARD_ENABLED: true
+    VLM_DEADLOCK_MEMORY_ENABLED: true
+    VLM_PAPER_MEMORY_VARIANT: directional
+    VLM_DEADLOCK_RECOVERY_MODE: "off"
+    VLM_CHECKPOINT_RECOVERY_ENABLED: false
+    POINTNAV_SCREENING_METRICS: 1
+    VLM_MODEL_CALL_LOG_INCLUDE_REQUEST_PAYLOAD: false
+    VLM_FALLBACK_SWEEP_ENABLED: true
+    VLM_ASYNC_PREFETCH: true
+    VLM_REFERENCE_ASYNC_PREFETCH: true
+    VLM_SWEEP_PREFETCH_MODE: independent_resume_prefetch
+    VLM_SWEEP_WATCHDOG_STEPS: 50
+    VLM_SWEEP_COORDINATION_TIMEOUT_S: 90
+    HABITAT_EPISODE_READY_TIMEOUT_S: 120
+    HABITAT_EPISODE_TASK_REPUBLISH_S: 1
+    HABITAT_EPISODE_ARTIFACT_GATE_ENABLED: true
+    HABITAT_EPISODE_ARTIFACT_TIMEOUT_S: 300
+    VLM_POLICY_STARVATION_FAILURE_STREAK: 6
+    VLM_POLICY_STARVATION_FULL_SWEEPS: 1
+    VLM_POLICY_STARVATION_COVERAGE_STALLS: 3
+    VLM_DEADLOCK_TRANSLATION_EPSILON_M: 0.08
+    VLM_DEADLOCK_STAGNATION_OUTCOMES: 2
+    VLM_DEADLOCK_OSCILLATION_ANGLE_DEG: 120
+    VLM_RECOVERY_MINIMUM_DISPLACEMENT_M: 0.25
+    VLM_RECOVERY_OBSERVATION_MAX_TRANSLATION_M: 0.35
+    VOCA_COLLISION_PROGRESS_MIN_TRANSLATION_M: 0.75
+    VOCA_COLLISION_PROGRESS_MAX_COLLISIONS: 1
+  task_overrides:
+    pointnav:
+      VLM_POINTNAV_INITIAL_GOAL_ALIGN_ENABLED: true
+      VLM_POINTNAV_INITIAL_ALIGN_MIN_BEARING_DEG: 15
+      VLM_POINTNAV_INITIAL_SWEEP_HALF_WIDTH_DEG: 30
+      VLM_POINTNAV_RECOVERY_GOAL_ALIGN_ENABLED: true
+      VLM_POINTNAV_RECOVERY_ALIGN_MIN_BEARING_DEG: 15
+      VLM_POINTNAV_RECOVERY_SWEEP_HALF_WIDTH_DEG: 30
+      VLM_POINTNAV_GOAL_BEARING_CHECKPOINT_ENABLED: true
+      VLM_POINTNAV_PIXNAV_SINGLE_VIEW_GOAL_ALIGNMENT_ENABLED: true
+      VLM_POINTNAV_PIXNAV_SINGLE_VIEW_GOAL_ALIGNMENT_MIN_ABS_BEARING_DEG: 45
+      VOCA_ASYNC_NO_PROGRESS_SWEEP_BUDGET: 3
+      VLM_POINTNAV_NO_PROGRESS_FAILURE_STOP_AFTER: 0
+      VLM_POINTNAV_OWNERSHIP_CONFLICT_FAILURE_STOP_AFTER: 0
+      VLM_POINTNAV_SAME_POSE_FAILURE_STOP_AFTER: 1000
+  executor_overrides:
+    pixnav:
+      PIXNAV_MAX_GO_STEPS: 50
+      # Keep the 10 Hz sensor bridge while issuing discrete 0.25 m actions at
+      # no more than 2 Hz (0.5 m/s equivalent forward speed).
+      PIXNAV_ACTION_PERIOD_S: 0.5
+      PIXNAV_COLLISION_BACKOFF_M: 0.25
+      PIXNAV_COLLISION_ESCAPE_TURN_STEPS: 3
+      PIXNAV_COLLISION_ESCAPE_LATERAL_M: 0.25
+      PIXNAV_COLLISION_ESCAPE_TURN_ACTION: turn_right
+      PIXNAV_COLLISION_ESCAPE_MIN_GOAL_DISTANCE_M: 3.0
+      PIXNAV_RECOVERY_PROGRESS_EPSILON_M: 0.05
+      PIXNAV_POINTNAV_NEAR_GOAL_ESCAPE_ENABLED: true
+      PIXNAV_POINTNAV_NEAR_GOAL_ESCAPE_MARGIN_M: 0.10
+      PIXNAV_POINTNAV_NEAR_GOAL_ESCAPE_TURN_STEPS: 6
+      PIXNAV_POINTNAV_NEAR_GOAL_ESCAPE_FORWARD_DISTANCE_M: 0.25
+
+simulator:
+  # Preserve PixNav's 0.25 m / 30 deg macro actions while publishing five
+  # collision-aware intermediate sensor poses at the 10 Hz bridge cadence.
+  HABITAT_CONTROL_PERIOD_S: 0.1
+  HABITAT_PARAMETERIZED_MOTION_SUBSTEPS: 5
+  HABITAT_ACTION_PERIOD_S: 0.2
+  HABITAT_ROBOT_RADIUS_M: 0.18
+  HABITAT_ROBOT_HEIGHT_M: 0.88
+  HABITAT_SUCCESS_DISTANCE_M: 1.0
+  HABITAT_POINTNAV_SUCCESS_DISTANCE_M: 1.0
+  HABITAT_ALLOW_SLIDING: false
+  HABITAT_POINTNAV_ALLOW_SLIDING: false

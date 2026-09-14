@@ -1,0 +1,15 @@
+{
+  "status": "received",
+  "direct_intervention": true,
+  "contact": null,
+  "obstruction": null,
+  "physical_within_goal_radius_verified": null,
+  "physical_final_distance_m": null,
+  "measurement_method": "operator_report",
+  "operator_comment": "지금 의자에 박을것 같아서 강제종료했어",
+  "operator_reported_stop_reason": "collision_risk_near_chair",
+  "operator_reported_hazard": "chair",
+  "physical_contact_confirmed": null,
+  "reported_unix": 1789296418.4425943,
+  "termination_classification": "operator_intervention_collision_risk"
+}

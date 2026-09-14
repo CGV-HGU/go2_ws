@@ -1,0 +1,10 @@
+{
+  "status": "awaiting_field_report",
+  "direct_intervention": null,
+  "contact": null,
+  "obstruction": null,
+  "physical_within_goal_radius_verified": null,
+  "physical_final_distance_m": null,
+  "measurement_method": null,
+  "operator_comment": null
+}

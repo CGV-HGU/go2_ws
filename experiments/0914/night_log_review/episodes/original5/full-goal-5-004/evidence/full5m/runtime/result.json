@@ -1,0 +1,1735 @@
+{
+  "reason": "CONTROLLER_INHIBITED:NO_MOTION_PROGRESS",
+  "goal_frame": "odom",
+  "goal_label": "5",
+  "success_distance_m": 1.0,
+  "max_duration_s": 360.0,
+  "navigation_mode": "full",
+  "look_execution": "forward_0p2",
+  "goal_published": true,
+  "shutdown_service_confirmed": true,
+  "goal_distance_m": 3.8438215255737305,
+  "results": [
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299515,
+          "nanosec": 89110322
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-04d7643a1cf359cabe040255-step-0",
+      "action_result_id": "result-pixnav-04d7643a1cf359cabe040255-step-0",
+      "trajectory_id": "c27873b039b5c09dae1faed1",
+      "generation": 1,
+      "habitat_step_index": 1,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299515,
+            "nanosec": 89110322
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 0.18640198498887078,
+            "y": 0.13534896468425114,
+            "z": 0.3055172264575958
+          },
+          "orientation": {
+            "x": -0.009702164479282007,
+            "y": 0.02595044454733977,
+            "z": 0.24456074427343505,
+            "w": 0.9692380949965989
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299516,
+          "nanosec": 760041661
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-46b956e1f288dcaf8d4ce944-step-1",
+      "action_result_id": "result-pixnav-46b956e1f288dcaf8d4ce944-step-1",
+      "trajectory_id": "c27873b039b5c09dae1faed1",
+      "generation": 1,
+      "habitat_step_index": 2,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299516,
+            "nanosec": 760041661
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 0.38143225968393835,
+            "y": 0.23457283456429123,
+            "z": 0.3059419095516205
+          },
+          "orientation": {
+            "x": -0.0152495562442292,
+            "y": 0.026072235530454742,
+            "z": 0.2555958193199072,
+            "w": 0.9663117854579772
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299518,
+          "nanosec": 338688321
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-2ffcb7a5357878622f0d637d-step-2",
+      "action_result_id": "result-pixnav-2ffcb7a5357878622f0d637d-step-2",
+      "trajectory_id": "c27873b039b5c09dae1faed1",
+      "generation": 1,
+      "habitat_step_index": 3,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299518,
+            "nanosec": 338688321
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 0.5690539870295228,
+            "y": 0.3457663769849297,
+            "z": 0.3046960234642029
+          },
+          "orientation": {
+            "x": -0.015471752893508071,
+            "y": 0.01457654286056469,
+            "z": 0.25591835150758446,
+            "w": 0.9664646639284216
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299519,
+          "nanosec": 905135341
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-b027afbdc55c23ba83e3a858-step-3",
+      "action_result_id": "result-pixnav-b027afbdc55c23ba83e3a858-step-3",
+      "trajectory_id": "c27873b039b5c09dae1faed1",
+      "generation": 1,
+      "habitat_step_index": 4,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299519,
+            "nanosec": 905135341
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 0.8013134980812687,
+            "y": 0.4791786302918624,
+            "z": 0.30198782682418823
+          },
+          "orientation": {
+            "x": -0.018013041735783032,
+            "y": 0.013241927534589523,
+            "z": 0.254195005906917,
+            "w": 0.9668945550858046
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299521,
+          "nanosec": 668299623
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-5a940ca3a3b4ddc724bb453a-step-0",
+      "action_result_id": "result-pixnav-5a940ca3a3b4ddc724bb453a-step-0",
+      "trajectory_id": "65ebf5789db33ce34a73085a",
+      "generation": 2,
+      "habitat_step_index": 5,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299521,
+            "nanosec": 668299623
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 0.9741528836420481,
+            "y": 0.5809047637170704,
+            "z": 0.30438169836997986
+          },
+          "orientation": {
+            "x": -0.02296116323105265,
+            "y": 0.0058165815037576184,
+            "z": 0.24795871654797913,
+            "w": 0.9684809896175381
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299523,
+          "nanosec": 351524539
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-6ec1c5d1729f7009f19e7286-step-1",
+      "action_result_id": "result-pixnav-6ec1c5d1729f7009f19e7286-step-1",
+      "trajectory_id": "65ebf5789db33ce34a73085a",
+      "generation": 2,
+      "habitat_step_index": 6,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299523,
+            "nanosec": 351524539
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.1660727684117236,
+            "y": 0.6967509967218952,
+            "z": 0.3069744110107422
+          },
+          "orientation": {
+            "x": -0.023827863241532757,
+            "y": 0.014081740198397311,
+            "z": 0.25477528735085053,
+            "w": 0.9666041022474605
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299524,
+          "nanosec": 966656156
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-c5d95b030a349cf04e9a7256-step-2",
+      "action_result_id": "result-pixnav-c5d95b030a349cf04e9a7256-step-2",
+      "trajectory_id": "65ebf5789db33ce34a73085a",
+      "generation": 2,
+      "habitat_step_index": 7,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299524,
+            "nanosec": 966656156
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.3551631107026394,
+            "y": 0.8161820030330146,
+            "z": 0.306578665971756
+          },
+          "orientation": {
+            "x": -0.023662121882560273,
+            "y": 0.01461091970779243,
+            "z": 0.25362492271440873,
+            "w": 0.9669027994537079
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299528,
+          "nanosec": 324590154
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-2615a1c42fe6d627ccedf8be-step-3",
+      "action_result_id": "result-pixnav-2615a1c42fe6d627ccedf8be-step-3",
+      "trajectory_id": "65ebf5789db33ce34a73085a",
+      "generation": 2,
+      "habitat_step_index": 8,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299528,
+            "nanosec": 324590154
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.3773824304804445,
+            "y": 0.8020956784350673,
+            "z": 0.3065744936466217
+          },
+          "orientation": {
+            "x": -0.028864455129734585,
+            "y": 0.008288083842801962,
+            "z": 0.013768250164535312,
+            "w": 0.9994541441125175
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299531,
+          "nanosec": 247645564
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-2029cb26f138f0d5b16ac1c8-preturn-0",
+      "action_result_id": "result-pixnav-2029cb26f138f0d5b16ac1c8-preturn-0",
+      "trajectory_id": "2029cb26f138f0d5b16ac1c8",
+      "generation": 3,
+      "habitat_step_index": 9,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299531,
+            "nanosec": 247645564
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.377952105194523,
+            "y": 0.7889574929556105,
+            "z": 0.30830109119415283
+          },
+          "orientation": {
+            "x": -0.027045070747990542,
+            "y": 0.010713943620957773,
+            "z": 0.25811743862314,
+            "w": 0.9656754959296381
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299532,
+          "nanosec": 893889613
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-e28dcdb55160d29a6e3fee5d-step-0",
+      "action_result_id": "result-pixnav-e28dcdb55160d29a6e3fee5d-step-0",
+      "trajectory_id": "2029cb26f138f0d5b16ac1c8",
+      "generation": 3,
+      "habitat_step_index": 10,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299532,
+            "nanosec": 893889613
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.568914150107799,
+            "y": 0.9021608454561809,
+            "z": 0.3088375926017761
+          },
+          "orientation": {
+            "x": -0.023293295049263998,
+            "y": 0.01208349943111263,
+            "z": 0.2716097988565588,
+            "w": 0.9620496497646812
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299535,
+          "nanosec": 960478969
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-b1f7c3b7e0e1bea8a82decf5-step-1",
+      "action_result_id": "result-pixnav-b1f7c3b7e0e1bea8a82decf5-step-1",
+      "trajectory_id": "2029cb26f138f0d5b16ac1c8",
+      "generation": 3,
+      "habitat_step_index": 11,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299535,
+            "nanosec": 960478969
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.5659372962924403,
+            "y": 0.9007544102855433,
+            "z": 0.3090643882751465
+          },
+          "orientation": {
+            "x": -0.017743695887656376,
+            "y": 0.00984296716451697,
+            "z": 0.015222313005901378,
+            "w": 0.9996782274514109
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299537,
+          "nanosec": 553530879
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-4e1bb82cd8c2e0cc6332027e-step-2",
+      "action_result_id": "result-pixnav-4e1bb82cd8c2e0cc6332027e-step-2",
+      "trajectory_id": "2029cb26f138f0d5b16ac1c8",
+      "generation": 3,
+      "habitat_step_index": 12,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299537,
+            "nanosec": 553530879
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.826989865440228,
+            "y": 0.9218918876890893,
+            "z": 0.3041583299636841
+          },
+          "orientation": {
+            "x": -0.010547457417624634,
+            "y": 0.01442697947328579,
+            "z": 0.0292940897809022,
+            "w": 0.9994110614302851
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299566,
+          "nanosec": 957880921
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-31084abd36708e704d19279c-step-0",
+      "action_result_id": "result-pixnav-31084abd36708e704d19279c-step-0",
+      "trajectory_id": "8a5cda8631d34b60613414fb",
+      "generation": 4,
+      "habitat_step_index": 13,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299566,
+            "nanosec": 957880921
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.8194338444836962,
+            "y": 1.0525367649800026,
+            "z": 0.29867023229599
+          },
+          "orientation": {
+            "x": -0.02297226646363346,
+            "y": 0.0189987648116988,
+            "z": 0.2702200085594934,
+            "w": 0.962336983017519
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299568,
+          "nanosec": 524962373
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-d76f9c2033e9502306ed86f3-step-1",
+      "action_result_id": "result-pixnav-d76f9c2033e9502306ed86f3-step-1",
+      "trajectory_id": "8a5cda8631d34b60613414fb",
+      "generation": 4,
+      "habitat_step_index": 14,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299568,
+            "nanosec": 524962373
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 2.0031789810898486,
+            "y": 1.1761078498297945,
+            "z": 0.30501431226730347
+          },
+          "orientation": {
+            "x": -0.022029578194078563,
+            "y": 0.011300933393397647,
+            "z": 0.2720459997711242,
+            "w": 0.9619656753738973
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299573,
+          "nanosec": 603004642
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-8ebd1d85864b3f53336d8d65-step-2",
+      "action_result_id": "result-pixnav-8ebd1d85864b3f53336d8d65-step-2",
+      "trajectory_id": "8a5cda8631d34b60613414fb",
+      "generation": 4,
+      "habitat_step_index": 15,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299573,
+            "nanosec": 603004642
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.9613816099398487,
+            "y": 1.2050004019029912,
+            "z": 0.302529901266098
+          },
+          "orientation": {
+            "x": -0.03103030553793593,
+            "y": 0.010026643541167812,
+            "z": 0.5083803437541655,
+            "w": 0.8605149694467361
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299579,
+          "nanosec": 222546287
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-815ed33aee3ef0ff6c9d0858-preturn-0",
+      "action_result_id": "result-pixnav-815ed33aee3ef0ff6c9d0858-preturn-0",
+      "trajectory_id": "815ed33aee3ef0ff6c9d0858",
+      "generation": 5,
+      "habitat_step_index": 16,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299579,
+            "nanosec": 222546287
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 1.93767462760532,
+            "y": 1.2524188010610322,
+            "z": 0.30622461438179016
+          },
+          "orientation": {
+            "x": -0.0112527427041834,
+            "y": 0.036006630877400775,
+            "z": 0.27774683844054154,
+            "w": 0.9599133252803482
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299580,
+          "nanosec": 826064773
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-105bbfbe6756afd0df8bf4d4-step-0",
+      "action_result_id": "result-pixnav-105bbfbe6756afd0df8bf4d4-step-0",
+      "trajectory_id": "815ed33aee3ef0ff6c9d0858",
+      "generation": 5,
+      "habitat_step_index": 17,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299580,
+            "nanosec": 826064773
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 2.1203452808363106,
+            "y": 1.3808145756520096,
+            "z": 0.3034328520298004
+          },
+          "orientation": {
+            "x": -0.019373524028157115,
+            "y": 0.025090676633721325,
+            "z": 0.3021739328834148,
+            "w": 0.9527255842048967
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299582,
+          "nanosec": 576287217
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-80f1b55b676435c2121afefc-step-1",
+      "action_result_id": "result-pixnav-80f1b55b676435c2121afefc-step-1",
+      "trajectory_id": "815ed33aee3ef0ff6c9d0858",
+      "generation": 5,
+      "habitat_step_index": 18,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299582,
+            "nanosec": 576287217
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 2.29246532664831,
+            "y": 1.5111693147438332,
+            "z": 0.3053491413593292
+          },
+          "orientation": {
+            "x": -0.02205486945922093,
+            "y": 0.011751241271535479,
+            "z": 0.2993531163191711,
+            "w": 0.9538150778907385
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299584,
+          "nanosec": 185440488
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-cbd0e906d2676680f8fafcbb-step-2",
+      "action_result_id": "result-pixnav-cbd0e906d2676680f8fafcbb-step-2",
+      "trajectory_id": "815ed33aee3ef0ff6c9d0858",
+      "generation": 5,
+      "habitat_step_index": 19,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299584,
+            "nanosec": 185440488
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 2.4728130128054575,
+            "y": 1.6386956212757051,
+            "z": 0.3050597310066223
+          },
+          "orientation": {
+            "x": -0.018008628220599114,
+            "y": 0.012556164290330681,
+            "z": 0.3006587632578298,
+            "w": 0.9534790716760377
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299585,
+          "nanosec": 948538966
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-2e29938692e4d06927274715-step-3",
+      "action_result_id": "result-pixnav-2e29938692e4d06927274715-step-3",
+      "trajectory_id": "815ed33aee3ef0ff6c9d0858",
+      "generation": 5,
+      "habitat_step_index": 20,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299585,
+            "nanosec": 948538966
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 2.682369395944411,
+            "y": 1.7926181462911555,
+            "z": 0.30657249689102173
+          },
+          "orientation": {
+            "x": -0.020183566616827818,
+            "y": 0.008917930340647105,
+            "z": 0.29503647218335416,
+            "w": 0.9552311627238007
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299587,
+          "nanosec": 909877725
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-f419c088917e0e1a6d661194-step-4",
+      "action_result_id": "result-pixnav-f419c088917e0e1a6d661194-step-4",
+      "trajectory_id": "815ed33aee3ef0ff6c9d0858",
+      "generation": 5,
+      "habitat_step_index": 21,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299587,
+            "nanosec": 909877725
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 2.8960484647946454,
+            "y": 1.9511487339560898,
+            "z": 0.30495163798332214
+          },
+          "orientation": {
+            "x": -0.02346532224749849,
+            "y": 0.008040105813440416,
+            "z": 0.29763821325793377,
+            "w": 0.9543564477484052
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299589,
+          "nanosec": 728906579
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-6f1f314d083d7d4967dd725b-step-0",
+      "action_result_id": "result-pixnav-6f1f314d083d7d4967dd725b-step-0",
+      "trajectory_id": "66c0212f377f6b9c5bf017ad",
+      "generation": 6,
+      "habitat_step_index": 22,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299589,
+            "nanosec": 728906579
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.068047343955876,
+            "y": 2.073864486101469,
+            "z": 0.30491894483566284
+          },
+          "orientation": {
+            "x": -0.01504613487608072,
+            "y": 0.009853503621851178,
+            "z": 0.29760986838372255,
+            "w": 0.9545181446846824
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299591,
+          "nanosec": 408093162
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-c1a732065babc6a525c3ac9b-step-1",
+      "action_result_id": "result-pixnav-c1a732065babc6a525c3ac9b-step-1",
+      "trajectory_id": "66c0212f377f6b9c5bf017ad",
+      "generation": 6,
+      "habitat_step_index": 23,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299591,
+            "nanosec": 408093162
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.241627520433513,
+            "y": 2.2129760506470006,
+            "z": 0.30706897377967834
+          },
+          "orientation": {
+            "x": -0.019868228521582557,
+            "y": 0.015115860508685842,
+            "z": 0.30306802189000065,
+            "w": 0.9526418730898711
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299594,
+          "nanosec": 221303649
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-1c10d0dd308944783e57a491-step-2",
+      "action_result_id": "result-pixnav-1c10d0dd308944783e57a491-step-2",
+      "trajectory_id": "66c0212f377f6b9c5bf017ad",
+      "generation": 6,
+      "habitat_step_index": 24,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299594,
+            "nanosec": 221303649
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.2412107500238734,
+            "y": 2.2323145811057925,
+            "z": 0.2999071180820465
+          },
+          "orientation": {
+            "x": -0.025240189279045838,
+            "y": 0.01458263542280543,
+            "z": 0.5507152314994608,
+            "w": 0.8341840404753491
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299595,
+          "nanosec": 954319901
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-c6f297e99dee395eeff8e5ea-step-3",
+      "action_result_id": "result-pixnav-c6f297e99dee395eeff8e5ea-step-3",
+      "trajectory_id": "66c0212f377f6b9c5bf017ad",
+      "generation": 6,
+      "habitat_step_index": 25,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299595,
+            "nanosec": 954319901
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.335209214514281,
+            "y": 2.4841814042418333,
+            "z": 0.3032477796077728
+          },
+          "orientation": {
+            "x": -0.027641859177087003,
+            "y": -0.007442991419900787,
+            "z": 0.5552718382195145,
+            "w": 0.8311761035907363
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299625,
+          "nanosec": 464539952
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-d0e24e98edfd662858e6dec8-preturn-0",
+      "action_result_id": "result-pixnav-d0e24e98edfd662858e6dec8-preturn-0",
+      "trajectory_id": "d0e24e98edfd662858e6dec8",
+      "generation": 7,
+      "habitat_step_index": 26,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299625,
+            "nanosec": 464539952
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.2987093590447656,
+            "y": 2.6016160122845227,
+            "z": 0.31080085039138794
+          },
+          "orientation": {
+            "x": -0.006216563559225008,
+            "y": 0.014892817723442751,
+            "z": 0.3439594187368758,
+            "w": 0.9388458215170161
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299628,
+          "nanosec": 27713246
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-d0e24e98edfd662858e6dec8-preturn-1",
+      "action_result_id": "result-pixnav-d0e24e98edfd662858e6dec8-preturn-1",
+      "trajectory_id": "d0e24e98edfd662858e6dec8",
+      "generation": 7,
+      "habitat_step_index": 27,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299628,
+            "nanosec": 27713246
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.292918864045808,
+            "y": 2.605986560352668,
+            "z": 0.3079123795032501
+          },
+          "orientation": {
+            "x": -0.009039205157121605,
+            "y": 0.01686803771888145,
+            "z": 0.09729725887270041,
+            "w": 0.9950713569837595
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299637,
+          "nanosec": 266716428
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-d0e24e98edfd662858e6dec8-preturn-2",
+      "action_result_id": "result-pixnav-d0e24e98edfd662858e6dec8-preturn-2",
+      "trajectory_id": "d0e24e98edfd662858e6dec8",
+      "generation": 7,
+      "habitat_step_index": 28,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299637,
+            "nanosec": 266716428
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.314029949185908,
+            "y": 2.6623092781410747,
+            "z": 0.31187841296195984
+          },
+          "orientation": {
+            "x": -0.0006889797857508066,
+            "y": 0.014215001776698571,
+            "z": -0.16314358629322856,
+            "w": 0.986499685394135
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299638,
+          "nanosec": 766611524
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-d4d7ae71d1876b0027acf8bf-step-0",
+      "action_result_id": "result-pixnav-d4d7ae71d1876b0027acf8bf-step-0",
+      "trajectory_id": "d0e24e98edfd662858e6dec8",
+      "generation": 7,
+      "habitat_step_index": 29,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299638,
+            "nanosec": 766611524
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.5276205651889785,
+            "y": 2.607392150975624,
+            "z": 0.3070819675922394
+          },
+          "orientation": {
+            "x": -0.009234079028577091,
+            "y": 0.024834270788047084,
+            "z": -0.151248635934482,
+            "w": 0.9881405977424864
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299640,
+          "nanosec": 306787438
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-8defd7d5ff98d23aef347995-step-1",
+      "action_result_id": "result-pixnav-8defd7d5ff98d23aef347995-step-1",
+      "trajectory_id": "d0e24e98edfd662858e6dec8",
+      "generation": 7,
+      "habitat_step_index": 30,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299640,
+            "nanosec": 306787438
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.7431640967688127,
+            "y": 2.545807923808761,
+            "z": 0.30509617924690247
+          },
+          "orientation": {
+            "x": -0.008072710227860503,
+            "y": 0.024988877507807632,
+            "z": -0.14854099125918352,
+            "w": 0.9885575154062691
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299643,
+          "nanosec": 906117625
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-65b6b3608046b9b6345c670e-step-2",
+      "action_result_id": "result-pixnav-65b6b3608046b9b6345c670e-step-2",
+      "trajectory_id": "d0e24e98edfd662858e6dec8",
+      "generation": 7,
+      "habitat_step_index": 31,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299643,
+            "nanosec": 906117625
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.7489351765861834,
+            "y": 2.559866729871906,
+            "z": 0.3063412308692932
+          },
+          "orientation": {
+            "x": -0.013545013127628808,
+            "y": 0.02252707005885314,
+            "z": 0.10174741597355025,
+            "w": 0.9944629339883115
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299647,
+          "nanosec": 115804620
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-4c1c749b14dd4378bfd3f628-preturn-0",
+      "action_result_id": "result-pixnav-4c1c749b14dd4378bfd3f628-preturn-0",
+      "trajectory_id": "4c1c749b14dd4378bfd3f628",
+      "generation": 8,
+      "habitat_step_index": 32,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299647,
+            "nanosec": 115804620
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.744233694697363,
+            "y": 2.5873290785954697,
+            "z": 0.31011343002319336
+          },
+          "orientation": {
+            "x": 0.0034589145564651747,
+            "y": 0.023421707099979407,
+            "z": -0.1478297440303486,
+            "w": 0.9887293999505302
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299648,
+          "nanosec": 776540465
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-647d25c1d2d2bcec92c61703-step-0",
+      "action_result_id": "result-pixnav-647d25c1d2d2bcec92c61703-step-0",
+      "trajectory_id": "4c1c749b14dd4378bfd3f628",
+      "generation": 8,
+      "habitat_step_index": 33,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299648,
+            "nanosec": 776540465
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 3.965876086733992,
+            "y": 2.540855486468612,
+            "z": 0.30648013949394226
+          },
+          "orientation": {
+            "x": -0.01599762407543798,
+            "y": 0.02489546098301105,
+            "z": -0.13630925531597943,
+            "w": 0.9902242569042566
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299650,
+          "nanosec": 222233005
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-40eed121b49b85638ef43eae-step-1",
+      "action_result_id": "result-pixnav-40eed121b49b85638ef43eae-step-1",
+      "trajectory_id": "4c1c749b14dd4378bfd3f628",
+      "generation": 8,
+      "habitat_step_index": 34,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299650,
+            "nanosec": 222233005
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.181086485688927,
+            "y": 2.488586873998211,
+            "z": 0.3046307861804962
+          },
+          "orientation": {
+            "x": -0.009597034277469581,
+            "y": 0.020114532842293305,
+            "z": -0.13361978008020364,
+            "w": 0.9907820430714979
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299653,
+          "nanosec": 838557668
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-5ee1825ac2b63ec379ddc729-step-2",
+      "action_result_id": "result-pixnav-5ee1825ac2b63ec379ddc729-step-2",
+      "trajectory_id": "4c1c749b14dd4378bfd3f628",
+      "generation": 8,
+      "habitat_step_index": 35,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299653,
+            "nanosec": 838557668
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.18671739299211,
+            "y": 2.4996303778781077,
+            "z": 0.3080127537250519
+          },
+          "orientation": {
+            "x": -0.00976310855812345,
+            "y": 0.020912740823485803,
+            "z": 0.11506571795560067,
+            "w": 0.9930897338780087
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299657,
+          "nanosec": 307592816
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-903d62c892dc49c858a95924-preturn-0",
+      "action_result_id": "result-pixnav-903d62c892dc49c858a95924-preturn-0",
+      "trajectory_id": "903d62c892dc49c858a95924",
+      "generation": 9,
+      "habitat_step_index": 36,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299657,
+            "nanosec": 307592816
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.188631796534519,
+            "y": 2.525659376318652,
+            "z": 0.3124251365661621
+          },
+          "orientation": {
+            "x": -0.0005084280399164018,
+            "y": 0.02385371335598089,
+            "z": -0.12870026408779178,
+            "w": 0.9913964816781384
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299660,
+          "nanosec": 477892823
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-c329b9968288cf0eb587d79b-step-0",
+      "action_result_id": "result-pixnav-c329b9968288cf0eb587d79b-step-0",
+      "trajectory_id": "903d62c892dc49c858a95924",
+      "generation": 9,
+      "habitat_step_index": 37,
+      "action": "turn_left",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299660,
+            "nanosec": 477892823
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.17305099339767,
+            "y": 2.5367243335515335,
+            "z": 0.29278454184532166
+          },
+          "orientation": {
+            "x": -0.03481966429350361,
+            "y": 0.015602852811769943,
+            "z": 0.14794925623663058,
+            "w": 0.9882586501223503
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299662,
+          "nanosec": 141044459
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-53c4a4c9b570139dadcbb9d4-step-1",
+      "action_result_id": "result-pixnav-53c4a4c9b570139dadcbb9d4-step-1",
+      "trajectory_id": "903d62c892dc49c858a95924",
+      "generation": 9,
+      "habitat_step_index": 38,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299662,
+            "nanosec": 141044459
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.38515589187114,
+            "y": 2.594687065922991,
+            "z": 0.3042032230829894
+          },
+          "orientation": {
+            "x": -0.02336318668711809,
+            "y": 0.02107853305496296,
+            "z": 0.15674840964822878,
+            "w": 0.9871371703187074
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299690,
+          "nanosec": 854969926
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-d833a1c9cad29df2c8c71eeb-preturn-0",
+      "action_result_id": "result-pixnav-d833a1c9cad29df2c8c71eeb-preturn-0",
+      "trajectory_id": "d833a1c9cad29df2c8c71eeb",
+      "generation": 10,
+      "habitat_step_index": 39,
+      "action": "turn_right",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299690,
+            "nanosec": 854969926
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.397642871285621,
+            "y": 2.7008162629351835,
+            "z": 0.30657655000686646
+          },
+          "orientation": {
+            "x": 0.00655129811314188,
+            "y": 0.03502453834782353,
+            "z": -0.09053353128660552,
+            "w": 0.995255767086698
+          }
+        }
+      },
+      "executed": true,
+      "collided": false,
+      "status": "EXECUTED",
+      "error_code": ""
+    },
+    {
+      "header": {
+        "stamp": {
+          "sec": 1789299694,
+          "nanosec": 827588267
+        },
+        "frame_id": "robot_origin"
+      },
+      "episode_id": "robot-pointnav-35c82fd6aba1-1",
+      "command_id": "pixnav-c9682f4cdc14779b9bdb38d7-step-0",
+      "action_result_id": "result-pixnav-c9682f4cdc14779b9bdb38d7-step-0",
+      "trajectory_id": "d833a1c9cad29df2c8c71eeb",
+      "generation": 10,
+      "habitat_step_index": 40,
+      "action": "move_forward",
+      "pose_after": {
+        "header": {
+          "stamp": {
+            "sec": 1789299694,
+            "nanosec": 827588267
+          },
+          "frame_id": "robot_origin"
+        },
+        "pose": {
+          "position": {
+            "x": 4.4150908121400345,
+            "y": 2.698683161774324,
+            "z": 0.32697629928588867
+          },
+          "orientation": {
+            "x": 0.01310459417173484,
+            "y": 0.005138296430273291,
+            "z": -0.09692376779336032,
+            "w": 0.9951922682367099
+          }
+        }
+      },
+      "executed": false,
+      "collided": false,
+      "status": "FAILED",
+      "error_code": "NO_MOTION_PROGRESS"
+    }
+  ],
+  "statuses": {
+    "go2_action_executor": {
+      "state": "INHIBITED",
+      "mode": "IDLE",
+      "healthy": false,
+      "error": "NO_MOTION_PROGRESS"
+    },
+    "go2_sensor_input": {
+      "state": "READY",
+      "mode": "FIXED_STARTUP_OFFSET",
+      "healthy": true,
+      "error": ""
+    },
+    "rtab_pointgoal_adapter": {
+      "state": "READY",
+      "mode": "READY",
+      "healthy": true,
+      "error": ""
+    },
+    "sweep_scheduler_node": {
+      "state": "ACTIVE",
+      "mode": "IDLE",
+      "healthy": true,
+      "error": ""
+    },
+    "vlm_node": {
+      "state": "WAITING_SYNC",
+      "mode": "WAITING_PIXNAV_ACTIVE_TRAJECTORY",
+      "healthy": true,
+      "error": ""
+    },
+    "pixnav_runtime_node": {
+      "state": "ACTIVE",
+      "mode": "PIXNAV_ACTIVE",
+      "healthy": true,
+      "error": ""
+    }
+  },
+  "localization_method": "fixed_start_odometry",
+  "physical_arrival_verified": false,
+  "absolute_map_localization_verified": false
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "run": "direct_goal-goal-4-002",
+    "policy_steps": 21,
+    "final_action": 0,
+    "stop_source": "model",
+    "raw_logits": [
+      1.7606279850006104,
+      1.4842489957809448,
+      -0.3132997453212738,
+      0.012342039495706558,
+      -4.562713623046875,
+      0.29427170753479004
+    ],
+    "effective_logits": [
+      1.7606279850006104,
+      1.4842489957809448,
+      -0.3132997453212738,
+      0.012342039495706558,
+      -4.562713623046875,
+      0.29427170753479004
+    ],
+    "distance_prediction_raw": [
+      0.8181911706924438
+    ],
+    "distance_prediction_units": "not established",
+    "initial_mask_centroid_uv": [
+      433.0,
+      178.0
+    ],
+    "final_goal_prediction_vu": [
+      0.4393490956624719,
+      0.6556148250751848
+    ],
+    "physical_goal_distance_estimate_m": 7.46298360824585
+  },
+  {
+    "run": "direct_goal-goal-4-003",
+    "policy_steps": 31,
+    "final_action": 0,
+    "stop_source": "model",
+    "raw_logits": [
+      3.703596591949463,
+      -1.4637210369110107,
+      -2.157834768295288,
+      -1.179796576499939,
+      3.6680526733398438,
+      -3.335911989212036
+    ],
+    "effective_logits": [
+      3.703596591949463,
+      -1.4637210369110107,
+      -2.157834768295288,
+      -1.179796576499939,
+      3.6680526733398438,
+      -3.335911989212036
+    ],
+    "distance_prediction_raw": [
+      0.11556010693311691
+    ],
+    "distance_prediction_units": "not established",
+    "initial_mask_centroid_uv": [
+      433.0,
+      183.0
+    ],
+    "final_goal_prediction_vu": [
+      0.5922334349994546,
+      0.5228592492613633
+    ],
+    "physical_goal_distance_estimate_m": 5.661212921142578
+  },
+  {
+    "run": "direct_goal-goal-4-004",
+    "policy_steps": 29,
+    "final_action": 0,
+    "stop_source": "model",
+    "raw_logits": [
+      3.5950796604156494,
+      -1.8346580266952515,
+      -2.9337379932403564,
+      -2.530440092086792,
+      1.4683952331542969,
+      3.3510537147521973
+    ],
+    "effective_logits": [
+      3.5950796604156494,
+      -1.8346580266952515,
+      -2.9337379932403564,
+      -2.530440092086792,
+      1.4683952331542969,
+      3.3510537147521973
+    ],
+    "distance_prediction_raw": [
+      0.3896498680114746
+    ],
+    "distance_prediction_units": "not established",
+    "initial_mask_centroid_uv": [
+      433.0,
+      187.0
+    ],
+    "final_goal_prediction_vu": [
+      0.6100932977398835,
+      0.6172016718016952
+    ],
+    "physical_goal_distance_estimate_m": 9.3451509475708
+  },
+  {
+    "run": "direct_goal-goal-4-005",
+    "policy_steps": 21,
+    "final_action": 0,
+    "stop_source": "model",
+    "raw_logits": [
+      3.1868224143981934,
+      1.3800170421600342,
+      0.20731250941753387,
+      -0.3366515636444092,
+      -1.8121776580810547,
+      -4.112640380859375
+    ],
+    "effective_logits": [
+      3.1868224143981934,
+      1.3800170421600342,
+      0.20731250941753387,
+      -0.3366515636444092,
+      -1.8121776580810547,
+      -4.112640380859375
+    ],
+    "distance_prediction_raw": [
+      0.41236889362335205
+    ],
+    "distance_prediction_units": "not established",
+    "initial_mask_centroid_uv": [
+      433.0,
+      175.0
+    ],
+    "final_goal_prediction_vu": [
+      0.40145952916603106,
+      0.534836051772687
+    ],
+    "physical_goal_distance_estimate_m": 8.790611267089844
+  },
+  {
+    "run": "direct_goal-goal-4-006",
+    "policy_steps": 16,
+    "final_action": 0,
+    "stop_source": "model",
+    "raw_logits": [
+      3.4792263507843018,
+      0.7228289842605591,
+      -4.178160190582275,
+      -0.5265527367591858,
+      1.1266428232192993,
+      -1.3377294540405273
+    ],
+    "effective_logits": [
+      3.4792263507843018,
+      0.7228289842605591,
+      -4.178160190582275,
+      -0.5265527367591858,
+      1.1266428232192993,
+      -1.3377294540405273
+    ],
+    "distance_prediction_raw": [
+      0.4365883469581604
+    ],
+    "distance_prediction_units": "not established",
+    "initial_mask_centroid_uv": [
+      433.0,
+      179.0
+    ],
+    "final_goal_prediction_vu": [
+      0.5379515930668752,
+      0.6977191314830502
+    ],
+    "physical_goal_distance_estimate_m": 9.466014862060547
+  }
+]

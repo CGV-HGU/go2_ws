@@ -1,0 +1,14 @@
+{
+  "fault_unix_s": 1789314860.4499693,
+  "fault_kst": "2026-09-14T00:54:20.449969+09:00",
+  "threshold_s": 0.5,
+  "odom_latest_at_recorder": {
+    "source_age_at_fault_s": 0.08116579055786133,
+    "receipt_before_fault_s": 0.0171053409576416
+  },
+  "ctrl_latest_at_recorder": {
+    "source_age_at_fault_s": 0.13480639457702637,
+    "receipt_before_fault_s": 0.05502724647521973
+  },
+  "interpretation": "Fresh data reached the independent recorder. Controller receive/processing delay is suspected, but its retained pose stamp and callback timing were not recorded; root cause is not proven."
+}

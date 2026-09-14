@@ -1,0 +1,52 @@
+{
+  "schema": "escape-recording-integrity-v1",
+  "checked_unix": 1789303574.725841,
+  "live_preflight": false,
+  "started": true,
+  "outcome": "TRIAL_TIME_LIMIT",
+  "passed": true,
+  "issues": [],
+  "stream_counts": {
+    "body": {
+      "low": 17173,
+      "sport": 7111,
+      "recorder_finished": 1
+    },
+    "camera": {
+      "recorder_started": 1,
+      "time_sync_status": 5347,
+      "raw_image_header": 5346,
+      "recorder_finished": 1
+    },
+    "observation": {
+      "image_receipt": 5285,
+      "image": 690,
+      "sweep_command": 4,
+      "sweep_ack": 7
+    },
+    "operator": {
+      "odom": 6479,
+      "control_pose": 11683,
+      "status": 3748,
+      "motion_enable": 1,
+      "fixed_start_binding": 1,
+      "goal_published": 1,
+      "task": 1,
+      "pointgoal": 5135,
+      "command": 60,
+      "result": 60,
+      "direct_stop": 1,
+      "motion_disable": 1
+    },
+    "policy_steps": 45
+  },
+  "native_topic_counts": {
+    "/tf_static": 1,
+    "/s2e/robot/sensors/imu": 90070,
+    "/s2e/robot/sensors/cloud": 5713,
+    "/s2e/robot/sensors/odom": 55815,
+    "/robot_nav/sensors/front_camera/image_raw": 5391,
+    "/robot_nav/sensors/front_camera/camera_info": 5391
+  },
+  "note": "File/subscription/receipt checks; not proof of zero transport loss or physical success. Missing artifacts are preserved as incomplete records."
+}

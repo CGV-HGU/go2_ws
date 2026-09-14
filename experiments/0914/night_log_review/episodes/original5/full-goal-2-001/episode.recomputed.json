@@ -1,0 +1,94 @@
+{
+  "run": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-2-001",
+  "episode_id": "robot-pointnav-c7c0dc507c94-1",
+  "started": true,
+  "result_reason": "TRIAL_TIME_LIMIT",
+  "success_radius_m": 1.0,
+  "success": 0,
+  "field_report": {
+    "status": "awaiting_field_report",
+    "direct_intervention": null,
+    "contact": null,
+    "obstruction": null,
+    "physical_within_goal_radius_verified": null,
+    "physical_final_distance_m": null,
+    "measurement_method": null,
+    "operator_comment": null
+  },
+  "path_length": {
+    "5hz_m": 8.612175669959486,
+    "10hz_m": 8.989897567517714,
+    "20hz_m": 9.154300077581011,
+    "raw_samples_m": 9.336264755808894,
+    "last_sample_before_stop_s": 0.0,
+    "max_receipt_gap_s": 0.23352504100012084,
+    "source": "continuous odom XY, fixed receipt-time resampling, no denoising",
+    "boundary": "goal publication to direct StopMove request; post-stop settling excluded"
+  },
+  "spl_estimate": null,
+  "metric_warnings": [
+    "Shortest path unmeasured; SPL left unset"
+  ],
+  "ground_truth_available": false,
+  "arrival_mode": "automatic_distance_stop",
+  "images": {
+    "escape": "sha256:a92b920649fabdc2ba7b894f9e75a68454596cc997d70825d3214349a305cf14",
+    "pixnav": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+    "unitree-command": "sha256:f73f2b96ccbf9840d8ec933a37c9443b0a4e62ca745efe6bfb088f83e3cc2cd2",
+    "camera": "sha256:3b1b4d0adba39c7644ba8725099e008dd493c587cbd9f01ae6980ca9b421f8a8",
+    "native-recording": "sha256:478e26f81e6d344e691215508b9409939df53ed46bf57f5bcfd1d04356ca0d28"
+  },
+  "runtime_conditions": {
+    "navigation": "full",
+    "execution": "async_true",
+    "look_execution": "forward_0p1",
+    "goal_frame": "odom",
+    "goal_distance_m": null,
+    "goal_label": "2",
+    "success_radius_m": 1.0,
+    "initial_motion_enabled": false,
+    "max_duration_s": 360,
+    "turn_speed_radps": 0.5,
+    "minimum_rotate_speed_radps": 0.5,
+    "rotate_settle_window_s": 0.35,
+    "rotate_min_timeout_s": 15.0,
+    "rotate_recoil_limit_deg": 10.0,
+    "record_model_inputs": true,
+    "localization_method": "fixed_start_odometry",
+    "fixed_start_origin_id": "a1b045fe1b4a4e82ab035129dfd5facd",
+    "requires_marked_start_before_each_episode": true,
+    "icp_corrections_used": false
+  },
+  "elapsed_to_stop_s": 360.064728413,
+  "minimum_recorded_goal_distance_m": 1.5652724504470825,
+  "first_radius_entry_s": null,
+  "vlm_http": {
+    "candidate_screener": {
+      "count": 16,
+      "errors": 0,
+      "p50_s": 0.6084337960000994,
+      "p95_s": 0.6595619740000984,
+      "max_s": 0.6615331130001323
+    },
+    "navigation": {
+      "count": 20,
+      "errors": 0,
+      "p50_s": 2.708450705999894,
+      "p95_s": 3.1123686450000605,
+      "max_s": 3.2613365249999333
+    },
+    "point_verifier": {
+      "count": 80,
+      "errors": 0,
+      "p50_s": 0.6370413459999327,
+      "p95_s": 0.774977841999771,
+      "max_s": 0.8725282770001286
+    }
+  },
+  "vlm_timing_note": "HTTP latency per request, not complete decision or exclusive waiting time",
+  "action_results": {
+    "move_forward:EXECUTED": 34,
+    "turn_left:EXECUTED": 5,
+    "turn_right:EXECUTED": 9
+  }
+}

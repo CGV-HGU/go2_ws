@@ -1,0 +1,54 @@
+{
+  "reason": "CONTROLLER_INHIBITED:MOTION_TIMEOUT",
+  "goal_frame": "odom",
+  "goal_label": "1",
+  "success_distance_m": 1.0,
+  "max_duration_s": 360.0,
+  "navigation_mode": "full",
+  "look_execution": "forward_0p2",
+  "goal_published": true,
+  "shutdown_service_confirmed": true,
+  "goal_distance_m": 3.418398857116699,
+  "results": [],
+  "statuses": {
+    "go2_action_executor": {
+      "state": "INHIBITED",
+      "mode": "IDLE",
+      "healthy": false,
+      "error": "MOTION_TIMEOUT"
+    },
+    "vlm_node": {
+      "state": "DEGRADED",
+      "mode": "OBSERVATION_SWEEP_ROTATE_FAILED",
+      "healthy": false,
+      "error": "MOTION_TIMEOUT"
+    },
+    "sweep_scheduler_node": {
+      "state": "ACTIVE",
+      "mode": "IDLE",
+      "healthy": true,
+      "error": ""
+    },
+    "rtab_pointgoal_adapter": {
+      "state": "READY",
+      "mode": "READY",
+      "healthy": true,
+      "error": ""
+    },
+    "go2_sensor_input": {
+      "state": "READY",
+      "mode": "FIXED_STARTUP_OFFSET",
+      "healthy": true,
+      "error": ""
+    },
+    "pixnav_runtime_node": {
+      "state": "WAITING_FIRST_VLM",
+      "mode": "EPISODE_RESET",
+      "healthy": true,
+      "error": ""
+    }
+  },
+  "localization_method": "fixed_start_odometry",
+  "physical_arrival_verified": false,
+  "absolute_map_localization_verified": false
+}

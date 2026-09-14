@@ -1,0 +1,333 @@
+8872434: Sep 13 00:28:34 ubuntu kernel: [    8.659956] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8872435: Sep 13 00:28:34 ubuntu kernel: [    8.815958] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8872437: Sep 13 00:28:34 ubuntu kernel: [    8.831725] usb 1-2: Product: DISK
+8872438: Sep 13 00:28:34 ubuntu kernel: [    8.835213] usb 1-2: Manufacturer: Realtek
+8872596: Sep 13 00:28:34 ubuntu kernel: [   13.848959] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8872696: Sep 13 00:28:35 ubuntu kernel: [   17.945812] usb 1-2: USB disconnect, device number 2
+8872723: Sep 13 00:28:35 ubuntu kernel: [   18.575994] usb 1-2: new high-speed USB device number 3 using tegra-xusb
+8873396: Sep 13 12:59:47 ubuntu kernel: [    8.583838] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8873397: Sep 13 12:59:47 ubuntu kernel: [    8.745032] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8873399: Sep 13 12:59:47 ubuntu kernel: [    8.760798] usb 1-2: Product: DISK
+8873400: Sep 13 12:59:47 ubuntu kernel: [    8.764286] usb 1-2: Manufacturer: Realtek
+8873557: Sep 13 12:59:47 ubuntu kernel: [   13.605348] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8873665: Sep 13 12:59:48 ubuntu kernel: [   17.824945] usb 1-2: USB disconnect, device number 2
+8874305: Sep 13 13:49:22 ubuntu kernel: [    7.452621] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8874306: Sep 13 13:49:22 ubuntu kernel: [    7.608632] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8874308: Sep 13 13:49:22 ubuntu kernel: [    7.624394] usb 1-2: Product: DISK
+8874309: Sep 13 13:49:22 ubuntu kernel: [    7.627885] usb 1-2: Manufacturer: Realtek
+8874470: Sep 13 13:49:22 ubuntu kernel: [   12.765488] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8874576: Sep 13 13:49:23 ubuntu kernel: [   16.691523] usb 1-2: USB disconnect, device number 2
+8874593: Sep 13 13:49:24 ubuntu kernel: [   17.312730] usb 1-2: new high-speed USB device number 3 using tegra-xusb
+8874594: Sep 13 13:49:24 ubuntu kernel: [   17.472801] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8874596: Sep 13 13:49:24 ubuntu kernel: [   17.472810] usb 1-2: Product: 802.11ax WLAN Adapter
+8874597: Sep 13 13:49:24 ubuntu kernel: [   17.472812] usb 1-2: Manufacturer: Realtek
+8875340: Sep 13 14:03:01 ubuntu kernel: [    8.637831] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8875341: Sep 13 14:03:01 ubuntu kernel: [    8.795212] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8875343: Sep 13 14:03:01 ubuntu kernel: [    8.810971] usb 1-2: Product: DISK
+8875344: Sep 13 14:03:01 ubuntu kernel: [    8.814457] usb 1-2: Manufacturer: Realtek
+8875501: Sep 13 14:03:01 ubuntu kernel: [   13.707143] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8875597: Sep 13 14:03:02 ubuntu kernel: [   17.974261] usb 1-2: USB disconnect, device number 2
+8875654: Sep 13 16:47:45 ubuntu kernel: [ 9201.824861] usb 1-2: USB disconnect, device number 3
+8875707: Sep 13 16:47:45 ubuntu kernel: [ 9202.325692] usb 1-2: new high-speed USB device number 4 using tegra-xusb
+8875708: Sep 13 16:47:46 ubuntu kernel: [ 9202.477519] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8875710: Sep 13 16:47:46 ubuntu kernel: [ 9202.477531] usb 1-2: Product: DISK
+8875711: Sep 13 16:47:46 ubuntu kernel: [ 9202.477535] usb 1-2: Manufacturer: Realtek
+8875717: Sep 13 16:47:47 ubuntu kernel: [ 9203.791545] usb 1-2: USB disconnect, device number 4
+8875718: Sep 13 16:47:48 ubuntu kernel: [ 9204.429801] usb 1-2: new high-speed USB device number 5 using tegra-xusb
+8875719: Sep 13 16:47:48 ubuntu kernel: [ 9204.581730] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8875721: Sep 13 16:47:48 ubuntu kernel: [ 9204.581745] usb 1-2: Product: 802.11ax WLAN Adapter
+8875722: Sep 13 16:47:48 ubuntu kernel: [ 9204.581748] usb 1-2: Manufacturer: Realtek
+8875729: Sep 13 16:50:17 ubuntu kernel: [ 9353.556411] usb 1-2: USB disconnect, device number 5
+8875862: Sep 13 16:50:17 ubuntu kernel: [ 9354.141587] usb 1-2: new high-speed USB device number 6 using tegra-xusb
+8875863: Sep 13 16:50:17 ubuntu kernel: [ 9354.293133] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8875865: Sep 13 16:50:17 ubuntu kernel: [ 9354.293139] usb 1-2: Product: DISK
+8875866: Sep 13 16:50:17 ubuntu kernel: [ 9354.293141] usb 1-2: Manufacturer: Realtek
+8875872: Sep 13 16:50:19 ubuntu kernel: [ 9355.585387] usb 1-2: USB disconnect, device number 6
+8875873: Sep 13 16:50:19 ubuntu kernel: [ 9356.221469] usb 1-2: new high-speed USB device number 7 using tegra-xusb
+8875874: Sep 13 16:50:19 ubuntu kernel: [ 9356.373803] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8875876: Sep 13 16:50:19 ubuntu kernel: [ 9356.373810] usb 1-2: Product: 802.11ax WLAN Adapter
+8875877: Sep 13 16:50:19 ubuntu kernel: [ 9356.373812] usb 1-2: Manufacturer: Realtek
+8875884: Sep 13 16:51:04 ubuntu kernel: [ 9400.559067] usb 1-2: USB disconnect, device number 7
+8875939: Sep 13 16:51:04 ubuntu kernel: [ 9401.063164] usb 1-2: new high-speed USB device number 8 using tegra-xusb
+8875940: Sep 13 16:51:04 ubuntu kernel: [ 9401.214567] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8875942: Sep 13 16:51:04 ubuntu kernel: [ 9401.214572] usb 1-2: Product: DISK
+8875943: Sep 13 16:51:04 ubuntu kernel: [ 9401.214574] usb 1-2: Manufacturer: Realtek
+8875949: Sep 13 16:51:06 ubuntu kernel: [ 9402.536731] usb 1-2: USB disconnect, device number 8
+8875952: Sep 13 16:51:06 ubuntu kernel: [ 9403.174954] usb 1-2: new high-speed USB device number 9 using tegra-xusb
+8875953: Sep 13 16:51:06 ubuntu kernel: [ 9403.327020] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8875955: Sep 13 16:51:06 ubuntu kernel: [ 9403.327028] usb 1-2: Product: 802.11ax WLAN Adapter
+8875956: Sep 13 16:51:06 ubuntu kernel: [ 9403.327029] usb 1-2: Manufacturer: Realtek
+8879585: Sep 13 16:48:22 ubuntu kernel: [    8.736163] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8879586: Sep 13 16:48:22 ubuntu kernel: [    8.892306] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8879588: Sep 13 16:48:22 ubuntu kernel: [    8.908067] usb 1-2: Product: DISK
+8879589: Sep 13 16:48:22 ubuntu kernel: [    8.911558] usb 1-2: Manufacturer: Realtek
+8879747: Sep 13 16:48:22 ubuntu kernel: [   13.864292] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8879837: Sep 13 16:48:23 ubuntu kernel: [   17.799098] usb 1-2: USB disconnect, device number 2
+8879862: Sep 13 16:48:23 ubuntu kernel: [   18.440189] usb 1-2: new high-speed USB device number 3 using tegra-xusb
+8879863: Sep 13 16:48:24 ubuntu kernel: [   18.604341] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8879865: Sep 13 16:48:24 ubuntu kernel: [   18.604353] usb 1-2: Product: 802.11ax WLAN Adapter
+8879866: Sep 13 16:48:24 ubuntu kernel: [   18.604355] usb 1-2: Manufacturer: Realtek
+8880610: Sep 13 18:03:08 ubuntu kernel: [    7.504861] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8880611: Sep 13 18:03:08 ubuntu kernel: [    7.664903] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8880613: Sep 13 18:03:08 ubuntu kernel: [    7.680673] usb 1-2: Product: DISK
+8880614: Sep 13 18:03:08 ubuntu kernel: [    7.684160] usb 1-2: Manufacturer: Realtek
+8880769: Sep 13 18:03:08 ubuntu kernel: [   12.689740] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8880864: Sep 13 18:03:08 ubuntu kernel: [   16.687187] usb 1-2: USB disconnect, device number 2
+8880889: Sep 13 18:03:09 ubuntu kernel: [   17.332878] usb 1-2: new high-speed USB device number 3 using tegra-xusb
+8880890: Sep 13 18:03:09 ubuntu kernel: [   17.489073] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8880892: Sep 13 18:03:09 ubuntu kernel: [   17.489085] usb 1-2: Product: 802.11ax WLAN Adapter
+8880893: Sep 13 18:03:09 ubuntu kernel: [   17.489087] usb 1-2: Manufacturer: Realtek
+8880919: Sep 13 18:32:47 ubuntu kernel: [  167.689260] usb 1-2: USB disconnect, device number 3
+8880972: Sep 13 18:32:48 ubuntu kernel: [  168.131998] usb 1-2: new high-speed USB device number 4 using tegra-xusb
+8880973: Sep 13 18:32:48 ubuntu kernel: [  168.260064] usb 1-2: device descriptor read/64, error -71
+8880974: Sep 13 18:32:48 ubuntu kernel: [  168.523600] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8880976: Sep 13 18:32:48 ubuntu kernel: [  168.523615] usb 1-2: Product: DISK
+8880977: Sep 13 18:32:48 ubuntu kernel: [  168.523618] usb 1-2: Manufacturer: Realtek
+8880983: Sep 13 18:32:49 ubuntu kernel: [  169.857840] usb 1-2: USB disconnect, device number 4
+8880984: Sep 13 18:32:50 ubuntu kernel: [  170.492181] usb 1-2: new high-speed USB device number 5 using tegra-xusb
+8880985: Sep 13 18:32:50 ubuntu kernel: [  170.645411] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8880987: Sep 13 18:32:50 ubuntu kernel: [  170.645426] usb 1-2: Product: 802.11ax WLAN Adapter
+8880988: Sep 13 18:32:50 ubuntu kernel: [  170.645429] usb 1-2: Manufacturer: Realtek
+8881590: Sep 13 18:32:22 ubuntu kernel: [    7.427904] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8881591: Sep 13 18:32:22 ubuntu kernel: [    7.583800] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8881593: Sep 13 18:32:22 ubuntu kernel: [    7.599564] usb 1-2: Product: DISK
+8881594: Sep 13 18:32:22 ubuntu kernel: [    7.603061] usb 1-2: Manufacturer: Realtek
+8881752: Sep 13 18:32:22 ubuntu kernel: [   12.520107] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8881846: Sep 13 18:32:23 ubuntu kernel: [   16.721926] usb 1-2: USB disconnect, device number 2
+8881909: Sep 13 21:52:10 ubuntu kernel: [11671.489150] usb 1-2: USB disconnect, device number 3
+8881962: Sep 13 21:52:10 ubuntu kernel: [11671.989171] usb 1-2: new high-speed USB device number 4 using tegra-xusb
+8881963: Sep 13 21:52:11 ubuntu kernel: [11672.144790] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8881965: Sep 13 21:52:11 ubuntu kernel: [11672.144806] usb 1-2: Product: DISK
+8881966: Sep 13 21:52:11 ubuntu kernel: [11672.144809] usb 1-2: Manufacturer: Realtek
+8881972: Sep 13 21:52:12 ubuntu kernel: [11673.442327] usb 1-2: USB disconnect, device number 4
+8881973: Sep 13 21:52:12 ubuntu kernel: [11674.081073] usb 1-2: new high-speed USB device number 5 using tegra-xusb
+8881974: Sep 13 21:52:13 ubuntu kernel: [11674.233304] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8881976: Sep 13 21:52:13 ubuntu kernel: [11674.233320] usb 1-2: Product: 802.11ax WLAN Adapter
+8881977: Sep 13 21:52:13 ubuntu kernel: [11674.233323] usb 1-2: Manufacturer: Realtek
+8881984: Sep 13 22:11:36 ubuntu kernel: [12837.949191] usb 1-2: USB disconnect, device number 5
+8882037: Sep 13 22:11:37 ubuntu kernel: [12838.422165] usb 1-2: new high-speed USB device number 6 using tegra-xusb
+8882038: Sep 13 22:11:37 ubuntu kernel: [12838.573770] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8882040: Sep 13 22:11:37 ubuntu kernel: [12838.573789] usb 1-2: Product: DISK
+8882041: Sep 13 22:11:37 ubuntu kernel: [12838.573795] usb 1-2: Manufacturer: Realtek
+8882047: Sep 13 22:11:38 ubuntu kernel: [12839.896090] usb 1-2: USB disconnect, device number 6
+8882048: Sep 13 22:11:39 ubuntu kernel: [12840.534075] usb 1-2: new high-speed USB device number 7 using tegra-xusb
+8882049: Sep 13 22:11:39 ubuntu kernel: [12840.686237] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8882051: Sep 13 22:11:39 ubuntu kernel: [12840.686254] usb 1-2: Product: 802.11ax WLAN Adapter
+8882052: Sep 13 22:11:39 ubuntu kernel: [12840.686257] usb 1-2: Manufacturer: Realtek
+8882056: Sep 13 22:11:41 ubuntu kernel: [12842.993089] usb 1-2: USB disconnect, device number 7
+8882058: Sep 13 22:11:42 ubuntu kernel: [12843.437925] usb 1-2: new high-speed USB device number 8 using tegra-xusb
+8882059: Sep 13 22:11:42 ubuntu kernel: [12843.593525] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8882061: Sep 13 22:11:42 ubuntu kernel: [12843.593543] usb 1-2: Product: DISK
+8882062: Sep 13 22:11:42 ubuntu kernel: [12843.593549] usb 1-2: Manufacturer: Realtek
+8882067: Sep 13 22:11:46 ubuntu kernel: [12847.395155] usb 1-2: USB disconnect, device number 8
+8882068: Sep 13 22:11:46 ubuntu kernel: [12847.701742] usb 1-2: new high-speed USB device number 9 using tegra-xusb
+8882069: Sep 13 22:11:46 ubuntu kernel: [12847.850443] usb 1-2: device descriptor read/all, error -71
+8882070: Sep 13 22:11:47 ubuntu kernel: [12848.193733] usb 1-2: new high-speed USB device number 10 using tegra-xusb
+8882071: Sep 13 22:11:47 ubuntu kernel: [12848.345366] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8882073: Sep 13 22:11:47 ubuntu kernel: [12848.345386] usb 1-2: Product: DISK
+8882074: Sep 13 22:11:47 ubuntu kernel: [12848.345392] usb 1-2: Manufacturer: Realtek
+8882079: Sep 13 22:11:50 ubuntu kernel: [12851.089886] usb 1-2: USB disconnect, device number 10
+8882080: Sep 13 22:11:50 ubuntu kernel: [12851.397578] usb 1-2: new high-speed USB device number 11 using tegra-xusb
+8882081: Sep 13 22:11:50 ubuntu kernel: [12851.549122] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8882083: Sep 13 22:11:50 ubuntu kernel: [12851.549138] usb 1-2: Product: DISK
+8882084: Sep 13 22:11:50 ubuntu kernel: [12851.549141] usb 1-2: Manufacturer: Realtek
+8882090: Sep 13 22:11:51 ubuntu kernel: [12852.861744] usb 1-2: USB disconnect, device number 11
+8882091: Sep 13 22:11:52 ubuntu kernel: [12853.489510] usb 1-2: new high-speed USB device number 12 using tegra-xusb
+8882092: Sep 13 22:11:52 ubuntu kernel: [12853.641659] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8882094: Sep 13 22:11:52 ubuntu kernel: [12853.641676] usb 1-2: Product: 802.11ax WLAN Adapter
+8882095: Sep 13 22:11:52 ubuntu kernel: [12853.641679] usb 1-2: Manufacturer: Realtek
+8882103: Sep 13 22:12:32 ubuntu kernel: [12893.362341] usb 1-2: USB disconnect, device number 12
+8882158: Sep 13 22:12:32 ubuntu kernel: [12893.883680] usb 1-2: new high-speed USB device number 13 using tegra-xusb
+8882159: Sep 13 22:12:32 ubuntu kernel: [12894.035355] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8882161: Sep 13 22:12:32 ubuntu kernel: [12894.035364] usb 1-2: Product: DISK
+8882162: Sep 13 22:12:32 ubuntu kernel: [12894.035366] usb 1-2: Manufacturer: Realtek
+8882168: Sep 13 22:12:34 ubuntu kernel: [12895.346098] usb 1-2: USB disconnect, device number 13
+8882169: Sep 13 22:12:34 ubuntu kernel: [12895.979581] usb 1-2: new high-speed USB device number 14 using tegra-xusb
+8882170: Sep 13 22:12:35 ubuntu kernel: [12896.135710] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8882172: Sep 13 22:12:35 ubuntu kernel: [12896.135719] usb 1-2: Product: 802.11ax WLAN Adapter
+8882173: Sep 13 22:12:35 ubuntu kernel: [12896.135720] usb 1-2: Manufacturer: Realtek
+8882183: Sep 13 22:13:20 ubuntu kernel: [12941.428078] usb 1-2: USB disconnect, device number 14
+8884255: Sep 13 22:13:20 ubuntu kernel: [12941.957581] usb 1-2: new high-speed USB device number 15 using tegra-xusb
+8884256: Sep 13 22:13:21 ubuntu kernel: [12942.109137] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8884258: Sep 13 22:13:21 ubuntu kernel: [12942.109157] usb 1-2: Product: DISK
+8884259: Sep 13 22:13:21 ubuntu kernel: [12942.109163] usb 1-2: Manufacturer: Realtek
+8884265: Sep 13 22:13:22 ubuntu kernel: [12943.399346] usb 1-2: USB disconnect, device number 15
+8884266: Sep 13 22:13:22 ubuntu kernel: [12944.037504] usb 1-2: new high-speed USB device number 16 using tegra-xusb
+8884267: Sep 13 22:13:23 ubuntu kernel: [12944.189676] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8884269: Sep 13 22:13:23 ubuntu kernel: [12944.189697] usb 1-2: Product: 802.11ax WLAN Adapter
+8884270: Sep 13 22:13:23 ubuntu kernel: [12944.189703] usb 1-2: Manufacturer: Realtek
+8884869: Sep 13 22:07:43 ubuntu kernel: [    7.444584] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8884870: Sep 13 22:07:43 ubuntu kernel: [    7.600187] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8884872: Sep 13 22:07:43 ubuntu kernel: [    7.615943] usb 1-2: Product: DISK
+8884873: Sep 13 22:07:43 ubuntu kernel: [    7.619435] usb 1-2: Manufacturer: Realtek
+8885035: Sep 13 22:07:43 ubuntu kernel: [   12.712709] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8885132: Sep 13 22:07:44 ubuntu kernel: [   16.886561] usb 1-2: USB disconnect, device number 2
+8885805: Sep 13 23:24:53 ubuntu kernel: [    7.436199] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8885806: Sep 13 23:24:53 ubuntu kernel: [    7.591844] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8885808: Sep 13 23:24:53 ubuntu kernel: [    7.607593] usb 1-2: Product: DISK
+8885809: Sep 13 23:24:53 ubuntu kernel: [    7.611084] usb 1-2: Manufacturer: Realtek
+8885965: Sep 13 23:24:53 ubuntu kernel: [   12.640629] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8886059: Sep 13 23:24:54 ubuntu kernel: [   16.617520] usb 1-2: USB disconnect, device number 2
+8886117: Sep 13 23:32:55 ubuntu kernel: [  228.099764] usb 1-2: USB disconnect, device number 3
+8886170: Sep 13 23:32:55 ubuntu kernel: [  228.568645] usb 1-2: new high-speed USB device number 4 using tegra-xusb
+8886171: Sep 13 23:32:55 ubuntu kernel: [  228.721775] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8886173: Sep 13 23:32:55 ubuntu kernel: [  228.721788] usb 1-2: Product: DISK
+8886174: Sep 13 23:32:55 ubuntu kernel: [  228.721791] usb 1-2: Manufacturer: Realtek
+8886180: Sep 13 23:32:56 ubuntu kernel: [  230.031104] usb 1-2: USB disconnect, device number 4
+8886181: Sep 13 23:32:57 ubuntu kernel: [  230.664590] usb 1-2: new high-speed USB device number 5 using tegra-xusb
+8886182: Sep 13 23:32:57 ubuntu kernel: [  230.816960] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8886184: Sep 13 23:32:57 ubuntu kernel: [  230.816973] usb 1-2: Product: 802.11ax WLAN Adapter
+8886185: Sep 13 23:32:57 ubuntu kernel: [  230.816976] usb 1-2: Manufacturer: Realtek
+8886189: Sep 13 23:32:58 ubuntu kernel: [  231.878304] usb 1-2: USB disconnect, device number 5
+8886191: Sep 13 23:32:59 ubuntu kernel: [  232.272728] usb 1-2: new high-speed USB device number 6 using tegra-xusb
+8886192: Sep 13 23:32:59 ubuntu kernel: [  232.424210] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8886194: Sep 13 23:32:59 ubuntu kernel: [  232.424225] usb 1-2: Product: DISK
+8886195: Sep 13 23:32:59 ubuntu kernel: [  232.424229] usb 1-2: Manufacturer: Realtek
+8886794: Sep 13 23:31:29 ubuntu kernel: [    7.452672] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8886795: Sep 13 23:31:29 ubuntu kernel: [    7.608251] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8886797: Sep 13 23:31:29 ubuntu kernel: [    7.624018] usb 1-2: Product: DISK
+8886798: Sep 13 23:31:29 ubuntu kernel: [    7.627508] usb 1-2: Manufacturer: Realtek
+8886956: Sep 13 23:31:29 ubuntu kernel: [   12.561295] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8887052: Sep 13 23:31:30 ubuntu kernel: [   16.714187] usb 1-2: USB disconnect, device number 2
+8887100: Sep 13 23:52:53 ubuntu kernel: [  995.851725] usb 1-2: USB disconnect, device number 3
+8887155: Sep 13 23:52:54 ubuntu kernel: [  996.387217] usb 1-2: new high-speed USB device number 4 using tegra-xusb
+8887156: Sep 13 23:52:54 ubuntu kernel: [  996.543019] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8887158: Sep 13 23:52:54 ubuntu kernel: [  996.543035] usb 1-2: Product: DISK
+8887159: Sep 13 23:52:54 ubuntu kernel: [  996.543039] usb 1-2: Manufacturer: Realtek
+8887165: Sep 13 23:52:55 ubuntu kernel: [  997.861146] usb 1-2: USB disconnect, device number 4
+8887166: Sep 13 23:52:56 ubuntu kernel: [  998.503434] usb 1-2: new high-speed USB device number 5 using tegra-xusb
+8887167: Sep 13 23:52:56 ubuntu kernel: [  998.659360] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887169: Sep 13 23:52:56 ubuntu kernel: [  998.659374] usb 1-2: Product: 802.11ax WLAN Adapter
+8887170: Sep 13 23:52:56 ubuntu kernel: [  998.659377] usb 1-2: Manufacturer: Realtek
+8887179: Sep 14 00:13:39 ubuntu kernel: [ 2241.842583] usb 1-2: USB disconnect, device number 5
+8887234: Sep 14 00:13:40 ubuntu kernel: [ 2242.325646] usb 1-2: new high-speed USB device number 6 using tegra-xusb
+8887235: Sep 14 00:13:40 ubuntu kernel: [ 2242.477316] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8887237: Sep 14 00:13:40 ubuntu kernel: [ 2242.477327] usb 1-2: Product: DISK
+8887238: Sep 14 00:13:40 ubuntu kernel: [ 2242.477329] usb 1-2: Manufacturer: Realtek
+8887244: Sep 14 00:13:41 ubuntu kernel: [ 2243.813496] usb 1-2: USB disconnect, device number 6
+8887245: Sep 14 00:13:42 ubuntu kernel: [ 2244.441572] usb 1-2: new high-speed USB device number 7 using tegra-xusb
+8887246: Sep 14 00:13:42 ubuntu kernel: [ 2244.593753] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887248: Sep 14 00:13:42 ubuntu kernel: [ 2244.593770] usb 1-2: Product: 802.11ax WLAN Adapter
+8887249: Sep 14 00:13:42 ubuntu kernel: [ 2244.593774] usb 1-2: Manufacturer: Realtek
+8887260: Sep 14 00:41:11 ubuntu kernel: [ 3893.737827] usb 1-2: USB disconnect, device number 7
+8887315: Sep 14 00:41:12 ubuntu kernel: [ 3894.258567] usb 1-2: new high-speed USB device number 8 using tegra-xusb
+8887316: Sep 14 00:41:12 ubuntu kernel: [ 3894.414124] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8887318: Sep 14 00:41:12 ubuntu kernel: [ 3894.414143] usb 1-2: Product: DISK
+8887319: Sep 14 00:41:12 ubuntu kernel: [ 3894.414149] usb 1-2: Manufacturer: Realtek
+8887325: Sep 14 00:41:13 ubuntu kernel: [ 3895.743870] usb 1-2: USB disconnect, device number 8
+8887328: Sep 14 00:41:14 ubuntu kernel: [ 3896.378482] usb 1-2: new high-speed USB device number 9 using tegra-xusb
+8887329: Sep 14 00:41:14 ubuntu kernel: [ 3896.530665] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887331: Sep 14 00:41:14 ubuntu kernel: [ 3896.530684] usb 1-2: Product: 802.11ax WLAN Adapter
+8887332: Sep 14 00:41:14 ubuntu kernel: [ 3896.530687] usb 1-2: Manufacturer: Realtek
+8887340: Sep 14 00:43:52 ubuntu kernel: [ 4054.965726] usb 1-2: USB disconnect, device number 9
+8887395: Sep 14 00:43:53 ubuntu kernel: [ 4055.468230] usb 1-2: new high-speed USB device number 10 using tegra-xusb
+8887396: Sep 14 00:43:53 ubuntu kernel: [ 4055.627840] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8887398: Sep 14 00:43:53 ubuntu kernel: [ 4055.627853] usb 1-2: Product: DISK
+8887399: Sep 14 00:43:53 ubuntu kernel: [ 4055.627856] usb 1-2: Manufacturer: Realtek
+8887405: Sep 14 00:43:54 ubuntu kernel: [ 4056.958045] usb 1-2: USB disconnect, device number 10
+8887406: Sep 14 00:43:55 ubuntu kernel: [ 4057.592231] usb 1-2: new high-speed USB device number 11 using tegra-xusb
+8887407: Sep 14 00:43:55 ubuntu kernel: [ 4057.744574] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887409: Sep 14 00:43:55 ubuntu kernel: [ 4057.744591] usb 1-2: Product: 802.11ax WLAN Adapter
+8887410: Sep 14 00:43:55 ubuntu kernel: [ 4057.744594] usb 1-2: Manufacturer: Realtek
+8887420: Sep 14 00:50:44 ubuntu kernel: [ 4466.698149] usb 1-2: USB disconnect, device number 11
+8887473: Sep 14 00:50:45 ubuntu kernel: [ 4467.182984] usb 1-2: new high-speed USB device number 12 using tegra-xusb
+8887474: Sep 14 00:50:45 ubuntu kernel: [ 4467.335039] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887476: Sep 14 00:50:45 ubuntu kernel: [ 4467.335056] usb 1-2: Product: 802.11ax WLAN Adapter
+8887477: Sep 14 00:50:45 ubuntu kernel: [ 4467.335059] usb 1-2: Manufacturer: Realtek
+8887484: Sep 14 01:00:26 ubuntu kernel: [ 5048.976704] usb 1-2: USB disconnect, device number 12
+8887537: Sep 14 01:00:27 ubuntu kernel: [ 5049.471637] usb 1-2: new high-speed USB device number 13 using tegra-xusb
+8887538: Sep 14 01:00:27 ubuntu kernel: [ 5049.623554] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8887540: Sep 14 01:00:27 ubuntu kernel: [ 5049.623564] usb 1-2: Product: DISK
+8887541: Sep 14 01:00:27 ubuntu kernel: [ 5049.623566] usb 1-2: Manufacturer: Realtek
+8887545: Sep 14 01:00:28 ubuntu kernel: [ 5050.823776] usb 1-2: reset high-speed USB device number 13 using tegra-xusb
+8887548: Sep 14 01:00:41 ubuntu kernel: [ 5063.311664] usb 1-2: USB disconnect, device number 13
+8887549: Sep 14 01:00:41 ubuntu kernel: [ 5063.947253] usb 1-2: new high-speed USB device number 14 using tegra-xusb
+8887550: Sep 14 01:00:42 ubuntu kernel: [ 5064.099011] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887552: Sep 14 01:00:42 ubuntu kernel: [ 5064.099023] usb 1-2: Product: 802.11ax WLAN Adapter
+8887553: Sep 14 01:00:42 ubuntu kernel: [ 5064.099025] usb 1-2: Manufacturer: Realtek
+8887581: Sep 14 01:01:24 ubuntu kernel: [ 5106.516857] usb 1-2: USB disconnect, device number 14
+8887634: Sep 14 01:01:24 ubuntu kernel: [ 5107.008633] usb 1-2: new high-speed USB device number 15 using tegra-xusb
+8887635: Sep 14 01:01:25 ubuntu kernel: [ 5107.160218] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8887637: Sep 14 01:01:25 ubuntu kernel: [ 5107.160228] usb 1-2: Product: DISK
+8887638: Sep 14 01:01:25 ubuntu kernel: [ 5107.160229] usb 1-2: Manufacturer: Realtek
+8887644: Sep 14 01:01:26 ubuntu kernel: [ 5108.489626] usb 1-2: USB disconnect, device number 15
+8887647: Sep 14 01:01:27 ubuntu kernel: [ 5109.124659] usb 1-2: new high-speed USB device number 16 using tegra-xusb
+8887648: Sep 14 01:01:27 ubuntu kernel: [ 5109.276780] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8887650: Sep 14 01:01:27 ubuntu kernel: [ 5109.276790] usb 1-2: Product: 802.11ax WLAN Adapter
+8887651: Sep 14 01:01:27 ubuntu kernel: [ 5109.276791] usb 1-2: Manufacturer: Realtek
+8887657: Sep 14 01:01:30 ubuntu kernel: [ 5112.758048] usb 1-2: USB disconnect, device number 16
+8890683: Sep 14 01:01:31 ubuntu kernel: [ 5113.992618] usb 1-2: new high-speed USB device number 17 using tegra-xusb
+8890684: Sep 14 01:01:32 ubuntu kernel: [ 5114.144098] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890686: Sep 14 01:01:32 ubuntu kernel: [ 5114.144110] usb 1-2: Product: DISK
+8890687: Sep 14 01:01:32 ubuntu kernel: [ 5114.144112] usb 1-2: Manufacturer: Realtek
+8890693: Sep 14 01:01:34 ubuntu kernel: [ 5116.750305] usb 1-2: USB disconnect, device number 17
+8890694: Sep 14 01:01:34 ubuntu kernel: [ 5117.060088] usb 1-2: new high-speed USB device number 18 using tegra-xusb
+8890695: Sep 14 01:01:35 ubuntu kernel: [ 5117.211669] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890697: Sep 14 01:01:35 ubuntu kernel: [ 5117.211684] usb 1-2: Product: DISK
+8890698: Sep 14 01:01:35 ubuntu kernel: [ 5117.211687] usb 1-2: Manufacturer: Realtek
+8890703: Sep 14 01:01:35 ubuntu kernel: [ 5117.482749] usb 1-2: USB disconnect, device number 18
+8890704: Sep 14 01:01:35 ubuntu kernel: [ 5117.780062] usb 1-2: new high-speed USB device number 19 using tegra-xusb
+8890705: Sep 14 01:01:35 ubuntu kernel: [ 5117.935608] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890707: Sep 14 01:01:35 ubuntu kernel: [ 5117.935624] usb 1-2: Product: DISK
+8890708: Sep 14 01:01:35 ubuntu kernel: [ 5117.935628] usb 1-2: Manufacturer: Realtek
+8890713: Sep 14 01:01:40 ubuntu kernel: [ 5122.369699] usb 1-2: USB disconnect, device number 19
+8890714: Sep 14 01:01:40 ubuntu kernel: [ 5122.683776] usb 1-2: new high-speed USB device number 20 using tegra-xusb
+8890715: Sep 14 01:01:40 ubuntu kernel: [ 5122.843393] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890717: Sep 14 01:01:40 ubuntu kernel: [ 5122.843410] usb 1-2: Product: DISK
+8890718: Sep 14 01:01:40 ubuntu kernel: [ 5122.843413] usb 1-2: Manufacturer: Realtek
+8890722: Sep 14 01:01:41 ubuntu kernel: [ 5124.011966] usb 1-2: reset high-speed USB device number 20 using tegra-xusb
+8890724: Sep 14 01:01:53 ubuntu kernel: [ 5135.568698] usb 1-2: USB disconnect, device number 20
+8890725: Sep 14 01:01:54 ubuntu kernel: [ 5136.751065] usb 1-2: new high-speed USB device number 21 using tegra-xusb
+8890726: Sep 14 01:01:54 ubuntu kernel: [ 5136.902726] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890728: Sep 14 01:01:54 ubuntu kernel: [ 5136.902741] usb 1-2: Product: DISK
+8890729: Sep 14 01:01:54 ubuntu kernel: [ 5136.902745] usb 1-2: Manufacturer: Realtek
+8890735: Sep 14 01:01:59 ubuntu kernel: [ 5141.180362] usb 1-2: USB disconnect, device number 21
+8890736: Sep 14 01:01:59 ubuntu kernel: [ 5141.482808] usb 1-2: new high-speed USB device number 22 using tegra-xusb
+8890737: Sep 14 01:01:59 ubuntu kernel: [ 5141.642376] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890739: Sep 14 01:01:59 ubuntu kernel: [ 5141.642386] usb 1-2: Product: DISK
+8890740: Sep 14 01:01:59 ubuntu kernel: [ 5141.642387] usb 1-2: Manufacturer: Realtek
+8890746: Sep 14 01:02:09 ubuntu kernel: [ 5151.142328] usb 1-2: USB disconnect, device number 22
+8890747: Sep 14 01:02:09 ubuntu kernel: [ 5151.462322] usb 1-2: new high-speed USB device number 23 using tegra-xusb
+8890748: Sep 14 01:02:09 ubuntu kernel: [ 5151.614003] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8890750: Sep 14 01:02:09 ubuntu kernel: [ 5151.614011] usb 1-2: Product: DISK
+8890751: Sep 14 01:02:09 ubuntu kernel: [ 5151.614013] usb 1-2: Manufacturer: Realtek
+8890757: Sep 14 01:02:10 ubuntu kernel: [ 5152.712550] usb 1-2: USB disconnect, device number 23
+8890760: Sep 14 01:02:11 ubuntu kernel: [ 5153.350241] usb 1-2: new high-speed USB device number 24 using tegra-xusb
+8890761: Sep 14 01:02:11 ubuntu kernel: [ 5153.502352] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8890763: Sep 14 01:02:11 ubuntu kernel: [ 5153.502368] usb 1-2: Product: 802.11ax WLAN Adapter
+8890764: Sep 14 01:02:11 ubuntu kernel: [ 5153.502372] usb 1-2: Manufacturer: Realtek
+8890772: Sep 14 01:02:51 ubuntu kernel: [ 5193.776451] usb 1-2: USB disconnect, device number 24
+8892841: Sep 14 01:02:54 ubuntu kernel: [ 5196.276121] usb 1-2: new high-speed USB device number 25 using tegra-xusb
+8892842: Sep 14 01:02:54 ubuntu kernel: [ 5196.428232] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8892844: Sep 14 01:02:54 ubuntu kernel: [ 5196.428248] usb 1-2: Product: 802.11ax WLAN Adapter
+8892845: Sep 14 01:02:54 ubuntu kernel: [ 5196.428251] usb 1-2: Manufacturer: Realtek
+8892850: Sep 14 01:02:56 ubuntu kernel: [ 5199.041673] usb 1-2: USB disconnect, device number 25
+8892851: Sep 14 01:02:57 ubuntu kernel: [ 5199.759947] usb 1-2: new high-speed USB device number 26 using tegra-xusb
+8892852: Sep 14 01:02:57 ubuntu kernel: [ 5199.915605] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8892854: Sep 14 01:02:57 ubuntu kernel: [ 5199.915617] usb 1-2: Product: DISK
+8892855: Sep 14 01:02:57 ubuntu kernel: [ 5199.915619] usb 1-2: Manufacturer: Realtek
+8892861: Sep 14 01:02:59 ubuntu kernel: [ 5201.225990] usb 1-2: USB disconnect, device number 26
+8892862: Sep 14 01:02:59 ubuntu kernel: [ 5201.859865] usb 1-2: new high-speed USB device number 27 using tegra-xusb
+8892863: Sep 14 01:02:59 ubuntu kernel: [ 5202.012033] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8892865: Sep 14 01:02:59 ubuntu kernel: [ 5202.012054] usb 1-2: Product: 802.11ax WLAN Adapter
+8892866: Sep 14 01:02:59 ubuntu kernel: [ 5202.012060] usb 1-2: Manufacturer: Realtek
+8902545: Sep 14 00:44:49 ubuntu kernel: [    7.480214] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8902546: Sep 14 00:44:49 ubuntu kernel: [    7.637731] usb 1-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+8902548: Sep 14 00:44:49 ubuntu kernel: [    7.653498] usb 1-2: Product: DISK
+8902549: Sep 14 00:44:49 ubuntu kernel: [    7.656986] usb 1-2: Manufacturer: Realtek
+8902711: Sep 14 00:44:49 ubuntu kernel: [   12.536613] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8902807: Sep 14 00:44:50 ubuntu kernel: [   16.698005] usb 1-2: USB disconnect, device number 2
+8902832: Sep 14 00:44:50 ubuntu kernel: [   17.332235] usb 1-2: new high-speed USB device number 3 using tegra-xusb
+8902833: Sep 14 00:44:51 ubuntu kernel: [   17.484315] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8902835: Sep 14 00:44:51 ubuntu kernel: [   17.484325] usb 1-2: Product: 802.11ax WLAN Adapter
+8902836: Sep 14 00:44:51 ubuntu kernel: [   17.484326] usb 1-2: Manufacturer: Realtek
+8909703: Sep 14 00:44:49 ubuntu kernel: [    8.789239] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8909704: Sep 14 00:44:49 ubuntu kernel: [    8.950014] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8909706: Sep 14 00:44:49 ubuntu kernel: [    8.965768] usb 1-2: Product: 802.11ax WLAN Adapter
+8909707: Sep 14 00:44:49 ubuntu kernel: [    8.970776] usb 1-2: Manufacturer: Realtek
+8909918: Sep 14 00:44:49 ubuntu kernel: [   13.981452] 8851bu: module verification failed: signature and/or required key missing - tainting kernel
+8919337: Sep 14 08:03:55 ubuntu kernel: [    8.608376] usb 1-2: new high-speed USB device number 2 using tegra-xusb
+8919338: Sep 14 08:03:55 ubuntu kernel: [    8.766022] usb 1-2: New USB device found, idVendor=0bda, idProduct=b831, bcdDevice= 0.00
+8919340: Sep 14 08:03:55 ubuntu kernel: [    8.781783] usb 1-2: Product: 802.11ax WLAN Adapter
+8919341: Sep 14 08:03:55 ubuntu kernel: [    8.786789] usb 1-2: Manufacturer: Realtek
+8919499: Sep 14 08:03:55 ubuntu kernel: [   13.649006] 8851bu: module verification failed: signature and/or required key missing - tainting kernel

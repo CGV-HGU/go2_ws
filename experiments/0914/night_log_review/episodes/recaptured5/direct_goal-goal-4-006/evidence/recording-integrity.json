@@ -1,0 +1,50 @@
+{
+  "schema": "escape-recording-integrity-v1",
+  "checked_unix": 1789314628.3850389,
+  "live_preflight": false,
+  "started": true,
+  "outcome": "PIXNAV_TERMINAL_BEFORE_GOAL",
+  "passed": true,
+  "issues": [],
+  "stream_counts": {
+    "body": {
+      "low": 1961,
+      "sport": 824,
+      "recorder_finished": 1
+    },
+    "camera": {
+      "recorder_started": 1,
+      "time_sync_status": 617,
+      "raw_image_header": 617,
+      "recorder_finished": 1
+    },
+    "observation": {
+      "image_receipt": 540,
+      "image": 74
+    },
+    "operator": {
+      "odom": 588,
+      "control_pose": 994,
+      "status": 332,
+      "motion_enable": 1,
+      "fixed_start_binding": 1,
+      "goal_published": 1,
+      "task": 1,
+      "pointgoal": 382,
+      "command": 15,
+      "result": 15,
+      "direct_stop": 1,
+      "motion_disable": 1
+    },
+    "policy_steps": 16
+  },
+  "native_topic_counts": {
+    "/tf_static": 1,
+    "/s2e/robot/sensors/imu": 9132,
+    "/s2e/robot/sensors/cloud": 633,
+    "/s2e/robot/sensors/odom": 5912,
+    "/robot_nav/sensors/front_camera/camera_info": 661,
+    "/robot_nav/sensors/front_camera/image_raw": 661
+  },
+  "note": "File/subscription/receipt checks; not proof of zero transport loss or physical success. Missing artifacts are preserved as incomplete records."
+}

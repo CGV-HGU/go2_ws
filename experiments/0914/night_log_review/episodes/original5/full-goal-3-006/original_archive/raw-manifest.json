@@ -1,0 +1,3420 @@
+{
+  "schema": "escape-robot-episode-archive-v1",
+  "raw_root": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-3-006",
+  "files": [
+    {
+      "path": "RECORDERS_CLOSED",
+      "bytes": 0,
+      "mtime_ns": 1789300392365188685,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "RECORDING_INCOMPLETE",
+      "bytes": 0,
+      "mtime_ns": 1789300393589245814,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "STACK_STARTED",
+      "bytes": 0,
+      "mtime_ns": 1789300167226526609,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "START_GOAL",
+      "bytes": 174,
+      "mtime_ns": 1789300172866798051,
+      "sha256": "b13c3468773bb8007416a7e4e677a98af0f318db372787ab28ceff3639df2e7a"
+    },
+    {
+      "path": "body-console.log",
+      "bytes": 11737,
+      "mtime_ns": 1789300384612826686,
+      "sha256": "3b8ab220e5d7a337a253f928672eb43405af47dfd4848febb912256830abc893"
+    },
+    {
+      "path": "camera-console.log",
+      "bytes": 0,
+      "mtime_ns": 1789300164486394645,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "camera-contract.json",
+      "bytes": 1031,
+      "mtime_ns": 1788943192351118411,
+      "sha256": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4"
+    },
+    {
+      "path": "camera-startup.log",
+      "bytes": 53,
+      "mtime_ns": 1789300163510347624,
+      "sha256": "e208102c191f0ebab5ad59fe11fd0d0fe307b6663d53ee4ff3d793130a88a818"
+    },
+    {
+      "path": "camera-timing-console.log",
+      "bytes": 0,
+      "mtime_ns": 1789300164486394645,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "campaign-binding.json",
+      "bytes": 520,
+      "mtime_ns": 1789298903968031800,
+      "sha256": "482b3a5e6a85903e4359dea039b0358aa9e556d48987b188326685bfcad57f85"
+    },
+    {
+      "path": "compose.trial.yaml",
+      "bytes": 3568,
+      "mtime_ns": 1789298903964031428,
+      "sha256": "be8f906514d48ef82a662892be7ad55fc7d85b10ca5790f8dbf6e7504b3beaf7"
+    },
+    {
+      "path": "field-report.json",
+      "bytes": 250,
+      "mtime_ns": 1789300400837583949,
+      "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e"
+    },
+    {
+      "path": "full5m/__pycache__/capture_robot_goal.cpython-312.pyc",
+      "bytes": 11144,
+      "mtime_ns": 1789300175750936753,
+      "sha256": "d2c330fa8f891f78706c6ef0408c70a2389a58d294f22faec8a6c3cea7e9f5c9"
+    },
+    {
+      "path": "full5m/__pycache__/fixed_start_goals.cpython-312.pyc",
+      "bytes": 15794,
+      "mtime_ns": 1789300175754936945,
+      "sha256": "4f468014ac329feb373088bf61650f48239b2d841850495c6bbe8e843edf40f0"
+    },
+    {
+      "path": "full5m/body-recording/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789300385052847242,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/body-recording/baseline.json",
+      "bytes": 405,
+      "mtime_ns": 1789300169254624242,
+      "sha256": "cf0e23bee5c680de3f3fa6ad6488ff02655c8a659831d397987180a51e2a5a68"
+    },
+    {
+      "path": "full5m/body-recording/events.jsonl",
+      "bytes": 9736854,
+      "mtime_ns": 1789300385052847242,
+      "sha256": "85e2776b59a2da2be49a83e835368cd40440a6b53d6241484075731de8f9d92e"
+    },
+    {
+      "path": "full5m/camera-timing/READY",
+      "bytes": 0,
+      "mtime_ns": 1789300166854508696,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/camera-timing/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789300385052847242,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/camera-timing/events.jsonl",
+      "bytes": 2413777,
+      "mtime_ns": 1789300385080848550,
+      "sha256": "a48468483961942aa9d7da592c4d961a8750a8b9f20639e2c76320e4d18cb387"
+    },
+    {
+      "path": "full5m/capture_robot_goal.py",
+      "bytes": 7404,
+      "mtime_ns": 1789178683993112954,
+      "sha256": "60dfe6c775dd9d6267aaa14698e5eec5e8e81d6201d5cb922211bf7cb321feb8"
+    },
+    {
+      "path": "full5m/drive-console.log",
+      "bytes": 46610,
+      "mtime_ns": 1789300385044846869,
+      "sha256": "22a487ef689504984ce0771a9f4acbe102a60d37c41e1659269d7a2c7bd99b21"
+    },
+    {
+      "path": "full5m/fixed_start_goals.py",
+      "bytes": 9527,
+      "mtime_ns": 1789290489786118195,
+      "sha256": "1d712ee9a390dc822fea62312ef633e770513848af6ae43c69835b21b3bebd86"
+    },
+    {
+      "path": "full5m/inject_and_observe.py",
+      "bytes": 17015,
+      "mtime_ns": 1789288487745968411,
+      "sha256": "84ead9a7489e4e4ae2a5a19d67d8817644db8a1f409bae5a2cf21f5e7cfdfd22"
+    },
+    {
+      "path": "full5m/observation-recording/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789300385052847242,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/observation-recording/events.jsonl",
+      "bytes": 539472,
+      "mtime_ns": 1789300385020845748,
+      "sha256": "7f05bc22d33633467d338f1bf663112e8178dfc51502465bca5856df29a67ecb"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000000.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300171370726076,
+      "sha256": "3e9131a62eb6c8400aa14356243370a637d71e732f21e7e9110aa78f154b0b92"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000001.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300171910752058,
+      "sha256": "81ee69666538390240258a1db7cf67e8aed00665d369f017eee597b548d91046"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000002.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300172482779577,
+      "sha256": "a4d935170952b4851a2634806e321b1d727ab92cf6b2bdb3529683f972c76376"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000003.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300173042806517,
+      "sha256": "385cd1aa1154edd7607096db016d9a4cbc0c023b3b13dab743d57a111e03d3be"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000004.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300173558831337,
+      "sha256": "fe0483c4ab816203a4335c07b7ab631a170ac65ef8bba443afcf91d89157133a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000005.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300174150859811,
+      "sha256": "1080287ee1535b93f68c5ac1429865283f234b2638436d8fecd649a67035c7a7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000006.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300174666884627,
+      "sha256": "8a804615111eb5270ec2e8a970730a11be6bac278d707221fb36345205386035"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000007.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300175166908672,
+      "sha256": "7b5a864d0e45b2f6784cde73d584d7ac4e8e687d8c77e92eb625e9c6fb91a7e8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000008.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300175670932906,
+      "sha256": "ecced92f9eceff4fe27b079b0d25ff30debdca19212ba0ded147cdfa58d5bfb1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000009.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300176206958678,
+      "sha256": "bcaf2bf866bf8f2e1e6bfec644da677d74da34a3c10b6c7c706d5336fe39995d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000010.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300176750984831,
+      "sha256": "176d3dcaa52c059beeed936616a682a555a3c22724daf0ca6bb6ef1ee32b4d54"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000011.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300177259009252,
+      "sha256": "35efcb5237b8cc07fb18b6d27ddacef2acf544d51b85aaef1a0fd3726738d0ec"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000012.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300177811035786,
+      "sha256": "bfce0ff1d426707b8bb00d0454b1bdb049bee5f04520338daf4d5250b93491a8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000013.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300178327060586,
+      "sha256": "44360bfee35d18ebea4d5a442759e99e710318943202633302714e7e114a5ea3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000014.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300178855085962,
+      "sha256": "2707022b99d750a9417d4eda7e85d31307a9b3b334012cc44577626f38a8d6f7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000015.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300179387111527,
+      "sha256": "95b0bf5c0b10a46050460104c9331fcfb4bba6121ab08a28393d1987fbea7357"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000016.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300179903136323,
+      "sha256": "90b23ae55446dc6a74f40255b45f135fc026679cfdc1eb4556e68ca99e1eea26"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000017.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300180443162267,
+      "sha256": "6fdb2d06707332f3eec671c64349dfc15e1629f09626e42a38e2f793482a78de"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000018.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300180963187251,
+      "sha256": "cd6bc32fad4382f3041ab428539552466ba28f43fa28691bb6646551675f1140"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000019.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300181487212422,
+      "sha256": "1c1b35f6d362757a2c52f8f7486efb38920202a02bda4951f47404626ab48a98"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000020.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300181999237017,
+      "sha256": "be372c04d465d6bf6166e252b87af5722d5412f69806d160d5f87a304313bd2e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000021.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300182579264874,
+      "sha256": "4835a130fae939fa6b8d3799914e0e33df51fc6b3ab092527e03c2054fd7fca1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000022.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300183095289656,
+      "sha256": "fffdbf3515da24485985d09d8c2c5212c6167e5b8dd8b027e42cd5be9bd20c6d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000023.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300183619314819,
+      "sha256": "34fb275c3e32529b205f30d5f7b32f13961afbd5fc7d41a7eaf2625b11bbfa6e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000024.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300184187342094,
+      "sha256": "92c34af71254ca04be09b48fa2597910ac550007bb1fe9ce02035ca46c93530d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000025.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300184751369173,
+      "sha256": "4712d72603686e9dd4c8c6f5d9c63521fe9abbcd1a40296c5ad7f0b76c0f6129"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000026.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300185295395290,
+      "sha256": "b1c6f5876e5f8e0347fbd24552bc02f05a022b9397198cc139e991adc52a9390"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000027.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300185807419869,
+      "sha256": "4a877c2185eee2793bb37dbb56f1542329d0ff9ea1ab2ed669e8a8380c0f28d7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000028.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300186347445789,
+      "sha256": "8afabd7040f9333e0ca65d084a3aa50070af9b8a5caa3d4a820df7ee9161f7fc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000029.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300186871470940,
+      "sha256": "f77ecc27d3c11a11112a11380b6c528c93b33f83ed049126e0da7224a5dfd8a8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000030.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300187455498967,
+      "sha256": "943a425cef85784bf7b30496334a287cc34ce936d887be54dbe96da04473e2ca"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000031.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300188011525649,
+      "sha256": "649881cc370413d108c8f8dc1cc77ce72a5e0b9f0795732c3d5c3c0226f93503"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000032.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300188515549832,
+      "sha256": "9e20f5bd53205753338c8cc7bb77b9ba49a4ae2f56a27f721ff788066b588d97"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000033.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300189083577085,
+      "sha256": "9261f3e0fec9fc5e94827cb66fd33dc1b5d9af0720b50e4eaaaabe1895d8e6f3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000034.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300189583601073,
+      "sha256": "3cb2ff068ae1fc003e71f33f43d347f8f138509be61497ecb6f409300b0d183f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000035.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300190119626786,
+      "sha256": "255053d42376989f27419773746165a061c969922840fb8f4979a75b4268e8bb"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000036.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300190619650769,
+      "sha256": "0f3f04fd590c9f8112be8dce0f3ea48c2c3cdc30f0a21b01161ea6f41b3fad49"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000037.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300191155676478,
+      "sha256": "119bf851392f63e7daabe868597b62c37f815a5fb0665ce5db288db7bd2f6d04"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000038.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300191743704678,
+      "sha256": "26257b1d292c989fa42ba1397c9a4e4a508ba23f58e4e30dd9152e29970493b5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000039.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300192255729231,
+      "sha256": "6cfc90785625d6d3d4c744f7e2c926a3d487ff283b02e8d1c618298fb88eb1e0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000040.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300192815756084,
+      "sha256": "8dbfcafd2225b575914510e2a6357713ea9cbaa5d60037ec116581b070669014"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000041.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300193331780824,
+      "sha256": "6462f7748fc64ded072c13e6f82bb54736aed58e92dd6af7faa13bfb760ec10a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000042.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300193851805754,
+      "sha256": "5361e683feab48ccdf8b136e35644c611c059e2b72acf5830f23248810f6fce3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000043.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300194359830107,
+      "sha256": "975f1fdbda29e589b5fc7f81ad5fcfb6373b264fb1e4830fab708357585bb8d8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000044.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300194883855225,
+      "sha256": "66817601a422c5596a3b4d0a96ad59076a49a56290322bef5f26f05e329c26e1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000045.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300195447882258,
+      "sha256": "87ea188cfa5d7bf86812f6dcbd8f574d53566953c8df176234c766f3410e0f78"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000046.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300195975907564,
+      "sha256": "a1c36004376a2f8fbc5d034487f1b3f81c4586fef622c003aa28048adcc618ab"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000047.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300196479931716,
+      "sha256": "52ce408573717eb205b4762fccea9c6a8122897466c3cbc9225a7b022c8ecb47"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000048.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300197027957976,
+      "sha256": "87c68d9b5bd3bc434980f0c55921d49a06af49155c55614a03faf1618a6f36b2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000049.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300197527981933,
+      "sha256": "f8d9f14d17e9a4c104d403808016916af703697bd1bd32c936b490e03b572705"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000050.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300198112009913,
+      "sha256": "635509e242d64eac979a0bcb7c70d2de8e8599ace47e757488696ad4c2a8c5a9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000051.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300198664036357,
+      "sha256": "2089de2f44057fb7748c83b50ca5daa07e9c410554a30cf1afb9330374cf5034"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000052.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300199176060883,
+      "sha256": "d3e1892de916452acf3511cb66cf8cc2523d1c7759685af720b0a6311c672dd7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000053.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300199700085981,
+      "sha256": "825719f791c3753b5bc0467cf8480e87fa60aecbdb93369f7bf2f07093bee0b8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000054.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300200284113951,
+      "sha256": "d4f3accedccb79959062cba0a005208cb037cf8c617d98c9332eec21c3c444a4"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000055.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300200832140195,
+      "sha256": "b1670d9c425cc38d7be865fa34f26223e8e981e10d1e3055d686731629a7f123"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000056.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300201376166244,
+      "sha256": "3abeed008d1c5c3614b2ca154962aeea8bd6d721d37b7173917b1018ca75b2f6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000057.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300201948193633,
+      "sha256": "5bf34a68d858e214ed1d060baff10f8bff1d019b05391c5ad7b88d846f170ef6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000058.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300202508220443,
+      "sha256": "af27b8402b36e4053943911c62e6a9e38cb97bfa50c8abd4ea30968f64c79f2c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000059.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300203084248019,
+      "sha256": "14f9fb51c126b16943b39bb7d5d404bcc8a39580e5887dab70ded227b32d2453"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000060.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300203604272910,
+      "sha256": "e0f1963ab0813769c658d74262a71cae63f86aa604ed38e467321fb55650bf9a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000061.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300204120297608,
+      "sha256": "9a737fefebfe82ae8224bed10d23f5f5d45afa020efb130e58b9ac4ea0be4136"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000062.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300204628321921,
+      "sha256": "8a0711f7c599fa1c9b8615ded421c40d7fb9e46de829744c0eb09941da58a27f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000063.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300205160347381,
+      "sha256": "cd014c07b1adb2b6baff007b9c2629a74cc5fbcb30f029a001fd4a4d2d90682f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000064.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300205704373413,
+      "sha256": "4461daf20e51cfa930a451402bcf9f4044ef36d4151ab403741964cd7e70ba06"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000065.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300206224398294,
+      "sha256": "13affba14b3ad5176ea82427a413a522718a613f68d3610e82bd6827e18da6a8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000066.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300206788425279,
+      "sha256": "cb3e666628d92c2e5a06804bdeeba3bbd1ead44692e6eb7838257c12e4bedffe"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000067.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300207356452452,
+      "sha256": "760c2f3f9abc4efc0f7623e407f70779011ddbe42f1e12fa231a95fed63af1d8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000068.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300207876477327,
+      "sha256": "5134ab552c6fe8d4fe746c29d078dace8c402a8c6f93bb89d3c2fce93df14190"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000069.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300208404502583,
+      "sha256": "4329976418c2109918a957d37440d31046076997e00594de1d3eb2abdbd1f234"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000070.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300208972529750,
+      "sha256": "f1ea62c0685019b4a0af7b42456e74e386776003409824280ca58f887abe7aa1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000071.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300209544557105,
+      "sha256": "2840ac9483eafcd806fde796136c2c4f4038fdc3ab9de4c2f840880da322e518"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000072.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300210080582737,
+      "sha256": "46373a499ac0540c9dae01cae789b5c29482a9a613c1dccd1817da4edd6792a4"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000073.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300210584606835,
+      "sha256": "5f680ef06efc40106f2b9a622060ebb8ae80cb23fc28c81caeb57590cdcd6732"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000074.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300211140633420,
+      "sha256": "d5d14225cce49b66b3c215fdcabe3e17fbeaa20685527d3d55bd5c79dfdb0a62"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000075.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300211684659427,
+      "sha256": "15b4180e38a7db395aa83870ecd8c01daddf2776e074a9d69eed61891a48468b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000076.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300212188683520,
+      "sha256": "43b168bc3fb901efc18bae14cf399a0f44aca9f1ebabaad3472ef853bc88609e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000077.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300212728709333,
+      "sha256": "701cddae7c8a303c621b82d5587de4c99f7c39b227c4a1c674bad0dd41e4ab08"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000078.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300213240733804,
+      "sha256": "6e4e3bd62641b5358ff7c2868c4545df72457043604aa3c93fba3726eced53ec"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000079.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300213796760377,
+      "sha256": "bf94dd1cfedcb5385816d3f18c8cd6cbc35b8ca1c827cf5a6491b3fb15e9c209"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000080.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300214328785800,
+      "sha256": "967e928fc6854b1562baab93521fb001a1e71fce56b95e6ec0dd88ebaa2893d7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000081.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300214860811222,
+      "sha256": "b9ae3b76233c91c2c2cb6afafbe185fb68523d907ca4a5d9f2d09f6c1cd235db"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000082.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300215424838170,
+      "sha256": "772c7a337d8ed7a99a46956745a151316460e21b4500d230cb3e8c3d6d07d35b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000083.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300215960863779,
+      "sha256": "82661ab6c07168b9ad4f79641d536a0f7a253acf1585ae84513266dff4e6dbc9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000084.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300216564892633,
+      "sha256": "8256a3b225bc4452d7f8035f864a996402a7020d59e03abe1f1e4cd4a95f894d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000085.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300217092917855,
+      "sha256": "e1563b2786a4d061189825117bb34ad94dc081648c3cfb788fb306e1792c196e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000086.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300217628943456,
+      "sha256": "3cfbdb46460fb8d462a1cbded9d4db825a08399c52f6838a9dc13e4c407e80c7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000087.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300218180969820,
+      "sha256": "3e19fd105cac501a5e006555115b866b155de55713b69e35d0744f899d54c1bc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000088.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300218704994844,
+      "sha256": "23e294358b82e3979e628d77faf3be40b5cc6178fc024d1fa528a334f16587e9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000089.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300219241020440,
+      "sha256": "32457742658ae8f219a0556be8dcae9db33f20aeb162504854705c3300d65351"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000090.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300219829048516,
+      "sha256": "f687779fb265207790656267a0834997b5fa1f3ecba6f92c41fe7e3cd89dc7ce"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000091.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300220357073725,
+      "sha256": "da0dd3b090ea92f25c8a0888066e6249d3bf70b28cfd98467fb6f86d07dce079"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000092.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300220929101033,
+      "sha256": "63d0773a55c4dbbe841162f55e7f785399f26823a64eaf35b776b816eaf19e8f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000093.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300221457126237,
+      "sha256": "ca9605738d13b554051671d4b8a084a1e547486fd11e037bdb24fa7887ae7062"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000094.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300221969150676,
+      "sha256": "97f2138f474987eb22db866144aa55c5360439288a14f353ec981181d4630493"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000095.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300222469174540,
+      "sha256": "fb848190f1ab15e1bd4a6059d21b4755a81f95cccca9e166a82bcddc12ac29b6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000096.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300223009200313,
+      "sha256": "b50ee5f8fe702445542339c7b5c880c086c2baef7f3295e471df5762d30f0d62"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000097.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300223533225318,
+      "sha256": "48f5d1722827e1b6b6eded4a6f6c0b9ec08e30c1054a448b4a8d2a92de3c59a0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000098.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300224061250513,
+      "sha256": "c36a675cfb57532c2fa43b77d1b9c0188ab9fcada5bae264b4200ff1c1acbc85"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000099.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300224649278568,
+      "sha256": "add36e38aadc94545a46d2503fdfcb5977c0e9e78dbe9e2c5664b178337c5366"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000100.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300225197304713,
+      "sha256": "18585c9a0d054b05ba3443f0996f3773344ace36badbaa5d3575cf6ea74be451"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000101.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300225745330855,
+      "sha256": "d04c9c38408cf5eba359f13a4f04ade7fdb05c06f04c58742810a8e91ed90192"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000102.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300226253355087,
+      "sha256": "30b8c0f3c9babbd1293964bb07c77766cc426e16df3bba8ca7218dbdd545192b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000103.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300226757379127,
+      "sha256": "4e12e23770b3cebedae1da48590865ff3c3cb0cde84417f9aead55cfe8046ba1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000104.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300227301405073,
+      "sha256": "7b42e379119e386817147b887c702bcc0d7cf2d02774940c313429fc821000cb"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000105.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300227873432352,
+      "sha256": "915a59934dcb9595367ba3423c54963b596c0561d8687b4473fe5780be022be9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000106.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300228397457339,
+      "sha256": "73375fb035a7d139898ab415e16fd8e8bbb94f2fede6b3f754b708273f6ae58e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000107.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300228941483279,
+      "sha256": "1f5bf83e2fed914daede6d149c746099bdcf70a56219d873416116018fd3ecc3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000108.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300229485509215,
+      "sha256": "66ff6f6329ed979cfc7cf5231a3f25c9257df74e2c4f319c5e96268ddcdbc897"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000109.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300230033535341,
+      "sha256": "0b5d61515738d4ac301f391c9bbb5eff85f41c2c29091584bd6de1f4d3fd1165"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000110.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300230569560892,
+      "sha256": "493863dcf5a228285bcaa09c138ff6f153da8c88ee83e714df0fea78fca2d1c1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000111.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300231137587967,
+      "sha256": "c052123515eb521cc77dcfddf6e2f8acde2482bbca9edd0cbea6dd947b145e2d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000112.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300231729616183,
+      "sha256": "da58842282a163b5c653805970be41029e0cadc95be510048f7e09a0588f2bab"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000113.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300232245640775,
+      "sha256": "c8ec9710b6416b96ebb21afd76d6120189fa4648a832ca2db3558f808486fa64"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000114.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300232765665555,
+      "sha256": "6d37ebbfeafb86134c581c5fffc94addeeb128510a114fd01efb5971c7cad96f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000115.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300233333692621,
+      "sha256": "c95f574a9e6987404c0b5a45da0c1f28f2c144c78c847a8ed156a1032f4c10ae"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000116.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300233861717779,
+      "sha256": "af7b73e4741f906e672dca5a621c95c3e17ea58faaabcf99f932e7d2c4cf48ac"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000117.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300234401743506,
+      "sha256": "4be0c3bf6e2a34df27a858d5381321e76fcc0ae3b8dfc61bf2c5d08b96bee458"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000118.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300234933768851,
+      "sha256": "98e0f78b6c04f26e11ac3afb7899f02511803a69df22886733a9e50d88b24ebd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000119.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300235469794383,
+      "sha256": "8e9c7bf69d18bbf7df34f489137a21f516696092e1ae30e16bc564c3982a831a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000120.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300236041821629,
+      "sha256": "c318b99be8665195cd2146d229f8f3bb21ce3732df262ed4f3c2c98fbccc91c0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000121.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300236633849824,
+      "sha256": "b68aaf4089f83ca3f12f64dca6d1e56e1092f5bef5e62e7a0695a7106747473b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000122.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300237197876684,
+      "sha256": "37510f13f18ffca0ef36465fee201164879d1a56d282b7beb67ba04e0566d4f5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000123.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300237737902398,
+      "sha256": "c3a545313bf26c41d5ee27815f193e964ff57f65f69e51179a01f0cad40b34ae"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000124.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300238277928111,
+      "sha256": "e5f46e7c115885f19ebbf43a5e846b5faa968aa56456369d65c553703bf18b9c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000125.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300238817953821,
+      "sha256": "020f81f1e17171ac12c429d75a48ac128b31f66b867c9bc6cbc143df1278fcb3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000126.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300239349979149,
+      "sha256": "b17d3c361bd7618c23700e4da2e3df9349bf4b83e74ea8594ab2c621fed175f5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000127.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300239866003713,
+      "sha256": "0ce24fe87103fb76dd1c09c2cca02cd3b8da708ce74b113bde8ede5abbc4391c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000128.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300240370027704,
+      "sha256": "ba90d2eaa978b33342c5dcfbb3e42786e28a6ad5787402c59d6a726e94956abc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000129.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300240930054359,
+      "sha256": "1c04a41e395c518e67cc0c074ac7bfde3bd2c8cdf52c6377b0660d9cc4c7f706"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000130.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300241490081010,
+      "sha256": "2b46cbbc9854140f30b6e1e1887e300b7ed2e47769edbdb2ade1f81f508a51b2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000131.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300242014105948,
+      "sha256": "e4eaa6ea8a5baed84465fa87c15f0b1f876e22477754285f045f179e6d2f9a00"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000132.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300242566132215,
+      "sha256": "ff55917c00055f39b5cde9341d9bcb0e90cd25043d0b6358e94ff791e62691a6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000133.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300243110158100,
+      "sha256": "f72a4fec96aaa40eeca20dac74f84adf0089313ac8ebb41c3b2ef425653200c1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000134.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300243654183982,
+      "sha256": "2c99bbbe20c7a121fbb6c53b410cd11d6f1449b4907b2708f234d1f77cf58bd2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000135.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300244162208150,
+      "sha256": "abaa3a1ba9846c462c6ffcb13d68c73452dc29a9a929e53ae94a39726501143e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000136.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300244666232126,
+      "sha256": "507f337043e6a3eea62214c5126d5f1ed1157c4e9be50504fd7725e6880459bf"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000137.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300245198257432,
+      "sha256": "bc2cd8e0183cc10a7b7aacac894224069fed7b491f40b0659897234e2ad43a50"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000138.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300245702281404,
+      "sha256": "e7b24a1273c6f60de065d80ec7a40c10d0570e3ee3565525f5d46af95d5a1152"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000139.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300246246307277,
+      "sha256": "b01c66fa4b4fd5007cdbe063650c74c7927c21893cfbef64e39f59b7ee8bc5f0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000140.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300246806333908,
+      "sha256": "19fe2344fe3d378c37585599149ea492dc7fa3f091863252b6e2a58270f2b991"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000141.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300247374360918,
+      "sha256": "340b59bcf4ec1d0468d6cb1be113cf4aa601cc179d83c5a7c4363d0311e01837"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000142.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300247926387165,
+      "sha256": "5cdb17a6ed137923e27a1769c988835d4e9114eb3f8e580b8904727532f451ca"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000143.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300248522415501,
+      "sha256": "4d54280d9459e3780226499f5199912fe5b4d048a359ab4287c85fcdfc48ccdc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000144.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300249050440603,
+      "sha256": "887d7ee77580acb9ee910a55efb97b425d5a0ef1a7c2134b8326ea39ccba2f0a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000145.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300249554464562,
+      "sha256": "b70d6312d6d774f7151461037b027279915d02d479b840fe84ddab30c5c26be1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000146.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300250130491941,
+      "sha256": "f9fe7e2f1cd3462cb3412e51eaa58d07b9ae929e07f9e5767511d30f9181cc80"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000147.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300250678517987,
+      "sha256": "3b488e4974b3ca335b3ab3eb41e4bbd001a13debca2778c07129a9f3fe82e093"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000148.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300251178541750,
+      "sha256": "638fade5af69224b787a99e3c3d1948c0e25110b2895441e414752db681d5b0b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000149.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300251682565701,
+      "sha256": "31177114b0b7c6b7323eb801536a66b9ca216f610e0735f68fc60e1d1a09f7ab"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000150.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300252234591932,
+      "sha256": "f205a7251d1ef0b894cdd852ccbf783a91f4a0f99b7a152b9f32d6a6554c6038"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000151.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300252742616070,
+      "sha256": "a335c01ed97b6b2527e15f082d8737689cd1acaef8c3347bd90133ca8cb3e7c5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000152.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300253322643626,
+      "sha256": "3a753d2b3bab0076aaf884104672cff09e690e6605968a9ef53e97e42889a73e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000153.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300253874669851,
+      "sha256": "7b2a2d098ccfdea0c0875040ef9598f35ed90392cf03d51a0799b3363ed69762"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000154.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300254386694173,
+      "sha256": "c27e2b62a5017f661c341b39a1947a31be1beb507c33ddb7f6c154e40987b783"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000155.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300254946720774,
+      "sha256": "553ed1b83ef0d51314e3c34e316f925ffb03d9190abc535b8c151a61e1a71f15"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000156.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300255514747751,
+      "sha256": "602a1b1887aaf962e60a013cec60edadcc710b931523f79342fa4402102eab84"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000157.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300256066773968,
+      "sha256": "b15bacfa34fe40e794fa19421340771a302d4d672ca3e97a6593a6b2e4b05e90"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000158.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300256654801891,
+      "sha256": "9923746de4e9069a6a8352fd0d015dcd334d9a65d7ff823ca368aded6766ea06"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000159.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300257178826773,
+      "sha256": "fa1b03527185b90c08000f63e0a9c2282a439abf8f33b294a46ae9cc77a0c630"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000160.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300257714852223,
+      "sha256": "457f25745bf79157960a6269f1f570fe699703cd3507e9e2998362c05a47bddc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000161.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300258254877861,
+      "sha256": "46767dc2d0d844327ff7ff754db31bbb80faa6fd52d9a248d174773b5f0728d3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000162.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300258802903877,
+      "sha256": "c696fc102b5ed3d836bfc7e5611aa6d764d018f6f3244795e328658d89af5689"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000163.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300259346929701,
+      "sha256": "f61bd083c6ea4ad428702c6abd6cebd9b33c73c359c19537f8630d66f182b1c7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000164.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300259870954574,
+      "sha256": "a3b06586e80c73bb6d9ea95aff39de92a7690447c3e57006bd134e87ffe3b7cd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000165.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300260378978685,
+      "sha256": "a19d1105c5646fd915069d349e8c2d87bf9c8f664b68db6e0d7fd5b6d79059c0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000166.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300260919004314,
+      "sha256": "70af04c2bdcf0814a53c125a02f9a5bd7bb31490a2bb7ea8bd48034d94b9480a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000167.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300261487031268,
+      "sha256": "14a044c7ab015d965e44bdb185cec35d1bed42a121ae6965c6ba588d597193fe"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000168.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300262023056703,
+      "sha256": "3286fa11602d6b277aa0f9dd39d6c33ce7da28fd91bfeadbeaa841009deef226"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000169.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300262635085741,
+      "sha256": "9f5b63a8a12c355dfbadb1d5d35a7b8f8f95783ef83e450a3e7f880ec60586f3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000170.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300263187111931,
+      "sha256": "568111ee2c349d7518bcea8dd75cbc89c99de5a335063efd23b03b3e8ff504f5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000171.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300263691135841,
+      "sha256": "b85d7043ace8a4ed7905ec4c2b3a733ce6cc8f3453f551ba067e7ee3cfcdbde7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000172.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300264263162975,
+      "sha256": "5671289aee545b5d8fc711d663dcfa8f8cbd4ba44d10ef05cd8e480cef44a86e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000173.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300264787187831,
+      "sha256": "c81931aa31e0882c60f05de739e2816f8b578490deba5298e0e70ed10ba39dbd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000174.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300265327213443,
+      "sha256": "ee7835cfa217281e76d4ea580ca04aa8746d0baabfcd97720f82ab8a189e89f8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000175.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300265887240002,
+      "sha256": "c9a66674085f75a784ea85b5837b09196da0e30686cca1ae8cf08da02ad23d9d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000176.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300266415265041,
+      "sha256": "be4ad8a4c48ee6efc56fe373d60229d77b1e536c9b0cca8da0c9a4493fee4b76"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000177.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300266967291217,
+      "sha256": "b8d9625fd2d263fc96f773f91faa79c6b3bd2b87c75cd149dfc4a45401c3bd61"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000178.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300267475315304,
+      "sha256": "ad7670f3d1acadeb9a43991282650e0dbb89de09c3b6e7e2fd090633a1776cc9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000179.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300268011340718,
+      "sha256": "afb5c55589662d4e29451fee2b69eab8e156be35fe9cc506ce66b0c2681588d5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000180.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300268523364990,
+      "sha256": "5498b09a4e600102e716bf934d66a7e7f92197309d4c3f1c778d962ec62af3e6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000181.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300269071390969,
+      "sha256": "bc136aa8bfc02f49548ba8735ce35992f7896be66eb82e1d720ee30400d810d5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000182.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300269671419409,
+      "sha256": "14d58244f1d9363f349d81c5b3df0e9163d37f8f859eb9eacdcafb18ba845064"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000183.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300270203444625,
+      "sha256": "d07a067990b394ca656388d9c852fafe72fa67bb533e948b51e2fe05c9a53b8c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000184.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300270783472114,
+      "sha256": "13bb7dcddf66d83786d90410d8a4be09036c825bdaeac74d081d7017c3b5acdc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000185.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300271331498084,
+      "sha256": "b38b53d3dab8b78154669e0614b6269eeb7f81f32075ddf18f741ba607b8e107"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000186.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300271847522536,
+      "sha256": "a47f425fd371f19826ed0c485d5bb4713593d79ef9472acb0c5167d6de4e3cf7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000187.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300272367547175,
+      "sha256": "41d180512f0e920ae58c6cd94c2f046895146c772fb2ac4b36ba9338b78bb4cf"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000188.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300272903572571,
+      "sha256": "3942b08e8033168c50323c32b2f80d78a95b32f4c9bd8298a0bfca2169688370"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000189.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300273427597396,
+      "sha256": "57336a88aa7fe11edb1334f3ef35997cd4cd6078f79e68339855e29532fd6c3c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000190.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300273999624494,
+      "sha256": "13521159361627eb546e66cc4b3767f63984cf2c972ef5a6e4233c0851e3d34c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000191.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300274579651967,
+      "sha256": "c641388ea3b1e2366fd7c84b45575422fd2e21a6ea3d6786284847737f6aa471"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000192.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300275099676598,
+      "sha256": "cd1a696fd5499f356e714e1002e188a5f851e7892b622dc225b7fec15cf16882"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000193.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300275627701604,
+      "sha256": "5c0ad6d61b07e5212dd39522891f042eee3841ba1cacd8559b6b98383706f325"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000194.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300276171727368,
+      "sha256": "482c853cf4ec24d39f850f478b327036a08d88ee3eb02e1026ca0f370ec5b742"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000195.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300276707752750,
+      "sha256": "85028a80e7acabd729b339096fae562a7a995e187d16a5e0a92de1afdc2ee0f3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000196.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300277259778888,
+      "sha256": "9f3222567c6c8b793b3fabcf93e001ba2e7ec633bec0950e87af8fa8d3fae3ac"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000197.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300277775803320,
+      "sha256": "70af26f73e58ccb6bad7803b1465f84d6c0bf5283d124babd6309d42d7984ddf"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000198.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300278311828696,
+      "sha256": "5716d9e1708a92f36ad623f9ba4c098bcced28fd5991a3d681d339eecd620a9b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000199.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300278895856344,
+      "sha256": "323623aa3e3e492e773de2167ddc0f71adb9241a2014d5aa96b73c8efec257a8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000200.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300279395880012,
+      "sha256": "1c0c7b9b20d2444f18f161f54c910a73b7e6b7b9bbd3443973640b30fd357408"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000201.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300279955906520,
+      "sha256": "996cc8bcc64a228ce4c6e999e26a6aab73d94950f8364b53f87faf32bcf98343"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000202.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300280539934160,
+      "sha256": "cb9094b7a36a9f5b042fc784e7bc40fbd1df3636e3dab56c7911813194f267e9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000203.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300281087960095,
+      "sha256": "b91b6b1f36b0bbae49eb9c3041b924ba2a0af118c46d3cf154762d496d76b972"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000204.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300281639986217,
+      "sha256": "1b622f38e8e773c74130521671ef509f9ea2c4d56a15d39cfa768cab437d1aa8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000205.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300282148010256,
+      "sha256": "64d3b1fb8bf11dd30658eb6b14f6be92bf0ae4ff6dfa82ea807893af92fb5ce1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000206.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300282684035617,
+      "sha256": "af9cc5b686c6fd12259d719e614c171870d5b16527d9d3d49dae83cd02bb8bca"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000207.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300283216060788,
+      "sha256": "b2fc8fe56835e2516b58f21775fff680f6ae51e6b0fe463fa66d6d4d40754ad8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000208.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300283772087091,
+      "sha256": "5a027b9836a8472005b54b900a348adc4ca62904b282a4ec97b28cef8de18b8a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000209.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300284368115285,
+      "sha256": "33fe2abd8f9ae8cde6d56931b8779682c0162048ccd8252ebdbfa83734ab0bfc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000210.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300284928141775,
+      "sha256": "dc204a0011122eccf5efa8ef330c55fc2a827e9b351a3c20c2f7e14316e65fd1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000211.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300285476167694,
+      "sha256": "72d95b19d27b72f4312c24769a646545f0fa9794af6bb39dc51d468ce0c31bd5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000212.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300286016193234,
+      "sha256": "56aa31ca942f8035864aff8d10ee17f0f1d0ba060b2c1c23cfb6c247d28ea443"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000213.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300286572219527,
+      "sha256": "62bd5fa1b179bd43c920168281dc09f44a1322958596f6e8c049be6352806476"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000214.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300287132246008,
+      "sha256": "4e6d435edc5816661e4fceb66f53cf9b2a0cbd89a8f52c0c52edbaf898a19459"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000215.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300287668271352,
+      "sha256": "2b539d55e8f01f03001227e1654c13b0aef1b948a96a4da184f3ed6c2d204c29"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000216.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300288188295939,
+      "sha256": "dbf19af5ec0281503f636bc3924719d6f1ce9b8ca051554dd6b724557dd4e498"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000217.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300288700320145,
+      "sha256": "0ea7f7c299a4f5802dac505a385184b40e85b2e8dd829c76a5e116a93c4b4ffb"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000218.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300289244345862,
+      "sha256": "71a8d2a09645e32dfc114ddaa617dd6a7163aa2eebd32b84da0ec507a71deccd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000219.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300289796371955,
+      "sha256": "067326edc7a030feb25fd6a75a62b5c2752398f584fff681371dc5be0d01af3f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000220.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300290356398425,
+      "sha256": "271e74870918733651b231d18242e1c11a08cb00f449e099c51b9d860a4b3de1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000221.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300290884423380,
+      "sha256": "40680437af4a1bcf12dd81a585df9546d8367a34cd1ac47570c2de322b342653"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000222.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300291420448711,
+      "sha256": "f74773b1dcfdf156531d9a7997e366f7ad08c74246a914203a2937950cd3af68"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000223.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300291972474798,
+      "sha256": "77f1159b194d873f1681f8c0e659517a428a43daf0d5d86d6b9e74328da564fd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000224.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300292532501259,
+      "sha256": "663174e84d65c2a4f5ac789be2fe0feee7690391d037072f4203ecf8091da967"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000225.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300293056526018,
+      "sha256": "5704935390cfb64bf6a48441226d02459cc827de9bf0c444043ed4f2acf52f87"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000226.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300293596551531,
+      "sha256": "91d22cebeca8977aa3b2b6a301e5c12207f587349e7b6092a7c87303d7f3e238"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000227.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300294104575531,
+      "sha256": "d52d89390d535dcbccfe047e33c85e23f6e1089fd660e83e1906da9cbf152c99"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000228.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300294632600473,
+      "sha256": "c212d94ac4af77fbf52f8e0f4c34d00e96e0d19949d262b8e30fdb243e90ecc4"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000229.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300295188626737,
+      "sha256": "aa34bca246bd35f3756a8612dc9487454962c187dea35e616a6a367a951a01ea"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000230.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300295768654132,
+      "sha256": "087c4062241c3d544d74077a05a2ebbac652e90b15f8519e72e39b7af9e8abd5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000231.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300296284678502,
+      "sha256": "26c31e5e937c6981344dc1c1930d5de52157a81bd1b5574307ac96fc0759590b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000232.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300296836704571,
+      "sha256": "45a52d348366f3fba6fea15530e2a5e10ab17e25ed691b8b4b867a77752f72d0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000233.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300297364729505,
+      "sha256": "7b697700454fa34ea03f988fb5537939cc4a33c28c833bfbef7068330ec408c0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000234.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300297892754437,
+      "sha256": "2e84fa56da33cc19eb84821cf6796ed61485429ed30e010e9370157ab8cef5dc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000235.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300298476782010,
+      "sha256": "80fb01cc3cf2eaa6f3067a9f5898ff0829203d466017bba332b09ba96cc11168"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000236.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300299000806751,
+      "sha256": "643028b7fb58d99796b319e8db6b88467130060bc47802f01d5844be598ab27c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000237.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300299540832243,
+      "sha256": "9362149587f7e6acf1ae0c0a3f19c6015c1ea6353848238d3e220e3b6883a03e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000238.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300300084857923,
+      "sha256": "37537408805d28045aedce6ac4603c6327529eb58769cf177c972dce2669e93f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000239.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300300612882846,
+      "sha256": "4dc76087069d61e738d62c02805bc749d2dad7b4d094c6e45b76cd453b0519db"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000240.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300301172909277,
+      "sha256": "2feb47ebbef2583a041c1edb5e9e67999cc9aa3b064cd298314636aafa34b8f9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000241.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300301716934951,
+      "sha256": "89e0ddacddde243b262456740ba25a566d1b96491933193635259fff00735bd5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000242.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300302304962700,
+      "sha256": "01eea304f3970cd988bdd3eb02efd3bbc2f95028fd63083ffbd04cf45d862ae5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000243.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300302808986484,
+      "sha256": "2661c4fed482c3841a4b2c41ef9947ba7f4ad77baa6d22d60dfc1430017a970d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000244.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300303321010642,
+      "sha256": "7d6a2bc1b1ae4512b60bc009ac4e54c16ac1bb31b9cff5f27113ae2568cb995e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000245.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300303869036499,
+      "sha256": "c5b9420d7c1576239599ee61d8868b10b7a7bdeb66d86d988a57a600734c5d62"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000246.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300304401061597,
+      "sha256": "719e94277bf0a1455c9dd713c20cf6387d0168e113f0252e7511f006e7dcd4eb"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000247.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300304921086129,
+      "sha256": "d2ec241491cc9b0cfdd3107d6bdacb1ea4d5a40b903c6caea154f95c722b6638"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000248.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300305445110847,
+      "sha256": "1188afe750ee0bc0daa3cc34ce88e8cbd2f0b3e897b9db50d8565ad46b8018ce"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000249.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300306029138394,
+      "sha256": "569483caa0afb97e793e424e357eaf1a70d678f102ab65fa1d071712bd437f33"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000250.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300306537162354,
+      "sha256": "be5b5e5114150a471b49f4cc35778f3f8d10170eac026412a779cc3c121b66e7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000251.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300307041186124,
+      "sha256": "1428e5c391cabdb2e7f26bc8c9210ab05081529b7df30bb8b6f649598cbeb17f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000252.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300307585211778,
+      "sha256": "a6e9a5bb88f08fc3ad0607d85d6e588a22f6ee556f68a07097161756cbb73ae2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000253.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300308093235734,
+      "sha256": "506dd22d4f63c21617ca3be11bd9741d7f0160c907b7ad9c9faf2271de9f85d5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000254.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300308649261951,
+      "sha256": "b8a59de679149cc7769db4b788ef2bdb15b9c8a923453f7f64717f6ab90abe8d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000255.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300309197287789,
+      "sha256": "21ff48327268a6aaa3bc0cc5c441680a5a71a5d628a9b635c0de6132ce0e314c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000256.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300309701311550,
+      "sha256": "8e778c81d41782ea530763c37b07028ed76a3851e2fb5ffc7b2b98c5d409f299"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000257.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300310245337196,
+      "sha256": "37769404ca49633c780cd9d224ee628a589d3be6c1204b8fbc754bbb68e80516"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000258.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300310745360766,
+      "sha256": "0a59449244a91882e8ad766b57cba2f855846a82555f4edc42d86b8330d6efb9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000259.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300311261385088,
+      "sha256": "61d73edb923fd8c69c57360f2fb4409e48e9f43293a37e11de15c7124d544783"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000260.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300311785409786,
+      "sha256": "90ba87f527582da3d20475ed35e3a9383d223f1476b851b88ce5a92b27efa20c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000261.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300312305434294,
+      "sha256": "efc49db4f454032dc5f4448a146f778848759bd1311b01796dd3da79ffc4e11f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000262.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300312841459554,
+      "sha256": "6bc065c587ef6bcb986d9a5bd7274fe3d60c3addcba0262eda75053931f5e0a3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000263.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300313437487640,
+      "sha256": "bc1c05c16445f8e72a19bb718935ed17ad3d2a9b130923c0d2c6ec87d56f472e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000264.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300313945511577,
+      "sha256": "3d41bebcb0b852e7968c93bcebe4c95be7e6746ae9bce274473be4fe86dc0b24"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000265.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300314509538151,
+      "sha256": "3fcd20e1cf517ce8e54b7d50d9a822e664129ddb752471aef83f6c3d603d63dc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000266.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300315017562085,
+      "sha256": "3edc4a40c7526eeee5d7a29bf2230a3c0952209d1045bcfefe754ebc26fecacf"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000267.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300315597589409,
+      "sha256": "38fed5b1c236c28d5ef2fbf1ebad2ed6cddf5c1b49387186375f70f99f22f673"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000268.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300316133614658,
+      "sha256": "4fe7c4cfa49bf603af24f723f4d356aab3c681d52253d35318ff9001de4107dc"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000269.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300316681640471,
+      "sha256": "3a24f6d272bd169309be6642e2957280a449fa764d17c11edc46e9c189f95181"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000270.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300317185664210,
+      "sha256": "225b11d6ad485cca088ecf8dd4ca850bae5eed3ad51ccde6d20c0b77d4239062"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000271.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300317697688324,
+      "sha256": "025b95058e975d6b8228294a3b71bb957d53d5c50cb32980b78a954c71b0496c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000272.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300318237713755,
+      "sha256": "19c858fb6b76c4b04b0d5bd006612ad5d1b1d0894d48470be0a2ccd981ffe999"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000273.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300318745737677,
+      "sha256": "daa3f8cc4f7fdfe2c7a70b0105f41d3911e5e158d547e8d801455160fe12684b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000274.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300319293763481,
+      "sha256": "5572cb423587079d0f62180461a564c0506898cc44e44d99123af012c48c5356"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000275.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300319877790979,
+      "sha256": "932619d51919ac165d0431f0bc6d741f5cfede75b62d793fe38dfd510dac1df7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000276.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300320397815461,
+      "sha256": "1792e0ef1e273eaf1d7fae05fdcf5a9af30b0340bb4e67fa2c59c5b27d61b0e7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000277.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300320917839942,
+      "sha256": "1aaf31d7e263b9224fe1e5e91746102f8fdb0ab0e1d8547e02b8383276721b4c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000278.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300321477866303,
+      "sha256": "1872631de6a3ceee6ada352d8870f8f0d195055b38c57a1c9896c9c0f5f14115"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000279.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300322021891911,
+      "sha256": "570457fc4a1ad576c4739b47bd384dcbfadc40aee74c095819652f394edfc3cd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000280.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300322593918833,
+      "sha256": "9020888651151c736b7892e92afb65cdfbc4864344bebd004c2e6966d3235f5a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000281.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300323137944437,
+      "sha256": "df606d3d5f269541778ca90f68ba3fb33c9dbadb1c78d3150c15cfd35453eb0d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000282.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300323637967968,
+      "sha256": "e64082903fe839bc17d237262404db2fe322dceca7e6b98f5b4d5072baae26d4"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000283.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300324217995262,
+      "sha256": "fd5a852a7150d2e5f2548605b3f6c0b1a4e6a38f6e99599c75bde17d555d4f3e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000284.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300324766021048,
+      "sha256": "e3c66258b76213cc1438bf7f559103077dcb33b47033a02cc039e667f4f96c9e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000285.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300325342048150,
+      "sha256": "a21bff4104ade3ae3fa3f8d61e5943fe04e662ddbe88ba8519b3e5cd6bf30e70"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000286.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300325886073745,
+      "sha256": "a23c859627be0188466acf2250ea4723563fc4004f3538cc852b11e8e71b731c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000287.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300326406098208,
+      "sha256": "c7ad052b1bc1252b5bf19fb13743494d1986dda24633ae860848cb68a88598d3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000288.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300326922122483,
+      "sha256": "432cb84ac1b16da30261d9e554e30b5e9e564039ae16613424999a2455dcc4d8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000289.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300327466148072,
+      "sha256": "8473907a73aa38e48db0dc642b5cef8420a2d793f182a89dbf25a62dcc78a1d0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000290.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300327990172719,
+      "sha256": "703ab6d029b5fa49bc1207be91bd2c9b039d271efd2ca6caa2458f9b72b23f5d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000291.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300328546198869,
+      "sha256": "2dd28118b74283a6212bc0dbd4055cfecb7e1e9196ce8b08ff68721857faf4cd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000292.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300329106225206,
+      "sha256": "965fc227563698cb5eb80294875829b7ffdc5edb87520a1490afd5daa1ee8781"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000293.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300329626249659,
+      "sha256": "b53d731071f3828e6cde0c9fb15186e53407e8c75d71a7d71d110f8a4b3b8a09"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000294.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300330142273924,
+      "sha256": "a755857a5116c3fee9e287322b0bfceb6ed29154897c6c526f87b7bc9c3fab43"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000295.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300330694299879,
+      "sha256": "9dcd4446e82cbf919952ea98b5d59751864101408f276b34e5fd21d07205a4dd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000296.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300331206323952,
+      "sha256": "5f39bcacceac75da14a7f7a5512440dd7962bbbc85ed81c911f10fbbe1d546b9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000297.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300331734348775,
+      "sha256": "b844bb857b5652afed3051b23ecc0a99f559fb322045c5c2bd9afc0d3ae65051"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000298.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300332250373033,
+      "sha256": "91ecbe03be9e4eda932b3f86e6aee76594bbbd2e69a56ec44eae72c9405b854f"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000299.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300332762397101,
+      "sha256": "33ae4b65003e85f4db845016022d6acdb09b977cd7fa5282aca279451262cabd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000300.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300333318423235,
+      "sha256": "17eaac489d69bf301fc591fcc4ed5e884695257c4b5115f80c382fd524ed6026"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000301.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300333846448053,
+      "sha256": "ab29a86499a9b681517e118b7550bff4890b72b71c80ee0f1fe042d336c9e4b5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000302.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300334422475123,
+      "sha256": "7c0a392efa5d021fb8b505cba378a9eda6c7cb868a9165157a6ca9cab5340fda"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000303.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300334922498622,
+      "sha256": "843f7f6d3e46ececfd6241d929d6a1e95b7f50c17143d0d00b544c97fd4f6ee9"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000304.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300335482524937,
+      "sha256": "14d6223ba5ace23406b8db8484d05a35ac1f3c20ccd64fe0d226e6eda5ec7938"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000305.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300336014549936,
+      "sha256": "3030cdfff544df86b7c0c0e6b740dc14d8dff1120896cbad32969f638d807e78"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000306.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300336554575307,
+      "sha256": "ffb5b26287d7636c6a17cafa7d2694ad2cf474cf9bbcdb9e84945d959442e006"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000307.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300337110601430,
+      "sha256": "f966523f988dd948fc007695fb567fdf69af8eefd2764cc4d875c01205e65c00"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000308.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300337646626611,
+      "sha256": "489a45aedfe087d3a4d731cd0d12c84e97ed5535b2ecdc15c2f244cfd87affee"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000309.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300338206652918,
+      "sha256": "c16976d6dba3704439d2286bcf395022a5e0f258c2a4f0e1faf537422a05af53"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000310.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300338770679411,
+      "sha256": "3c1f23c1b5d0a4b2c6283b2e173012cf2eb4c1f342c7617b5027d773de963d53"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000311.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300339342706278,
+      "sha256": "83ef5afd39676d10295323d7b48c95ef498cf88157590f16e85c71d59181e780"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000312.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300339894732203,
+      "sha256": "28809cb70890746450211f7e3b38ee8a26446941ba87c42e22472243c0186206"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000313.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300340454758503,
+      "sha256": "0c47e6e600a54bfeb285121c924ac24e1e324957961769b16087254ff97a48ae"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000314.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300340982783298,
+      "sha256": "e1d8dea4c0cd1cbbfa2847892ca78771b524b2f64be3410df6419e99ad07708b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000315.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300341550809969,
+      "sha256": "7077dcbb06792dcc16687c95e4e80bafbdd049680050052e74907b452c8464ae"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000316.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300342094835513,
+      "sha256": "3e641f94f2e47fead252336ab8c4f1e85104cbc30eb37c3b13609489dd43d27c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000317.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300342622860302,
+      "sha256": "d4c80390ee1441ec82c63d6ca8200e051f56e3b98883049b76f0255c84297ffa"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000318.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300343158885467,
+      "sha256": "a9505fc9d2cb1e9c99200e4ce73176a96237dd045613e99ba6b1530229cf5854"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000319.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300343726912131,
+      "sha256": "0c13ba03220603f30fc268f618bd144a3d75cca6f304546548144287084d352b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000320.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300344238936165,
+      "sha256": "e36d83e8ce6df148f394a55e25c16042c40da7a5734e481a43556fc1cadb2463"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000321.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300344814963202,
+      "sha256": "da3b484cc8fb1f3f8b3b1dd3dafac0cbafe6e487aa232de8986bff64ee03f394"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000322.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300345330987420,
+      "sha256": "6f7a9c88e8c6f3f70b921fe4f3e1808384533252bdebeb794db09aabfe095623"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000323.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300345859012201,
+      "sha256": "f4ccdc2fb449ac2b816afd9b82a2bf173df61ab9cb3d3124a183dbcf81935696"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000324.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300346387036979,
+      "sha256": "0f31c086ebcfed293dbc9c13be1b949f1d77c7929010dad3a2ebc8c0f34886e2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000325.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300346907061381,
+      "sha256": "aface10117fc9d697835f92b5e46b190899d89e054e701dfc43b78ab917f8814"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000326.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300347439086344,
+      "sha256": "dc7b6d0a68b82c6fc49308b9cd2bfed4d4a03d80deb2d4ac3451445b94328dbd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000327.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300348003112808,
+      "sha256": "a6179c95cd16ce5b1635a7deb107ecac626c65750b3be647d27d9cd8b8a0c22b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000328.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300348563139081,
+      "sha256": "c5dcd46b98ad1d2f86d633bc8011ec1172fa50780a755e054859ad2a258c2173"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000329.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300349071162914,
+      "sha256": "451630f56ed58516477907899afe7fa98457c591dd241f20eb5f0de7bb47c486"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000330.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300349663190684,
+      "sha256": "48e49d44d721729e47d1967a9ccfaea629f9b174b6b82f8710cdfabbba8a41d8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000331.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300350211216390,
+      "sha256": "2692557bb8460c07f14c07bb8179e765d25ba75926a94426a3d51b348b6d95c1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000332.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300350747241531,
+      "sha256": "cef71353e73d669ac7fc49095e9a4d632411b5b5df2f8b2301453498cf3279f6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000333.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300351283266670,
+      "sha256": "cef93bc08b41d23b0f2f19c899b85c7312860b2d8595975e65688ed0f34c94e7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000334.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300351835292558,
+      "sha256": "3d68431b4a785672e71b75ec37399b2fc10eb330e4dd0284e879cef06f34e799"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000335.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300352403319194,
+      "sha256": "11aa31edeac1e4969c2eaa6e0313714a28b662897119b71604f3622e92acef07"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000336.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300352935344142,
+      "sha256": "21348a7944ce512b80b6c86c5078469c99a6768349ef6a3ac4a75230ad6b9bbd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000337.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300353467369086,
+      "sha256": "7bce812724e35bb3ad806b47b4a479cb18ff04740d5480aab3fdf954246c60e0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000338.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300354007394405,
+      "sha256": "e8b2fc934444ead30b9bf8bc2202f01f0e61f5967b5534fc54be978e31860d17"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000339.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300354535419159,
+      "sha256": "69bbb1fa19c5a203590dbbc6b6129f047a13eff06725fafa36a695096ca61eaa"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000340.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300355043442975,
+      "sha256": "abb2b57d271f8a622c790dbb6876c188476b78e2de9e87f95c6983cd68dd06a3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000341.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300355591468663,
+      "sha256": "5ebe6891d26796c20f0b897578428ee802dccf464456ac0f7aec61443b38cdf3"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000342.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300356131493976,
+      "sha256": "25d0bfe2f4ab786d7943083bb9d41a3785b9fbb831d579d2abda9816dfec3b61"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000343.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300356655518536,
+      "sha256": "4f2e3884608d49d2ecab7c0bff38a44fc12df2bf8eed8bc5fb504148561f509c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000344.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300357203544220,
+      "sha256": "481a6245e8606ea37724fdbc81a04f6c1197d0d2228598a7180c44eb23a65719"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000345.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300357763570464,
+      "sha256": "ae5a33cef91daa4ea96da596214546f4295b178540a472d1963ffb80a0a73e47"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000346.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300358263593896,
+      "sha256": "99915512f90d6427c7fd88573a3a416d4082ef5b93a88d579bc345dfdd768548"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000347.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300358827620324,
+      "sha256": "30f6a08fcaeefa46f30d49325faf60f18033cc7ded944f6a056a39354e233c14"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000348.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300359375646001,
+      "sha256": "2797726e5afc85d0655fff3667c365967b08a8815c81d0f59d7595ca8d67d7cd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000349.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300359927671865,
+      "sha256": "34199afe7f1e64ae76b9904c2132dbed111f54b8044e6281f83e752eb0f1647e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000350.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300360483697913,
+      "sha256": "b059f8121a097a7a2e9d82786b7a56f0a65b955add19195b5bdfb736f4d56a41"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000351.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300361011722649,
+      "sha256": "0e77cf26a2fb8c61ff14ae9a397f88095e7cb98c2748afe0311749450ee41cfe"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000352.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300361555748131,
+      "sha256": "fe6a1775b42d89cf44ff60d8f13207ac9636b54bcec4d4bcdd470abed0cc8af2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000353.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300362119774550,
+      "sha256": "c4185cb7c8b3cf139af97f31e4897c4cff33c38225f0296cf84574158f7ad88d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000354.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300362655799655,
+      "sha256": "dcd86ab305a3a20cba64eb5593336b55b0eb16d469e7c6db04e01bae9f5570c2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000355.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300363227826445,
+      "sha256": "7293dc8eac468e3ea412d17f4bd97e660129da684478d135d829d7c5046af509"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000356.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300363755851172,
+      "sha256": "77cd65ae4538d810f77d22a494360a05e20464b8d5ea4ff3eb8cb433c2ad837a"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000357.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300364295876460,
+      "sha256": "d15ca0fc6f15171d517a0736eb20ebf68ffe328d0370cd1826f0516c30e665d7"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000358.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300364807900435,
+      "sha256": "db74a2d28aaa1b93b5dbe400a38e14495348b7bef271ea90309ff8abb756566d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000359.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300365367926656,
+      "sha256": "bc608d31a688bdf0dbcc0cbb4318bce04b936e6df772f418d8848e80bd960bea"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000360.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300365915952313,
+      "sha256": "fef80f1480f04d43ea8e8fb8d72a0b94dbebee87211799037dc365f0e620d9e8"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000361.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300366423976096,
+      "sha256": "5bb6e63566cc0514d733a01facac752a7f7e7c9fe99a6f59e0d989062b10a6d6"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000362.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300366952000815,
+      "sha256": "7d9aa9516e615fb4a1e1494d81d9bf369c3a553969d662aa69f9e1e64133513d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000363.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300367476025343,
+      "sha256": "e0dcb33677d43efe99d7a5b3b6ebd28d064c442576352a2ed036e0e9faf0d079"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000364.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300367992049497,
+      "sha256": "6d7e13448f1f57809a57942e97d788c1c4c141778e9c695c854d57b6cfb04e90"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000365.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300368556075895,
+      "sha256": "075eae2b0bbd67514993bf19770a973ce042415140a969769e527528875846d2"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000366.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300369104101543,
+      "sha256": "5aef1aadd9134c26ee9bf67cf687384f35849f6c41d22db0699e35b4f5d154fe"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000367.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300369636126440,
+      "sha256": "cc50ceabfd1ca7b390c86e875f94aa9739289f4069bfd0682f48c80713956b32"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000368.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300370196152647,
+      "sha256": "839ffec59a6d5ef2c5be4ed934bfcefed47a43608b341e9b1fd57f69cf9d7cb1"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000369.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300370744178290,
+      "sha256": "0839224ddda534d5b3071fc28954a23145c2aea15e3401d5a7c4fff644ba726d"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000370.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300371268202808,
+      "sha256": "f00efe7a8e4c51fb0f9e36e5de3d1639ac4a77393a40f800b9a0d8134865c5f4"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000371.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300371824228822,
+      "sha256": "538774d45c60f770d87a7fb69075c44c1e20461a504eff5511b00e14c0510dd0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000372.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300372348253337,
+      "sha256": "1ab3f5f1986b42b2ee72f4f40cb0507ea3d619db0d3aa8306ebc5dcc946ce03c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000373.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300372896278974,
+      "sha256": "b75c8aca6992df28b4aef3d7aa2706f8ec1d03130fc42a5b669fe6dc454ecac5"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000374.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300373432304047,
+      "sha256": "91ceb3294f44bb42e05b2a0144793832992c6137fbabf678b347c57a77a70099"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000375.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300373984329869,
+      "sha256": "7621c7c86aaa40cba93a96cec46197b0f42bbbf6d3d15d4ee1d8e73d69183518"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000376.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300374532355500,
+      "sha256": "b185318b5d64871db097efd4494793333d282de31cf1ab7394aea28b8fdae244"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000377.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300375112382627,
+      "sha256": "0700d9db149d7e2449b801fb3b9d678ccf24473ac68822e4684f303abafbd09c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000378.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300375652407881,
+      "sha256": "afd86ce030fc0a62db407f068bf50aca429fa7d83271d09f4c3a1bc41f9cdce0"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000379.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300376160431637,
+      "sha256": "fa2a14116d7c6ea16ba8b425e2673fa6d8f4488d0cfb28cfe57fef434a48ae34"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000380.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300376716457636,
+      "sha256": "2c1b58de0529f1990114a2531685b0b59fa1a9cbdeeaf38df5061c2f2d654f34"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000381.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300377264483260,
+      "sha256": "37425935ecf475296250063669e48849778ff70e68b9d11935747997de676d71"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000382.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300377808508695,
+      "sha256": "f517d8acc290f7812d4bef8a55171993fa545b8082b2009ec2be389a6ba15593"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000383.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300378388535811,
+      "sha256": "a0a2577370a47bcb8c07f9eaa2996e28ff75edaa75fa3445b4bed436a49dc7cd"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000384.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300378900559748,
+      "sha256": "43cc3fb5a51a6a7a55886a0dafd0b0aac61d32a53fbb8953fa7d33ed9bfa5261"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000385.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300379440584991,
+      "sha256": "764c1b54cf4c733c83b889644922d32021ba91cc8107d489b22a4f141dc55c1e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000386.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300379996610981,
+      "sha256": "063c794bea55c850cc915aa07127f75c3d1d97b1e3ff85cfe305a04dfe4e3875"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000387.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300380544636594,
+      "sha256": "b1f10454f0e38c45ff91183342f40dfd07d9fe535458114b3d8aa147c0749820"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000388.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300381076661459,
+      "sha256": "1aaeb96b395c6d3a48a8616ed08115db4d83ff94911de5d9b8e879d071f7816e"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000389.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300381612686509,
+      "sha256": "67260c4616755cffadb1acba4c0eb04e491ab6fb6d05eaf1ef5796bc4572164b"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000390.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300382180713053,
+      "sha256": "b3ae14a3180a1e3746ca9611802fb8564a711c316509816afe97004fee068b80"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000391.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300382688736792,
+      "sha256": "e140a921228ba1bea4fcbd55b5db4abc26b7dfa0cb9f8c44088b7ca3e95f963c"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000392.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300383232762211,
+      "sha256": "fa0b55cf73536338cd679fad2d9db279409525d52c5355638c15c7747a45f984"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000393.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300383808789124,
+      "sha256": "b3914e7ffdd09ad1893243d8746a29b731b122ce68eea3be669578b1335ea045"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000394.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300384360814913,
+      "sha256": "5df50e8fb4132f203f89a89559a5da24b49e64eed7a3cd5762330b034b139b78"
+    },
+    {
+      "path": "full5m/observation-recording/rgb_000395.ppm",
+      "bytes": 691215,
+      "mtime_ns": 1789300384876839020,
+      "sha256": "1c0d780140d43f86b2acfbf384e2ebfd7390ce5bb7070f5827c6debf2f6b8166"
+    },
+    {
+      "path": "full5m/observe_camera_and_sweep.py",
+      "bytes": 2188,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "5f2c4ed133e5e42f4120115bfade56cc88c063855a7d7a74f2479a77017a4586"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300208576510809,
+      "sha256": "ca0569c7375b84d26ba163e657a8dd5d79b1370b39c4c71be11e84d3a112cb91"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_reset.npz",
+      "bytes": 499114,
+      "mtime_ns": 1789300208576510809,
+      "sha256": "686d97888aae1cf5a41c9862940088e11d09f1f408d26ee7e8fbc545d868d391"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0000.json",
+      "bytes": 930,
+      "mtime_ns": 1789300208680515784,
+      "sha256": "699b7fb0ec43bfb6e20b49d5ee634da137484c50ecb937f76e12eb538a0ef5ab"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0000.npz",
+      "bytes": 393116,
+      "mtime_ns": 1789300208680515784,
+      "sha256": "cf39192c14ed87b6cca1aa0ef53474e5d6a784176e734b019b9bb302021e7b34"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0001.json",
+      "bytes": 927,
+      "mtime_ns": 1789300210412598611,
+      "sha256": "6c4dbeec9a81ad321c4918a496e4205ae4215b77ffdc1f0827c66880e2a6c1ce"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0001.npz",
+      "bytes": 393784,
+      "mtime_ns": 1789300210412598611,
+      "sha256": "601891d7905cff6e1ba8712b231bcae8e2c4394eb1d2050f58a0c6ccf30cdeeb"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0002.json",
+      "bytes": 922,
+      "mtime_ns": 1789300212128680652,
+      "sha256": "251758f5e6ec2858acf8c9c4b77088cef959141919604b0843f4a8d0a08529b2"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0002.npz",
+      "bytes": 377834,
+      "mtime_ns": 1789300212128680652,
+      "sha256": "71bd095a8d86c36829463c16f327146ca38766af7f9e823b324927c816db966b"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0003.json",
+      "bytes": 926,
+      "mtime_ns": 1789300214844810458,
+      "sha256": "44411e2d5a918603654dc3aafddaebba0e1190db2d6fe0a74e3f996475311489"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0001_step_0003.npz",
+      "bytes": 375524,
+      "mtime_ns": 1789300214844810458,
+      "sha256": "10e65a80d5e13440cb11342cdca0edf8d0f7844fe800c8ec7316d42967fc03be"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300216572893015,
+      "sha256": "c6b27a0d727e4845c09ea98bece4aa342634f807e323ff6e1b2f3afd4657bace"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_reset.npz",
+      "bytes": 495957,
+      "mtime_ns": 1789300216572893015,
+      "sha256": "ed0b98e2fb213c66cebb933c99d31ab98983ec4d9964f2b31af8fff9d211f61b"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0000.json",
+      "bytes": 931,
+      "mtime_ns": 1789300219453030562,
+      "sha256": "2aef1da9fdbf8f5949b80dc9e5d48baadde42967811bd0f651f43520aa4047d3"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0000.npz",
+      "bytes": 395312,
+      "mtime_ns": 1789300219453030562,
+      "sha256": "42cf17c0b72e6836b2c6ae125d8a7ddfc92a09f4e3d1b4d71d6d27e9fbb74e64"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0001.json",
+      "bytes": 927,
+      "mtime_ns": 1789300220981103515,
+      "sha256": "488bd9f95e3570b748a06bb827205440993da9cd2ec7da128a6fb9a9fe800d82"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0001.npz",
+      "bytes": 377719,
+      "mtime_ns": 1789300220981103515,
+      "sha256": "3ecb8d89eef94e65f240c1f319f4d0f04cce33cd34340bcefc302d76520634d4"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0002.json",
+      "bytes": 921,
+      "mtime_ns": 1789300222609181222,
+      "sha256": "981795d44f08e6800b4b2e1f76d81efa2bbb0c3a54cbdd155f8cee04bf8a798d"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0002.npz",
+      "bytes": 376658,
+      "mtime_ns": 1789300222609181222,
+      "sha256": "096c37ace7beb9ae16a9d363298da4c631c7b36727aef6a2adfeab11c699fd48"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0003.json",
+      "bytes": 928,
+      "mtime_ns": 1789300225173303568,
+      "sha256": "305318e8d27706eeb74ff673c00845351684d982a5addbb93d84173decedbceb"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0002_step_0003.npz",
+      "bytes": 366322,
+      "mtime_ns": 1789300225173303568,
+      "sha256": "4cb9d09bb37f1c10827045f6fd89d8872b7d0d0c29262d448b7d70840f5a7914"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300226797381035,
+      "sha256": "8bd26406082849c8eb258dbe52d10e42f59f3f0f9d4a025fd57e0aedd88a3d41"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_reset.npz",
+      "bytes": 485380,
+      "mtime_ns": 1789300226797381035,
+      "sha256": "5f739d856b3b2c47227de965b14930a238c23fd2cbad21d3c38aebf22ceba646"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0000.json",
+      "bytes": 923,
+      "mtime_ns": 1789300233097681376,
+      "sha256": "36dea3e9aa649d1ba94929a06f60abf3fc3e65f84da710cb1353306b51ef3b0d"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0000.npz",
+      "bytes": 385419,
+      "mtime_ns": 1789300233097681376,
+      "sha256": "52344d6bfbba6996cc6d377edce7b5ae73b972cdf378d36624df6735d2946cae"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0001.json",
+      "bytes": 908,
+      "mtime_ns": 1789300234825763706,
+      "sha256": "7c0bd9c69c9bb5a3fbb83d33de5038875e7b8dfbca5fc1babc33cf3465fa7d4c"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0001.npz",
+      "bytes": 357472,
+      "mtime_ns": 1789300234825763706,
+      "sha256": "4bcbe3d907ac2c5f6c37446329096b27e7f308c863601d187600f06d0e11dc7d"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0002.json",
+      "bytes": 924,
+      "mtime_ns": 1789300236369837250,
+      "sha256": "90b99e1d595dfe6307c20c718eb630f120967df07a89532b0ec7ef8c08fcbaff"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0002.npz",
+      "bytes": 379683,
+      "mtime_ns": 1789300236365837060,
+      "sha256": "18323586ba913c5cb6a3b46d955d475bc53b50cff26a8fc2c322f791fbd311e4"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0003.json",
+      "bytes": 921,
+      "mtime_ns": 1789300237813906017,
+      "sha256": "0321ced652b525e1211a3e3b2ce52413122f41ffa265f16bafe5ba4c7e9279ce"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0003.npz",
+      "bytes": 353907,
+      "mtime_ns": 1789300237813906017,
+      "sha256": "154884511bbbc7bd8104e14163e7c4d7bff65afee5b31308c29646c3be1c5df9"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0004.json",
+      "bytes": 930,
+      "mtime_ns": 1789300239325978006,
+      "sha256": "952ee8ff14500d4c94eddf3b25e462789cc73efd5eeb3b5748e45dfc6f655162"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0003_step_0004.npz",
+      "bytes": 350543,
+      "mtime_ns": 1789300239325978006,
+      "sha256": "f75660fdc097d81b42a6ceb865ff239d4c51bf8b76a33c19ef66f5bae4089ea0"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300265207207752,
+      "sha256": "0bd82e30656ba3bf62f4820fef5f29ccd7640b870bcaecebf1c2954702e480dc"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_reset.npz",
+      "bytes": 468236,
+      "mtime_ns": 1789300265207207752,
+      "sha256": "c743b505d891466869915faa338372ed99e76cfc490bebe5497f4ff34cdff451"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0000.json",
+      "bytes": 924,
+      "mtime_ns": 1789300271371499979,
+      "sha256": "a835556f7e3b911ec006e41c25b64649fbb6477323e0ebf98e3f93f10550ef61"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0000.npz",
+      "bytes": 385647,
+      "mtime_ns": 1789300271367499790,
+      "sha256": "61d711212b16f02354c4fbed9a50b81c738a1fc57e26a35ee97ebbce29e2795b"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0001.json",
+      "bytes": 923,
+      "mtime_ns": 1789300272911572950,
+      "sha256": "b607097cbc8afee59c3009a88da399b9866fbb09fa0a2143821a00ef1d9b67a1"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0001.npz",
+      "bytes": 365747,
+      "mtime_ns": 1789300272907572760,
+      "sha256": "7eb3666fc268f848c0fdc01584b6808c173701ab7c03eb2415a8908f48747248"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0002.json",
+      "bytes": 923,
+      "mtime_ns": 1789300274463646472,
+      "sha256": "0a71da366879fbf010a4fe1e0e1340cb15e50212d50c174a20d7ee5e6e5f24aa"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0002.npz",
+      "bytes": 371261,
+      "mtime_ns": 1789300274463646472,
+      "sha256": "98bc3cd0fe2c6958b852416e2ea4e8e949b7b80e0f536aedee58a4a18a607038"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0003.json",
+      "bytes": 919,
+      "mtime_ns": 1789300276059722064,
+      "sha256": "7092c382e03434a3116865748918cb8cb1dde8b47bdc946b82f417b906f19c2b"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0003.npz",
+      "bytes": 365051,
+      "mtime_ns": 1789300276059722064,
+      "sha256": "c600326a0824950f30790f17d4e152599835fbf932f3cd83696aab5f8e3f5695"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0004.json",
+      "bytes": 922,
+      "mtime_ns": 1789300277527791577,
+      "sha256": "65f67e79e05afb96e36150ec8e485983c5f0039faf376be5e8cdd15fa3180ae6"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0004_step_0004.npz",
+      "bytes": 377881,
+      "mtime_ns": 1789300277523791388,
+      "sha256": "f4f1ed4ae13c5553ba5f2d438d63c4ec35bc582f62103957f0503e141e887351"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300279107866379,
+      "sha256": "02cfaf4838a17837b79af4f02d5a51ab0847900c8a8691ce595cc6be3195a397"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_reset.npz",
+      "bytes": 464231,
+      "mtime_ns": 1789300279107866379,
+      "sha256": "2942f6dbbc13558fba61ba2d4caf792d3f161c088914673368d34ffa2ef3cf36"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0000.json",
+      "bytes": 927,
+      "mtime_ns": 1789300279267873953,
+      "sha256": "2dd9487adb311a1a471462d12b488283b5da4d921329ead91eaad0c9f2c2a244"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0000.npz",
+      "bytes": 381383,
+      "mtime_ns": 1789300279267873953,
+      "sha256": "978e911b3c823e90daf906dd26d29a548428b84eaaa79b0fb1137233e6bf87d1"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0001.json",
+      "bytes": 927,
+      "mtime_ns": 1789300280883950441,
+      "sha256": "29503922200ff6986ec766b1ffe581e178c21d6d8eb309e520706956e751e4d0"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0001.npz",
+      "bytes": 313841,
+      "mtime_ns": 1789300280883950441,
+      "sha256": "bdac9bcaa08252938eb1e7e4e464fda5a37b5ffbdc2dbbf190afa9471bec9545"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0002.json",
+      "bytes": 922,
+      "mtime_ns": 1789300282428023504,
+      "sha256": "3050f985c6e9ac9039b614ea8771eac5114f273b37449c9f0f5036e36c80c349"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0002.npz",
+      "bytes": 362430,
+      "mtime_ns": 1789300282424023315,
+      "sha256": "ba22552e3a7a8f0e59dac03bf4b00504f8c20466f8ac1e08c5c2dd13994ee94c"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0003.json",
+      "bytes": 930,
+      "mtime_ns": 1789300283968096364,
+      "sha256": "eec2ef01bf4a2c210cb7ddc8dc67ad56be2f06026fbe133e93c84ea4f42ffb6a"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0005_step_0003.npz",
+      "bytes": 371298,
+      "mtime_ns": 1789300283964096175,
+      "sha256": "7d03696c30f40816864aecf367a6ec4ffd1e2b201db9215579f0ba552486b876"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300285668176775,
+      "sha256": "645920504a82df1c91557af577252f4be1078612c71eb637e5b7b91c15adda92"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_reset.npz",
+      "bytes": 460881,
+      "mtime_ns": 1789300285668176775,
+      "sha256": "281932b23e7d63539beee080cde60c69a4596f973644343a14fe021941955f66"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0000.json",
+      "bytes": 924,
+      "mtime_ns": 1789300285816183775,
+      "sha256": "a703dbf5478bdb6f4f047572beef39ef5a0c50343e4bf56ff78ebe46edb36f19"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0000.npz",
+      "bytes": 377691,
+      "mtime_ns": 1789300285812183585,
+      "sha256": "2c6582b28f7c7cbec3b01cc66d8906df853d143e044b259d6c9e79f4e48413ec"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0001.json",
+      "bytes": 925,
+      "mtime_ns": 1789300287416259437,
+      "sha256": "1c1fa20db4d70f79d158a46f055df5871d6f24686ed7fcf010547e826ffe8d2a"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0001.npz",
+      "bytes": 361439,
+      "mtime_ns": 1789300287416259437,
+      "sha256": "3475f2eca7d7f437c11a1c7b6305df26693d91bf0a93bad2e7041f689e846088"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0002.json",
+      "bytes": 917,
+      "mtime_ns": 1789300289096338866,
+      "sha256": "c991819c23fde2be19a08b07f5dff24bd72dcf0b5e904973960353a42f60c68e"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0002.npz",
+      "bytes": 366492,
+      "mtime_ns": 1789300289096338866,
+      "sha256": "87d2b57412b02f4139e5655bc256dd42130201956ded840f116b9b805c250cbd"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0003.json",
+      "bytes": 921,
+      "mtime_ns": 1789300290800419410,
+      "sha256": "2d957003df96613f96570335d4749c377ef925420c11fe2927dfad83edf0d15b"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0006_step_0003.npz",
+      "bytes": 370463,
+      "mtime_ns": 1789300290800419410,
+      "sha256": "01f1823adc9eabed2373afc7561fd72a931666be65de464d70b1e0502898ea3a"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300318229713378,
+      "sha256": "421d6eecaddd4f4c2a69e9d08b07d10cb1588ba4321ffd5f9b8ed6c9ca325a70"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_reset.npz",
+      "bytes": 452559,
+      "mtime_ns": 1789300318229713378,
+      "sha256": "99717e4e952c5217e4eaa71a56ffab9c9f3e9da0150480db7315dc91dbc0d177"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0000.json",
+      "bytes": 930,
+      "mtime_ns": 1789300318361719594,
+      "sha256": "328bff986d51e49635a210ffd7fea82eb38d319fb90eb8036f35ec5fa241b052"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0000.npz",
+      "bytes": 364080,
+      "mtime_ns": 1789300318361719594,
+      "sha256": "ce0c4d861362323df7fa4a79315a2a9360d51394a8337f080676e983e4177eb3"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0001.json",
+      "bytes": 920,
+      "mtime_ns": 1789300319849789660,
+      "sha256": "8447dca4d035416ab49cec0ec0a93972ab4f2cd4997631562f0898e622698d38"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0001.npz",
+      "bytes": 359276,
+      "mtime_ns": 1789300319849789660,
+      "sha256": "4c1cbc8332b123534b217b030af7c18f163430603507bdc300e308e31347fa97"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0002.json",
+      "bytes": 926,
+      "mtime_ns": 1789300321533868939,
+      "sha256": "d7b0b28feb835ec364a0a48148187a8515107d5da8526bbe5e88757cceb8984f"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0002.npz",
+      "bytes": 360846,
+      "mtime_ns": 1789300321533868939,
+      "sha256": "d1dec219605e30169c4a83b3dba0d0f89727eb362bf430dc45a68db0a9d00f2c"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0003.json",
+      "bytes": 924,
+      "mtime_ns": 1789300323045940108,
+      "sha256": "0143d0f5b3ba6fa66af38c11740fcda458925fab7f242561e72601d40434f9a8"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0007_step_0003.npz",
+      "bytes": 337982,
+      "mtime_ns": 1789300323041939919,
+      "sha256": "a659a6c50094613a8639bdbea3bf5064e714889c639cf30fd70a52c5c9c8385e"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300324642015213,
+      "sha256": "368dd8a91ea9881399e2710df18e68c2ab22c05e4fda4b38291f5fd5ebb3ecf6"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_reset.npz",
+      "bytes": 454390,
+      "mtime_ns": 1789300324642015213,
+      "sha256": "2c26fd66e5972d8d10c75ca3fcfd9bdcc3f697a2115ebd32928536d8f8924799"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0000.json",
+      "bytes": 928,
+      "mtime_ns": 1789300324802022742,
+      "sha256": "9ada7d5248eb4c04af28cacae8e53d8047eb76746ef39e73c10e25f9b6661498"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0000.npz",
+      "bytes": 362741,
+      "mtime_ns": 1789300324802022742,
+      "sha256": "c8699d0ad9f0361f2c4b787e45d28bc7b2193da2eea29d01e7760d41e10abe86"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0001.json",
+      "bytes": 923,
+      "mtime_ns": 1789300326446100090,
+      "sha256": "471abe792c55414370fa5b6adbf9a4d17160685637590f79a8d5594bf25dc347"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0001.npz",
+      "bytes": 352124,
+      "mtime_ns": 1789300326446100090,
+      "sha256": "9059cc820372f711e553bcd60a6c297508075778128e193d6d2c07391f6162e2"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0002.json",
+      "bytes": 920,
+      "mtime_ns": 1789300328674204889,
+      "sha256": "22c0e2354e3c50e65b53e61f26852aa0697ee454a37e639c7f655f3c0c0a5697"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0002.npz",
+      "bytes": 373713,
+      "mtime_ns": 1789300328674204889,
+      "sha256": "58569080bf1374815e37a449000be941b8170fb372c10d821454832aed4e0806"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0003.json",
+      "bytes": 930,
+      "mtime_ns": 1789300330274280130,
+      "sha256": "4ae3379f329572d88fea3e67f793143a23822a2d9801133504dabcbba6289a90"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0008_step_0003.npz",
+      "bytes": 367940,
+      "mtime_ns": 1789300330274280130,
+      "sha256": "dfee023694759d0e7e6ed2af33268f623cd342a60cd6b8fe4ac028dbf7f79c05"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_reset.json",
+      "bytes": 423,
+      "mtime_ns": 1789300334758490914,
+      "sha256": "7909f57441a7568809d9854d5194f3c94d42312839f94335d09f3b78f8a99937"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_reset.npz",
+      "bytes": 489649,
+      "mtime_ns": 1789300334758490914,
+      "sha256": "3c690f81904dee8456f528daf49b5787809d907176c1ca3730d0d8b782730db6"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0000.json",
+      "bytes": 923,
+      "mtime_ns": 1789300334874496366,
+      "sha256": "d56a7a5c87d9687d79440b930c9dd391a831d5521e6c8855e0a41947c6166499"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0000.npz",
+      "bytes": 374231,
+      "mtime_ns": 1789300334874496366,
+      "sha256": "64e89c069981cbce2390fb36c006831a2546ddce3c0411a1a4b1062836b1936d"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0001.json",
+      "bytes": 936,
+      "mtime_ns": 1789300336314564031,
+      "sha256": "3399bc2400db1919ed809fdb8e1e56c4bac96be04551f4e28c5adb0f78c74527"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0001.npz",
+      "bytes": 371835,
+      "mtime_ns": 1789300336314564031,
+      "sha256": "f0a9c12f2d08a7799885f8bb76322c83141af3f816843764590461e64851060a"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0002.json",
+      "bytes": 926,
+      "mtime_ns": 1789300337942640517,
+      "sha256": "54f64fb2e0dcb6777b5cfa078834b47168e02ef2aa77ab9ca197c392156e6365"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0002.npz",
+      "bytes": 371679,
+      "mtime_ns": 1789300337942640517,
+      "sha256": "766c134038400016df418eafac7f5d0ab245de7f62410cff635c2dd8e0af112c"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0003.json",
+      "bytes": 931,
+      "mtime_ns": 1789300339578717362,
+      "sha256": "4226d0d1fde1f7cf853a874474d5cc4aff2e04ad38d1b2eff29a5e2d1d4d173e"
+    },
+    {
+      "path": "full5m/policy-inputs/9032f28edef74379b04044140b70c423/session_0009_step_0003.npz",
+      "bytes": 360468,
+      "mtime_ns": 1789300339578717362,
+      "sha256": "3aea6b5cf370d427519a47dc9354bae010d7319725710ff599431480e3e0acb4"
+    },
+    {
+      "path": "full5m/policy-trace/async_decision_trace.jsonl",
+      "bytes": 89297,
+      "mtime_ns": 1789300341062787055,
+      "sha256": "8fae93b92b95817c431ddd78031b87ac2f01d9bb34aa9c83a969e3ab94006de9"
+    },
+    {
+      "path": "full5m/policy-trace/candidate_application_requests.jsonl",
+      "bytes": 42628,
+      "mtime_ns": 1789300340398755873,
+      "sha256": "64ac51b5f4495e0fdd2a50eb0022c62bedd4e1f83d6b7b409cb91498f5828593"
+    },
+    {
+      "path": "full5m/policy-trace/deadlock_recovery_config.json",
+      "bytes": 481,
+      "mtime_ns": 1789300171370726076,
+      "sha256": "61e84c16bb9efa68a2096090e26615aa39627d91596485316b9ac4849d6dcb05"
+    },
+    {
+      "path": "full5m/policy-trace/memory_edge_trace.jsonl",
+      "bytes": 801882,
+      "mtime_ns": 1789300340478759630,
+      "sha256": "f499bff1d85abecb4478ccf598635c20a9fa26ff81a39e6be1ff1e63f52176ba"
+    },
+    {
+      "path": "full5m/policy-trace/pixnav_apply_trace.jsonl",
+      "bytes": 63034,
+      "mtime_ns": 1789300340422757000,
+      "sha256": "1b80fe73edc2b3ad401ade63345c5fdf5f83aa31497df0132e3c4e34654b8e49"
+    },
+    {
+      "path": "full5m/policy-trace/pixnav_handoff_trace.jsonl",
+      "bytes": 82002,
+      "mtime_ns": 1789300341010784613,
+      "sha256": "dd76e6175ad26360604e93d3deb02fe41a6c046fb46743aa496dc11b3612097c"
+    },
+    {
+      "path": "full5m/policy-trace/pose_delta_trace.jsonl",
+      "bytes": 3665,
+      "mtime_ns": 1789300340394755685,
+      "sha256": "51f508c4c90afb1e86a4b2425ff1e6873de49962f09e9aa454538231223eea8c"
+    },
+    {
+      "path": "full5m/policy-trace/pose_lookup_trace.jsonl",
+      "bytes": 1582,
+      "mtime_ns": 1789300334686487530,
+      "sha256": "adb8704288577e385cf8949ae6ea2bbdc6a45b87713e12550f9a459b0ad95cd0"
+    },
+    {
+      "path": "full5m/policy-trace/recovery_plan_trace.jsonl",
+      "bytes": 2970,
+      "mtime_ns": 1789300341002784238,
+      "sha256": "9d3fe1b84af63612ed9329321d7bdde8694c326d6429436e278796eea9d01b68"
+    },
+    {
+      "path": "full5m/policy-trace/vlm_calls.jsonl",
+      "bytes": 3937360,
+      "mtime_ns": 1789300340446758127,
+      "sha256": "08689717890b745d7454869f8df146411aaa04aa6086d2eb648a9fd35d3ba678"
+    },
+    {
+      "path": "full5m/policy-trace/vlm_trigger_trace.jsonl",
+      "bytes": 12602,
+      "mtime_ns": 1789300336154556514,
+      "sha256": "e7b6c0d63d45745b321e92037b0e67089d928c92f1a300e08c0fc366e38b6529"
+    },
+    {
+      "path": "full5m/record_body.py",
+      "bytes": 2611,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "c0492e6062739a434ce39be206405c051ec9c99e8701f8da20aa48cbb13beb3b"
+    },
+    {
+      "path": "full5m/robot_pointgoal_trial.py",
+      "bytes": 17015,
+      "mtime_ns": 1789288487745968411,
+      "sha256": "84ead9a7489e4e4ae2a5a19d67d8817644db8a1f409bae5a2cf21f5e7cfdfd22"
+    },
+    {
+      "path": "full5m/runtime/events.jsonl",
+      "bytes": 10026269,
+      "mtime_ns": 1789300384536823136,
+      "sha256": "8c6d0497df397ee46fe3f855af17f6d7d4010b7da96e375e2cda6a962ce2f172"
+    },
+    {
+      "path": "full5m/runtime/goal.json",
+      "bytes": 716,
+      "mtime_ns": 1789300180739176489,
+      "sha256": "ad8ccda916dc1ecddbdd9db42ea717cc86e6972470d096d39ed6780eaa835b95"
+    },
+    {
+      "path": "full5m/runtime/result.json",
+      "bytes": 47570,
+      "mtime_ns": 1789300384540823323,
+      "sha256": "791326419fa3a65346665f67f950e397dc32d1795f8fb126264c7ad46740bf9c"
+    },
+    {
+      "path": "goal-plan.json",
+      "bytes": 5112,
+      "mtime_ns": 1789293423901966922,
+      "sha256": "c9c4c71bedef00a9b53cb13265d617809beec0be8c0d798cdd587e1fdefa9498"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 5584,
+      "mtime_ns": 1789300163418343192,
+      "sha256": "6237843649ce95b5d820af75a80746cbac7d1c8a43c26813bf0c187e38c4dcb3"
+    },
+    {
+      "path": "native-inputs/metadata.yaml",
+      "bytes": 6825,
+      "mtime_ns": 1789300390557104284,
+      "sha256": "0169db752190673505356b264f10e40b2c18084ea55c1a85b11ed7bc59513ad3"
+    },
+    {
+      "path": "native-inputs/native-inputs_0.mcap",
+      "bytes": 538421623,
+      "mtime_ns": 1789300188971571712,
+      "sha256": "bedf8ac21e087dbcabf3f96bf1a1e4374ad575dea8900cf0b606af5122b0c57b"
+    },
+    {
+      "path": "native-inputs/native-inputs_1.mcap",
+      "bytes": 538227612,
+      "mtime_ns": 1789300212440695566,
+      "sha256": "7c81084f7b4ea72c8166c68af20150119a654e89716803cbbce7fb97ce8e851b"
+    },
+    {
+      "path": "native-inputs/native-inputs_2.mcap",
+      "bytes": 537124601,
+      "mtime_ns": 1789300237073870779,
+      "sha256": "c060085a35bcd9e8bece6aa2dcc29e15d6808b1df70e351fa7dea5cb5af332d7"
+    },
+    {
+      "path": "native-inputs/native-inputs_3.mcap",
+      "bytes": 537975014,
+      "mtime_ns": 1789300263327118573,
+      "sha256": "6ca1c3a12693fc3adead9b150dbfc61940c8733cbe34037d9e61997c29aa9fdf"
+    },
+    {
+      "path": "native-inputs/native-inputs_4.mcap",
+      "bytes": 538451828,
+      "mtime_ns": 1789300288144293859,
+      "sha256": "f68fb29f255c338531b1a8ff2c394bbb95617c1ab3316dd1eb721e547672ebeb"
+    },
+    {
+      "path": "native-inputs/native-inputs_5.mcap",
+      "bytes": 538054125,
+      "mtime_ns": 1789300313597495179,
+      "sha256": "3ad566cf3ebf33962398b99ba03c573cc47e917af301bee797c99bcd2b54df92"
+    },
+    {
+      "path": "native-inputs/native-inputs_6.mcap",
+      "bytes": 537341662,
+      "mtime_ns": 1789300339018691060,
+      "sha256": "5a76d0ecb0aeeb3cf6e8819f8b53fceb3e9e3859a8f68dd2da37d9ad6d4dc089"
+    },
+    {
+      "path": "native-inputs/native-inputs_7.mcap",
+      "bytes": 537834868,
+      "mtime_ns": 1789300365335925157,
+      "sha256": "0d44443c82d244d5d5f9044c7f9fee3248f11a7be970137d580101a2a253c2d1"
+    },
+    {
+      "path": "native-inputs/native-inputs_8.mcap",
+      "bytes": 518682936,
+      "mtime_ns": 1789300390553104098,
+      "sha256": "d955d4b7f554ad86593dd5f27f9f9ab4173bf8ab62f7ad363e36d2a62a7247cc"
+    },
+    {
+      "path": "native-recording.log",
+      "bytes": 61514,
+      "mtime_ns": 1789300391929168334,
+      "sha256": "6753da98605b4645201d8496f4499f31c3965b9d2f7ee69e7eb2381d4c4ae824"
+    },
+    {
+      "path": "native-ros-log/python3_7_1789300165220.log",
+      "bytes": 54613,
+      "mtime_ns": 1789300390565104658,
+      "sha256": "671ebf136f01da790617c44fd34558d9bc10d17aea877067cdf34e846ef228eb"
+    },
+    {
+      "path": "navigation.log",
+      "bytes": 1999348,
+      "mtime_ns": 1789300392101176363,
+      "sha256": "49048a6f93abd8b62462f91dbdb3d6b6704c06482fbad71b603a06ca322c2d65"
+    },
+    {
+      "path": "observe_camera_and_sweep.py",
+      "bytes": 2188,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "5f2c4ed133e5e42f4120115bfade56cc88c063855a7d7a74f2479a77017a4586"
+    },
+    {
+      "path": "observe_idle.py",
+      "bytes": 2935,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "38727fa2c3efb0cbd6bd28aed260d6e85b5b1ee05b895e6327c2ee48043525b9"
+    },
+    {
+      "path": "operator-console.log",
+      "bytes": 442,
+      "mtime_ns": 1789300391809162732,
+      "sha256": "a932a5c490b5a3e6bc8bd0a13f5338d8ad759395f1a540c9b2fd194804f1271f"
+    },
+    {
+      "path": "operator-invocation.json",
+      "bytes": 258,
+      "mtime_ns": 1789300163418343192,
+      "sha256": "84460e86224451a117151b0bb5e4b7b9deb3cea3de8937116a78c38e39d629cd"
+    },
+    {
+      "path": "operator-recording-readiness.json",
+      "bytes": 632,
+      "mtime_ns": 1789300172862797858,
+      "sha256": "3fb0b8c7009376a24fe5bc05603c4d6ce538cfcbe6ce4051bc04771f6976b42d"
+    },
+    {
+      "path": "operator-recording-readiness.jsonl",
+      "bytes": 2855,
+      "mtime_ns": 1789300172862797858,
+      "sha256": "c9a9f15b239f17a67d200aaf2635bac22ebcde24e66e5a336caa4d53f7ad6e13"
+    },
+    {
+      "path": "pixnav.log",
+      "bytes": 11363,
+      "mtime_ns": 1789300392333187192,
+      "sha256": "3f687cde06cd3beb03346b0203399c334458cf34efa4a955713829cd8eb29c1f"
+    },
+    {
+      "path": "policy-profile.yaml",
+      "bytes": 4614,
+      "mtime_ns": 1788521094116173072,
+      "sha256": "f1a91a41141899e80d125fcd9e7bda58e8358a9797d079f53546fee2f7d03b33"
+    },
+    {
+      "path": "record_body.py",
+      "bytes": 2611,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "c0492e6062739a434ce39be206405c051ec9c99e8701f8da20aa48cbb13beb3b"
+    },
+    {
+      "path": "record_camera_timing.py",
+      "bytes": 3429,
+      "mtime_ns": 1789144005879162898,
+      "sha256": "d8d19b1a8bba56adffd2de090e80f579846856d40b8bd8e7e66c94c3c5fe2203"
+    },
+    {
+      "path": "recording-check.log",
+      "bytes": 1390,
+      "mtime_ns": 1789300393565244694,
+      "sha256": "b2e336f81dc6504e6ddefd4b92fd76ae0d3d91f6499755186dfe58dc5e67b422"
+    },
+    {
+      "path": "recording-cyclonedds.xml",
+      "bytes": 1106,
+      "mtime_ns": 1787302434959453119,
+      "sha256": "75deefe8ed7e17a818dd4f157ec4ab70db1e2f31664c0db203505d18cbbdceb4"
+    },
+    {
+      "path": "recording-integrity.json",
+      "bytes": 1390,
+      "mtime_ns": 1789300402177646433,
+      "sha256": "8052c30d6ec04afb387f278160b5c22bc6e05e4aa20c8d44132d01a794119994"
+    },
+    {
+      "path": "recording-preflight.json",
+      "bytes": 635,
+      "mtime_ns": 1789300173526829798,
+      "sha256": "0ad5a54c0eec4dd692021db1638def19ed0e12a9f1d0855cf83b64c3d40dde26"
+    },
+    {
+      "path": "recording-preflight.log",
+      "bytes": 635,
+      "mtime_ns": 1789300173526829798,
+      "sha256": "0ad5a54c0eec4dd692021db1638def19ed0e12a9f1d0855cf83b64c3d40dde26"
+    },
+    {
+      "path": "robot_recording_integrity.py",
+      "bytes": 7919,
+      "mtime_ns": 1789295792346848944,
+      "sha256": "a9cc67f907aeb6b7f795f33bb2697309b55528f51579f0ab349e6bfc6797445e"
+    },
+    {
+      "path": "run_saved_robot_goal.snapshot.py",
+      "bytes": 20568,
+      "mtime_ns": 1789297937282714600,
+      "sha256": "88a804d9bc47805d6eb7411ecf8f03434ed847a9d6ff268c044dd931d599e369"
+    },
+    {
+      "path": "run_trial.sh",
+      "bytes": 5517,
+      "mtime_ns": 1789298903964031428,
+      "sha256": "33b4a504a855bfa4827dc493b4b20c2fb4ec022247cdc2a19d5e403760d0877b"
+    },
+    {
+      "path": "sidecar.log",
+      "bytes": 21018,
+      "mtime_ns": 1789300392217181777,
+      "sha256": "402176a8b22fc4a27eb6a94b4f2534cac3ff239e229b9335a70ec4039932ff2a"
+    },
+    {
+      "path": "startup.log",
+      "bytes": 892,
+      "mtime_ns": 1789300164478394260,
+      "sha256": "1fb053f2b48f23d33c3be773ba8d73172905782811705735069eb02111becec0"
+    }
+  ],
+  "total_bytes": 5144330184,
+  "raw_files_rewritten": false,
+  "coordinate_sources": [
+    "continuous odom",
+    "accepted map localization when available"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "pose_source": "fixed_start_odometry",
+  "frame_id": "fixed_start",
+  "origin": {
+    "schema_version": 1,
+    "origin_id": "a1b045fe1b4a4e82ab035129dfd5facd",
+    "frame_id": "fixed_start",
+    "pose_source": "fixed_start_odometry",
+    "pose_in_odom": [
+      0.013858675956726074,
+      -0.32067355513572693,
+      0.17564351081440127
+    ],
+    "host_boot_id": "9d62032a-c3fe-4aab-9ea7-afb88e2a9adf",
+    "odom_publisher_gid": "01109b25f65189c93a392d9800001703",
+    "captured_unix": 1789293086.6650538,
+    "pose_stamp_unix": 1789293086.6423156,
+    "physical_start_confirmed_by_operator": true,
+    "absolute_map_localization_verified": false,
+    "source_snapshot_file": "origin.snapshot.json",
+    "source_snapshot_sha256": "6e5cfca0f94d4727beb87ac6cff911dd4ade7a2bfa1f8839d1447a7d50d19f6d"
+  },
+  "origin_sha256": "4cca551b8fb0ba0ed059a51c7f7e1edc0e6b7d0864a54edd7760b2278e5daef7",
+  "goals": [
+    {
+      "label": "1",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 2.976295047359577,
+        "y": 1.6749293355328907
+      },
+      "yaw_rad": -0.16456907985919206,
+      "origin_sha256": "4cca551b8fb0ba0ed059a51c7f7e1edc0e6b7d0864a54edd7760b2278e5daef7",
+      "captured_unix": 1789293152.197593,
+      "pose_stamp_unix": 1789293152.137375,
+      "pose_in_odom": [
+        2.6516811847686768,
+        1.8485689163208008,
+        0.011074430955209215
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false,
+      "source_snapshot_file": "1.snapshot.json",
+      "source_snapshot_sha256": "263795cbdb611ad60d354a1962d7532bd30c82f1f0ec83d0f977c882c8bd78fa"
+    },
+    {
+      "label": "2",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 4.806585606214698,
+        "y": -2.4196024419508197
+      },
+      "yaw_rad": 0.3229949009230366,
+      "origin_sha256": "4cca551b8fb0ba0ed059a51c7f7e1edc0e6b7d0864a54edd7760b2278e5daef7",
+      "captured_unix": 1789293232.167912,
+      "pose_stamp_unix": 1789293232.1393054,
+      "pose_in_odom": [
+        5.169297218322754,
+        -1.8631373643875122,
+        0.4986384117374379
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false,
+      "source_snapshot_file": "2.snapshot.json",
+      "source_snapshot_sha256": "abbe6b8ef970729e1bd6509debd69af2c1f0131b5692a47649bcd59d4e215473"
+    },
+    {
+      "label": "3",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 9.299617046185157,
+        "y": 0.4242188621915379
+      },
+      "yaw_rad": -0.20163110700574816,
+      "origin_sha256": "4cca551b8fb0ba0ed059a51c7f7e1edc0e6b7d0864a54edd7760b2278e5daef7",
+      "captured_unix": 1789293306.7029557,
+      "pose_stamp_unix": 1789293306.635322,
+      "pose_in_odom": [
+        9.09626579284668,
+        1.7220500707626343,
+        -0.02598759619134687
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false,
+      "source_snapshot_file": "3.snapshot.json",
+      "source_snapshot_sha256": "440b0cf2f9abd01788ef600628db1c9116b85dad4a917ac5483fda343bd6c9a3"
+    },
+    {
+      "label": "4",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 10.613861243952254,
+        "y": -3.886405544069355
+      },
+      "yaw_rad": -0.6353824513828922,
+      "origin_sha256": "4cca551b8fb0ba0ed059a51c7f7e1edc0e6b7d0864a54edd7760b2278e5daef7",
+      "captured_unix": 1789293363.6707451,
+      "pose_stamp_unix": 1789293363.6371703,
+      "pose_in_odom": [
+        11.143535614013672,
+        -2.2925989627838135,
+        -0.4597389405684909
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false,
+      "source_snapshot_file": "4.snapshot.json",
+      "source_snapshot_sha256": "8e93a0ea8b824989c5522093c4d25f3cf0ba65fb1f9da6e3f5b414164e87db69"
+    },
+    {
+      "label": "5",
+      "frame_id": "fixed_start",
+      "point_goal_xy_m": {
+        "x": 7.954715341948388,
+        "y": 4.189211530621359
+      },
+      "yaw_rad": 1.445489817977988,
+      "origin_sha256": "4cca551b8fb0ba0ed059a51c7f7e1edc0e6b7d0864a54edd7760b2278e5daef7",
+      "captured_unix": 1789293417.6972897,
+      "pose_stamp_unix": 1789293417.6342335,
+      "pose_in_odom": [
+        7.114154815673828,
+        5.19410514831543,
+        1.6211333287923892
+      ],
+      "pose_source": "fixed_start_odometry",
+      "absolute_map_localization_verified": false,
+      "physical_goal_accuracy_verified": false,
+      "source_snapshot_file": "5.snapshot.json",
+      "source_snapshot_sha256": "f6c3ff508ac92258105e41df4aaf65c6d4f6c505460c4b2cf2aef8e522aca991"
+    }
+  ],
+  "requires_marked_start_before_each_episode": true,
+  "reanchor_at_dispatch": true,
+  "icp_corrections_used": false,
+  "success_radius_m": 1.0,
+  "final_yaw_requested": false,
+  "absolute_map_localization_verified": false
+}

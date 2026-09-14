@@ -1,0 +1,13 @@
+[INFO] [1789350087.548926058] [go2_action_executor]: Full ESCAPE motion boundary ready; motion disabled
+{"delay_s": 0.08, "separate_sensor_group": false, "command_rate_hz": 10.0, "mock_moves": 81, "fault": "", "maximum_pose_age_s": 0.16095096244714355, "sample_count": 82, "independent_pose_samples": 231}
+{"delay_s": 0.08, "separate_sensor_group": true, "command_rate_hz": 10.0, "mock_moves": 80, "fault": "", "maximum_pose_age_s": 0.1761572345396728, "sample_count": 81, "independent_pose_samples": 230}
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+The following exception was never retrieved: cannot use Destroyable because destruction was requested
+[ERROR] [1789350104.488283158] [go2_action_executor]: Motion disabled: LOCALIZED_POSE_STALE
+{"delay_s": 0.095, "separate_sensor_group": true, "command_rate_hz": 10.0, "mock_moves": 5, "fault": "LOCALIZED_POSE_STALE", "maximum_pose_age_s": 0.5240018239089355, "sample_count": 7, "independent_pose_samples": 19}

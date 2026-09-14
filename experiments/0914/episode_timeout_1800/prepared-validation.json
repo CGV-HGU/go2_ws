@@ -1,0 +1,241 @@
+{
+  "checked_at": "2026-09-14T00:46:50.410859+00:00",
+  "profiles": [
+    {
+      "trial_id": "full-goal-1-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-1-002",
+      "mode": "full",
+      "goal": "1",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "c0dbb8764a6ec9e9253498eea2f81ca49e80665e47cd9320c41c5eccfc7bc559"
+    },
+    {
+      "trial_id": "full-goal-2-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-2-002",
+      "mode": "full",
+      "goal": "2",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "b5a70f27f69ad4eb2ea345da394643fa14d84f3173d10cf1e5ecb1fe2182f1a8"
+    },
+    {
+      "trial_id": "full-goal-3-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-3-002",
+      "mode": "full",
+      "goal": "3",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "07081892e95bb8d523006fb5b127469552c69760c96adc6761bfb6296508d907"
+    },
+    {
+      "trial_id": "full-goal-4-004",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-4-004",
+      "mode": "full",
+      "goal": "4",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "9d343b12108d76dfe0dcfba699f4d64e847cc6caab7a1b73c882999e72a36e69"
+    },
+    {
+      "trial_id": "full-goal-5-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/full-goal-5-002",
+      "mode": "full",
+      "goal": "5",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "22f956edb43e23708ecdaf76eb9fa877d922d489b47eb0e2372fc0dd2cb5cc39"
+    },
+    {
+      "trial_id": "direct_goal-goal-1-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-1-002",
+      "mode": "direct_goal",
+      "goal": "1",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "4bf6812ad49ef69ef377b0cd8e5d9919b74707f31fb235697e9ba44aaf296fb6"
+    },
+    {
+      "trial_id": "direct_goal-goal-2-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-2-002",
+      "mode": "direct_goal",
+      "goal": "2",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "e89c72f48714a3237bd578dfbd1062e7165c1c18e1d6603219cb8572f5c8db4a"
+    },
+    {
+      "trial_id": "direct_goal-goal-3-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-3-002",
+      "mode": "direct_goal",
+      "goal": "3",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "c53b4d4071f300bb32d49cd44f07f0524b97a41fdbe6469514cf8700a4dd35d6"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-007",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-007",
+      "mode": "direct_goal",
+      "goal": "4",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "f02cfad82fcab64225e6c57e0ff5d29b73189b9808d5fafc84a6c09b66c28315"
+    },
+    {
+      "trial_id": "direct_goal-goal-5-002",
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-5-002",
+      "mode": "direct_goal",
+      "goal": "5",
+      "max_duration_s": 1800,
+      "shell_timeout_s": 1860,
+      "runner_timeout_s": 1980,
+      "recorder_timeout_s": 2040,
+      "manifest_sha256": "372721d4ce82e10c235bd71162a35ccc50a39b58977fac4a4474c17b06da1300"
+    }
+  ],
+  "recorder_loop_checks": [
+    {
+      "file": "full5m/record_body.py",
+      "continue_at_elapsed_s": {
+        "600": true,
+        "1800": true,
+        "1980": true,
+        "2040": false
+      },
+      "stop_marker_still_ends_loop": true
+    },
+    {
+      "file": "full5m/observe_camera_and_sweep.py",
+      "continue_at_elapsed_s": {
+        "600": true,
+        "1800": true,
+        "1980": true,
+        "2040": false
+      },
+      "stop_marker_still_ends_loop": true
+    },
+    {
+      "file": "record_camera_timing.py",
+      "continue_at_elapsed_s": {
+        "600": true,
+        "1800": true,
+        "1980": true,
+        "2040": false
+      },
+      "stop_marker_still_ends_loop": true
+    }
+  ],
+  "older_profiles_retained": [
+    {
+      "trial_id": "full-goal-1-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "148727bc3fa07e0cadc1c4a0865699294c05223b7db262eb33c880d69e586d18"
+    },
+    {
+      "trial_id": "full-goal-2-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "e04c9672667a0d885e7b50276b855c1841c76c6f84ff5183a40c13a9020de4c0"
+    },
+    {
+      "trial_id": "full-goal-3-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "7fb1d550d871c8ae688dfec8cecd87fc386ae29a64a1c6e030ff90625cc8c967"
+    },
+    {
+      "trial_id": "full-goal-4-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "26b9697d65e08f6f3c8a87966477b501c1768f8ae32e77487986146ea14ebb64"
+    },
+    {
+      "trial_id": "full-goal-5-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "da4a2c78a0945f2015d3dcc9492ba1939135cd3d8add41127dbec0be9b7f41a3"
+    },
+    {
+      "trial_id": "direct_goal-goal-1-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "797da967c6b0d274077b11d13aba0616ec5b18e8f590bb576456bf9cb31ed8a6"
+    },
+    {
+      "trial_id": "direct_goal-goal-2-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "f71a6b65f5173f5cc67f47aaef6149f36727efa56f0e755ab8b49a2b6ad5cc48"
+    },
+    {
+      "trial_id": "direct_goal-goal-3-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "d38ef1c07ca47268758200c5d7323ce47ae95c4f9bdc6d8b8cd4e2f835e216af"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "728c986944d1ec46245c2f40f556358383a31841af1cb65d4e9bca86e94a3674"
+    },
+    {
+      "trial_id": "direct_goal-goal-5-001",
+      "max_duration_s": 360,
+      "manifest_sha256": "17c25578c8289da195ea881b3f696dd4eb40f3b960507587cf7aea3c859fed6d"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-002",
+      "max_duration_s": 360,
+      "manifest_sha256": "246413ddc97abfd44868d5c8892dad3a7485d8e278a55fdd0dc2e1126b728f8d"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-003",
+      "max_duration_s": 360,
+      "manifest_sha256": "73c81632b1083897eb61960113776c2794e6d0b8dc5159f9a6f28ce8c40e49d2"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-004",
+      "max_duration_s": 360,
+      "manifest_sha256": "7790942b46d5fe6066028d84d626d54a1cb88896e06adddb5341375671d46b52"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-005",
+      "max_duration_s": 360,
+      "manifest_sha256": "ebb134acd6fa2b960ecff671278cc2feceef7eeeb9e7fef2dec465f18ea1009e"
+    },
+    {
+      "trial_id": "direct_goal-goal-4-006",
+      "max_duration_s": 360,
+      "manifest_sha256": "20a1d880b594a9ad429aedf8c8a746e15e20e150574d1b9e08f0cf875d606787"
+    },
+    {
+      "trial_id": "full-goal-4-002",
+      "max_duration_s": 360,
+      "manifest_sha256": "83e2fcaadd2dae2bf0030182ad2672a120383f71c6b3e741473cb7b977c4d6b2"
+    },
+    {
+      "trial_id": "full-goal-4-003",
+      "max_duration_s": 360,
+      "manifest_sha256": "0a2ddc6531324539870c77f75001b432609d664d3b091ac3332081b8a64324cf"
+    }
+  ],
+  "shared_map_goal_and_navigation_image_unchanged": true,
+  "free_bytes": 70889074688,
+  "required_start_free_bytes": 67360522240,
+  "one_long_episode_space_check_passed": true,
+  "motion_requested": false,
+  "real_1800_second_recording_verified": false,
+  "scope": "File/argument/hash validation and frozen loop time/STOP expressions; not real hardware recording or goal success."
+}

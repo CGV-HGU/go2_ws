@@ -1,0 +1,26 @@
+{
+  "distinct_test_cases": {
+    "robot": 329,
+    "nodes": 331,
+    "transport": 71
+  },
+  "distinct_test_cases_final_passed": true,
+  "setup_failures_preserved": true,
+  "source_hashes_checked": 48,
+  "episode_count": 24,
+  "macro_count": 1121,
+  "time_partition_checks_passed": true,
+  "known_reproduced_faults": [
+    "rotation_settle_timeout",
+    "sensor_callback_starvation_under_blocking_transport",
+    "direct_policy_300s_expiry"
+  ],
+  "physical_drive_validated": false,
+  "runtime_modified": false,
+  "excluded_physical_claims": [
+    "external ground truth",
+    "full sensor/camera/plant dynamics replay",
+    "post-change real driving success"
+  ],
+  "checked_at_utc": "2026-09-14T01:49:36.984820+00:00"
+}

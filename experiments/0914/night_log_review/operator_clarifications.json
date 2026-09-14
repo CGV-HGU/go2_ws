@@ -1,0 +1,42 @@
+{
+  "recorded_date_kst": "2026-09-14",
+  "raw_episode_files_modified": false,
+  "confirmations": [
+    {
+      "campaign": "recaptured5",
+      "run": "full-goal-4-003",
+      "question_context": "00:56~01:01 run, movement while program still active",
+      "operator_reply": "직접 이동시켰음",
+      "direct_intervention": true,
+      "exact_intervention_time": null,
+      "contact": null,
+      "obstruction": null,
+      "interpretation": "Full stored trajectory includes manual relocation. Do not use its 63.43 m path or 52.44 m final residual as autonomous navigation performance or unexplained SLAM drift. Keep network-induced stall evidence before relocation."
+    },
+    {
+      "campaign": "recaptured5",
+      "run": "direct_goal-goal-4-002",
+      "operator_reply": "개입·접촉·진로 방해 모두 없었음",
+      "direct_intervention": false,
+      "contact": false,
+      "obstruction": false,
+      "source": "Previously confirmed in this conversation; archived supplemental review also retained."
+    },
+    {
+      "campaign": "original5",
+      "run": "full-goal-5-006",
+      "operator_reply": "내가 수동으로 멈췄다는 뜻이었어. 벽에 부딫히기전에 내가 잡았어",
+      "direct_intervention": true,
+      "contact": false,
+      "obstruction": null,
+      "interpretation": "Earlier 010 keyboard input must not be interpreted as a confirmed wall collision."
+    }
+  ],
+  "network_report": "어제 학교와이파이가 이상한것뿐 아니라, 수시로 내 핫스팟이 끊겼었어",
+  "usb_replug_confirmation": {
+    "operator_reply": "뺐다가 다시 꽂은 적 있음",
+    "operator_replugged_usb_wifi": true,
+    "exact_times_known": false,
+    "interpretation": "USB detach/re-enumeration records include operator recovery attempts. The observed count is not a count of spontaneous hardware failures."
+  }
+}

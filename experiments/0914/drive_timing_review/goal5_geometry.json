@@ -1,0 +1,56 @@
+{
+  "goal5_fixed_start_xy": [
+    14.44344518101375,
+    -6.559550669508374
+  ],
+  "straight_distance_m": 15.863190526586923,
+  "capture_transform_error_m": 0.0,
+  "dispatch_transform_error_m": 0.0,
+  "source_goal_plan_sha256": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+  "return_closure": {
+    "captured_unix": 1789312514.6237013,
+    "host_boot_id": "00640e90-abe3-4851-97f5-babb2b6bd36c",
+    "odom_publisher_gid": "01104671307a873a2ca3760b00002f03",
+    "origin_sha256": "d07f297432c942224039b0b168f60c054dff71727164eb8b0ddfd75686b7bde3",
+    "operator_statement": "지금 돌아왔고 거의 시작점과 오차가 거의 없어",
+    "operator_reports_same_marked_start": true,
+    "physical_offset_independently_measured": false,
+    "return_pose_in_odom": [
+      1.67557692527771,
+      -2.355221748352051,
+      0.5112668698892258
+    ],
+    "return_fixed_start_xy_m": {
+      "x": -0.07528878279296529,
+      "y": -0.4616263457892584
+    },
+    "position_closure_error_m": 0.467725650292124,
+    "heading_closure_error_deg": 5.43013126772671,
+    "source_snapshot_sha256": "a154adbea6ede0f6e630d32608bf19f1f406812794315de7bcb38734d1a1d7c5",
+    "new_goal_activated": false
+  },
+  "heading_only_sensitivity": [
+    {
+      "deg": 1,
+      "lateral_error_m": 0.27685084846206043,
+      "total_target_shift_m": 0.27686139049545977
+    },
+    {
+      "deg": 3,
+      "lateral_error_m": 0.8302152452729343,
+      "total_target_shift_m": 0.830499836824818
+    },
+    {
+      "deg": 5,
+      "lateral_error_m": 1.382568152692298,
+      "total_target_shift_m": 1.3838853048586468
+    },
+    {
+      "deg": 10,
+      "lateral_error_m": 2.7546141269251323,
+      "total_target_shift_m": 2.765136305384596
+    }
+  ],
+  "physical_accuracy_verified": false,
+  "note": "These are transform arithmetic checks and hypothetical heading error sensitivity. Closure includes odometry drift and possible placement differences; neither is independently ground truth."
+}

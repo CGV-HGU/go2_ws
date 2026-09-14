@@ -1,0 +1,29 @@
+{
+  "habitat_actions.py": {
+    "git_commit": "fc336569a9a521ecd395925f41014bbcc9265c26",
+    "repository_path": "src/s2e_vlm_core/s2e_vlm_core/habitat_actions.py",
+    "sha256": "4a6c180e79219b0361020755d602d836381c98b86fe8a37b4063e3522af16f4c"
+  },
+  "habitat_worker.py": {
+    "git_commit": "fc336569a9a521ecd395925f41014bbcc9265c26",
+    "repository_path": "src/s2e_vlm_habitat/s2e_vlm_habitat/worker.py",
+    "sha256": "64844a045aa902fbd0841c50a50a567fb01aa13978105384e0279fc69be6162a"
+  },
+  "motion.py": {
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/motion.py",
+    "sha256": "b5f9b7448fe5ca7e8b3dd733411bb0b41f6f5dff601834c673b5f57abc2f5217"
+  },
+  "action_executor_node.py": {
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/action_executor_node.py",
+    "sha256": "600f252368427554841140314c3884ceb198f88642a899ae0424adf0267b0ca9"
+  },
+  "sport_client.py": {
+    "source": "/home/unitree/s2e-vlm-async-framework-minimal/src/s2e_vlm_robot/s2e_vlm_robot/sport_client.py",
+    "sha256": "4f5459efb8a137025e938043d5a17bda687933d74ebee6c9362267acd9da905d"
+  },
+  "unitree_api": {
+    "url": "https://github.com/unitreerobotics/unitree_sdk2_python/blob/master/unitree_sdk2py/go2/sport/sport_client.py",
+    "checked_date": "2026-09-14",
+    "finding": "Move(vx, vy, vyaw) submits linear and yaw velocity together; no inherent hardware API restriction to separate turns."
+  }
+}

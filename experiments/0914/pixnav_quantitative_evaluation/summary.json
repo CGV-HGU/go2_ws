@@ -1,0 +1,88 @@
+{
+  "title": "Direct-goal PixelNav: five repeated goal-4 episodes, descriptive real-robot results",
+  "schema_version": 1,
+  "actual_attempts": 6,
+  "started_episodes": 5,
+  "prestart_failures": 1,
+  "distinct_goals": 1,
+  "goal_labels": [
+    4
+  ],
+  "recorded_successes": 0,
+  "recorded_sr": 0.0,
+  "visited_radius_successes": 0,
+  "confirmed_no_intervention_contact_obstruction": 1,
+  "field_context_unconfirmed": 4,
+  "confirmed_subset_recorded_sr": 0.0,
+  "formal_paper_cohort_finalized": false,
+  "formal_paper_spl": null,
+  "failure_spl_contribution_if_all_five_admitted": 0.0,
+  "spl_note": "Every recorded S is zero. Their SPL terms are algebraically zero if admitted under this declared protocol. No geodesic reference was measured; do not label this a complete independently validated SR/SPL benchmark.",
+  "recorded_protocol": "Fixed-start odometry Euclidean radius 1 m with automatic arrival termination; final yaw unscored; 360 s historical cap.",
+  "statistics": {
+    "duration_to_stop_s": {
+      "mean": 50.33005539099995,
+      "median": 58.90026391399988,
+      "sample_sd": 18.083564731833082,
+      "min": 27.479006247999678,
+      "max": 70.53503043700039
+    },
+    "final_goal_distance_odom_m": {
+      "mean": 8.145194721221923,
+      "median": 8.790611267089844,
+      "sample_sd": 1.5997344227302195,
+      "min": 5.661212921142578,
+      "max": 9.466014862060547
+    },
+    "min_goal_distance_odom_m": {
+      "mean": 8.138444709777833,
+      "median": 8.785164833068848,
+      "sample_sd": 1.5984928008670412,
+      "min": 5.657437324523926,
+      "max": 9.456267356872559
+    },
+    "odom_path_10hz_m": {
+      "mean": 5.086534060291722,
+      "median": 4.908258956244584,
+      "sample_sd": 1.453039427413908,
+      "min": 3.7293541689550875,
+      "max": 7.058639332172718
+    },
+    "goal_distance_reduction_fraction": {
+      "mean": 0.27937872218924653,
+      "median": 0.22227746041195048,
+      "sample_sd": 0.14153162733631466,
+      "min": 0.16252318586064185,
+      "max": 0.49914144120295484
+    },
+    "path_over_whole_duration_mps": {
+      "mean": 0.10836417376899284,
+      "median": 0.11895265447150666,
+      "sample_sd": 0.03295724901350408,
+      "min": 0.06334229364512214,
+      "max": 0.13866677582648468
+    }
+  },
+  "policy_action_counts": {
+    "look_down": 26,
+    "forward": 63,
+    "stop": 5,
+    "right": 12,
+    "left": 7,
+    "look_up": 5
+  },
+  "executed_actions_verified": 113,
+  "model_stop_count": 5,
+  "controller_action_failures": 0,
+  "vlm_calls": 0,
+  "episode_300s_or_360s_timeouts": 0,
+  "raw_effective_action_mismatches": 0,
+  "interpretation_limits": [
+    "One repeated target, not five independent goals.",
+    "Four field reports are unknown; keep them in the descriptive cohort with their uncertainty.",
+    "Distances and path lengths are odometry estimates, not ground truth.",
+    "Occluded long-range final goal is projected into one initial image; goal pixel does not encode hidden distance.",
+    "The same Go2 adapter changes look to 20 cm translation; this is not unmodified native PixelNav deployment.",
+    "No performance evidence for Direct goal 1, 2, 3 or 5 in the reviewed campaigns."
+  ]
+}

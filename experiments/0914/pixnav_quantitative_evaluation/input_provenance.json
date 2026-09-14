@@ -1,0 +1,226 @@
+{
+  "night_log_review/episodes_summary.json": {
+    "sha256": "8c894683d765a0ed9c27f2b83b16421e4447913994d4eaf2f3699e25e855f2c2",
+    "bytes": 46979
+  },
+  "night_log_review/operator_clarifications.json": {
+    "sha256": "67c4ebaa69b4e783a9b553878217e69da22325f64b96c10f7920ef0753ae2c50",
+    "bytes": 1877
+  },
+  "pixnav_direction_review/direction_results.json": {
+    "sha256": "86a9d4fb1e4e03d5ebf4b388f3443d9516fd2fcca718897391e39db4187b269a",
+    "bytes": 64558
+  },
+  "pixnav_direction_review/replay_results.json": {
+    "sha256": "701580e289d7f3e675056d8097b744430c111c418c970eaa228482210459b5aa",
+    "bytes": 251545
+  },
+  "night_log_review/validation.json": {
+    "sha256": "f0306b7d6a958ec3b7cd410bee86f36bda87c785f350e187f99327933931d79b",
+    "bytes": 767
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/evidence/full5m/runtime/events.jsonl.gz": {
+    "sha256": "e68143daa021abfa0b788d735fae608f1c931bc99896a8cad07e5cde2a677c62",
+    "bytes": 307185
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/evidence/full5m/runtime/result.json": {
+    "sha256": "7c9607c8a4a1c0b4e76324f23c23bc3e53940f352faef08191fd9011f3166e2a",
+    "bytes": 24308
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/evidence/full5m/runtime/goal.json": {
+    "sha256": "39a3ad5f2111f233178ebf6bd910a3ee45b60095dce9f0f688daf46967f88c5b",
+    "bytes": 724
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/evidence/manifest.json": {
+    "sha256": "246413ddc97abfd44868d5c8892dad3a7485d8e278a55fdd0dc2e1126b728f8d",
+    "bytes": 5757
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/episode.recomputed.json": {
+    "sha256": "15f0adedac824f334fcc975674f4a1aba4aaf1fecbef99510434dd4e3dea0b97",
+    "bytes": 2899
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/evidence/field-report.json": {
+    "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e",
+    "bytes": 250
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/policy_outputs.json": {
+    "sha256": "1ad9ea24269937a37078f60f6e57a4ef4374b1cb90b6ace0b3690310274e03b8",
+    "bytes": 24897
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/motion_events.json": {
+    "sha256": "3b394018c74a3bc376659cac52a391c42794fb819179be095d7f42b68565ac1f",
+    "bytes": 348315
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/trajectory.csv": {
+    "sha256": "a838b15e7ec46d29d410aa95a6806dcafe4d086b751f24ae89e8c9e052e26643",
+    "bytes": 122223
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/control_pose.csv": {
+    "sha256": "5071f3413902811efd3e4ea85772b11200822f6c24ba4889c063c32798a89ad9",
+    "bytes": 226073
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/evidence/full5m/runtime/events.jsonl.gz": {
+    "sha256": "e83bf81edd43d3b86c800e01cdd44e801299188485d521b928b6cdd3a2f97477",
+    "bytes": 460464
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/evidence/full5m/runtime/result.json": {
+    "sha256": "ad331c00a4ddd4ef271ef757383e0131a7c2962330f44a31c776c1cd43d8390c",
+    "bytes": 35903
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/evidence/full5m/runtime/goal.json": {
+    "sha256": "1ec6a4ad2b379f694afa5b87192240fb228c237325519a3126dcd4b437475506",
+    "bytes": 725
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/evidence/manifest.json": {
+    "sha256": "73c81632b1083897eb61960113776c2794e6d0b8dc5159f9a6f28ce8c40e49d2",
+    "bytes": 5757
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/episode.recomputed.json": {
+    "sha256": "0cce8c6de46c887b0482bbffbe5f63e901d9e8b265c6c8386bc6329d5d8cc4f2",
+    "bytes": 2916
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/evidence/field-report.json": {
+    "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e",
+    "bytes": 250
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/policy_outputs.json": {
+    "sha256": "5a5d9aa7a804d55ba928cc99f06da45b981009aaf42d4d2507bf0626920369bf",
+    "bytes": 36734
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/motion_events.json": {
+    "sha256": "062412c628c375084fbe5cb3076dff60c517e0ef941e1c9d3165187763990e16",
+    "bytes": 552734
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/trajectory.csv": {
+    "sha256": "899744994ed9b829f5bbcd776a38295fb5745bd4afa086fa26dd71eebaa9b82b",
+    "bytes": 202932
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/control_pose.csv": {
+    "sha256": "c865089227100376cacd157b3149c5e297a2c3ab0246813c2664d43d53adca5e",
+    "bytes": 373116
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/evidence/full5m/runtime/events.jsonl.gz": {
+    "sha256": "2d5202d0615d70ff092b3f6d6a187997d88a83decf88a7e65bad79ac1bbcd369",
+    "bytes": 543807
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/evidence/full5m/runtime/result.json": {
+    "sha256": "0be32d7775c4b9e57db77832efd6d1d46d871c261a4f6b1192d4d89cfe8c8642",
+    "bytes": 33534
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/evidence/full5m/runtime/goal.json": {
+    "sha256": "9a8976f8b3c15c6564983c7e58f49230342991809f78325b582ffd6da5d931a8",
+    "bytes": 734
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/evidence/manifest.json": {
+    "sha256": "7790942b46d5fe6066028d84d626d54a1cb88896e06adddb5341375671d46b52",
+    "bytes": 5757
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/episode.recomputed.json": {
+    "sha256": "bc19deb75c74e3531b3d6cd42f493d8c4de5a61eb06e2a810557548e270f1550",
+    "bytes": 2957
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/evidence/field-report.json": {
+    "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e",
+    "bytes": 250
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/policy_outputs.json": {
+    "sha256": "b66cd20f210a472d1fdda95ecb4623ef12f632fba57464425178afe5e8ee7689",
+    "bytes": 34347
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/motion_events.json": {
+    "sha256": "d64386eebc843198192f655df728fed63bbec7bbda4c2880321c85a750dbb255",
+    "bytes": 645327
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/trajectory.csv": {
+    "sha256": "b31a20f65cbe66807916f43cb1bdafb48a997c9c54bc044a817bbade8cc02221",
+    "bytes": 238943
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/control_pose.csv": {
+    "sha256": "407fc8a34d836dbcc24817b94b39493935d6dc1632afab6d98fe9d1bd7115450",
+    "bytes": 447744
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/evidence/full5m/runtime/events.jsonl.gz": {
+    "sha256": "78f4c3c195fc3e3c41a9d1777b8a9971d1c0d299d1a096cdb7724babae6da57f",
+    "bytes": 451358
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/evidence/full5m/runtime/result.json": {
+    "sha256": "19347646b3187ab063f15960ea1ace8d97fdbb2afd2f83395208b93782ad8807",
+    "bytes": 24304
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/evidence/full5m/runtime/goal.json": {
+    "sha256": "84f07edda0c846aa5dc3bc2901d53e9c07bf9ec93275d6125c72ec3dab541697",
+    "bytes": 733
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/evidence/manifest.json": {
+    "sha256": "ebb134acd6fa2b960ecff671278cc2feceef7eeeb9e7fef2dec465f18ea1009e",
+    "bytes": 5757
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/episode.recomputed.json": {
+    "sha256": "8a6106684da08a60ae5aadec5b2afd2885655b14c8badc53388e91f8a3c238cc",
+    "bytes": 2944
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/evidence/field-report.json": {
+    "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e",
+    "bytes": 250
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/policy_outputs.json": {
+    "sha256": "59ed3a9cee519dd2929ff53836869660b90d7dfbbe6ace0f80c44c18db21c987",
+    "bytes": 24901
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/motion_events.json": {
+    "sha256": "8381bf23558fd86817d412e9626554295e57aebd73df93e44f797bfcdd8c7576",
+    "bytes": 518053
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/trajectory.csv": {
+    "sha256": "2e9a1ec13bf6ae6641251d6458e07f3500d60c602c80cb6f61a155d4e7bdf5d6",
+    "bytes": 199555
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/control_pose.csv": {
+    "sha256": "2c9ac627296366b5b9952f7bf917f95d1e7865c4850868d887be297428778ff3",
+    "bytes": 364392
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/evidence/full5m/runtime/events.jsonl.gz": {
+    "sha256": "1005a7c1a5cb1830a499ac3ad145abf8d21f4baa0f5a499c3f670254d6f90666",
+    "bytes": 236209
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/evidence/full5m/runtime/result.json": {
+    "sha256": "a1eac445cec1b1ccc61bd4127677c721f9c0047615b429d997ccfebf8c27fb2a",
+    "bytes": 18494
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/evidence/full5m/runtime/goal.json": {
+    "sha256": "24b62c589e4d4d6ef577eef8cd64973c84427b9e1f9cc36651ad364232bc39a0",
+    "bytes": 733
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/evidence/manifest.json": {
+    "sha256": "20a1d880b594a9ad429aedf8c8a746e15e20e150574d1b9e08f0cf875d606787",
+    "bytes": 5757
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/episode.recomputed.json": {
+    "sha256": "5a88775508efc59b17ff5339e4c781eb8805745825f127a4f5a2d8db17a080a6",
+    "bytes": 2912
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/evidence/field-report.json": {
+    "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e",
+    "bytes": 250
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/policy_outputs.json": {
+    "sha256": "2dfeb89d5cbab0aabbb5bc4e6f4771b995ba1b69325b86d325e0e8acc709398f",
+    "bytes": 18959
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/motion_events.json": {
+    "sha256": "019eb26f86de0cbf23fa844895a1acd36ae127b2c5a9b5c73c10d26a15c2b01c",
+    "bytes": 261785
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/trajectory.csv": {
+    "sha256": "b1d7cc194a9b3c03d99510a9e78cd1b5f0c039d5e82a887dd88595b4a8af44a3",
+    "bytes": 92947
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/control_pose.csv": {
+    "sha256": "483b93024442d41536754225d0281e6e59e355c950d801d7ae8f45d6e538f28c",
+    "bytes": 168152
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-001/evidence/full5m/runtime/result.json": {
+    "sha256": "02b041b9e7038e397d8319b5b20d788da9b118348bd9f5c1fc7c11043bf8ffe5",
+    "bytes": 1164
+  }
+}

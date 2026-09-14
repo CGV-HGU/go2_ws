@@ -1,0 +1,324 @@
+{
+  "schema": "escape-robot-episode-archive-v1",
+  "raw_root": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-2-007",
+  "files": [
+    {
+      "path": "CANCEL",
+      "bytes": 0,
+      "mtime_ns": 1789303975356125643,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "RECORDERS_CLOSED",
+      "bytes": 0,
+      "mtime_ns": 1789303980668327189,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "RECORDING_INCOMPLETE",
+      "bytes": 0,
+      "mtime_ns": 1789303980772331136,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "STACK_STARTED",
+      "bytes": 0,
+      "mtime_ns": 1789303973196043721,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "body-console.log",
+      "bytes": 3798,
+      "mtime_ns": 1789303973248045693,
+      "sha256": "6899b3383084e9c08bbb032e5d25a48b9fa61d4b1914e2c0ffe195b156347382"
+    },
+    {
+      "path": "camera-console.log",
+      "bytes": 0,
+      "mtime_ns": 1789303970027923602,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "camera-contract.json",
+      "bytes": 1031,
+      "mtime_ns": 1788943192351118411,
+      "sha256": "e7dbec8d93fde548df49eae0e7510202d2f2b07e50d78b7000acc4b8bef0fbf4"
+    },
+    {
+      "path": "camera-startup.log",
+      "bytes": 53,
+      "mtime_ns": 1789303968843878720,
+      "sha256": "e208102c191f0ebab5ad59fe11fd0d0fe307b6663d53ee4ff3d793130a88a818"
+    },
+    {
+      "path": "camera-timing-console.log",
+      "bytes": 0,
+      "mtime_ns": 1789303970027923602,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "campaign-binding.json",
+      "bytes": 520,
+      "mtime_ns": 1789303968503865832,
+      "sha256": "a4e8269a63407eb3afbfdc60cd82c0feb0f5b60df8fcee5da9b9194ffa16fb18"
+    },
+    {
+      "path": "compose.trial.yaml",
+      "bytes": 3613,
+      "mtime_ns": 1789303968499865681,
+      "sha256": "a8641ad08c2358d06728ff385b79b109d072f474e78c79b95d00068f8425bebb"
+    },
+    {
+      "path": "field-report.json",
+      "bytes": 256,
+      "mtime_ns": 1789303968503865832,
+      "sha256": "a136247a07fdbf5c5ec412f9c725cfcf3a90cde4d52be93c5cb45a68097e0c9f"
+    },
+    {
+      "path": "full5m/body-recording/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789303973200043873,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/body-recording/events.jsonl",
+      "bytes": 27890,
+      "mtime_ns": 1789303973200043873,
+      "sha256": "801016f6d924c2f70552330c01d19c62abecbab11a126ffdcaffee3983631fb6"
+    },
+    {
+      "path": "full5m/camera-timing/READY",
+      "bytes": 0,
+      "mtime_ns": 1789303972720025670,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/camera-timing/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789303973200043873,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/camera-timing/events.jsonl",
+      "bytes": 5789,
+      "mtime_ns": 1789303973232045086,
+      "sha256": "ee60a1472ab5f145f53cd5896fa4cf69c0d24d1bfd38411b16489e9fd5e56449"
+    },
+    {
+      "path": "full5m/capture_robot_goal.py",
+      "bytes": 7404,
+      "mtime_ns": 1789178683993112954,
+      "sha256": "60dfe6c775dd9d6267aaa14698e5eec5e8e81d6201d5cb922211bf7cb321feb8"
+    },
+    {
+      "path": "full5m/fixed_start_goals.py",
+      "bytes": 9527,
+      "mtime_ns": 1789290489786118195,
+      "sha256": "1d712ee9a390dc822fea62312ef633e770513848af6ae43c69835b21b3bebd86"
+    },
+    {
+      "path": "full5m/inject_and_observe.py",
+      "bytes": 17015,
+      "mtime_ns": 1789288487745968411,
+      "sha256": "84ead9a7489e4e4ae2a5a19d67d8817644db8a1f409bae5a2cf21f5e7cfdfd22"
+    },
+    {
+      "path": "full5m/observation-recording/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789303973200043873,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/observation-recording/events.jsonl",
+      "bytes": 0,
+      "mtime_ns": 1789303972344011412,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "full5m/observe_camera_and_sweep.py",
+      "bytes": 2188,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "5f2c4ed133e5e42f4120115bfade56cc88c063855a7d7a74f2479a77017a4586"
+    },
+    {
+      "path": "full5m/record_body.py",
+      "bytes": 2611,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "c0492e6062739a434ce39be206405c051ec9c99e8701f8da20aa48cbb13beb3b"
+    },
+    {
+      "path": "full5m/robot_pointgoal_trial.py",
+      "bytes": 17015,
+      "mtime_ns": 1789288487745968411,
+      "sha256": "84ead9a7489e4e4ae2a5a19d67d8817644db8a1f409bae5a2cf21f5e7cfdfd22"
+    },
+    {
+      "path": "full5m/runtime/STOP",
+      "bytes": 0,
+      "mtime_ns": 1789303975356125643,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "goal-plan.json",
+      "bytes": 5112,
+      "mtime_ns": 1789293423901966922,
+      "sha256": "c9c4c71bedef00a9b53cb13265d617809beec0be8c0d798cdd587e1fdefa9498"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 5584,
+      "mtime_ns": 1789303968747875081,
+      "sha256": "d94d15d37c779c412159cd3bfaefd6ed8c31d6a2c9048cab0d0ae4d6a263a3a7"
+    },
+    {
+      "path": "native-inputs/metadata.yaml",
+      "bytes": 2855,
+      "mtime_ns": 1789303978896259944,
+      "sha256": "acf3f86c16570408f0dca7d10ac3c90ba28c2328184afa2ade5814a510a49857"
+    },
+    {
+      "path": "native-inputs/native-inputs_0.mcap",
+      "bytes": 181475238,
+      "mtime_ns": 1789303978896259944,
+      "sha256": "e57b1bafed86c27be1648eb52d9d7d7ec5cedbe2ee06e96ac1c26e3f0e673236"
+    },
+    {
+      "path": "native-recording.log",
+      "bytes": 60064,
+      "mtime_ns": 1789303980256311553,
+      "sha256": "fef3b7af75f4bb4b995d0603909caa7cefb4769f8c0c0a03499513625ed441e6"
+    },
+    {
+      "path": "native-ros-log/python3_7_1789303970729.log",
+      "bytes": 53405,
+      "mtime_ns": 1789303978900260096,
+      "sha256": "71d341dc628c2e01204520057c71380fc0360864c089d78f97217cb885472a01"
+    },
+    {
+      "path": "navigation.log",
+      "bytes": 320963,
+      "mtime_ns": 1789303980404317170,
+      "sha256": "aa3056e39a718749693136cf51180fd8cc59b913f35c93367046368a5aa1dc3a"
+    },
+    {
+      "path": "observe_camera_and_sweep.py",
+      "bytes": 2188,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "5f2c4ed133e5e42f4120115bfade56cc88c063855a7d7a74f2479a77017a4586"
+    },
+    {
+      "path": "observe_idle.py",
+      "bytes": 2935,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "38727fa2c3efb0cbd6bd28aed260d6e85b5b1ee05b895e6327c2ee48043525b9"
+    },
+    {
+      "path": "operator-console.log",
+      "bytes": 442,
+      "mtime_ns": 1789303980132306847,
+      "sha256": "6f1c1625f964076e844a963d3bf33de330097480e08485b7b782b8134d6b188a"
+    },
+    {
+      "path": "operator-invocation.json",
+      "bytes": 258,
+      "mtime_ns": 1789303968751875232,
+      "sha256": "db402cf68fc5961d5d7dac611ccbe2b7d95a42debd8d65f72fdb5128a2ff5df4"
+    },
+    {
+      "path": "operator-stop-fallback.log",
+      "bytes": 220,
+      "mtime_ns": 1789303978760254783,
+      "sha256": "a4c371db6785ee8e319090ae6f719a96fdf9a0d1f31150e66883d5f2c3e292aa"
+    },
+    {
+      "path": "operator-stop.json",
+      "bytes": 134,
+      "mtime_ns": 1789303971735988358,
+      "sha256": "27a27bf074c3238357aab92f9a7545851276ab55d513dc39a16f523977d9510f"
+    },
+    {
+      "path": "pixnav.log",
+      "bytes": 3827,
+      "mtime_ns": 1789303980640326126,
+      "sha256": "2bb1dd9f46b3ebae4105bfce30074333bb0a7fc8071f63f3a6679b39792e0dd7"
+    },
+    {
+      "path": "policy-profile.yaml",
+      "bytes": 4614,
+      "mtime_ns": 1788521094116173072,
+      "sha256": "f1a91a41141899e80d125fcd9e7bda58e8358a9797d079f53546fee2f7d03b33"
+    },
+    {
+      "path": "prestart-outcome.json",
+      "bytes": 128,
+      "mtime_ns": 1789303980824333109,
+      "sha256": "a49070708ec4b34347ac9ba5bed84eeb87560e5a152e4ca8f8dc2f7cdbf5cecc"
+    },
+    {
+      "path": "record_body.py",
+      "bytes": 2611,
+      "mtime_ns": 1789114595099591333,
+      "sha256": "c0492e6062739a434ce39be206405c051ec9c99e8701f8da20aa48cbb13beb3b"
+    },
+    {
+      "path": "record_camera_timing.py",
+      "bytes": 3429,
+      "mtime_ns": 1789144005879162898,
+      "sha256": "d8d19b1a8bba56adffd2de090e80f579846856d40b8bd8e7e66c94c3c5fe2203"
+    },
+    {
+      "path": "recording-check.log",
+      "bytes": 1213,
+      "mtime_ns": 1789303980760330680,
+      "sha256": "e656b7ab066070709c49c48bc61cf79223bf0bcb540cc839df18f331a5cb8590"
+    },
+    {
+      "path": "recording-cyclonedds.xml",
+      "bytes": 1106,
+      "mtime_ns": 1787302434959453119,
+      "sha256": "75deefe8ed7e17a818dd4f157ec4ab70db1e2f31664c0db203505d18cbbdceb4"
+    },
+    {
+      "path": "recording-integrity.json",
+      "bytes": 1212,
+      "mtime_ns": 1789303980836333565,
+      "sha256": "894aa75920f918f30f4909d349f17fc2ae94e40d1ed6e7b1c2e88597e71089fa"
+    },
+    {
+      "path": "robot_recording_integrity.py",
+      "bytes": 7919,
+      "mtime_ns": 1789295792346848944,
+      "sha256": "a9cc67f907aeb6b7f795f33bb2697309b55528f51579f0ab349e6bfc6797445e"
+    },
+    {
+      "path": "run_saved_robot_goal.snapshot.py",
+      "bytes": 20568,
+      "mtime_ns": 1789297937282714600,
+      "sha256": "88a804d9bc47805d6eb7411ecf8f03434ed847a9d6ff268c044dd931d599e369"
+    },
+    {
+      "path": "run_trial.sh",
+      "bytes": 5517,
+      "mtime_ns": 1789303968499865681,
+      "sha256": "f08037be7b68172eb4a572fe54c9da46fe80136c5a8305f7e3fa074e36c022fb"
+    },
+    {
+      "path": "sidecar.log",
+      "bytes": 7538,
+      "mtime_ns": 1789303980520321572,
+      "sha256": "2db7008b358fa61237f381ce4488bc306818093cdd2e2ada36a710e05d6516e1"
+    },
+    {
+      "path": "startup.log",
+      "bytes": 892,
+      "mtime_ns": 1789303970019923299,
+      "sha256": "7f4c10735ad70fa4959f90235d7c4d8e1fca3442580a444fcbe0afdf1efe0dcc"
+    }
+  ],
+  "total_bytes": 182088682,
+  "raw_files_rewritten": false,
+  "coordinate_sources": [
+    "continuous odom",
+    "accepted map localization when available"
+  ]
+}
