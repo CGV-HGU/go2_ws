@@ -2,6 +2,8 @@
 
 논문의 **“Matched ObjectNav example: … PixNav and VOCA remain locally confined”** 그림과 색상·지도 표현·범례 구성을 맞춘 실로봇 정성 비교다. Goal 4만 표시하고 축척은 **1m**다.
 
+**최종 공유본은 우회전한 003을 사용한 아래 그림이다.** 기존 파란색 벽 지도 그림 경로도 003으로 통일했다. 파일명에 `_alternate004`가 붙은 자료는 이전 좌회전 사례의 비교용이며 최종 공유본이 아니다.
+
 ![Goal 4 comparison](../fig6_goal4_ours_vs_pixnav_paper.png)
 
 - [PNG](../fig6_goal4_ours_vs_pixnav_paper.png), [벡터 PDF](../fig6_goal4_ours_vs_pixnav_paper.pdf), [편집용 SVG](../fig6_goal4_ours_vs_pixnav_paper.svg)

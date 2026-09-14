@@ -22,7 +22,7 @@ MAP = REPO / '2dmap/0913'
 REVIEW = REPO / 'experiments/0914/night_log_review'
 QUANT = REPO / 'experiments/0914/pixnav_quantitative_evaluation'
 OURS = 'full-goal-4-009'
-PIX = 'direct_goal-goal-4-004'
+PIX = 'direct_goal-goal-4-003'
 STEM = 'fig6_goal4_ours_vs_pixnav'
 ORANGE, BLUE, GREEN = '#E67E22', '#0078D4', '#107C41'
 INPUTS = {}
@@ -188,7 +188,7 @@ def main():
             path_length_10hz_m=r['metrics']['path_length']['10hz_m'],
             field_report=r['field']))
     axes.flat[-1].axis('off')
-    axes.flat[-1].text(.03,.7,'Selection: visible bend after forward travel.\nAll five recorded Goal 4 runs are retained.\nThis is a qualitative example, not a cohort score.',
+    axes.flat[-1].text(.03,.7,'Selection: forward travel followed by a right turn.\n003 has the closest final distance of five runs.\nThis is a qualitative example, not a cohort score.',
         transform=axes.flat[-1].transAxes,fontsize=10,va='top',linespacing=1.6)
     fig.tight_layout();fig.savefig(details/'pixnav_candidates.png',dpi=180,bbox_inches='tight');plt.close(fig)
     for r,name in [(ours,'ours_trajectory.csv'),(pix,'pixnav_trajectory.csv')]:
@@ -200,7 +200,7 @@ def main():
         map_overlay='Identity overlay and pixel registration of the requested 0913 template; no new ICP registration.',
         geometry_modification='None: all exported pre-stop odom XY samples plotted in order; no smoothing, warping, or wall edits.',
         goal_heading_controlled=False,independent_ground_truth=False,paper_spl=None,
-        selection_reason='Visible sustained leftward bend after initial forward travel, with a longer bent segment than 006; selected qualitatively from all five runs.',
+        selection_reason='User-selected right-turn example: 003 advances farther before turning right and has the closest final goal distance of all five recorded runs.',
         candidates=selection,
         selected_metrics={r['run']:dict(final_goal_distance_m=r['result']['goal_distance_m'],
             result_reason=r['result']['reason'],duration_s=r['metrics']['elapsed_to_stop_s'],

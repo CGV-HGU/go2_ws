@@ -198,17 +198,5 @@
     "sha256": "12b8d37871c8d088ef47f3e7cfcf644ddd763a443666e04f91d4a605ad4a6b5e",
     "bytes": 250,
     "matches_prior_evidence_manifest": true
-  },
-  "experiments/0914/night_log_review/episodes/original5/full-goal-4-009/evidence/full5m/runtime/events.jsonl.gz": {
-    "sha256": "98f58c8bf3c0540e1ac23bc54db07f7f1592bea37e1c68f078b3993fea4812a1",
-    "bytes": 2203850,
-    "matches_prior_evidence_manifest": true,
-    "purpose": "independent plotted-XY check"
-  },
-  "experiments/0914/night_log_review/episodes/recaptured5/direct_goal-goal-4-004/evidence/full5m/runtime/events.jsonl.gz": {
-    "sha256": "2d5202d0615d70ff092b3f6d6a187997d88a83decf88a7e65bad79ac1bbcd369",
-    "bytes": 543807,
-    "matches_prior_evidence_manifest": true,
-    "purpose": "independent plotted-XY check"
   }
 }

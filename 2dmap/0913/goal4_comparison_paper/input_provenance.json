@@ -225,8 +225,8 @@
     "matches_prior_evidence_manifest": false
   },
   "2dmap/0913/goal4_comparison/build_figure.py": {
-    "sha256": "eed5033cf7d47bbea3cb113c7ba083622a7235599547c349beee1b1f0734128b",
-    "bytes": 12384,
+    "sha256": "71d7a82b3b115eb5c63e168cf1d8631cc87d75f8d587970c4511470c2891736d",
+    "bytes": 12396,
     "matches_prior_evidence_manifest": false
   }
 }

@@ -1,6 +1,6 @@
 {
   "ours_run": "full-goal-4-009",
-  "pixnav_run": "direct_goal-goal-4-004",
+  "pixnav_run": "direct_goal-goal-4-003",
   "goal_label": "4",
   "goal_labels_displayed": [
     "4"
@@ -25,7 +25,7 @@
   "goal_heading_controlled": false,
   "independent_ground_truth": false,
   "paper_spl": null,
-  "selection_reason": "Visible sustained leftward bend after initial forward travel, with a longer bent segment than 006; selected qualitatively from all five runs.",
+  "selection_reason": "User-selected right-turn example: 003 advances farther before turning right and has the closest final goal distance of all five recorded runs.",
   "candidates": [
     {
       "run": "direct_goal-goal-4-002",
@@ -46,7 +46,7 @@
     },
     {
       "run": "direct_goal-goal-4-003",
-      "selected": false,
+      "selected": true,
       "final_goal_distance_m": 5.661212921142578,
       "duration_s": 59.33990597799993,
       "path_length_10hz_m": 7.058639332172709,
@@ -63,7 +63,7 @@
     },
     {
       "run": "direct_goal-goal-4-004",
-      "selected": true,
+      "selected": false,
       "final_goal_distance_m": 9.3451509475708,
       "duration_s": 70.53503043700039,
       "path_length_10hz_m": 6.005540031470449,
@@ -136,15 +136,15 @@
       },
       "navigation_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c"
     },
-    "direct_goal-goal-4-004": {
-      "final_goal_distance_m": 9.3451509475708,
+    "direct_goal-goal-4-003": {
+      "final_goal_distance_m": 5.661212921142578,
       "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL",
-      "duration_s": 70.53503043700039,
-      "path_length_10hz_m": 6.005540031470449,
-      "plotted_samples": 1243,
+      "duration_s": 59.33990597799993,
+      "path_length_10hz_m": 7.058639332172709,
+      "plotted_samples": 1045,
       "plotted_endpoint_xy_m": [
-        3.9782996924514324,
-        2.694080070122591
+        6.475396170481467,
+        -0.023394746459554305
       ],
       "field_report": {
         "status": "received_partial",
