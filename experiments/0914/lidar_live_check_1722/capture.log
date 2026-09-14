@@ -1,0 +1,425 @@
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+{"elapsed_s": 10.0, "received": {"/utlidar/cloud": 158, "/utlidar/cloud_deskewed": 157, "/utlidar/cloud_base": 157, "/utlidar/robot_odom": 1259, "/utlidar/imu": 1862, "/utlidar/lidar_state": 50, "/utlidar/server_log": 0}, "latest_state": {"received_unix_s": 1789374486.4998362, "stamp": 1789374131.4710238, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12906.0009765625, "com_rotation_speed": 258.984619140625, "error_state": 0, "cloud_frequency": 15.368821144104004, "cloud_packet_loss_rate": 0.0, "cloud_size": 60640, "cloud_scan_num": 210, "imu_frequency": 250.5984344482422, "imu_packet_loss_rate": 0.0, "imu_rpy": [114.32404327392578, -4.578898906707764, -0.41528984904289246], "serial_recv_stamp": 1789374131.4708376, "serial_buffer_size": 0, "serial_buffer_read": 180}}
+{"elapsed_s": 20.0, "received": {"/utlidar/cloud": 311, "/utlidar/cloud_deskewed": 311, "/utlidar/cloud_base": 311, "/utlidar/robot_odom": 2756, "/utlidar/imu": 4378, "/utlidar/lidar_state": 100, "/utlidar/server_log": 0}, "latest_state": {"received_unix_s": 1789374496.4998136, "stamp": 1789374141.471027, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12995.451171875, "com_rotation_speed": 190.37767028808594, "error_state": 0, "cloud_frequency": 15.477397918701172, "cloud_packet_loss_rate": 0.0, "cloud_size": 60524, "cloud_scan_num": 210, "imu_frequency": 251.8968505859375, "imu_packet_loss_rate": 0.0, "imu_rpy": [95.18866729736328, -9.103837966918945, -2.993842840194702], "serial_recv_stamp": 1789374141.470859, "serial_buffer_size": 0, "serial_buffer_read": 120}}
+{"elapsed_s": 30.0, "received": {"/utlidar/cloud": 465, "/utlidar/cloud_deskewed": 465, "/utlidar/cloud_base": 465, "/utlidar/robot_odom": 4251, "/utlidar/imu": 6893, "/utlidar/lidar_state": 150, "/utlidar/server_log": 0}, "latest_state": {"received_unix_s": 1789374506.5000813, "stamp": 1789374151.471065, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12870.0126953125, "com_rotation_speed": 294.26190185546875, "error_state": 0, "cloud_frequency": 15.274883270263672, "cloud_packet_loss_rate": 0.0, "cloud_size": 60739, "cloud_scan_num": 210, "imu_frequency": 251.93399047851562, "imu_packet_loss_rate": 0.0, "imu_rpy": [88.19832611083984, -7.1643900871276855, -1.8735371828079224], "serial_recv_stamp": 1789374151.4678717, "serial_buffer_size": 0, "serial_buffer_read": 210}}
+{"elapsed_s": 40.0, "received": {"/utlidar/cloud": 618, "/utlidar/cloud_deskewed": 618, "/utlidar/cloud_base": 618, "/utlidar/robot_odom": 5758, "/utlidar/imu": 9412, "/utlidar/lidar_state": 200, "/utlidar/server_log": 0}, "latest_state": {"received_unix_s": 1789374516.4999957, "stamp": 1789374161.4710407, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12908.7783203125, "com_rotation_speed": 261.64312744140625, "error_state": 0, "cloud_frequency": 15.3425874710083, "cloud_packet_loss_rate": 0.0, "cloud_size": 60863, "cloud_scan_num": 210, "imu_frequency": 253.2046356201172, "imu_packet_loss_rate": 0.0, "imu_rpy": [89.50679016113281, -7.421438217163086, -0.3839676082134247], "serial_recv_stamp": 1789374161.4694617, "serial_buffer_size": 66, "serial_buffer_read": 90}}
+{"summary": "/home/unitree/go2_ws_antarctica/experiments/0914/lidar_live_check_1722/summary.json", "topics": {"/utlidar/cloud": {"count": 618, "receive_interval_ms": {"min": 10.784907000015664, "median": 65.07062400032737, "p95": 69.56950639969364, "p99": 78.4350062399972, "max": 87.88308099974529}, "callback_elapsed_ms": {"min": 1.6336809999302204, "median": 2.033069999924919, "p95": 4.108068150139842, "p99": 10.472353149903045, "max": 22.238251000089804}, "receive_hz": 15.450187669993914, "source_interval_ms": {"min": 58.70532989501953, "median": 65.03915786743164, "p95": 66.72883033752441, "p99": 68.56815338134766, "max": 70.94550132751465}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.0910406112671, "median": 355.0956301689148, "p95": 355.10925937891005, "p99": 355.12511274576184, "max": 355.34337878227234}, "offset_change_last_minus_first_s": -0.2480456829071045, "delay_above_min_ms": {"min": 0.0, "median": 4.589557647705078, "p95": 18.21876764297484, "p99": 34.07213449478156, "max": 252.33817100524902}, "frames": ["utlidar_lidar"], "points": {"min": 3779.0, "median": 4043.0, "p95": 4149.0, "p99": 4195.0, "max": 4200.0}, "valid_points": {"min": 3779.0, "median": 4043.0, "p95": 4149.0, "p99": 4195.0, "max": 4200.0}, "all_invalid_frames": 0, "zero_xyz_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}, "nonfinite_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}}, "/utlidar/cloud_deskewed": {"count": 618, "receive_interval_ms": {"min": 10.1983299996391, "median": 65.26801499967405, "p95": 75.06987759988986, "p99": 81.71978532003777, "max": 94.27492400027404}, "callback_elapsed_ms": {"min": 1.5479829999094363, "median": 1.8181195000579464, "p95": 4.603348750151778, "p99": 23.61888660026126, "max": 30.479751000257238}, "receive_hz": 15.448595986222433, "source_interval_ms": {"min": 61.689138412475586, "median": 65.02056121826172, "p95": 65.9212589263916, "p99": 68.4329128265381, "max": 70.43647766113281}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.0371663570404, "median": 355.0419719219208, "p95": 355.0607411146164, "p99": 355.0793800091743, "max": 355.2854869365692}, "offset_change_last_minus_first_s": -0.24410343170166016, "delay_above_min_ms": {"min": 0.0, "median": 4.805564880371094, "p95": 23.57475757598877, "p99": 42.213652133941686, "max": 248.3205795288086}, "frames": ["odom"], "points": {"min": 11219.0, "median": 11647.5, "p95": 11953.3, "p99": 12036.3, "max": 12103.0}, "valid_points": {"min": 1219.0, "median": 1647.5, "p95": 1953.2999999999997, "p99": 2036.3000000000004, "max": 2103.0}, "all_invalid_frames": 0, "zero_xyz_fraction": {"min": 0.8262414277451872, "median": 0.8585533392082288, "p95": 0.8832361773538244, "p99": 0.8879149488020859, "max": 0.8913450396648542}, "nonfinite_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}}, "/utlidar/cloud_base": {"count": 618, "receive_interval_ms": {"min": 11.111893000361306, "median": 65.09436899978027, "p95": 72.26940340005967, "p99": 86.0768471201118, "max": 103.41181500007224}, "callback_elapsed_ms": {"min": 0.8341379998455523, "median": 1.165699000011955, "p95": 2.5162252500876976, "p99": 18.435336049756202, "max": 32.39955500021097}, "receive_hz": 15.453025604145147, "source_interval_ms": {"min": 58.70532989501953, "median": 65.03915786743164, "p95": 66.72883033752441, "p99": 68.56815338134766, "max": 70.94550132751465}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.09394812583923, "median": 355.09898698329926, "p95": 355.1231282114983, "p99": 355.1496281504631, "max": 355.35372829437256}, "offset_change_last_minus_first_s": -0.25538015365600586, "delay_above_min_ms": {"min": 0.0, "median": 5.038857460021973, "p95": 29.18008565902707, "p99": 55.680024623870864, "max": 259.7801685333252}, "frames": ["base_link"], "points": {"min": 1219.0, "median": 1647.5, "p95": 1953.2999999999997, "p99": 2036.3000000000004, "max": 2103.0}, "valid_points": {"min": 1219.0, "median": 1647.5, "p95": 1953.2999999999997, "p99": 2036.3000000000004, "max": 2103.0}, "all_invalid_frames": 0, "zero_xyz_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}, "nonfinite_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}}, "/utlidar/robot_odom": {"count": 5758, "receive_interval_ms": {"min": 0.6924050003362936, "median": 6.645932000083121, "p95": 11.928153799908612, "p99": 25.123935960272956, "max": 69.26551999958974}, "callback_elapsed_ms": {"min": 0.0170569996953418, "median": 0.025441000161663396, "p95": 0.05696680016171739, "p99": 0.08506412010319775, "max": 14.651586000127281}, "receive_hz": 144.08749566744208, "source_interval_ms": {"min": 4.002094268798828, "median": 6.663084030151367, "p95": 7.3822021484375, "p99": 19.284181594848604, "max": 63.43579292297363}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.028635263443, "median": 355.02887892723083, "p95": 355.0456514596939, "p99": 355.0600678372383, "max": 355.0942163467407}, "offset_change_last_minus_first_s": -0.027562618255615234, "delay_above_min_ms": {"min": 0.0, "median": 0.24366378784179688, "p95": 17.016196250915495, "p99": 31.432573795318604, "max": 65.58108329772949}, "frames": ["odom"], "first_position": [36.382083892822266, 64.50057220458984, 0.30651453137397766], "last_position": [36.561302185058594, 65.19544982910156, 0.3159749209880829], "displacement_m": 0.717679321348195, "xyz_span_m": [0.2868003845214844, 1.0364913940429688, 0.031992435455322266], "largest_consecutive_position_step_m": 0.02322555752639538}, "/utlidar/imu": {"count": 9412, "receive_interval_ms": {"min": 0.5017749999751686, "median": 4.20287900033145, "p95": 9.893915499787909, "p99": 18.05327950019086, "max": 70.17182000026878}, "callback_elapsed_ms": {"min": 0.010208000276179519, "median": 0.01404899967383244, "p95": 0.02708685003653951, "p99": 0.04768189000969869, "max": 2.5408769997739}, "receive_hz": 235.59821372021915, "source_interval_ms": {"min": 0.09298324584960938, "median": 4.476785659790039, "p95": 5.504965782165527, "p99": 14.26725387573236, "max": 64.97359275817871}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.0285279750824, "median": 355.0287446975708, "p95": 355.0391549944878, "p99": 355.04878707170485, "max": 355.0701026916504}, "offset_change_last_minus_first_s": -0.018866777420043945, "delay_above_min_ms": {"min": 0.0, "median": 0.2167224884033203, "p95": 10.627019405364987, "p99": 20.259096622466952, "max": 41.574716567993164}, "frames": ["utlidar_imu"], "gyro_norm_rad_s": {"min": 0.0002246510829275401, "median": 0.015244396331906468, "p95": 0.6213996612587204, "p99": 1.2601645202780585, "max": 2.240306177743646}, "acceleration_norm_m_s2": {"min": 2.026564919291959, "median": 9.857859303435543, "p95": 11.999628255011258, "p99": 17.76607645312347, "max": 54.25231160334025}}, "/utlidar/lidar_state": {"count": 200, "receive_interval_ms": {"min": 118.87600299996848, "median": 199.98614499991163, "p95": 207.08750450003208, "p99": 234.29082875996787, "max": 274.44829900014156}, "callback_elapsed_ms": {"min": 0.09958700002243859, "median": 0.12097949979761324, "p95": 0.16663059993788906, "p99": 0.2240214000357809, "max": 0.31569000020681415}, "receive_hz": 5.004788212289857}, "/utlidar/server_log": {"count": 0}}, "latest_state": {"received_unix_s": 1789374516.4999957, "stamp": 1789374161.4710407, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12908.7783203125, "com_rotation_speed": 261.64312744140625, "error_state": 0, "cloud_frequency": 15.3425874710083, "cloud_packet_loss_rate": 0.0, "cloud_size": 60863, "cloud_scan_num": 210, "imu_frequency": 253.2046356201172, "imu_packet_loss_rate": 0.0, "imu_rpy": [89.50679016113281, -7.421438217163086, -0.3839676082134247], "serial_recv_stamp": 1789374161.4694617, "serial_buffer_size": 66, "serial_buffer_read": 90}}

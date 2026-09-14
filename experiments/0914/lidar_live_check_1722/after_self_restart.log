@@ -1,0 +1,831 @@
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+{"elapsed_s": 10.0, "received": {"/utlidar/cloud": 157, "/utlidar/lidar_state": 51, "/utlidar/imu": 2051}, "latest_state": {"received_unix_s": 1789374923.2995796, "stamp": 1789374568.271034, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12908.7783203125, "com_rotation_speed": 258.83489990234375, "error_state": 0, "cloud_frequency": 15.35926628112793, "cloud_packet_loss_rate": 0.0, "cloud_size": 60920, "cloud_scan_num": 210, "imu_frequency": 253.15924072265625, "imu_packet_loss_rate": 0.0, "imu_rpy": [91.07129669189453, -6.586219787597656, -0.1411723643541336], "serial_recv_stamp": 1789374568.2708263, "serial_buffer_size": 0, "serial_buffer_read": 60}}
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+{"elapsed_s": 20.0, "received": {"/utlidar/cloud": 310, "/utlidar/lidar_state": 101, "/utlidar/imu": 4560}, "latest_state": {"received_unix_s": 1789374933.301994, "stamp": 1789374578.2710738, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12906.0009765625, "com_rotation_speed": 258.9991455078125, "error_state": 0, "cloud_frequency": 15.350324630737305, "cloud_packet_loss_rate": 0.0, "cloud_size": 61316, "cloud_scan_num": 210, "imu_frequency": 253.1939697265625, "imu_packet_loss_rate": 0.0, "imu_rpy": [90.67835235595703, -5.079314231872559, 0.6182465553283691], "serial_recv_stamp": 1789374578.2703602, "serial_buffer_size": 0, "serial_buffer_read": 180}}
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+
+>>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+This error state is being overwritten:
+
+  'string data is not null-terminated, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+with this new error message:
+
+  'invalid data size, at /home/unitree/cyclonedds_ws/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp:308'
+
+rcutils_reset_error() should be called after error handling to avoid this.
+<<<
+{"summary": "/home/unitree/go2_ws_antarctica/experiments/0914/lidar_live_check_1722/after_self_restart/summary.json", "topics": {"/utlidar/cloud": {"count": 387, "receive_interval_ms": {"min": 8.17112000004272, "median": 65.06142350008304, "p95": 72.60181449998981, "p99": 82.82334349992183, "max": 95.03463800001555}, "callback_elapsed_ms": {"min": 1.7837569998846448, "median": 2.769863000139594, "p95": 13.33072590005031, "p99": 21.118686419986236, "max": 37.86988799993196}, "receive_hz": 15.468583653860561, "source_interval_ms": {"min": 34.9886417388916, "median": 65.03736972808838, "p95": 67.01904535293579, "p99": 73.71381521224966, "max": 88.98663520812988}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.0686032772064, "median": 355.0957541465759, "p95": 355.1111346721649, "p99": 355.127671380043, "max": 355.26931524276733}, "offset_change_last_minus_first_s": -0.17075800895690918, "delay_above_min_ms": {"min": 0.0, "median": 27.150869369506836, "p95": 42.531394958496094, "p99": 59.06810283660876, "max": 200.7119655609131}, "frames": ["utlidar_lidar"], "points": {"min": 3944.0, "median": 4067.0, "p95": 4157.4, "p99": 4187.28, "max": 4200.0}, "valid_points": {"min": 3944.0, "median": 4067.0, "p95": 4157.4, "p99": 4187.28, "max": 4200.0}, "all_invalid_frames": 0, "zero_xyz_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}, "nonfinite_fraction": {"min": 0.0, "median": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}}, "/utlidar/lidar_state": {"count": 126, "receive_interval_ms": {"min": 63.931163999768614, "median": 199.93443700013813, "p95": 209.25510920005763, "p99": 224.03418188014257, "max": 241.70589000004838}, "callback_elapsed_ms": {"min": 0.12243500032127486, "median": 0.17318849995717756, "p95": 0.9381117499742686, "p99": 5.872725500012166, "max": 8.372948999749497}, "receive_hz": 5.027386107672176}, "/utlidar/imu": {"count": 5814, "receive_interval_ms": {"min": 0.42173900010311627, "median": 4.207625999697484, "p95": 10.423394200006442, "p99": 22.010529800045337, "max": 48.48075299969423}, "callback_elapsed_ms": {"min": 0.01059199985320447, "median": 0.026401000013720477, "p95": 0.057271399919045465, "p99": 0.1792644802526409, "max": 16.07989700005419}, "receive_hz": 232.77856523464632, "source_interval_ms": {"min": 0.12826919555664062, "median": 4.470109939575195, "p95": 5.780172348022454, "p99": 18.243036270141626, "max": 45.00126838684082}, "duplicate_stamps": 0, "backwards_stamps": 0, "clock_offset_plus_delay_s": {"min": 355.028032541275, "median": 355.0288119316101, "p95": 355.04504281282425, "p99": 355.0504727053642, "max": 355.0753655433655}, "offset_change_last_minus_first_s": -0.020737409591674805, "delay_above_min_ms": {"min": 0.0, "median": 0.7793903350830078, "p95": 17.01027154922484, "p99": 22.44016408920288, "max": 47.3330020904541}, "frames": ["utlidar_imu"], "gyro_norm_rad_s": {"min": 0.0003939390488005031, "median": 0.014889515738493262, "p95": 0.04980628211305552, "p99": 0.06838185563260366, "max": 0.41992412078635527}, "acceleration_norm_m_s2": {"min": 6.123145320935496, "median": 9.868340770595193, "p95": 10.052854511114035, "p99": 10.225120710086848, "max": 16.815843773387254}}}, "latest_state": {"received_unix_s": 1789374938.299643, "stamp": 1789374583.2710273, "firmware_version": "", "software_version": "1.0.0.38", "sdk_version": "", "sys_rotation_speed": 12911.5556640625, "com_rotation_speed": 258.519287109375, "error_state": 0, "cloud_frequency": 15.359053611755371, "cloud_packet_loss_rate": 0.0, "cloud_size": 61373, "cloud_scan_num": 210, "imu_frequency": 253.21775817871094, "imu_packet_loss_rate": 0.0, "imu_rpy": [91.51766967773438, 0.3616527020931244, 0.5982459783554077], "serial_recv_stamp": 1789374583.2709932, "serial_buffer_size": 0, "serial_buffer_read": 150}}
