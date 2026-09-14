@@ -1,0 +1,126 @@
+{
+  "ours_run": "full-goal-4-009",
+  "pixnav_run": "direct_goal-goal-4-003",
+  "goal_labels_displayed": [
+    "4"
+  ],
+  "goal_xy_m": [
+    10.613861243952254,
+    -3.886405544069355
+  ],
+  "goal_radius_m": 1.0,
+  "goal_radius_drawn": false,
+  "scale_bar_m": 1.0,
+  "scale_bar_map_pixels": 20,
+  "equal_axes": true,
+  "limits_m": [
+    -1.8,
+    13.5,
+    -6.3,
+    4.1
+  ],
+  "paper_reference_commit": "2ccd9e7761bb3e29384a8c4f3d02056e855cddd5",
+  "paper_reference": "paper/figures/svg/fig6_scalebars.pdf",
+  "paper_caption": "Matched ObjectNav example: ESCAPE-Nav reaches the goal; PixNav and VOCA remain locally confined.",
+  "map_source": "2dmap/0913/2d_clean_publication.png",
+  "displayed_free_mask_cells": 48118,
+  "map_rendering": "Unmodified white/free mask from the existing publication map, including all holes; gray non-free area and 0.5-level vector outlines. No new morphological filtering or hand-drawn walls.",
+  "map_overlay": "Same identity/pixel-centre registration as the requested 0913 template; contextual overlay, not new ICP registration.",
+  "trajectory_rendering": "Every exported pre-stop odometry XY point in order. No smoothing, decimation, offset, or deformation.",
+  "selection": "003 has the smallest final goal distance and greatest 10 Hz path length of the five recorded alternatives; it includes four executed right turns.",
+  "candidates": [
+    {
+      "run": "direct_goal-goal-4-002",
+      "final_distance_m": 7.46298360824585,
+      "path_length_10hz_m": 4.908258956244584,
+      "duration_s": 35.39607037799988,
+      "action_results": {
+        "move_forward:EXECUTED": 20
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "final_distance_m": 5.661212921142578,
+      "path_length_10hz_m": 7.058639332172709,
+      "duration_s": 59.33990597799993,
+      "action_results": {
+        "move_forward:EXECUTED": 26,
+        "turn_right:EXECUTED": 4
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "final_distance_m": 9.3451509475708,
+      "path_length_10hz_m": 6.005540031470449,
+      "duration_s": 70.53503043700039,
+      "action_results": {
+        "move_forward:EXECUTED": 22,
+        "turn_left:EXECUTED": 3,
+        "turn_right:EXECUTED": 3
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-005",
+      "final_distance_m": 8.790611267089844,
+      "path_length_10hz_m": 3.730877812615774,
+      "duration_s": 58.90026391399988,
+      "action_results": {
+        "move_forward:EXECUTED": 12,
+        "turn_right:EXECUTED": 5,
+        "turn_left:EXECUTED": 3
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-006",
+      "final_distance_m": 9.466014862060547,
+      "path_length_10hz_m": 3.7293541689550866,
+      "duration_s": 27.479006247999678,
+      "action_results": {
+        "move_forward:EXECUTED": 14,
+        "turn_left:EXECUTED": 1
+      }
+    }
+  ],
+  "selected": [
+    {
+      "run": "full-goal-4-009",
+      "result": "GOAL_DISTANCE_REACHED",
+      "final_goal_distance_m": 0.9839638471603394,
+      "path_length_10hz_m": 14.96849839810426,
+      "duration_s": 302.3542648999992,
+      "samples": 5359,
+      "field_report": {
+        "status": "awaiting_field_report",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": null
+      },
+      "navigation_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c"
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "result": "PIXNAV_TERMINAL_BEFORE_GOAL",
+      "final_goal_distance_m": 5.661212921142578,
+      "path_length_10hz_m": 7.058639332172709,
+      "duration_s": 59.33990597799993,
+      "samples": 1045,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98"
+    }
+  ],
+  "independent_ground_truth": false,
+  "spl": null
+}

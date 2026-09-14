@@ -1,0 +1,20 @@
+{
+  "full-goal-4-009": {
+    "samples": 5359,
+    "max_xy_difference_m": 0.0,
+    "max_time_difference_s": 0.0,
+    "all_original_samples_preserved": true
+  },
+  "direct_goal-goal-4-003": {
+    "samples": 1045,
+    "max_xy_difference_m": 0.0,
+    "max_time_difference_s": 0.0,
+    "all_original_samples_preserved": true
+  },
+  "direct_goal-goal-4-004": {
+    "samples": 1243,
+    "max_xy_difference_m": 0.0,
+    "max_time_difference_s": 0.0,
+    "all_original_samples_preserved": true
+  }
+}

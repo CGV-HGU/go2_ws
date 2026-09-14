@@ -1,0 +1,35 @@
+\newsavebox{\objectnavtablebox}
+\begin{figure}[t]
+\centering
+\sbox{\objectnavtablebox}{%
+\begin{minipage}[t]{0.56\columnwidth}
+  \vspace{0pt}
+  \centering
+  \captionof{table}{RGB-only HM3D ObjectNav ($N=100$), $1.0$~m success region. FD: mean final geo\-desic distance over all trials. Bold/underlined values: best/second.}
+  \label{tab:objectnav}
+  \vspace{2pt}
+  \fontsize{6.7}{7.3}\selectfont
+  \renewcommand{\arraystretch}{1.38}
+  \setlength{\tabcolsep}{1.0pt}
+  \begin{tabular}{@{}lccc@{}}
+  \toprule
+  Method & \shortstack{SR@1m\\(\%) $\uparrow$} & \shortstack{SPL@1m\\(\%) $\uparrow$} & \shortstack{FD\\(m) $\downarrow$} \\
+  \midrule
+  PixNav~\cite{cai2023pixnav} & 37.0 & 18.06 & 4.03 \\
+  VOCA~\cite{yoo2026voca} & \underline{44.0} & \underline{18.34} & \underline{3.54} \\
+  \textbf{\method{} (Ours)} & \textbf{80.0} & \textbf{18.73} & \textbf{1.17} \\
+  \bottomrule
+  \end{tabular}
+\end{minipage}%
+}
+\usebox{\objectnavtablebox}\hfill
+\begin{minipage}[t]{0.43\columnwidth}
+  \vspace{0pt}
+  \centering
+  \includegraphics[width=\linewidth]{figures/svg/fig6_scalebars.pdf}\par
+  \setlength{\abovecaptionskip}{0pt}
+  \captionof{figure}{Matched ObjectNav example: \method{} reaches the goal; PixNav and VOCA \mbox{remain locally confined}.}
+  \label{fig:objectnav_qualitative}
+  \par\vspace{0pt}
+\end{minipage}
+\end{figure}
