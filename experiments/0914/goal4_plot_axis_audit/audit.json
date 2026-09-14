@@ -1,0 +1,188 @@
+{
+  "conclusion": "No evidence of a PixNav-specific y-axis reflection. 004 turns left/up early; 003 turns right/down after longer forward travel.",
+  "same_coordinate_transform_for_ours_and_pixnav": true,
+  "map_row_formula": "row=(max_y-y)/resolution; positive y appears higher in the image",
+  "runs": [
+    {
+      "run": "direct_goal-goal-4-004",
+      "raw_point_validation": {
+        "samples": 1243,
+        "max_xy_difference_m": 0.0,
+        "max_time_difference_s": 0.0,
+        "all_original_samples_preserved": true
+      },
+      "rotation_matrix_determinant": 1.0,
+      "first_turn_position_xy_m": [
+        1.159194170560234,
+        0.0921487432407398
+      ],
+      "final_xy_m": [
+        3.9782996924514324,
+        2.694080070122591
+      ],
+      "final_yaw_deg": 19.614864197095972,
+      "computed_final_goal_distance_m": 9.345237718878163,
+      "logged_final_goal_distance_m": 9.3451509475708,
+      "hypothetical_y_mirrored_distance_m": 6.741833366346157,
+      "executed_turns": 6,
+      "body_samples": 3891
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "raw_point_validation": {
+        "samples": 1045,
+        "max_xy_difference_m": 0.0,
+        "max_time_difference_s": 0.0,
+        "all_original_samples_preserved": true
+      },
+      "rotation_matrix_determinant": 1.0,
+      "first_turn_position_xy_m": [
+        5.2440769563782474,
+        0.5075822360492963
+      ],
+      "final_xy_m": [
+        6.475396170481467,
+        -0.023394746459554305
+      ],
+      "final_yaw_deg": -119.8021884141393,
+      "computed_final_goal_distance_m": 5.661249472226734,
+      "logged_final_goal_distance_m": 5.661212921142578,
+      "hypothetical_y_mirrored_distance_m": 5.693279500969323,
+      "executed_turns": 4,
+      "body_samples": 3335
+    }
+  ],
+  "turns": [
+    {
+      "run": "direct_goal-goal-4-004",
+      "step": 5,
+      "action": "turn_left",
+      "start_s": 9.150348901748657,
+      "end_s": 12.806037187576294,
+      "command_deg": 29.999999999999996,
+      "odom_deg": 28.30842341724423,
+      "body_imu_deg": 28.33240673387286,
+      "integrated_body_gyro_deg": 27.646408255789346,
+      "time_alignment_error_s": 0.008283138275146484,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "step": 11,
+      "action": "turn_left",
+      "start_s": 21.48217797279358,
+      "end_s": 25.358779430389404,
+      "command_deg": 29.999999999999996,
+      "odom_deg": 30.633600944888137,
+      "body_imu_deg": 30.621841747431528,
+      "integrated_body_gyro_deg": 30.74610936344437,
+      "time_alignment_error_s": 0.004118680953979492,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "step": 14,
+      "action": "turn_right",
+      "start_s": 29.076805114746094,
+      "end_s": 35.61059784889221,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -27.563974426583354,
+      "body_imu_deg": -27.627230683204075,
+      "integrated_body_gyro_deg": -27.063975633162276,
+      "time_alignment_error_s": 0.010415792465209961,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "step": 15,
+      "action": "turn_right",
+      "start_s": 36.00419354438782,
+      "end_s": 45.516589641571045,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -31.471545349715953,
+      "body_imu_deg": -31.452980146773697,
+      "integrated_body_gyro_deg": -31.475877489848838,
+      "time_alignment_error_s": 0.008932828903198242,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "step": 17,
+      "action": "turn_left",
+      "start_s": 47.62399744987488,
+      "end_s": 49.95420169830322,
+      "command_deg": 29.999999999999996,
+      "odom_deg": 29.872808392331994,
+      "body_imu_deg": 29.851708890208617,
+      "integrated_body_gyro_deg": 29.76844300540258,
+      "time_alignment_error_s": 0.00633692741394043,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "step": 23,
+      "action": "turn_right",
+      "start_s": 59.084343671798706,
+      "end_s": 62.50695252418518,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -29.301802306270556,
+      "body_imu_deg": -29.307330860527554,
+      "integrated_body_gyro_deg": -29.665666988979083,
+      "time_alignment_error_s": 0.010985374450683594,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "step": 21,
+      "action": "turn_right",
+      "start_s": 36.99632954597473,
+      "end_s": 39.06739950180054,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -31.458229001974548,
+      "body_imu_deg": -31.453882158630964,
+      "integrated_body_gyro_deg": -31.562541066313667,
+      "time_alignment_error_s": 0.010206222534179688,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "step": 27,
+      "action": "turn_right",
+      "start_s": 49.127726793289185,
+      "end_s": 53.27135181427002,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -29.55500623381704,
+      "body_imu_deg": -29.546345646569332,
+      "integrated_body_gyro_deg": -29.407650138634736,
+      "time_alignment_error_s": 0.010843038558959961,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "step": 28,
+      "action": "turn_right",
+      "start_s": 53.81227421760559,
+      "end_s": 55.816712379455566,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -30.21502450893071,
+      "body_imu_deg": -30.27594730748374,
+      "integrated_body_gyro_deg": -30.18788541049185,
+      "time_alignment_error_s": 0.009195089340209961,
+      "direction_signs_agree": true
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "step": 29,
+      "action": "turn_right",
+      "start_s": 56.43300771713257,
+      "end_s": 58.3259117603302,
+      "command_deg": -29.999999999999996,
+      "odom_deg": -32.16017523065235,
+      "body_imu_deg": -32.15900997108874,
+      "integrated_body_gyro_deg": -32.28323134179985,
+      "time_alignment_error_s": 0.005403757095336914,
+      "direction_signs_agree": true
+    }
+  ],
+  "limit": "Body IMU/gyro corroborate turn sign, not absolute map registration or ground-truth position."
+}
