@@ -1,0 +1,6 @@
+run,policy_outputs,last_step_index_zero_based,last_raw_argmax,last_effective_action,stop_logit_margin_to_next,model_stop_before_history_limit,look_substitutions
+direct_goal-goal-4-002,21,20,0,0,0.2763789892196655,True,10
+direct_goal-goal-4-003,31,30,0,0,0.03554391860961914,True,3
+direct_goal-goal-4-004,29,28,0,0,0.24402594566345215,True,12
+direct_goal-goal-4-005,21,20,0,0,1.8068053722381592,True,3
+direct_goal-goal-4-006,16,15,0,0,2.3525835275650024,True,3

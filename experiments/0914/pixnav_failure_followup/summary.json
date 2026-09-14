@@ -1,0 +1,180 @@
+{
+  "scope": "Historical evidence plus isolated history-wrapper test; no robot motion or runtime fix.",
+  "ours_goal2": {
+    "run": "full-goal-2-006",
+    "goal_publish_utc": "2026-09-13T12:40:06.128014+00:00",
+    "closest_goal_distance_m": 1.252510666847229,
+    "closest_after_goal_s": 176.19240516799982,
+    "duration_to_stop_s": 360.0562267839996,
+    "last_goal_distance_before_stop_m": 2.8311758041381836,
+    "completed_sessions": 13,
+    "action_results_captured": 60,
+    "executed_action_results": 59,
+    "failed_result_after_direct_stop": {
+      "utc": "2026-09-13T12:46:06.195002+00:00",
+      "elapsed_s": 366.3699632349999,
+      "event": "result",
+      "data": {
+        "header": {
+          "stamp": {
+            "sec": 1789303566,
+            "nanosec": 140681279
+          },
+          "frame_id": "robot_origin"
+        },
+        "episode_id": "robot-pointnav-15746a44d3ab-1",
+        "command_id": "pixnav-5bce5441b924b3914a69d260-preturn-2",
+        "action_result_id": "result-pixnav-5bce5441b924b3914a69d260-preturn-2",
+        "trajectory_id": "5bce5441b924b3914a69d260",
+        "generation": 14,
+        "habitat_step_index": 60,
+        "action": "turn_left",
+        "pose_after": {
+          "header": {
+            "stamp": {
+              "sec": 1789303566,
+              "nanosec": 140681279
+            },
+            "frame_id": "robot_origin"
+          },
+          "pose": {
+            "position": {
+              "x": 6.1471813545327105,
+              "y": 0.05801503507725725,
+              "z": 0.3055238425731659
+            },
+            "orientation": {
+              "x": 0.010810112380634385,
+              "y": -0.02918937386877197,
+              "z": 0.23359187389745123,
+              "w": -0.9718363845692054
+            }
+          }
+        },
+        "executed": false,
+        "collided": false,
+        "status": "FAILED",
+        "error_code": "MOTION_INHIBITED"
+      }
+    },
+    "vlm_requests": 121,
+    "vlm_request_errors": 0,
+    "first_repeated_immediate_stop_sessions": [
+      7,
+      8
+    ],
+    "escape_session": {
+      "session_index_chronological": 9,
+      "decision_id": "467710f176ba0ef3b62fe4b6",
+      "decision_after_goal_s": 196.04423689842224,
+      "outcome_after_goal_s_clock_aligned": 222.33366417884827,
+      "input_goal_context_distance_m": 1.387,
+      "input_supervisor_mode": "escape_deadlock",
+      "input_loop_count": 5,
+      "selected_candidate": "px_v04_r2_c0",
+      "candidate_goal_alignment": "away_from_goal",
+      "candidate_goal_bearing_error_deg": 146.672,
+      "candidate_distance_m": 1.3912024666075016,
+      "policy_actions_chronological": "5 5 1 1 1 1 5 1 1 1 0",
+      "raw_argmax_matches_effective": true,
+      "outcome_translation_m": 2.456286628013667,
+      "outcome_progress": true,
+      "outcome_no_progress": false,
+      "outcome_supervisor_mode": "goal_seek",
+      "terminal_reason": "PIXNAV_POLICY_COMPLETED",
+      "terminal_goal_consistent": false,
+      "terminal_refresh_goal_distance_m": 3.70735764503479
+    },
+    "escape_gates": [
+      {
+        "candidate_count": 2,
+        "candidate_refs": [
+          "px_v04_r2_c0",
+          "px_v05_r2_c0"
+        ],
+        "clock_source": "CLOCK_MONOTONIC",
+        "event": "pointnav_loop_escape_candidate_gate",
+        "event_monotonic_ns": 11140561995634,
+        "maximum_bearing_error_deg": 45.0,
+        "topological_exit_bearing_deg": -90.0,
+        "topological_exit_ref": "exit_001"
+      },
+      {
+        "candidate_count": 4,
+        "candidate_refs": [
+          "px_v04_r1_c0",
+          "px_v04_r2_c0",
+          "px_v05_r1_c0",
+          "px_v05_r2_c0"
+        ],
+        "clock_source": "CLOCK_MONOTONIC",
+        "event": "pointnav_loop_escape_candidate_gate",
+        "event_monotonic_ns": 11298077325344,
+        "maximum_bearing_error_deg": 45.0,
+        "topological_exit_bearing_deg": -90.0,
+        "topological_exit_ref": "exit_001"
+      }
+    ],
+    "policy_to_decision_join": "13 chronological session groups matched to 13 chronological completed decision outcomes; not an ID join.",
+    "clock_alignment": "Outcome monotonic delta added to same-process apply now_ns. CSV decision times use ROS wall stamps. Distances remain source/receipt measurements, not exact simultaneous ground truth."
+  },
+  "direct": [
+    {
+      "run": "direct_goal-goal-4-002",
+      "policy_outputs": 21,
+      "last_step_index_zero_based": 20,
+      "last_raw_argmax": 0,
+      "last_effective_action": 0,
+      "stop_logit_margin_to_next": 0.2763789892196655,
+      "model_stop_before_history_limit": true,
+      "look_substitutions": 10
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "policy_outputs": 31,
+      "last_step_index_zero_based": 30,
+      "last_raw_argmax": 0,
+      "last_effective_action": 0,
+      "stop_logit_margin_to_next": 0.03554391860961914,
+      "model_stop_before_history_limit": true,
+      "look_substitutions": 3
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "policy_outputs": 29,
+      "last_step_index_zero_based": 28,
+      "last_raw_argmax": 0,
+      "last_effective_action": 0,
+      "stop_logit_margin_to_next": 0.24402594566345215,
+      "model_stop_before_history_limit": true,
+      "look_substitutions": 12
+    },
+    {
+      "run": "direct_goal-goal-4-005",
+      "policy_outputs": 21,
+      "last_step_index_zero_based": 20,
+      "last_raw_argmax": 0,
+      "last_effective_action": 0,
+      "stop_logit_margin_to_next": 1.8068053722381592,
+      "model_stop_before_history_limit": true,
+      "look_substitutions": 3
+    },
+    {
+      "run": "direct_goal-goal-4-006",
+      "policy_outputs": 16,
+      "last_step_index_zero_based": 15,
+      "last_raw_argmax": 0,
+      "last_effective_action": 0,
+      "stop_logit_margin_to_next": 2.3525835275650024,
+      "model_stop_before_history_limit": true,
+      "look_substitutions": 3
+    }
+  ],
+  "limits": [
+    "No counterfactual physical trajectory or goal visibility ground truth.",
+    "Candidate metadata angle is from the captured observation; it is not an exact executed body rotation.",
+    "8m is nominal macro command budget, not a hard measured physical travel bound.",
+    "History cap was not reached in the five historical Direct failures.",
+    "A temporary increase in goal distance may be necessary for a valid detour."
+  ]
+}

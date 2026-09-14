@@ -1,0 +1,24 @@
+{
+  "deployed_native_True": {
+    "early_stop": true,
+    "network_raw_action_always": 1,
+    "first_stop_call_1based": 33,
+    "forward_actions_before_stop": 32,
+    "stop_reason": "POLICY_HISTORY_LIMIT",
+    "error": null
+  },
+  "deployed_native_False": {
+    "early_stop": false,
+    "network_raw_action_always": 1,
+    "first_stop_call_1based": null,
+    "forward_actions_before_stop": 64,
+    "stop_reason": "",
+    "error": "PixelNav history exhausted: 65 observations for max_token_length=64"
+  },
+  "official_reference_True": {
+    "early_stop": true,
+    "network_raw_action_always": 1,
+    "first_stop_call_1based": 33,
+    "forward_actions_before_stop": 32
+  }
+}

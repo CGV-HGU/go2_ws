@@ -1,0 +1,40 @@
+{
+  "recorded_at_utc": "2026-09-14T05:12:12.650208+00:00",
+  "timezone": "Asia/Seoul",
+  "note": "Recorded after tests; file timestamps below are artifact modification times, not measured test start times.",
+  "robot_motion_commands_sent": 0,
+  "network_for_container_tests": "none",
+  "go2_evidence_commit_before_followup": "da2418df3c11bb2b54bc19ffc44917d7ca6cf942",
+  "runtime_checkout_head": "abad1ffa471ff4b98ce0a7ee2c2d35c043375f90",
+  "runtime_checkout_has_existing_changes": true,
+  "history_image": "sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f",
+  "historical_ours_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c",
+  "history_command": "docker run --rm --name escape-history-limit-offline-20260914 --network none --read-only --cap-drop ALL --security-opt no-new-privileges --user 1000:1000 --tmpfs /tmp:rw,size=256m -e PYTHONDONTWRITEBYTECODE=1 -e PIXNAV_EVIDENCE_DIR= -e VOCA_POLICY_DEBUG_DUMP_DIR= -v /home/unitree/go2_ws_antarctica/experiments/0914/pixnav_failure_followup:/out -v /home/unitree/go2_ws_antarctica/experiments/0914/pixnav_direction_review/references:/references:ro --entrypoint python3 sha256:e6822ef03f0250d16fa6becf16be637faac01e0e35a7a24a1c184c9557899b6f /out/probe_history_limit.py",
+  "source_extraction": {
+    "container_flags": [
+      "--rm",
+      "--network",
+      "none",
+      "--read-only",
+      "--cap-drop",
+      "ALL",
+      "--security-opt",
+      "no-new-privileges",
+      "--entrypoint",
+      "python3"
+    ],
+    "operation": "Read installed vlm.py; ast.parse; extract two named functions and SHA-256. Does not import or execute navigation module.",
+    "path": "/opt/s2e-robot-minimal/lib/python3.12/site-packages/s2e_vlm_nodes/runtime/vlm.py",
+    "functions": [
+      "_pointnav_loop_escape_candidate_refs",
+      "_record_pixnav_navigation_outcome"
+    ]
+  },
+  "analysis_command": "python3 experiments/0914/pixnav_failure_followup/analyze_failure_chain.py",
+  "artifact_mtime_utc": {
+    "history_limit.json": "2026-09-14T04:55:17.133738+00:00",
+    "history-limit.log": "2026-09-14T04:55:17.137738+00:00",
+    "historical_ours_source.json": "2026-09-14T05:04:24.707849+00:00",
+    "source_comparison.json": "2026-09-14T05:07:52.974737+00:00"
+  }
+}

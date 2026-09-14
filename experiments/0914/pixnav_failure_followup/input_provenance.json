@@ -1,0 +1,58 @@
+{
+  "night_log_review/episodes/original5/full-goal-2-006/evidence/full5m/runtime/events.jsonl.gz": {
+    "sha256": "491a49ecb49602691eabc024ede667b16e37cc02a01a5b28669923706dcdc574",
+    "bytes": 2663841
+  },
+  "night_log_review/episodes/original5/full-goal-2-006/goal_distance.csv": {
+    "sha256": "0cf218b35dc1c369fbec8c9315a3d746ee53c8f3f85992e56e826f3d7a4e9594",
+    "bytes": 466412
+  },
+  "night_log_review/episodes/original5/full-goal-2-006/policy_outputs.json": {
+    "sha256": "364dfc1f937723f0bbc2773faaaf664f00695533293d289b8f3f4a6fb3af13a1",
+    "bytes": 53387
+  },
+  "night_log_review/episodes/original5/full-goal-2-006/evidence/full5m/policy-trace/recovery_plan_trace.jsonl.gz": {
+    "sha256": "1e575ba750e0732040c39edbb07c65e06a358e5d7a9d1b3968fe5ca874bbbd0a",
+    "bytes": 948
+  },
+  "night_log_review/episodes/original5/full-goal-2-006/evidence/full5m/policy-trace/pixnav_apply_trace.jsonl.gz": {
+    "sha256": "a6ae026ab225461a88e7937a3bd0031fd15e3b08e6190a6470ddaca08621f52b",
+    "bytes": 10023
+  },
+  "night_log_review/episodes/original5/full-goal-2-006/evidence/full5m/policy-trace/async_decision_trace.jsonl.gz": {
+    "sha256": "3368ac4ea89d856ffec851abfa86f0552c5419a35f37311475a4c6cf4a002163",
+    "bytes": 12347
+  },
+  "night_log_review/episodes/original5/full-goal-2-006/evidence/full5m/policy-trace/vlm_calls.jsonl.gz": {
+    "sha256": "2d1333788633d5f88132bbc84325540dea36ea6877043e13c8dedbb08fc587f4",
+    "bytes": 4826461
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/policy_outputs.json": {
+    "sha256": "1ad9ea24269937a37078f60f6e57a4ef4374b1cb90b6ace0b3690310274e03b8",
+    "bytes": 24897
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-003/policy_outputs.json": {
+    "sha256": "5a5d9aa7a804d55ba928cc99f06da45b981009aaf42d4d2507bf0626920369bf",
+    "bytes": 36734
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-004/policy_outputs.json": {
+    "sha256": "b66cd20f210a472d1fdda95ecb4623ef12f632fba57464425178afe5e8ee7689",
+    "bytes": 34347
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-005/policy_outputs.json": {
+    "sha256": "59ed3a9cee519dd2929ff53836869660b90d7dfbbe6ace0f80c44c18db21c987",
+    "bytes": 24901
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-006/policy_outputs.json": {
+    "sha256": "2dfeb89d5cbab0aabbb5bc4e6f4771b995ba1b69325b86d325e0e8acc709398f",
+    "bytes": 18959
+  },
+  "night_log_review/episodes/recaptured5/direct_goal-goal-4-002/evidence/goal-plan.json": {
+    "sha256": "4669df419d2d3e9d91c3e71d1fbd5ae9d4d4d245d3a8b2beb2f62636f308bf29",
+    "bytes": 14055
+  },
+  "pixnav_failure_followup/history_limit.json": {
+    "sha256": "ec6de36c5a4148d1440b8bb7463b86d899d6f7bd7c0dab35f007eb2813d7ea9b",
+    "bytes": 3093
+  }
+}

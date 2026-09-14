@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "direct_model_stop_cases": 5,
+  "ours_policy_outputs_checked": 45,
+  "ours_outcomes_checked": 13,
+  "action_results_checked": 60,
+  "executed_actions": 59,
+  "inhibited_after_timeout_stop": 1,
+  "consumed_evidence_files": 14,
+  "historical_inputs_match_existing_seals": true,
+  "physical_commands_sent": 0,
+  "runtime_changes_applied": false
+}

@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "fresh_output_directory": "/tmp/escape-failure-repro-w9nb4nx8",
+  "byte_identical_generated_files": [
+    "critical_decision_evidence.json",
+    "direct_nominal_horizon_budget.csv",
+    "direct_stops.csv",
+    "input_provenance.json",
+    "ours_goal2_chain.csv",
+    "ours_goal2_chain.json",
+    "ours_goal2_failure_chain.png",
+    "summary.json",
+    "validation.json"
+  ],
+  "pdf_note": "PDF regenerated successfully; metadata creation time can differ, so PDF bytes not compared. Same plotted data and PNG are compared.",
+  "local_readme_links_exist": true,
+  "python_syntax_valid": true
+}

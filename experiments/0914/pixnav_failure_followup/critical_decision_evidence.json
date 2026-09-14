@@ -1,0 +1,5075 @@
+[
+  {
+    "decision_id": "d4e043e8fe1955234904e10c",
+    "input": {
+      "constraints": {
+        "allowed_actions": [
+          "go",
+          "rotate",
+          "stop",
+          "request_observation"
+        ],
+        "allowed_observation_modes": [
+          "current_only",
+          "directed_view",
+          "directed_sweep",
+          "full_sweep"
+        ],
+        "allowed_step_deg": [
+          30,
+          45,
+          60,
+          90
+        ],
+        "allowed_views": [
+          "front",
+          "left",
+          "right",
+          "back"
+        ],
+        "must_select_visible_navigable_floor": true,
+        "pixel_coordinate_rule": "u in [0,width-1], v in [0,height-1]"
+      },
+      "coordinate_frame": {
+        "heading_source": "imu_or_sim_gt_with_noise_or_robot_backend",
+        "map_frame": "habitat_world_xy_or_gps_aligned_local_map",
+        "pose_noise": {
+          "enabled": true,
+          "heading_std_deg": 2.0,
+          "xy_std_m": 0.1
+        },
+        "robot_pose_source": "gps_or_sim_gt_with_noise_or_robot_backend"
+      },
+      "memory": {
+        "ablation_memory": {
+          "graph_exposed": true,
+          "variant": "directional"
+        },
+        "candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": 65.344,
+              "candidate_ref": "px_v00_r2_c1",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3336206754530635,
+              "executable": true,
+              "goal_alignment": "near_goal",
+              "goal_bearing_delta_deg": 34.777,
+              "goal_bearing_error_deg": 34.777,
+              "goal_bearing_reference_deg": 30.567,
+              "goal_distance_after_candidate_m": 0.7978,
+              "goal_preference_rank": 4,
+              "marker_id": "M02",
+              "point_norm": [
+                0.3865414710485133,
+                0.7186629526462396
+              ],
+              "point_px": [
+                247,
+                258
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 76.238,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 0,
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 76.241,
+              "candidate_ref": "px_v00_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.33338573455216,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": 45.674,
+              "goal_bearing_error_deg": 45.674,
+              "goal_bearing_reference_deg": 30.567,
+              "goal_distance_after_candidate_m": 1.036,
+              "goal_preference_rank": 5,
+              "marker_id": "M01",
+              "point_norm": [
+                0.5007824726134585,
+                0.713091922005571
+              ],
+              "point_px": [
+                320,
+                256
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 76.238,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 0,
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 37.692,
+              "candidate_ref": "px_v01_r2_c1",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.339882213884672,
+              "executable": true,
+              "goal_alignment": "aligned",
+              "goal_bearing_delta_deg": 7.125,
+              "goal_bearing_error_deg": 7.125,
+              "goal_bearing_reference_deg": 30.567,
+              "goal_distance_after_candidate_m": 0.1663,
+              "goal_preference_rank": 1,
+              "marker_id": "M05",
+              "point_norm": [
+                0.38810641627543035,
+                0.7158774373259053
+              ],
+              "point_px": [
+                248,
+                257
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 48.453,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 1,
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 48.454,
+              "candidate_ref": "px_v01_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3404277947390755,
+              "executable": true,
+              "goal_alignment": "near_goal",
+              "goal_bearing_delta_deg": 17.887,
+              "goal_bearing_error_deg": 17.887,
+              "goal_bearing_reference_deg": 30.567,
+              "goal_distance_after_candidate_m": 0.4161,
+              "goal_preference_rank": 2,
+              "marker_id": "M04",
+              "point_norm": [
+                0.5007824726134585,
+                0.7103064066852368
+              ],
+              "point_px": [
+                320,
+                255
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 48.453,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 1,
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 94.669,
+              "candidate_ref": "px_v02_r2_c1",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3320062014149516,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": 64.102,
+              "goal_bearing_error_deg": 64.102,
+              "goal_bearing_reference_deg": 30.567,
+              "goal_distance_after_candidate_m": 1.4158,
+              "goal_preference_rank": 7,
+              "marker_id": "M08",
+              "point_norm": [
+                0.38810641627543035,
+                0.7270194986072424
+              ],
+              "point_px": [
+                248,
+                261
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 105.187,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 2,
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 105.542,
+              "candidate_ref": "px_v02_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3362341296553155,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": 74.975,
+              "goal_bearing_error_deg": 74.975,
+              "goal_bearing_reference_deg": 30.567,
+              "goal_distance_after_candidate_m": 1.6263,
+              "goal_preference_rank": 8,
+              "marker_id": "M07",
+              "point_norm": [
+                0.5023474178403756,
+                0.724233983286908
+              ],
+              "point_px": [
+                321,
+                260
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 105.187,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 2,
+              "view_type_hint": "right"
+            }
+          ],
+          "policy": "VLM selects only refs provided in this snapshot",
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9493
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00004"
+              ],
+              "candidate_node_id": "node_00004",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 6",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 1.245,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9478
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9451
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9409
+            }
+          ]
+        },
+        "compressed_negative_memories": [],
+        "control_policy": {
+          "candidate_ref_policy": "backend validates refs before execution or mutation",
+          "memory_writes_are_requests": true,
+          "place_recognition_commit_policy": "vlm_confirms_backend_verifies"
+        },
+        "current_localization": {
+          "candidate_node_ids": [
+            "node_00002",
+            "node_00004",
+            "node_00001",
+            "node_00003",
+            "node_00006"
+          ],
+          "candidate_scores": {
+            "node_00001": 0.9451104402542114,
+            "node_00002": 0.9493151307106018,
+            "node_00003": 0.9408717751502991,
+            "node_00004": 0.9478423595428467,
+            "node_00006": 0.9367653131484985
+          },
+          "current_node_id": "node_00007",
+          "match_confidence": 0.9493,
+          "match_status": "localized",
+          "matched_keyframe_ids": [
+            "keyframe_00002",
+            "keyframe_00004",
+            "keyframe_00001",
+            "keyframe_00003",
+            "keyframe_00006"
+          ]
+        },
+        "current_pose_relation_to_latest_node": {
+          "covariance_diag": [
+            0.05,
+            0.05,
+            4.0
+          ],
+          "dx_m": 0.0,
+          "dy_m": 0.0,
+          "dyaw_deg": 0.0
+        },
+        "deadlock_state": {
+          "current_node_id": "node_00007",
+          "status": "none"
+        },
+        "failed_waypoints": [],
+        "goal_context": {
+          "detour_status": "normal_goal_seek",
+          "execution_task_mode": "PointNav",
+          "goal_bearing_from_current_deg": -30.567,
+          "goal_distance_m": 1.336,
+          "original_task_mode": "PointNav",
+          "success_distance_m": 1.0,
+          "supervisor_mode": "goal_seek",
+          "target_object": null,
+          "task_mode": "PointNav"
+        },
+        "graph_summary": {
+          "gap_lite": "enabled",
+          "merge_policy": "soft_preserve_revisit_nodes",
+          "num_deadlock_edges": 0,
+          "num_edges": 6,
+          "num_nodes": 7,
+          "pose_graph_optimization": "TODO_not_enabled"
+        },
+        "last_selected_point": null,
+        "last_selected_view": null,
+        "local_topology": {
+          "candidate_exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": 0.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_front",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.6441,
+              "status": "unknown_frontier",
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.5559,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.3691,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.2809,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            }
+          ],
+          "current_node": {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 9,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          }
+        },
+        "loop_warning": {
+          "is_looping": true,
+          "repeated_branch_count": 3
+        },
+        "nav_skill_cards": {
+          "confirm_revisit_node": {
+            "commit_policy": "backend_verified_soft_merge_only",
+            "type": "memory_op",
+            "use_when": [
+              "candidate_ref resolves to a revisit candidate",
+              "spatial_plausibility.accepted=true"
+            ]
+          },
+          "go_front_fine_goal": {
+            "fallback": "request_observation.directed_sweep",
+            "type": "action",
+            "use_when": [
+              "selected_candidate_ref points to an exit with avoid=false",
+              "selected image point is visible and navigable"
+            ]
+          },
+          "reject_revisit_candidate": {
+            "effect": "audit only; topology is not mutated",
+            "type": "memory_op"
+          }
+        },
+        "object_context": {
+          "candidate_object_nodes": [],
+          "enabled": false,
+          "target_object": null
+        },
+        "place_recognition": {
+          "false_merge_warning": "prefer request_observation over false merge",
+          "merge_policy": "soft preserve nodes with revisit constraints",
+          "revisit_candidates": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9493
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00004"
+              ],
+              "candidate_node_id": "node_00004",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 6",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 1.245,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9478
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9451
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9409
+            }
+          ]
+        },
+        "policy_harness_state": {
+          "current_stage": "goal_seek",
+          "policy_graph_mode": "GaP-lite_static_sidecar_not_full_interpreter",
+          "schema_version": "nav_policy_harness_lite_v1"
+        },
+        "retrieved_memory_images": [
+          {
+            "caption": "front camera place at frame 2",
+            "image_ref": "<memory_image_mi_revisit_node_00002>",
+            "keyframe_id": "keyframe_00002",
+            "memory_image_id": "mi_revisit_node_00002",
+            "node_id": "node_00002",
+            "reason_for_inclusion": "revisit_candidate_verification",
+            "storage_tier": "hot",
+            "view_type": "front"
+          }
+        ],
+        "revisit_candidates": [
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00002"
+            ],
+            "candidate_node_id": "node_00002",
+            "candidate_ref": "revisit_001",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 2",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 3.7193,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9493
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00004"
+            ],
+            "candidate_node_id": "node_00004",
+            "candidate_ref": "revisit_002",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 6",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 1.245,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9478
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00001"
+            ],
+            "candidate_node_id": "node_00001",
+            "candidate_ref": "revisit_003",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 0",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 4.8742,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9451
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00003"
+            ],
+            "candidate_node_id": "node_00003",
+            "candidate_ref": "revisit_004",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 4",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 2.4457,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9409
+          }
+        ],
+        "schema_version": "nav_memory_context_v6",
+        "topological_candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": 0.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_front",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.6441,
+              "status": "unknown_frontier",
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.5559,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.3691,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.2809,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            }
+          ],
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9493
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00004"
+              ],
+              "candidate_node_id": "node_00004",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 6",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 1.245,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9478
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9451
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9409
+            }
+          ]
+        },
+        "visited_nodes": [
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 0",
+            "has_active_image": true,
+            "last_seen_frame_index": 1,
+            "negative_memory": null,
+            "node_id": "node_00001",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 2",
+            "has_active_image": true,
+            "last_seen_frame_index": 3,
+            "negative_memory": null,
+            "node_id": "node_00002",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 4",
+            "has_active_image": true,
+            "last_seen_frame_index": 5,
+            "negative_memory": null,
+            "node_id": "node_00003",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 6",
+            "has_active_image": true,
+            "last_seen_frame_index": 6,
+            "negative_memory": null,
+            "node_id": "node_00004",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 7",
+            "has_active_image": true,
+            "last_seen_frame_index": 7,
+            "negative_memory": null,
+            "node_id": "node_00005",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 8",
+            "has_active_image": true,
+            "last_seen_frame_index": 8,
+            "negative_memory": null,
+            "node_id": "node_00006",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 9,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          }
+        ],
+        "voca_sidecar": {
+          "deadlock_evidence": {
+            "collision_events": 0,
+            "confirmed": false,
+            "consecutive_translation_stalls": 0,
+            "graph_cycle_hits": 0,
+            "heading_oscillation_hits": 0,
+            "loop_entry_decision_id": null,
+            "reasons": [],
+            "sample_count": 0
+          },
+          "enabled": true,
+          "no_progress_count": 0,
+          "supervisor_mode": "goal_seek"
+        }
+      },
+      "observation": {
+        "frame_index": 9,
+        "image_height": 360,
+        "image_width": 640,
+        "mode": "directed_sweep",
+        "sequence_id": "robot-pointnav-15746a44d3ab-1",
+        "timestamp_ms": 1789303336727,
+        "views": [
+          {
+            "image": "<image_0>",
+            "relative_heading_deg": 76.238,
+            "timestamp_ms": 1789303328741,
+            "view_id": 0,
+            "view_type": "right"
+          },
+          {
+            "image": "<image_1>",
+            "relative_heading_deg": 48.453,
+            "timestamp_ms": 1789303332740,
+            "view_id": 1,
+            "view_type": "right"
+          },
+          {
+            "image": "<image_2>",
+            "relative_heading_deg": 105.187,
+            "timestamp_ms": 1789303336727,
+            "view_id": 2,
+            "view_type": "right"
+          }
+        ]
+      },
+      "pixel_candidates": {
+        "binding_ids": [
+          "932466dd585d8713695288270b6afd86c5f8fecf5771436a19bcf8b9f3feb13d",
+          "864d2abf41009bde0f3e921702203ae2f03d83915ceb66c72ba77447d27fc316",
+          "219c91b457233e231fb9e187cd8343ca550beb2f650f6f498939e90df252344f"
+        ],
+        "candidates": [
+          {
+            "avoid": false,
+            "bearing_deg_robot": 65.344,
+            "candidate_ref": "px_v00_r2_c1",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3336206754530635,
+            "executable": true,
+            "goal_alignment": "near_goal",
+            "goal_bearing_delta_deg": 34.777,
+            "goal_bearing_error_deg": 34.777,
+            "goal_bearing_reference_deg": 30.567,
+            "goal_distance_after_candidate_m": 0.7978,
+            "goal_preference_rank": 4,
+            "marker_id": "M02",
+            "point_norm": [
+              0.3865414710485133,
+              0.7186629526462396
+            ],
+            "point_px": [
+              247,
+              258
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 76.238,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 0,
+            "view_type_hint": "right"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 76.241,
+            "candidate_ref": "px_v00_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.33338573455216,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": 45.674,
+            "goal_bearing_error_deg": 45.674,
+            "goal_bearing_reference_deg": 30.567,
+            "goal_distance_after_candidate_m": 1.036,
+            "goal_preference_rank": 5,
+            "marker_id": "M01",
+            "point_norm": [
+              0.5007824726134585,
+              0.713091922005571
+            ],
+            "point_px": [
+              320,
+              256
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 76.238,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 0,
+            "view_type_hint": "right"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 37.692,
+            "candidate_ref": "px_v01_r2_c1",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.339882213884672,
+            "executable": true,
+            "goal_alignment": "aligned",
+            "goal_bearing_delta_deg": 7.125,
+            "goal_bearing_error_deg": 7.125,
+            "goal_bearing_reference_deg": 30.567,
+            "goal_distance_after_candidate_m": 0.1663,
+            "goal_preference_rank": 1,
+            "marker_id": "M05",
+            "point_norm": [
+              0.38810641627543035,
+              0.7158774373259053
+            ],
+            "point_px": [
+              248,
+              257
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 48.453,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 1,
+            "view_type_hint": "right"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 48.454,
+            "candidate_ref": "px_v01_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3404277947390755,
+            "executable": true,
+            "goal_alignment": "near_goal",
+            "goal_bearing_delta_deg": 17.887,
+            "goal_bearing_error_deg": 17.887,
+            "goal_bearing_reference_deg": 30.567,
+            "goal_distance_after_candidate_m": 0.4161,
+            "goal_preference_rank": 2,
+            "marker_id": "M04",
+            "point_norm": [
+              0.5007824726134585,
+              0.7103064066852368
+            ],
+            "point_px": [
+              320,
+              255
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 48.453,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 1,
+            "view_type_hint": "right"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 94.669,
+            "candidate_ref": "px_v02_r2_c1",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3320062014149516,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": 64.102,
+            "goal_bearing_error_deg": 64.102,
+            "goal_bearing_reference_deg": 30.567,
+            "goal_distance_after_candidate_m": 1.4158,
+            "goal_preference_rank": 7,
+            "marker_id": "M08",
+            "point_norm": [
+              0.38810641627543035,
+              0.7270194986072424
+            ],
+            "point_px": [
+              248,
+              261
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 105.187,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 2,
+            "view_type_hint": "right"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 105.542,
+            "candidate_ref": "px_v02_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3362341296553155,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": 74.975,
+            "goal_bearing_error_deg": 74.975,
+            "goal_bearing_reference_deg": 30.567,
+            "goal_distance_after_candidate_m": 1.6263,
+            "goal_preference_rank": 8,
+            "marker_id": "M07",
+            "point_norm": [
+              0.5023474178403756,
+              0.724233983286908
+            ],
+            "point_px": [
+              321,
+              260
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 105.187,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 2,
+            "view_type_hint": "right"
+          }
+        ],
+        "excluded_candidates": [],
+        "schema_version": "sensor_goal_candidates_v1",
+        "source_stamp_ns": 1789303336727173956,
+        "view_id": null
+      },
+      "robot_state": {
+        "heading_rad": -1.015423,
+        "map_xy": [
+          4.7717,
+          -1.0952
+        ],
+        "position_xyz": [
+          4.7717,
+          -1.0952,
+          0.3094
+        ]
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "task": {
+        "coarse_goal": {
+          "camera_relation": {
+            "bearing_in_fov": true,
+            "estimated_visible": true,
+            "in_front_camera_frame": true,
+            "preprocess_method": "habitat_pointgoal_polar_sensor"
+          },
+          "distance_m": 1.336,
+          "map_xy": null,
+          "relative_bearing_deg": -30.567,
+          "success_distance_m": 1.0,
+          "type": "pointgoal_with_gps_compass"
+        },
+        "instruction": "move toward the polar PointGoal and stop only inside its success distance",
+        "target_object": null,
+        "task_mode": "PointNav"
+      }
+    },
+    "model_output": {
+      "action": "go",
+      "confidence": "high",
+      "control": {
+        "vlm_control_mode": "resume_async_navigation",
+        "rotate_yaw_deg": 0,
+        "ttl_ms": 500
+      },
+      "fine_goal": {
+        "valid": true,
+        "view_id": 1,
+        "view_type": "right",
+        "point_px": [
+          248,
+          257
+        ],
+        "point_norm": [
+          0.38810641627543035,
+          0.7158774373259053
+        ],
+        "projected_map_xy": [
+          4.7717,
+          -1.0952
+        ],
+        "navigability": "unknown"
+      },
+      "memory_ops": [],
+      "intent_candidate_refs": [
+        "px_v01_r2_c1"
+      ],
+      "observation_request": null,
+      "reasoning": {
+        "decision_reason": "Go to candidate px_v01_r2_c1 (rank 1, aligned, 0.166m remaining).",
+        "goal_reason": "PointGoal 1.336m away; candidate reduces distance to 0.166m.",
+        "failure_mode": null,
+        "short_text": "Go to aligned candidate px_v01_r2_c1 (rank 1, 0.166m remaining)."
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "selected_candidate_ref": "px_v01_r2_c1",
+      "selected_image_point": [
+        248,
+        257
+      ],
+      "selected_view_id": 1,
+      "selected_view_type": "right",
+      "strategic_state": {
+        "current_room": "unknown",
+        "navigation_intent": "approach_target",
+        "reason_code": "point_nav_goal_seek",
+        "room_search_status": "unsearched",
+        "selected_exit_ref": null,
+        "target_evidence": "none"
+      }
+    },
+    "apply_report": {
+      "action": "go",
+      "apply_pose_stamp_ns": 1789303345376181376,
+      "apply_reason": "reprojected_navigation_goal",
+      "apply_status": "admit",
+      "apply_translation_m": 0.06923120945567957,
+      "apply_yaw_deg": 48.88272404251719,
+      "calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "clock_source": "CLOCK_MONOTONIC",
+      "compensated_goal_xy": [
+        1.225829914852723,
+        0.43231468718568977
+      ],
+      "decision_age_ns": 4378641,
+      "decision_id": "d4e043e8fe1955234904e10c",
+      "decision_stamp_ns": 1789303345397865887,
+      "episode_id": "robot-pointnav-15746a44d3ab-1",
+      "event": "apply_report",
+      "event_monotonic_ns": 11086465895699,
+      "extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "goal_compensation_frame": "post_selected_view_preturn",
+      "guard_translation_m": 0.06923120945567957,
+      "guard_yaw_deg": -11.117275957482804,
+      "max_apply_translation_m": 0.05,
+      "max_apply_yaw_deg": 5.0,
+      "mode": "async_true",
+      "navigation_target_source": "selected_world_waypoint",
+      "navigation_target_xy": [
+        1.225829914852723,
+        0.43231468718568977
+      ],
+      "now_ns": 1789303345402244528,
+      "observation_camera_pitch_deg": 0.0,
+      "observation_stamp_ns": 1789303332740277790,
+      "original_selected_image_point": [
+        248,
+        257
+      ],
+      "pose_compensation_status": "reprojected",
+      "pose_guard_frame": "post_selected_view_preturn",
+      "post_preturn_command_pending": true,
+      "post_preturn_pose": {
+        "x_m": 4.84058890066183,
+        "y_m": -1.0879556385041793,
+        "yaw_deg": -69.29675135699544
+      },
+      "post_preturn_pose_kind": "predicted_discrete_command",
+      "post_preturn_source_apply_stamp_ns": 1789303345376181376,
+      "queue_wait_ns": 0,
+      "queued_at_ns": 1789303345402244528,
+      "reason": "immediate_decision",
+      "reprojected_image_point": [
+        248,
+        257
+      ],
+      "reprojection_image_frame": "selected_observation",
+      "reprojection_image_stamp_ns": 1789303332740277790,
+      "reprojection_status": "projectable",
+      "scene_id": "local-odometry",
+      "selected_goal_calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "selected_goal_extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "selected_goal_pose_stamp_ns": 1789303332740277790,
+      "selected_goal_xy": [
+        1.3163207044843657,
+        0.25016824344882965
+      ],
+      "selected_view_alignment_source": "selected_view_capture_pose",
+      "selected_view_already_rotated_yaw_deg": -0.42972404251718643,
+      "selected_view_commanded_preturn_yaw_deg": 60.0,
+      "selected_view_remaining_yaw_deg": 48.88272404251719,
+      "selected_view_requested_yaw_deg": 48.453,
+      "sync_action_budget_steps": 0,
+      "sync_predicted_pose": {
+        "x_m": 4.818583349134991,
+        "y_m": -1.1461881793410909,
+        "yaw_deg": -47.418680618735486
+      },
+      "sync_prediction_source": "executed_action_budget",
+      "sync_prediction_status": "residual_dynamic_envelope_exceeded",
+      "sync_residual_max_bearing_deg": 29.999999999999996,
+      "sync_residual_max_curvature_per_m": 2.0,
+      "sync_residual_pose": {
+        "x_m": 0.046692539517266235,
+        "y_m": -0.04117134760669662,
+        "yaw_deg": 21.87807073825996
+      },
+      "sync_residual_role": "tracking_error_not_navigation_target",
+      "sync_residual_target_bearing_deg": -41.40437478115488,
+      "sync_residual_target_curvature_per_m": -1.0581906202046882,
+      "sync_residual_translation_clamped": true,
+      "sync_residual_translation_gain": 1.0,
+      "sync_residual_yaw_clamped": true,
+      "sync_residual_yaw_gain": 1.0,
+      "sync_smoothed_residual_goal_xy": [
+        0.037503028670804975,
+        -0.03306845688139651
+      ],
+      "sync_smoothed_residual_yaw_deg": 5.0,
+      "target_object": "pointgoal",
+      "task_type": "PointNav"
+    },
+    "outcome": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "collision_count": 0,
+      "decision_id": "d4e043e8fe1955234904e10c",
+      "event": "pixnav_navigation_outcome_recorded",
+      "event_monotonic_ns": 11096239181125,
+      "moved_distance_m": 0.0,
+      "no_progress": true,
+      "progress": false,
+      "supervisor_mode": "goal_seek",
+      "terminal_reason": "PIXNAV_POLICY_COMPLETED"
+    },
+    "terminal_timing": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "decision_id": "d4e043e8fe1955234904e10c",
+      "event": "terminal_observation_timing_decision",
+      "event_monotonic_ns": 11096239900381,
+      "observe": true,
+      "reason": "recovery_required",
+      "task_type": "pointnav",
+      "variant": "adaptive"
+    },
+    "terminal_refresh": {}
+  },
+  {
+    "decision_id": "a7055b5e54ec20cb7a314521",
+    "input": {
+      "constraints": {
+        "allowed_actions": [
+          "go",
+          "rotate",
+          "stop",
+          "request_observation"
+        ],
+        "allowed_observation_modes": [
+          "current_only",
+          "directed_view",
+          "directed_sweep",
+          "full_sweep"
+        ],
+        "allowed_step_deg": [
+          30,
+          45,
+          60,
+          90
+        ],
+        "allowed_views": [
+          "front",
+          "left",
+          "right",
+          "back"
+        ],
+        "must_select_visible_navigable_floor": true,
+        "pixel_coordinate_rule": "u in [0,width-1], v in [0,height-1]"
+      },
+      "coordinate_frame": {
+        "heading_source": "imu_or_sim_gt_with_noise_or_robot_backend",
+        "map_frame": "habitat_world_xy_or_gps_aligned_local_map",
+        "pose_noise": {
+          "enabled": true,
+          "heading_std_deg": 2.0,
+          "xy_std_m": 0.1
+        },
+        "robot_pose_source": "gps_or_sim_gt_with_noise_or_robot_backend"
+      },
+      "memory": {
+        "ablation_memory": {
+          "graph_exposed": true,
+          "variant": "directional"
+        },
+        "candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": 178.428,
+              "candidate_ref": "px_v00_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3905167287108686,
+              "executable": true,
+              "goal_alignment": "away_from_goal",
+              "goal_bearing_delta_deg": 151.431,
+              "goal_bearing_error_deg": 151.431,
+              "goal_bearing_reference_deg": 26.997,
+              "goal_distance_after_candidate_m": 2.6916,
+              "goal_preference_rank": 6,
+              "marker_id": "M01",
+              "point_norm": [
+                0.5007824726134585,
+                0.6908077994428969
+              ],
+              "point_px": [
+                320,
+                248
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 178.326,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 0,
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -120.958,
+              "candidate_ref": "px_v01_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3912024666075016,
+              "executable": true,
+              "goal_alignment": "away_from_goal",
+              "goal_bearing_delta_deg": -147.955,
+              "goal_bearing_error_deg": 147.955,
+              "goal_bearing_reference_deg": 26.997,
+              "goal_distance_after_candidate_m": 2.6703,
+              "goal_preference_rank": 5,
+              "marker_id": "M02",
+              "point_norm": [
+                0.5023474178403756,
+                0.7019498607242339
+              ],
+              "point_px": [
+                321,
+                252
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -121.283,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 1,
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -58.953,
+              "candidate_ref": "px_v02_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3883778228374266,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": -85.95,
+              "goal_bearing_error_deg": 85.95,
+              "goal_bearing_reference_deg": 26.997,
+              "goal_distance_after_candidate_m": 1.8919,
+              "goal_preference_rank": 3,
+              "marker_id": "M03",
+              "point_norm": [
+                0.5023474178403756,
+                0.6963788300835655
+              ],
+              "point_px": [
+                321,
+                250
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -59.279,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 2,
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -0.305,
+              "candidate_ref": "px_v03_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3878321336762907,
+              "executable": true,
+              "goal_alignment": "near_goal",
+              "goal_bearing_delta_deg": -27.302,
+              "goal_bearing_error_deg": 27.302,
+              "goal_bearing_reference_deg": 26.997,
+              "goal_distance_after_candidate_m": 0.6549,
+              "goal_preference_rank": 1,
+              "marker_id": "M04",
+              "point_norm": [
+                0.5023474178403756,
+                0.7158774373259053
+              ],
+              "point_px": [
+                321,
+                257
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -0.8,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 3,
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 61.099,
+              "candidate_ref": "px_v04_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3810287109186874,
+              "executable": true,
+              "goal_alignment": "near_goal",
+              "goal_bearing_delta_deg": 34.102,
+              "goal_bearing_error_deg": 34.102,
+              "goal_bearing_reference_deg": 26.997,
+              "goal_distance_after_candidate_m": 0.8117,
+              "goal_preference_rank": 2,
+              "marker_id": "M05",
+              "point_norm": [
+                0.5007824726134585,
+                0.7103064066852368
+              ],
+              "point_px": [
+                320,
+                255
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 61.21,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 4,
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 118.465,
+              "candidate_ref": "px_v05_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3848783688631208,
+              "executable": true,
+              "goal_alignment": "wide_detour",
+              "goal_bearing_delta_deg": 91.468,
+              "goal_bearing_error_deg": 91.468,
+              "goal_bearing_reference_deg": 26.997,
+              "goal_distance_after_candidate_m": 1.985,
+              "goal_preference_rank": 4,
+              "marker_id": "M06",
+              "point_norm": [
+                0.5007824726134585,
+                0.6963788300835655
+              ],
+              "point_px": [
+                320,
+                250
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": 118.452,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 5,
+              "view_type_hint": "front"
+            }
+          ],
+          "policy": "VLM selects only refs provided in this snapshot",
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9842
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9587
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9567
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9505
+            }
+          ]
+        },
+        "compressed_negative_memories": [],
+        "control_policy": {
+          "candidate_ref_policy": "backend validates refs before execution or mutation",
+          "memory_writes_are_requests": true,
+          "place_recognition_commit_policy": "vlm_confirms_backend_verifies"
+        },
+        "current_localization": {
+          "candidate_node_ids": [
+            "node_00007",
+            "node_00002",
+            "node_00001",
+            "node_00003",
+            "node_00004"
+          ],
+          "candidate_scores": {
+            "node_00001": 0.9567114114761353,
+            "node_00002": 0.9587433934211731,
+            "node_00003": 0.9504719972610474,
+            "node_00004": 0.9432541728019714,
+            "node_00007": 0.9842056035995483
+          },
+          "current_node_id": "node_00007",
+          "match_confidence": 0.9842,
+          "match_status": "localized",
+          "matched_keyframe_ids": [
+            "keyframe_00007",
+            "keyframe_00002",
+            "keyframe_00001",
+            "keyframe_00003",
+            "keyframe_00004"
+          ]
+        },
+        "current_pose_relation_to_latest_node": {
+          "covariance_diag": [
+            0.05,
+            0.05,
+            4.0
+          ],
+          "dx_m": 0.0,
+          "dy_m": 0.0,
+          "dyaw_deg": 0.0
+        },
+        "deadlock_state": {
+          "current_node_id": "node_00007",
+          "status": "none"
+        },
+        "failed_waypoints": [],
+        "goal_context": {
+          "detour_status": "normal_goal_seek",
+          "execution_task_mode": "PointNav",
+          "goal_bearing_from_current_deg": -26.997,
+          "goal_distance_m": 1.387,
+          "original_task_mode": "PointNav",
+          "success_distance_m": 1.0,
+          "supervisor_mode": "goal_seek",
+          "target_object": null,
+          "task_mode": "PointNav"
+        },
+        "graph_summary": {
+          "gap_lite": "enabled",
+          "merge_policy": "soft_preserve_revisit_nodes",
+          "num_deadlock_edges": 0,
+          "num_edges": 6,
+          "num_nodes": 7,
+          "pose_graph_optimization": "TODO_not_enabled"
+        },
+        "last_selected_point": null,
+        "last_selected_view": null,
+        "local_topology": {
+          "candidate_exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": 0.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_front",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.655,
+              "status": "unknown_frontier",
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.545,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.38,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.27,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            }
+          ],
+          "current_node": {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 10,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          }
+        },
+        "loop_warning": {
+          "is_looping": true,
+          "repeated_branch_count": 4
+        },
+        "nav_skill_cards": {
+          "confirm_revisit_node": {
+            "commit_policy": "backend_verified_soft_merge_only",
+            "type": "memory_op",
+            "use_when": [
+              "candidate_ref resolves to a revisit candidate",
+              "spatial_plausibility.accepted=true"
+            ]
+          },
+          "go_front_fine_goal": {
+            "fallback": "request_observation.directed_sweep",
+            "type": "action",
+            "use_when": [
+              "selected_candidate_ref points to an exit with avoid=false",
+              "selected image point is visible and navigable"
+            ]
+          },
+          "reject_revisit_candidate": {
+            "effect": "audit only; topology is not mutated",
+            "type": "memory_op"
+          }
+        },
+        "object_context": {
+          "candidate_object_nodes": [],
+          "enabled": false,
+          "target_object": null
+        },
+        "place_recognition": {
+          "false_merge_warning": "prefer request_observation over false merge",
+          "merge_policy": "soft preserve nodes with revisit constraints",
+          "revisit_candidates": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9842
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9587
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9567
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9505
+            }
+          ]
+        },
+        "policy_harness_state": {
+          "current_stage": "goal_seek",
+          "policy_graph_mode": "GaP-lite_static_sidecar_not_full_interpreter",
+          "schema_version": "nav_policy_harness_lite_v1"
+        },
+        "retrieved_memory_images": [
+          {
+            "caption": "front camera place at frame 9",
+            "image_ref": "<memory_image_mi_revisit_node_00007>",
+            "keyframe_id": "keyframe_00007",
+            "memory_image_id": "mi_revisit_node_00007",
+            "node_id": "node_00007",
+            "reason_for_inclusion": "revisit_candidate_verification",
+            "storage_tier": "hot",
+            "view_type": "front"
+          }
+        ],
+        "revisit_candidates": [
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00007"
+            ],
+            "candidate_node_id": "node_00007",
+            "candidate_ref": "revisit_001",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 9",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 0.0,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9842
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00002"
+            ],
+            "candidate_node_id": "node_00002",
+            "candidate_ref": "revisit_002",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 2",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 3.7193,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9587
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00001"
+            ],
+            "candidate_node_id": "node_00001",
+            "candidate_ref": "revisit_003",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 0",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 4.8742,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9567
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00003"
+            ],
+            "candidate_node_id": "node_00003",
+            "candidate_ref": "revisit_004",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 4",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 2.4457,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9505
+          }
+        ],
+        "schema_version": "nav_memory_context_v6",
+        "topological_candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": 0.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_front",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.655,
+              "status": "unknown_frontier",
+              "view_type_hint": "front"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.545,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.38,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.27,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            }
+          ],
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9842
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9587
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9567
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9505
+            }
+          ]
+        },
+        "visited_nodes": [
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 0",
+            "has_active_image": true,
+            "last_seen_frame_index": 1,
+            "negative_memory": null,
+            "node_id": "node_00001",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 2",
+            "has_active_image": true,
+            "last_seen_frame_index": 3,
+            "negative_memory": null,
+            "node_id": "node_00002",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 4",
+            "has_active_image": true,
+            "last_seen_frame_index": 5,
+            "negative_memory": null,
+            "node_id": "node_00003",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 6",
+            "has_active_image": true,
+            "last_seen_frame_index": 6,
+            "negative_memory": null,
+            "node_id": "node_00004",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 7",
+            "has_active_image": true,
+            "last_seen_frame_index": 7,
+            "negative_memory": null,
+            "node_id": "node_00005",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 8",
+            "has_active_image": true,
+            "last_seen_frame_index": 8,
+            "negative_memory": null,
+            "node_id": "node_00006",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 10,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          }
+        ],
+        "voca_sidecar": {
+          "deadlock_evidence": {
+            "collision_events": 0,
+            "confirmed": false,
+            "consecutive_translation_stalls": 1,
+            "graph_cycle_hits": 0,
+            "heading_oscillation_hits": 0,
+            "loop_entry_decision_id": null,
+            "reasons": [],
+            "sample_count": 1
+          },
+          "enabled": true,
+          "no_progress_count": 1,
+          "supervisor_mode": "goal_seek"
+        }
+      },
+      "observation": {
+        "frame_index": 10,
+        "image_height": 360,
+        "image_width": 640,
+        "mode": "full_sweep",
+        "sequence_id": "robot-pointnav-15746a44d3ab-1",
+        "timestamp_ms": 1789303388769,
+        "views": [
+          {
+            "image": "<image_0>",
+            "relative_heading_deg": 178.326,
+            "timestamp_ms": 1789303378805,
+            "view_id": 0,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_1>",
+            "relative_heading_deg": -121.283,
+            "timestamp_ms": 1789303384776,
+            "view_id": 1,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_2>",
+            "relative_heading_deg": -59.279,
+            "timestamp_ms": 1789303388769,
+            "view_id": 2,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_3>",
+            "relative_heading_deg": -0.8,
+            "timestamp_ms": 1789303356753,
+            "view_id": 3,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_4>",
+            "relative_heading_deg": 61.21,
+            "timestamp_ms": 1789303364806,
+            "view_id": 4,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_5>",
+            "relative_heading_deg": 118.452,
+            "timestamp_ms": 1789303372781,
+            "view_id": 5,
+            "view_type": "front"
+          }
+        ]
+      },
+      "pixel_candidates": {
+        "binding_ids": [
+          "882f890aa06ab2c1f2772df4a03f39f1d2ab75e4a670e45260f9212e06ddbca6",
+          "beef6b32a6ce0e0b84785dcacd4662eba00edff41eee3f29d86ef28ad0f90347",
+          "ded5851452cc3f3f09582998f737899af2f8aa8bcea7aa78a5fbac049e5e8b50",
+          "bf5a9e0223a78be8fd1cc3a71ed3c859889c352e307f57ed765c602cd5c9a955",
+          "eba2526ea2a245a7aaa223d2096045ce298b1cce1e08e1745b926cabeb63aac4",
+          "89a3b6925b598d4294d13007c778ffa4e315d6a8265e6bb39260161ba53be42c"
+        ],
+        "candidates": [
+          {
+            "avoid": false,
+            "bearing_deg_robot": 178.428,
+            "candidate_ref": "px_v00_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3905167287108686,
+            "executable": true,
+            "goal_alignment": "away_from_goal",
+            "goal_bearing_delta_deg": 151.431,
+            "goal_bearing_error_deg": 151.431,
+            "goal_bearing_reference_deg": 26.997,
+            "goal_distance_after_candidate_m": 2.6916,
+            "goal_preference_rank": 6,
+            "marker_id": "M01",
+            "point_norm": [
+              0.5007824726134585,
+              0.6908077994428969
+            ],
+            "point_px": [
+              320,
+              248
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 178.326,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 0,
+            "view_type_hint": "front"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -120.958,
+            "candidate_ref": "px_v01_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3912024666075016,
+            "executable": true,
+            "goal_alignment": "away_from_goal",
+            "goal_bearing_delta_deg": -147.955,
+            "goal_bearing_error_deg": 147.955,
+            "goal_bearing_reference_deg": 26.997,
+            "goal_distance_after_candidate_m": 2.6703,
+            "goal_preference_rank": 5,
+            "marker_id": "M02",
+            "point_norm": [
+              0.5023474178403756,
+              0.7019498607242339
+            ],
+            "point_px": [
+              321,
+              252
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -121.283,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 1,
+            "view_type_hint": "front"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -58.953,
+            "candidate_ref": "px_v02_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3883778228374266,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": -85.95,
+            "goal_bearing_error_deg": 85.95,
+            "goal_bearing_reference_deg": 26.997,
+            "goal_distance_after_candidate_m": 1.8919,
+            "goal_preference_rank": 3,
+            "marker_id": "M03",
+            "point_norm": [
+              0.5023474178403756,
+              0.6963788300835655
+            ],
+            "point_px": [
+              321,
+              250
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -59.279,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 2,
+            "view_type_hint": "front"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -0.305,
+            "candidate_ref": "px_v03_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3878321336762907,
+            "executable": true,
+            "goal_alignment": "near_goal",
+            "goal_bearing_delta_deg": -27.302,
+            "goal_bearing_error_deg": 27.302,
+            "goal_bearing_reference_deg": 26.997,
+            "goal_distance_after_candidate_m": 0.6549,
+            "goal_preference_rank": 1,
+            "marker_id": "M04",
+            "point_norm": [
+              0.5023474178403756,
+              0.7158774373259053
+            ],
+            "point_px": [
+              321,
+              257
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -0.8,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 3,
+            "view_type_hint": "front"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 61.099,
+            "candidate_ref": "px_v04_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3810287109186874,
+            "executable": true,
+            "goal_alignment": "near_goal",
+            "goal_bearing_delta_deg": 34.102,
+            "goal_bearing_error_deg": 34.102,
+            "goal_bearing_reference_deg": 26.997,
+            "goal_distance_after_candidate_m": 0.8117,
+            "goal_preference_rank": 2,
+            "marker_id": "M05",
+            "point_norm": [
+              0.5007824726134585,
+              0.7103064066852368
+            ],
+            "point_px": [
+              320,
+              255
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 61.21,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 4,
+            "view_type_hint": "front"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": 118.465,
+            "candidate_ref": "px_v05_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3848783688631208,
+            "executable": true,
+            "goal_alignment": "wide_detour",
+            "goal_bearing_delta_deg": 91.468,
+            "goal_bearing_error_deg": 91.468,
+            "goal_bearing_reference_deg": 26.997,
+            "goal_distance_after_candidate_m": 1.985,
+            "goal_preference_rank": 4,
+            "marker_id": "M06",
+            "point_norm": [
+              0.5007824726134585,
+              0.6963788300835655
+            ],
+            "point_px": [
+              320,
+              250
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": 118.452,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 5,
+            "view_type_hint": "front"
+          }
+        ],
+        "excluded_candidates": [],
+        "schema_version": "sensor_goal_candidates_v1",
+        "source_stamp_ns": 1789303388769697117,
+        "view_id": null
+      },
+      "robot_state": {
+        "heading_rad": -1.169987,
+        "map_xy": [
+          4.8985,
+          -1.0475
+        ],
+        "position_xyz": [
+          4.8985,
+          -1.0475,
+          0.3115
+        ]
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "task": {
+        "coarse_goal": {
+          "camera_relation": {
+            "bearing_in_fov": true,
+            "estimated_visible": true,
+            "in_front_camera_frame": true,
+            "preprocess_method": "habitat_pointgoal_polar_sensor"
+          },
+          "distance_m": 1.387,
+          "map_xy": null,
+          "relative_bearing_deg": -26.997,
+          "success_distance_m": 1.0,
+          "type": "pointgoal_with_gps_compass"
+        },
+        "instruction": "move toward the polar PointGoal and stop only inside its success distance",
+        "target_object": null,
+        "task_mode": "PointNav"
+      }
+    },
+    "model_output": {
+      "action": "go",
+      "confidence": "high",
+      "control": {
+        "vlm_control_mode": "resume_async_navigation",
+        "rotate_yaw_deg": 0,
+        "ttl_ms": 500
+      },
+      "fine_goal": {
+        "valid": true,
+        "view_id": 3,
+        "view_type": "front",
+        "point_px": [
+          321,
+          257
+        ],
+        "point_norm": [
+          0.5023474178403756,
+          0.7158774373259053
+        ],
+        "projected_map_xy": [
+          4.8985,
+          -1.0475
+        ],
+        "navigability": "unknown"
+      },
+      "memory_ops": [],
+      "intent_candidate_refs": [
+        "px_v03_r2_c0"
+      ],
+      "observation_request": null,
+      "reasoning": {
+        "decision_reason": "px_v03_r2_c0 is best executable candidate with rank 1, near_goal alignment, and minimal bearing error (27.3°).",
+        "goal_reason": "Goal is 1.387m away at bearing -26.997°. px_v03_r2_c0 is 1.388m away at bearing -0.305°, requiring only 27.3° rotation to align.",
+        "failure_mode": null,
+        "short_text": "Go to px_v03_r2_c0 (rank 1, near_goal, 27.3° error)."
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "selected_candidate_ref": "px_v03_r2_c0",
+      "selected_image_point": [
+        321,
+        257
+      ],
+      "selected_view_id": 3,
+      "selected_view_type": "front",
+      "strategic_state": {
+        "current_room": "unknown",
+        "navigation_intent": "approach_target",
+        "reason_code": "rank_1_candidate_selected",
+        "room_search_status": "target_found",
+        "selected_exit_ref": null,
+        "target_evidence": "possible"
+      }
+    },
+    "apply_report": {
+      "action": "go",
+      "apply_pose_stamp_ns": 1789303397617836249,
+      "apply_reason": "reprojected_navigation_goal",
+      "apply_status": "admit",
+      "apply_translation_m": 0.06022514769730959,
+      "apply_yaw_deg": -2.415200641251366,
+      "calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "clock_source": "CLOCK_MONOTONIC",
+      "compensated_goal_xy": [
+        1.3475245349269478,
+        0.09193839292234417
+      ],
+      "decision_age_ns": 10966802,
+      "decision_id": "a7055b5e54ec20cb7a314521",
+      "decision_stamp_ns": 1789303397667356004,
+      "episode_id": "robot-pointnav-15746a44d3ab-1",
+      "event": "apply_report",
+      "event_monotonic_ns": 11138742579086,
+      "extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "goal_compensation_frame": "post_selected_view_preturn",
+      "guard_translation_m": 0.06022514769730959,
+      "guard_yaw_deg": -2.415200641251366,
+      "max_apply_translation_m": 0.05,
+      "max_apply_yaw_deg": 5.0,
+      "mode": "async_true",
+      "navigation_target_source": "selected_world_waypoint",
+      "navigation_target_xy": [
+        1.3475245349269478,
+        0.09193839292234417
+      ],
+      "now_ns": 1789303397678322806,
+      "observation_camera_pitch_deg": 0.0,
+      "observation_stamp_ns": 1789303356753079318,
+      "original_selected_image_point": [
+        321,
+        257
+      ],
+      "pose_compensation_status": "reprojected",
+      "pose_guard_frame": "post_selected_view_preturn",
+      "post_preturn_command_pending": false,
+      "post_preturn_pose": {
+        "x_m": 4.86986563412429,
+        "y_m": -1.1004158107761588,
+        "yaw_deg": -69.45050471650957
+      },
+      "post_preturn_pose_kind": "predicted_discrete_command",
+      "post_preturn_source_apply_stamp_ns": 1789303397617836249,
+      "queue_wait_ns": 0,
+      "queued_at_ns": 1789303397678322806,
+      "reason": "immediate_decision",
+      "reprojected_image_point": [
+        321,
+        257
+      ],
+      "reprojection_image_frame": "selected_observation",
+      "reprojection_image_stamp_ns": 1789303356753079318,
+      "reprojection_status": "projectable",
+      "scene_id": "local-odometry",
+      "selected_goal_calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "selected_goal_extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "selected_goal_pose_stamp_ns": 1789303356753079318,
+      "selected_goal_xy": [
+        1.3877803228298558,
+        -0.011991948580068678
+      ],
+      "selected_view_alignment_source": "selected_view_capture_pose",
+      "selected_view_already_rotated_yaw_deg": 1.6152006412513658,
+      "selected_view_commanded_preturn_yaw_deg": 0.0,
+      "selected_view_remaining_yaw_deg": -2.415200641251366,
+      "selected_view_requested_yaw_deg": -0.8,
+      "sync_action_budget_steps": 0,
+      "sync_predicted_pose": {
+        "x_m": 4.921554583333818,
+        "y_m": -1.1031063215619061,
+        "yaw_deg": -67.5303903147273
+      },
+      "sync_prediction_source": "executed_action_budget",
+      "sync_prediction_status": "residual_dynamic_envelope_exceeded",
+      "sync_residual_max_bearing_deg": 29.999999999999996,
+      "sync_residual_max_curvature_per_m": 2.0,
+      "sync_residual_pose": {
+        "x_m": 0.020662980605622036,
+        "y_m": 0.04745553235572332,
+        "yaw_deg": 1.920114401782273
+      },
+      "sync_residual_role": "tracking_error_not_navigation_target",
+      "sync_residual_target_bearing_deg": 66.4708365618934,
+      "sync_residual_target_curvature_per_m": 1.4669711889813866,
+      "sync_residual_translation_clamped": true,
+      "sync_residual_translation_gain": 1.0,
+      "sync_residual_yaw_clamped": false,
+      "sync_residual_yaw_gain": 1.0,
+      "sync_smoothed_residual_goal_xy": [
+        0.019960789950495193,
+        0.04584284965566833
+      ],
+      "sync_smoothed_residual_yaw_deg": 1.920114401782273,
+      "target_object": "pointgoal",
+      "task_type": "PointNav"
+    },
+    "outcome": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "collision_count": 0,
+      "decision_id": "a7055b5e54ec20cb7a314521",
+      "event": "pixnav_navigation_outcome_recorded",
+      "event_monotonic_ns": 11138986184508,
+      "moved_distance_m": 0.0,
+      "no_progress": true,
+      "progress": false,
+      "supervisor_mode": "escape_deadlock",
+      "terminal_reason": "PIXNAV_POLICY_COMPLETED"
+    },
+    "terminal_timing": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "decision_id": "a7055b5e54ec20cb7a314521",
+      "event": "terminal_observation_timing_decision",
+      "event_monotonic_ns": 11138988386535,
+      "observe": true,
+      "reason": "recovery_required",
+      "task_type": "pointnav",
+      "variant": "adaptive"
+    },
+    "terminal_refresh": {}
+  },
+  {
+    "decision_id": "467710f176ba0ef3b62fe4b6",
+    "input": {
+      "constraints": {
+        "allowed_actions": [
+          "go",
+          "rotate",
+          "stop",
+          "request_observation"
+        ],
+        "allowed_observation_modes": [
+          "current_only",
+          "directed_view",
+          "directed_sweep",
+          "full_sweep"
+        ],
+        "allowed_step_deg": [
+          30,
+          45,
+          60,
+          90
+        ],
+        "allowed_views": [
+          "front",
+          "left",
+          "right",
+          "back"
+        ],
+        "must_select_visible_navigable_floor": true,
+        "pixel_coordinate_rule": "u in [0,width-1], v in [0,height-1]"
+      },
+      "coordinate_frame": {
+        "heading_source": "imu_or_sim_gt_with_noise_or_robot_backend",
+        "map_frame": "habitat_world_xy_or_gps_aligned_local_map",
+        "pose_noise": {
+          "enabled": true,
+          "heading_std_deg": 2.0,
+          "xy_std_m": 0.1
+        },
+        "robot_pose_source": "gps_or_sim_gt_with_noise_or_robot_backend"
+      },
+      "memory": {
+        "ablation_memory": {
+          "graph_exposed": true,
+          "variant": "directional"
+        },
+        "candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": -119.675,
+              "candidate_ref": "px_v04_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3912024666075016,
+              "executable": true,
+              "goal_alignment": "away_from_goal",
+              "goal_bearing_delta_deg": -146.672,
+              "goal_bearing_error_deg": 146.672,
+              "goal_bearing_reference_deg": 26.997,
+              "marker_id": "M05",
+              "point_norm": [
+                0.5023474178403756,
+                0.7019498607242339
+              ],
+              "point_px": [
+                321,
+                252
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -120.0,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 4,
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -59.675,
+              "candidate_ref": "px_v05_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3883778228374266,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": -86.672,
+              "goal_bearing_error_deg": 86.672,
+              "goal_bearing_reference_deg": 26.997,
+              "marker_id": "M06",
+              "point_norm": [
+                0.5023474178403756,
+                0.6963788300835655
+              ],
+              "point_px": [
+                321,
+                250
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -60.0,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 5,
+              "view_type_hint": "left"
+            }
+          ],
+          "policy": "VLM selects only refs provided in this snapshot",
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9842
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9587
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9567
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9505
+            }
+          ]
+        },
+        "compressed_negative_memories": [
+          {
+            "negative_memory": {
+              "avoid_scope": "virtual_failed_frontier",
+              "reason": "PIXNAV_POLICY_COMPLETED",
+              "severity": 1.0
+            },
+            "node_id": "node_00008",
+            "summary": "blocked local direction: PIXNAV_POLICY_COMPLETED"
+          }
+        ],
+        "control_policy": {
+          "candidate_ref_policy": "backend validates refs before execution or mutation",
+          "memory_writes_are_requests": true,
+          "place_recognition_commit_policy": "vlm_confirms_backend_verifies"
+        },
+        "current_localization": {
+          "candidate_node_ids": [
+            "node_00007",
+            "node_00002",
+            "node_00001",
+            "node_00003",
+            "node_00004"
+          ],
+          "candidate_scores": {
+            "node_00001": 0.9567114114761353,
+            "node_00002": 0.9587433934211731,
+            "node_00003": 0.9504719972610474,
+            "node_00004": 0.9432541728019714,
+            "node_00007": 0.9842056035995483
+          },
+          "current_node_id": "node_00007",
+          "match_confidence": 0.9842,
+          "match_status": "localized",
+          "matched_keyframe_ids": [
+            "keyframe_00007",
+            "keyframe_00002",
+            "keyframe_00001",
+            "keyframe_00003",
+            "keyframe_00004"
+          ]
+        },
+        "current_pose_relation_to_latest_node": {
+          "covariance_diag": [
+            0.05,
+            0.05,
+            4.0
+          ],
+          "dx_m": 0.0,
+          "dy_m": 0.0,
+          "dyaw_deg": 0.0
+        },
+        "deadlock_state": {
+          "current_node_id": "node_00007",
+          "status": "none"
+        },
+        "failed_waypoints": [
+          {
+            "avoid": true,
+            "dst_node_id": "node_00008",
+            "edge_id": "edge_00007",
+            "edge_type": "failed_frontier",
+            "last_reason": "PIXNAV_POLICY_COMPLETED",
+            "last_verified_traversal": null,
+            "relation_type": "directional_failure",
+            "relative_pose_src_to_dst": {
+              "covariance_diag": [
+                0.1,
+                0.1,
+                8.0
+              ],
+              "dx_m": 1.3957,
+              "dy_m": -0.0926,
+              "dyaw_deg": -8.856
+            },
+            "src_node_id": "node_00007",
+            "status": "blocked"
+          }
+        ],
+        "goal_context": {
+          "detour_status": "escaping_deadlock",
+          "execution_task_mode": "PointNav",
+          "goal_bearing_from_current_deg": -26.997,
+          "goal_distance_m": 1.387,
+          "original_task_mode": "PointNav",
+          "success_distance_m": 1.0,
+          "supervisor_mode": "escape_deadlock",
+          "target_object": null,
+          "task_mode": "PointNav"
+        },
+        "graph_summary": {
+          "gap_lite": "enabled",
+          "merge_policy": "soft_preserve_revisit_nodes",
+          "num_deadlock_edges": 1,
+          "num_edges": 7,
+          "num_nodes": 8,
+          "pose_graph_optimization": "TODO_not_enabled"
+        },
+        "last_selected_point": null,
+        "last_selected_view": null,
+        "local_topology": {
+          "candidate_exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.545,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.38,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.27,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            },
+            {
+              "avoid": true,
+              "bearing_deg_robot": -3.795,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "dst_node_id": "node_00008",
+              "edge_id": "edge_00007",
+              "edge_type": "failed_frontier",
+              "reason": "known negative branch",
+              "relation_type": "directional_failure",
+              "score": -0.4209,
+              "status": "blocked",
+              "view_type_hint": "front"
+            }
+          ],
+          "current_node": {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 11,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 3
+          }
+        },
+        "loop_warning": {
+          "is_looping": true,
+          "repeated_branch_count": 5
+        },
+        "nav_skill_cards": {
+          "confirm_revisit_node": {
+            "commit_policy": "backend_verified_soft_merge_only",
+            "type": "memory_op",
+            "use_when": [
+              "candidate_ref resolves to a revisit candidate",
+              "spatial_plausibility.accepted=true"
+            ]
+          },
+          "go_front_fine_goal": {
+            "fallback": "request_observation.directed_sweep",
+            "type": "action",
+            "use_when": [
+              "selected_candidate_ref points to an exit with avoid=false",
+              "selected image point is visible and navigable"
+            ]
+          },
+          "reject_revisit_candidate": {
+            "effect": "audit only; topology is not mutated",
+            "type": "memory_op"
+          }
+        },
+        "object_context": {
+          "candidate_object_nodes": [],
+          "enabled": false,
+          "target_object": null
+        },
+        "place_recognition": {
+          "false_merge_warning": "prefer request_observation over false merge",
+          "merge_policy": "soft preserve nodes with revisit constraints",
+          "revisit_candidates": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9842
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9587
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9567
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9505
+            }
+          ]
+        },
+        "policy_harness_state": {
+          "current_stage": "escape_deadlock",
+          "policy_graph_mode": "GaP-lite_static_sidecar_not_full_interpreter",
+          "schema_version": "nav_policy_harness_lite_v1"
+        },
+        "retrieved_memory_images": [
+          {
+            "caption": "front camera place at frame 9",
+            "image_ref": "<memory_image_mi_revisit_node_00007>",
+            "keyframe_id": "keyframe_00007",
+            "memory_image_id": "mi_revisit_node_00007",
+            "node_id": "node_00007",
+            "reason_for_inclusion": "revisit_candidate_verification",
+            "storage_tier": "hot",
+            "view_type": "front"
+          }
+        ],
+        "revisit_candidates": [
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00007"
+            ],
+            "candidate_node_id": "node_00007",
+            "candidate_ref": "revisit_001",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 9",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 0.0,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9842
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00002"
+            ],
+            "candidate_node_id": "node_00002",
+            "candidate_ref": "revisit_002",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 2",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 3.7193,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9587
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00001"
+            ],
+            "candidate_node_id": "node_00001",
+            "candidate_ref": "revisit_003",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 0",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 4.8742,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9567
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00003"
+            ],
+            "candidate_node_id": "node_00003",
+            "candidate_ref": "revisit_004",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 4",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 2.4457,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9505
+          }
+        ],
+        "schema_version": "nav_memory_context_v6",
+        "topological_candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.545,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.38,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.27,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            },
+            {
+              "avoid": true,
+              "bearing_deg_robot": -3.795,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "dst_node_id": "node_00008",
+              "edge_id": "edge_00007",
+              "edge_type": "failed_frontier",
+              "reason": "known negative branch",
+              "relation_type": "directional_failure",
+              "score": -0.4209,
+              "status": "blocked",
+              "view_type_hint": "front"
+            }
+          ],
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9842
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00002"
+              ],
+              "candidate_node_id": "node_00002",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 2",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 3.7193,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9587
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 4.8742,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9567
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00003"
+              ],
+              "candidate_node_id": "node_00003",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 4",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 2.4457,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9505
+            }
+          ]
+        },
+        "visited_nodes": [
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 0",
+            "has_active_image": true,
+            "last_seen_frame_index": 1,
+            "negative_memory": null,
+            "node_id": "node_00001",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 2",
+            "has_active_image": true,
+            "last_seen_frame_index": 3,
+            "negative_memory": null,
+            "node_id": "node_00002",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 4",
+            "has_active_image": true,
+            "last_seen_frame_index": 5,
+            "negative_memory": null,
+            "node_id": "node_00003",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 6",
+            "has_active_image": true,
+            "last_seen_frame_index": 6,
+            "negative_memory": null,
+            "node_id": "node_00004",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 7",
+            "has_active_image": true,
+            "last_seen_frame_index": 7,
+            "negative_memory": null,
+            "node_id": "node_00005",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 8",
+            "has_active_image": true,
+            "last_seen_frame_index": 8,
+            "negative_memory": null,
+            "node_id": "node_00006",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 11,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 3
+          },
+          {
+            "deadlock_status": "confirmed",
+            "description": "blocked local direction: PIXNAV_POLICY_COMPLETED",
+            "has_active_image": false,
+            "last_seen_frame_index": 10,
+            "negative_memory": {
+              "avoid_scope": "virtual_failed_frontier",
+              "reason": "PIXNAV_POLICY_COMPLETED",
+              "severity": 1.0
+            },
+            "node_id": "node_00008",
+            "object_belief": {},
+            "storage_tier": "compressed",
+            "target_search_status": {},
+            "visit_count": 0
+          }
+        ],
+        "voca_sidecar": {
+          "deadlock_evidence": {
+            "collision_events": 0,
+            "confirmed": true,
+            "consecutive_translation_stalls": 2,
+            "graph_cycle_hits": 0,
+            "heading_oscillation_hits": 0,
+            "loop_entry_decision_id": null,
+            "reasons": [
+              "translation_stagnation"
+            ],
+            "sample_count": 2
+          },
+          "enabled": true,
+          "no_progress_count": 2,
+          "supervisor_mode": "escape_deadlock"
+        }
+      },
+      "observation": {
+        "frame_index": 11,
+        "image_height": 360,
+        "image_width": 640,
+        "mode": "full_sweep",
+        "sequence_id": "robot-pointnav-15746a44d3ab-1",
+        "timestamp_ms": 1789303388769,
+        "views": [
+          {
+            "image": "<image_0>",
+            "relative_heading_deg": 0.0,
+            "timestamp_ms": 1789303356753,
+            "view_id": 0,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_1>",
+            "relative_heading_deg": 60.0,
+            "timestamp_ms": 1789303364806,
+            "view_id": 1,
+            "view_type": "right"
+          },
+          {
+            "image": "<image_2>",
+            "relative_heading_deg": 120.0,
+            "timestamp_ms": 1789303372781,
+            "view_id": 2,
+            "view_type": "right"
+          },
+          {
+            "image": "<image_3>",
+            "relative_heading_deg": -180.0,
+            "timestamp_ms": 1789303378805,
+            "view_id": 3,
+            "view_type": "back"
+          },
+          {
+            "image": "<image_4>",
+            "relative_heading_deg": -120.0,
+            "timestamp_ms": 1789303384776,
+            "view_id": 4,
+            "view_type": "left"
+          },
+          {
+            "image": "<image_5>",
+            "relative_heading_deg": -60.0,
+            "timestamp_ms": 1789303388769,
+            "view_id": 5,
+            "view_type": "left"
+          }
+        ]
+      },
+      "pixel_candidates": {
+        "binding_ids": [
+          "66d9b0f3f36db0ad707f50d5e41e21c6225c795effd56adf2f6452c94534e469",
+          "97c6faf88437ead6f6c942f235fae890a0ac095db905e867e7d9987160c3caff",
+          "85ed907bd63d9a77e485006520f1692dddcb8f39c7374dd47071ec0be0bd384e",
+          "0b3483e73acb34d499a637a2c478ee21994ff4d572f0f0442f4ac9eea7862329",
+          "9d584129fe9ed6dee5ff94166ee157df298c939819953371a81d57dfe7d0baf7",
+          "3baefa16094f6f73406ab318fbdce4f70c08badfbb1b9307433f9f57d7f8e021"
+        ],
+        "candidates": [
+          {
+            "avoid": false,
+            "bearing_deg_robot": -119.675,
+            "candidate_ref": "px_v04_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3912024666075016,
+            "executable": true,
+            "goal_alignment": "away_from_goal",
+            "goal_bearing_delta_deg": -146.672,
+            "goal_bearing_error_deg": 146.672,
+            "goal_bearing_reference_deg": 26.997,
+            "marker_id": "M05",
+            "point_norm": [
+              0.5023474178403756,
+              0.7019498607242339
+            ],
+            "point_px": [
+              321,
+              252
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -120.0,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 4,
+            "view_type_hint": "left"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -59.675,
+            "candidate_ref": "px_v05_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3883778228374266,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": -86.672,
+            "goal_bearing_error_deg": 86.672,
+            "goal_bearing_reference_deg": 26.997,
+            "marker_id": "M06",
+            "point_norm": [
+              0.5023474178403756,
+              0.6963788300835655
+            ],
+            "point_px": [
+              321,
+              250
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -60.0,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 5,
+            "view_type_hint": "left"
+          }
+        ],
+        "excluded_candidates": [],
+        "schema_version": "sensor_goal_candidates_v1",
+        "source_stamp_ns": 1789303388769697117,
+        "view_id": null
+      },
+      "robot_state": {
+        "heading_rad": -1.169987,
+        "map_xy": [
+          4.8985,
+          -1.0475
+        ],
+        "position_xyz": [
+          4.8985,
+          -1.0475,
+          0.3115
+        ]
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "task": {
+        "coarse_goal": {
+          "camera_relation": {
+            "bearing_in_fov": true,
+            "estimated_visible": true,
+            "in_front_camera_frame": true,
+            "preprocess_method": "habitat_pointgoal_polar_sensor"
+          },
+          "distance_m": 1.387,
+          "map_xy": null,
+          "relative_bearing_deg": -26.997,
+          "success_distance_m": 1.0,
+          "type": "pointgoal_with_gps_compass"
+        },
+        "instruction": "move toward the polar PointGoal and stop only inside its success distance",
+        "target_object": null,
+        "task_mode": "PointNav"
+      }
+    },
+    "model_output": {
+      "action": "go",
+      "confidence": "high",
+      "control": {
+        "vlm_control_mode": "resume_async_navigation",
+        "rotate_yaw_deg": 0,
+        "ttl_ms": 5000
+      },
+      "fine_goal": {
+        "valid": true,
+        "view_id": 4,
+        "view_type": "left",
+        "point_px": [
+          321,
+          252
+        ],
+        "point_norm": [
+          0.5023474178403756,
+          0.7019498607242339
+        ],
+        "projected_map_xy": [
+          4.8985,
+          -1.0475
+        ],
+        "navigability": "unknown"
+      },
+      "memory_ops": [],
+      "intent_candidate_refs": [
+        "px_v04_r2_c0"
+      ],
+      "observation_request": null,
+      "reasoning": {
+        "decision_reason": "Left view shows clear path to goal",
+        "goal_reason": "Goal is 1.387m away, left view provides direct route",
+        "failure_mode": null,
+        "short_text": "Go left toward goal"
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "selected_candidate_ref": "px_v04_r2_c0",
+      "selected_image_point": [
+        321,
+        252
+      ],
+      "selected_view_id": 4,
+      "selected_view_type": "left",
+      "strategic_state": {
+        "current_room": "unknown",
+        "navigation_intent": "approach_target",
+        "reason_code": "point_nav",
+        "room_search_status": "target_found",
+        "selected_exit_ref": null,
+        "target_evidence": "possible"
+      }
+    },
+    "apply_report": {
+      "action": "go",
+      "apply_pose_stamp_ns": 1789303402130506527,
+      "apply_reason": "reprojected_navigation_goal",
+      "apply_status": "admit",
+      "apply_translation_m": 0.07874915826237577,
+      "apply_yaw_deg": -122.77496472845341,
+      "calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "clock_source": "CLOCK_MONOTONIC",
+      "compensated_goal_xy": [
+        1.3264295000971074,
+        0.012892322031031599
+      ],
+      "decision_age_ns": 12257853,
+      "decision_id": "467710f176ba0ef3b62fe4b6",
+      "decision_stamp_ns": 1789303402172250872,
+      "episode_id": "robot-pointnav-15746a44d3ab-1",
+      "event": "apply_report",
+      "event_monotonic_ns": 11143248146905,
+      "extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "goal_compensation_frame": "post_selected_view_preturn",
+      "guard_translation_m": 0.07874915826237577,
+      "guard_yaw_deg": -2.7749647284534276,
+      "max_apply_translation_m": 0.05,
+      "max_apply_yaw_deg": 5.0,
+      "mode": "async_true",
+      "navigation_target_source": "selected_world_waypoint",
+      "navigation_target_xy": [
+        1.3264295000971074,
+        0.012892322031031599
+      ],
+      "now_ns": 1789303402184508725,
+      "observation_camera_pitch_deg": 0.0,
+      "observation_stamp_ns": 1789303384776523255,
+      "original_selected_image_point": [
+        321,
+        252
+      ],
+      "pose_compensation_status": "reprojected",
+      "pose_guard_frame": "post_selected_view_preturn",
+      "post_preturn_command_pending": true,
+      "post_preturn_pose": {
+        "x_m": 4.8652563655327645,
+        "y_m": -1.0944404011890105,
+        "yaw_deg": 50.67285044076107
+      },
+      "post_preturn_pose_kind": "predicted_discrete_command",
+      "post_preturn_source_apply_stamp_ns": 1789303402130506527,
+      "queue_wait_ns": 0,
+      "queued_at_ns": 1789303402184508725,
+      "reason": "immediate_decision",
+      "reprojected_image_point": [
+        321,
+        252
+      ],
+      "reprojection_image_frame": "selected_observation",
+      "reprojection_image_stamp_ns": 1789303384776523255,
+      "reprojection_status": "projectable",
+      "scene_id": "local-odometry",
+      "selected_goal_calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "selected_goal_extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "selected_goal_pose_stamp_ns": 1789303384776523255,
+      "selected_goal_xy": [
+        1.3911800575860007,
+        -0.007896231367459063
+      ],
+      "selected_view_alignment_source": "selected_view_capture_pose",
+      "selected_view_already_rotated_yaw_deg": 2.774964728453412,
+      "selected_view_commanded_preturn_yaw_deg": -120.0,
+      "selected_view_remaining_yaw_deg": -122.77496472845341,
+      "selected_view_requested_yaw_deg": -120.0,
+      "sync_action_budget_steps": 0,
+      "sync_predicted_pose": {
+        "x_m": 4.908295761135502,
+        "y_m": -1.1100833478409824,
+        "yaw_deg": 53.12261220887176
+      },
+      "sync_prediction_source": "executed_action_budget",
+      "sync_prediction_status": "residual_dynamic_envelope_exceeded",
+      "sync_residual_max_bearing_deg": 29.999999999999996,
+      "sync_residual_max_curvature_per_m": 2.0,
+      "sync_residual_pose": {
+        "x_m": 0.015175663834044416,
+        "y_m": -0.043206371995360295,
+        "yaw_deg": 2.449761768110695
+      },
+      "sync_residual_role": "tracking_error_not_navigation_target",
+      "sync_residual_target_bearing_deg": -70.6468528747247,
+      "sync_residual_target_curvature_per_m": -1.3826039038515294,
+      "sync_residual_translation_clamped": false,
+      "sync_residual_translation_gain": 1.0,
+      "sync_residual_yaw_clamped": false,
+      "sync_residual_yaw_gain": 1.0,
+      "sync_smoothed_residual_goal_xy": [
+        0.015175663834044416,
+        -0.043206371995360295
+      ],
+      "sync_smoothed_residual_yaw_deg": 2.449761768110695,
+      "target_object": "pointgoal",
+      "task_type": "PointNav"
+    },
+    "outcome": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "collision_count": 0,
+      "decision_id": "467710f176ba0ef3b62fe4b6",
+      "event": "pixnav_navigation_outcome_recorded",
+      "event_monotonic_ns": 11169525316397,
+      "moved_distance_m": 2.456286628013667,
+      "no_progress": false,
+      "progress": true,
+      "supervisor_mode": "goal_seek",
+      "terminal_reason": "PIXNAV_POLICY_COMPLETED"
+    },
+    "terminal_timing": {
+      "candidate_valid": true,
+      "clock_source": "CLOCK_MONOTONIC",
+      "decision_id": "467710f176ba0ef3b62fe4b6",
+      "event": "terminal_observation_timing_decision",
+      "event_monotonic_ns": 11169525912482,
+      "goal_consistent": false,
+      "memory_risk": false,
+      "observe": true,
+      "period_segments": 1,
+      "progress_valid": true,
+      "reason": "goal_inconsistent",
+      "segments_since_observation": 1,
+      "task_type": "pointnav",
+      "trajectory_id": "e5b2b4d8769eb217a3341e38",
+      "variant": "adaptive",
+      "watchdog_segments": 3
+    },
+    "terminal_refresh": {
+      "clock_source": "CLOCK_MONOTONIC",
+      "decision_id": "467710f176ba0ef3b62fe4b6",
+      "discarded_prefetch_decision_id": "",
+      "event": "pointnav_terminal_goal_bearing_refresh_queued",
+      "event_monotonic_ns": 11169526132713,
+      "pointgoal_bearing_deg": -165.9947021158452,
+      "pointgoal_distance_m": 3.70735764503479,
+      "pointgoal_source_stamp_ns": 1789303428109826011,
+      "requested_offsets_deg": [
+        165.9947021158452,
+        135.9947021158452,
+        -164.0052978841548,
+        0.0
+      ],
+      "sweep_half_width_deg": 30.0,
+      "sweep_mode": "directed_sweep",
+      "target_observation_yaw_deg": 165.9947021158452,
+      "terminal_reason": "PIXNAV_POLICY_COMPLETED",
+      "terminal_state": "COMPLETED",
+      "trajectory_id": "e5b2b4d8769eb217a3341e38"
+    }
+  },
+  {
+    "decision_id": "8cc79bd46b707aa64c8d476b",
+    "input": {
+      "constraints": {
+        "allowed_actions": [
+          "go",
+          "rotate",
+          "stop",
+          "request_observation"
+        ],
+        "allowed_observation_modes": [
+          "current_only",
+          "directed_view",
+          "directed_sweep",
+          "full_sweep"
+        ],
+        "allowed_step_deg": [
+          30,
+          45,
+          60,
+          90
+        ],
+        "allowed_views": [
+          "front",
+          "left",
+          "right",
+          "back"
+        ],
+        "must_select_visible_navigable_floor": true,
+        "pixel_coordinate_rule": "u in [0,width-1], v in [0,height-1]"
+      },
+      "coordinate_frame": {
+        "heading_source": "imu_or_sim_gt_with_noise_or_robot_backend",
+        "map_frame": "habitat_world_xy_or_gps_aligned_local_map",
+        "pose_noise": {
+          "enabled": true,
+          "heading_std_deg": 2.0,
+          "xy_std_m": 0.1
+        },
+        "robot_pose_source": "gps_or_sim_gt_with_noise_or_robot_backend"
+      },
+      "memory": {
+        "ablation_memory": {
+          "graph_exposed": true,
+          "variant": "directional"
+        },
+        "candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": -119.668,
+              "candidate_ref": "px_v04_r1_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3941059604537656,
+              "executable": true,
+              "goal_alignment": "wide_detour",
+              "goal_bearing_delta_deg": -121.593,
+              "goal_bearing_error_deg": 121.593,
+              "goal_bearing_reference_deg": 1.925,
+              "marker_id": "M09",
+              "point_norm": [
+                0.5023474178403756,
+                0.6935933147632312
+              ],
+              "point_px": [
+                321,
+                249
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -120.0,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 4,
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -119.762,
+              "candidate_ref": "px_v04_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 2.7959737159813978,
+              "executable": true,
+              "goal_alignment": "wide_detour",
+              "goal_bearing_delta_deg": -121.687,
+              "goal_bearing_error_deg": 121.687,
+              "goal_bearing_reference_deg": 1.925,
+              "marker_id": "M10",
+              "point_norm": [
+                0.5023474178403756,
+                0.5654596100278552
+              ],
+              "point_px": [
+                321,
+                203
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -120.0,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 4,
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -59.902,
+              "candidate_ref": "px_v05_r1_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 1.3935294960532874,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": -61.827,
+              "goal_bearing_error_deg": 61.827,
+              "goal_bearing_reference_deg": 1.925,
+              "marker_id": "M11",
+              "point_norm": [
+                0.5007824726134585,
+                0.7047353760445683
+              ],
+              "point_px": [
+                320,
+                253
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -60.0,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 5,
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": -59.789,
+              "candidate_ref": "px_v05_r2_c0",
+              "candidate_type": "pixel_waypoint",
+              "distance_m": 2.82523901615281,
+              "executable": true,
+              "goal_alignment": "detour",
+              "goal_bearing_delta_deg": -61.714,
+              "goal_bearing_error_deg": 61.714,
+              "goal_bearing_reference_deg": 1.925,
+              "marker_id": "M12",
+              "point_norm": [
+                0.5023474178403756,
+                0.5738161559888579
+              ],
+              "point_px": [
+                321,
+                206
+              ],
+              "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+              "relative_heading_deg": -60.0,
+              "requires_rgb_verification": false,
+              "rgb_point_verification_passed": true,
+              "source": "rgb_pixel_candidates_v1",
+              "status": "rgb_point_verified",
+              "view_id": 5,
+              "view_type_hint": "left"
+            }
+          ],
+          "policy": "VLM selects only refs provided in this snapshot",
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00010"
+              ],
+              "candidate_node_id": "node_00011",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 15",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 1.0
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 1.7506,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.971
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00009"
+              ],
+              "candidate_node_id": "node_00010",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 13",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.8007,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9637
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 6.0823,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9614
+            }
+          ]
+        },
+        "compressed_negative_memories": [
+          {
+            "negative_memory": {
+              "avoid_scope": "virtual_failed_frontier",
+              "reason": "PIXNAV_POLICY_COMPLETED",
+              "severity": 1.0
+            },
+            "node_id": "node_00008",
+            "summary": "blocked local direction: PIXNAV_POLICY_COMPLETED"
+          },
+          {
+            "negative_memory": {
+              "avoid_scope": "virtual_failed_frontier",
+              "reason": "PIXNAV_POLICY_COMPLETED",
+              "severity": 1.0
+            },
+            "node_id": "node_00012",
+            "summary": "blocked local direction: PIXNAV_POLICY_COMPLETED"
+          }
+        ],
+        "control_policy": {
+          "candidate_ref_policy": "backend validates refs before execution or mutation",
+          "memory_writes_are_requests": true,
+          "place_recognition_commit_policy": "vlm_confirms_backend_verifies"
+        },
+        "current_localization": {
+          "candidate_node_ids": [
+            "node_00011",
+            "node_00007",
+            "node_00010",
+            "node_00001",
+            "node_00002"
+          ],
+          "candidate_scores": {
+            "node_00001": 0.9613906145095825,
+            "node_00002": 0.9589743614196777,
+            "node_00007": 0.9710238575935364,
+            "node_00010": 0.9636586308479309,
+            "node_00011": 1.0000003576278687
+          },
+          "current_node_id": "node_00011",
+          "match_confidence": 1.0,
+          "match_status": "localized",
+          "matched_keyframe_ids": [
+            "keyframe_00010",
+            "keyframe_00007",
+            "keyframe_00009",
+            "keyframe_00001",
+            "keyframe_00002"
+          ]
+        },
+        "current_pose_relation_to_latest_node": {
+          "covariance_diag": [
+            0.05,
+            0.05,
+            4.0
+          ],
+          "dx_m": 0.0,
+          "dy_m": 0.0,
+          "dyaw_deg": 0.0
+        },
+        "deadlock_state": {
+          "current_node_id": "node_00011",
+          "status": "none"
+        },
+        "failed_waypoints": [
+          {
+            "avoid": true,
+            "dst_node_id": "node_00008",
+            "edge_id": "edge_00007",
+            "edge_type": "failed_frontier",
+            "last_reason": "PIXNAV_POLICY_COMPLETED",
+            "last_verified_traversal": null,
+            "relation_type": "directional_failure",
+            "relative_pose_src_to_dst": {
+              "covariance_diag": [
+                0.1,
+                0.1,
+                8.0
+              ],
+              "dx_m": 1.3957,
+              "dy_m": -0.0926,
+              "dyaw_deg": -8.856
+            },
+            "src_node_id": "node_00007",
+            "status": "blocked"
+          },
+          {
+            "avoid": true,
+            "dst_node_id": "node_00012",
+            "edge_id": "edge_00011",
+            "edge_type": "failed_frontier",
+            "last_reason": "PIXNAV_POLICY_COMPLETED",
+            "last_verified_traversal": null,
+            "relation_type": "directional_failure",
+            "relative_pose_src_to_dst": {
+              "covariance_diag": [
+                0.1,
+                0.1,
+                8.0
+              ],
+              "dx_m": 2.8168,
+              "dy_m": -0.0214,
+              "dyaw_deg": 0.0
+            },
+            "src_node_id": "node_00011",
+            "status": "blocked"
+          }
+        ],
+        "goal_context": {
+          "detour_status": "escaping_deadlock",
+          "execution_task_mode": "PointNav",
+          "goal_bearing_from_current_deg": -1.925,
+          "goal_distance_m": 2.794,
+          "original_task_mode": "PointNav",
+          "success_distance_m": 1.0,
+          "supervisor_mode": "escape_deadlock",
+          "target_object": null,
+          "task_mode": "PointNav"
+        },
+        "graph_summary": {
+          "gap_lite": "enabled",
+          "merge_policy": "soft_preserve_revisit_nodes",
+          "num_deadlock_edges": 2,
+          "num_edges": 11,
+          "num_nodes": 12,
+          "pose_graph_optimization": "TODO_not_enabled"
+        },
+        "last_selected_point": null,
+        "last_selected_view": null,
+        "local_topology": {
+          "candidate_exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.4684,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.4566,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.1934,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            },
+            {
+              "avoid": true,
+              "bearing_deg_robot": -0.435,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "dst_node_id": "node_00012",
+              "edge_id": "edge_00011",
+              "edge_type": "failed_frontier",
+              "reason": "known negative branch",
+              "relation_type": "directional_failure",
+              "score": -0.3546,
+              "status": "blocked",
+              "view_type_hint": "front"
+            }
+          ],
+          "current_node": {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 15",
+            "has_active_image": true,
+            "last_seen_frame_index": 16,
+            "negative_memory": null,
+            "node_id": "node_00011",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          }
+        },
+        "loop_warning": {
+          "is_looping": true,
+          "repeated_branch_count": 7
+        },
+        "nav_skill_cards": {
+          "confirm_revisit_node": {
+            "commit_policy": "backend_verified_soft_merge_only",
+            "type": "memory_op",
+            "use_when": [
+              "candidate_ref resolves to a revisit candidate",
+              "spatial_plausibility.accepted=true"
+            ]
+          },
+          "go_front_fine_goal": {
+            "fallback": "request_observation.directed_sweep",
+            "type": "action",
+            "use_when": [
+              "selected_candidate_ref points to an exit with avoid=false",
+              "selected image point is visible and navigable"
+            ]
+          },
+          "reject_revisit_candidate": {
+            "effect": "audit only; topology is not mutated",
+            "type": "memory_op"
+          }
+        },
+        "object_context": {
+          "candidate_object_nodes": [],
+          "enabled": false,
+          "target_object": null
+        },
+        "place_recognition": {
+          "false_merge_warning": "prefer request_observation over false merge",
+          "merge_policy": "soft preserve nodes with revisit constraints",
+          "revisit_candidates": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00010"
+              ],
+              "candidate_node_id": "node_00011",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 15",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 1.0
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 1.7506,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.971
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00009"
+              ],
+              "candidate_node_id": "node_00010",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 13",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.8007,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9637
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 6.0823,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9614
+            }
+          ]
+        },
+        "policy_harness_state": {
+          "current_stage": "escape_deadlock",
+          "policy_graph_mode": "GaP-lite_static_sidecar_not_full_interpreter",
+          "schema_version": "nav_policy_harness_lite_v1"
+        },
+        "retrieved_memory_images": [
+          {
+            "caption": "front camera place at frame 15",
+            "image_ref": "<memory_image_mi_revisit_node_00011>",
+            "keyframe_id": "keyframe_00010",
+            "memory_image_id": "mi_revisit_node_00011",
+            "node_id": "node_00011",
+            "reason_for_inclusion": "revisit_candidate_verification",
+            "storage_tier": "hot",
+            "view_type": "front"
+          }
+        ],
+        "revisit_candidates": [
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00010"
+            ],
+            "candidate_node_id": "node_00011",
+            "candidate_ref": "revisit_001",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 15",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 0.0,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 1.0
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00007"
+            ],
+            "candidate_node_id": "node_00007",
+            "candidate_ref": "revisit_002",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 9",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 1.7506,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.971
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00009"
+            ],
+            "candidate_node_id": "node_00010",
+            "candidate_ref": "revisit_003",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 13",
+            "spatial_plausibility": {
+              "accepted": true,
+              "baseline_m": 0.8007,
+              "reason": "within_baseline"
+            },
+            "visual_retrieval_score": 0.9637
+          },
+          {
+            "candidate_image_ref": "<memory_image_ref>",
+            "candidate_keyframe_ids": [
+              "keyframe_00001"
+            ],
+            "candidate_node_id": "node_00001",
+            "candidate_ref": "revisit_004",
+            "candidate_type": "revisit_candidate",
+            "candidate_view_type": "front",
+            "recommended_vlm_judgement": "confirm_or_reject_same_place",
+            "semantic_summary": "front camera place at frame 0",
+            "spatial_plausibility": {
+              "accepted": false,
+              "baseline_m": 6.0823,
+              "reason": "missing_or_excessive_spatial_baseline"
+            },
+            "visual_retrieval_score": 0.9614
+          }
+        ],
+        "schema_version": "nav_memory_context_v6",
+        "topological_candidate_refs": {
+          "exits": [
+            {
+              "avoid": false,
+              "bearing_deg_robot": -90.0,
+              "candidate_ref": "exit_001",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_left",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.4684,
+              "status": "unknown_frontier",
+              "view_type_hint": "left"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 90.0,
+              "candidate_ref": "exit_002",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_right",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.4566,
+              "status": "unknown_frontier",
+              "view_type_hint": "right"
+            },
+            {
+              "avoid": false,
+              "bearing_deg_robot": 180.0,
+              "candidate_ref": "exit_003",
+              "candidate_type": "candidate_exit",
+              "edge_id": null,
+              "exit_id": "frontier_back",
+              "reason": "unvisited or unmodeled local view",
+              "score": 0.1934,
+              "status": "unknown_frontier",
+              "view_type_hint": "back"
+            },
+            {
+              "avoid": true,
+              "bearing_deg_robot": -0.435,
+              "candidate_ref": "exit_004",
+              "candidate_type": "candidate_exit",
+              "dst_node_id": "node_00012",
+              "edge_id": "edge_00011",
+              "edge_type": "failed_frontier",
+              "reason": "known negative branch",
+              "relation_type": "directional_failure",
+              "score": -0.3546,
+              "status": "blocked",
+              "view_type_hint": "front"
+            }
+          ],
+          "revisits": [
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00010"
+              ],
+              "candidate_node_id": "node_00011",
+              "candidate_ref": "revisit_001",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 15",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.0,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 1.0
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00007"
+              ],
+              "candidate_node_id": "node_00007",
+              "candidate_ref": "revisit_002",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 9",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 1.7506,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.971
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00009"
+              ],
+              "candidate_node_id": "node_00010",
+              "candidate_ref": "revisit_003",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 13",
+              "spatial_plausibility": {
+                "accepted": true,
+                "baseline_m": 0.8007,
+                "reason": "within_baseline"
+              },
+              "visual_retrieval_score": 0.9637
+            },
+            {
+              "candidate_image_ref": "<memory_image_ref>",
+              "candidate_keyframe_ids": [
+                "keyframe_00001"
+              ],
+              "candidate_node_id": "node_00001",
+              "candidate_ref": "revisit_004",
+              "candidate_type": "revisit_candidate",
+              "candidate_view_type": "front",
+              "recommended_vlm_judgement": "confirm_or_reject_same_place",
+              "semantic_summary": "front camera place at frame 0",
+              "spatial_plausibility": {
+                "accepted": false,
+                "baseline_m": 6.0823,
+                "reason": "missing_or_excessive_spatial_baseline"
+              },
+              "visual_retrieval_score": 0.9614
+            }
+          ]
+        },
+        "visited_nodes": [
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 7",
+            "has_active_image": true,
+            "last_seen_frame_index": 7,
+            "negative_memory": null,
+            "node_id": "node_00005",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 8",
+            "has_active_image": true,
+            "last_seen_frame_index": 8,
+            "negative_memory": null,
+            "node_id": "node_00006",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 9",
+            "has_active_image": true,
+            "last_seen_frame_index": 11,
+            "negative_memory": null,
+            "node_id": "node_00007",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 3
+          },
+          {
+            "deadlock_status": "confirmed",
+            "description": "blocked local direction: PIXNAV_POLICY_COMPLETED",
+            "has_active_image": false,
+            "last_seen_frame_index": 10,
+            "negative_memory": {
+              "avoid_scope": "virtual_failed_frontier",
+              "reason": "PIXNAV_POLICY_COMPLETED",
+              "severity": 1.0
+            },
+            "node_id": "node_00008",
+            "object_belief": {},
+            "storage_tier": "compressed",
+            "target_search_status": {},
+            "visit_count": 0
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 12",
+            "has_active_image": true,
+            "last_seen_frame_index": 12,
+            "negative_memory": null,
+            "node_id": "node_00009",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 1
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 13",
+            "has_active_image": true,
+            "last_seen_frame_index": 14,
+            "negative_memory": null,
+            "node_id": "node_00010",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "none",
+            "description": "front camera place at frame 15",
+            "has_active_image": true,
+            "last_seen_frame_index": 16,
+            "negative_memory": null,
+            "node_id": "node_00011",
+            "object_belief": {},
+            "storage_tier": "hot",
+            "target_search_status": {},
+            "visit_count": 2
+          },
+          {
+            "deadlock_status": "confirmed",
+            "description": "blocked local direction: PIXNAV_POLICY_COMPLETED",
+            "has_active_image": false,
+            "last_seen_frame_index": 15,
+            "negative_memory": {
+              "avoid_scope": "virtual_failed_frontier",
+              "reason": "PIXNAV_POLICY_COMPLETED",
+              "severity": 1.0
+            },
+            "node_id": "node_00012",
+            "object_belief": {},
+            "storage_tier": "compressed",
+            "target_search_status": {},
+            "visit_count": 0
+          }
+        ],
+        "voca_sidecar": {
+          "deadlock_evidence": {
+            "collision_events": 0,
+            "confirmed": true,
+            "consecutive_translation_stalls": 2,
+            "graph_cycle_hits": 0,
+            "heading_oscillation_hits": 0,
+            "loop_entry_decision_id": null,
+            "reasons": [
+              "translation_stagnation"
+            ],
+            "sample_count": 5
+          },
+          "enabled": true,
+          "no_progress_count": 2,
+          "supervisor_mode": "escape_deadlock"
+        }
+      },
+      "observation": {
+        "frame_index": 16,
+        "image_height": 360,
+        "image_width": 640,
+        "mode": "full_sweep",
+        "sequence_id": "robot-pointnav-15746a44d3ab-1",
+        "timestamp_ms": 1789303544734,
+        "views": [
+          {
+            "image": "<image_0>",
+            "relative_heading_deg": 0.0,
+            "timestamp_ms": 1789303510721,
+            "view_id": 0,
+            "view_type": "front"
+          },
+          {
+            "image": "<image_1>",
+            "relative_heading_deg": 60.0,
+            "timestamp_ms": 1789303518775,
+            "view_id": 1,
+            "view_type": "right"
+          },
+          {
+            "image": "<image_2>",
+            "relative_heading_deg": 120.0,
+            "timestamp_ms": 1789303522782,
+            "view_id": 2,
+            "view_type": "right"
+          },
+          {
+            "image": "<image_3>",
+            "relative_heading_deg": -180.0,
+            "timestamp_ms": 1789303530712,
+            "view_id": 3,
+            "view_type": "back"
+          },
+          {
+            "image": "<image_4>",
+            "relative_heading_deg": -120.0,
+            "timestamp_ms": 1789303536733,
+            "view_id": 4,
+            "view_type": "left"
+          },
+          {
+            "image": "<image_5>",
+            "relative_heading_deg": -60.0,
+            "timestamp_ms": 1789303544734,
+            "view_id": 5,
+            "view_type": "left"
+          }
+        ]
+      },
+      "pixel_candidates": {
+        "binding_ids": [
+          "485966b924b63881fe5743ebbe3540eadda4e5c9b859f0279ae10e725c673d57",
+          "2365be945a14b5c08b8f3f4d73b3732c92b3d206ee4a3b351789bacf2ecd612a",
+          "1c8cdda5542d33176e36b2b216a07b2491b9140b69e62d8003be3147b5faf7ef",
+          "b86644a7ba2cf9289766f8847f60999009d8ed254cc01e9d331a7481798524ed",
+          "35b92430b7c564e4ddcbd3fbf886c8ee14dc9372e7760530df8b9af641a561ae",
+          "1649dd7b8a3aad802f68e39b2e5eb7d218709ccab2dff8e1b4aca68d52df73b3"
+        ],
+        "candidates": [
+          {
+            "avoid": false,
+            "bearing_deg_robot": -119.668,
+            "candidate_ref": "px_v04_r1_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3941059604537656,
+            "executable": true,
+            "goal_alignment": "wide_detour",
+            "goal_bearing_delta_deg": -121.593,
+            "goal_bearing_error_deg": 121.593,
+            "goal_bearing_reference_deg": 1.925,
+            "marker_id": "M09",
+            "point_norm": [
+              0.5023474178403756,
+              0.6935933147632312
+            ],
+            "point_px": [
+              321,
+              249
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -120.0,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 4,
+            "view_type_hint": "left"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -119.762,
+            "candidate_ref": "px_v04_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 2.7959737159813978,
+            "executable": true,
+            "goal_alignment": "wide_detour",
+            "goal_bearing_delta_deg": -121.687,
+            "goal_bearing_error_deg": 121.687,
+            "goal_bearing_reference_deg": 1.925,
+            "marker_id": "M10",
+            "point_norm": [
+              0.5023474178403756,
+              0.5654596100278552
+            ],
+            "point_px": [
+              321,
+              203
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -120.0,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 4,
+            "view_type_hint": "left"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -59.902,
+            "candidate_ref": "px_v05_r1_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 1.3935294960532874,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": -61.827,
+            "goal_bearing_error_deg": 61.827,
+            "goal_bearing_reference_deg": 1.925,
+            "marker_id": "M11",
+            "point_norm": [
+              0.5007824726134585,
+              0.7047353760445683
+            ],
+            "point_px": [
+              320,
+              253
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -60.0,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 5,
+            "view_type_hint": "left"
+          },
+          {
+            "avoid": false,
+            "bearing_deg_robot": -59.789,
+            "candidate_ref": "px_v05_r2_c0",
+            "candidate_type": "pixel_waypoint",
+            "distance_m": 2.82523901615281,
+            "executable": true,
+            "goal_alignment": "detour",
+            "goal_bearing_delta_deg": -61.714,
+            "goal_bearing_error_deg": 61.714,
+            "goal_bearing_reference_deg": 1.925,
+            "marker_id": "M12",
+            "point_norm": [
+              0.5023474178403756,
+              0.5738161559888579
+            ],
+            "point_px": [
+              321,
+              206
+            ],
+            "reason": "marked RGB waypoint; VLM must verify visible navigable floor",
+            "relative_heading_deg": -60.0,
+            "requires_rgb_verification": false,
+            "rgb_point_verification_passed": true,
+            "source": "rgb_pixel_candidates_v1",
+            "status": "rgb_point_verified",
+            "view_id": 5,
+            "view_type_hint": "left"
+          }
+        ],
+        "excluded_candidates": [],
+        "schema_version": "sensor_goal_candidates_v1",
+        "source_stamp_ns": 1789303544734921746,
+        "view_id": null
+      },
+      "robot_state": {
+        "heading_rad": -2.022498,
+        "map_xy": [
+          6.1043,
+          0.0401
+        ],
+        "position_xyz": [
+          6.1043,
+          0.0401,
+          0.3105
+        ]
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "task": {
+        "coarse_goal": {
+          "camera_relation": {
+            "bearing_in_fov": true,
+            "estimated_visible": true,
+            "in_front_camera_frame": true,
+            "preprocess_method": "habitat_pointgoal_polar_sensor"
+          },
+          "distance_m": 2.794,
+          "map_xy": null,
+          "relative_bearing_deg": -1.925,
+          "success_distance_m": 1.0,
+          "type": "pointgoal_with_gps_compass"
+        },
+        "instruction": "move toward the polar PointGoal and stop only inside its success distance",
+        "target_object": null,
+        "task_mode": "PointNav"
+      }
+    },
+    "model_output": {
+      "action": "go",
+      "confidence": "high",
+      "control": {
+        "vlm_control_mode": "resume_async_navigation",
+        "rotate_yaw_deg": 0,
+        "ttl_ms": 5000
+      },
+      "fine_goal": {
+        "valid": true,
+        "view_id": 4,
+        "view_type": "left",
+        "point_px": [
+          321,
+          249
+        ],
+        "point_norm": [
+          0.5023474178403756,
+          0.6935933147632312
+        ],
+        "projected_map_xy": [
+          6.1043,
+          0.0401
+        ],
+        "navigability": "unknown"
+      },
+      "memory_ops": [],
+      "intent_candidate_refs": [
+        "px_v04_r1_c0"
+      ],
+      "observation_request": null,
+      "reasoning": {
+        "decision_reason": "Go to left waypoint px_v04_r1_c0. Safe, executable, and aligns with goal bearing.",
+        "goal_reason": "PointGoal at 2.794m, bearing -1.925°. Candidate px_v04_r1_c0 (1.39m, -119.668°) is safe and executable.",
+        "failure_mode": null,
+        "short_text": "Go to left waypoint px_v04_r1_c0. Safe, executable, and aligns with goal bearing."
+      },
+      "schema_version": "nav_vlm_waypoint_v1",
+      "selected_candidate_ref": "px_v04_r1_c0",
+      "selected_image_point": [
+        321,
+        249
+      ],
+      "selected_view_id": 4,
+      "selected_view_type": "left",
+      "strategic_state": {
+        "current_room": "unknown",
+        "navigation_intent": "approach_target",
+        "reason_code": "safe_executable_candidate_found",
+        "room_search_status": "target_found",
+        "selected_exit_ref": null,
+        "target_evidence": "none"
+      }
+    },
+    "apply_report": {
+      "action": "go",
+      "apply_pose_stamp_ns": 1789303560193851721,
+      "apply_reason": "reprojected_navigation_goal",
+      "apply_status": "admit",
+      "apply_translation_m": 0.0750248865525055,
+      "apply_yaw_deg": -119.85518976551869,
+      "calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "clock_source": "CLOCK_MONOTONIC",
+      "compensated_goal_xy": [
+        1.3207611593614093,
+        -0.02760890340527165
+      ],
+      "decision_age_ns": 12038666,
+      "decision_id": "8cc79bd46b707aa64c8d476b",
+      "decision_stamp_ns": 1789303560226862512,
+      "episode_id": "robot-pointnav-15746a44d3ab-1",
+      "event": "apply_report",
+      "event_monotonic_ns": 11301306646162,
+      "extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "goal_compensation_frame": "post_selected_view_preturn",
+      "guard_translation_m": 0.0750248865525055,
+      "guard_yaw_deg": 0.14481023448131125,
+      "max_apply_translation_m": 0.05,
+      "max_apply_yaw_deg": 5.0,
+      "mode": "async_true",
+      "navigation_target_source": "selected_world_waypoint",
+      "navigation_target_xy": [
+        1.3207611593614093,
+        -0.02760890340527165
+      ],
+      "now_ns": 1789303560238901178,
+      "observation_camera_pitch_deg": 0.0,
+      "observation_stamp_ns": 1789303536733650035,
+      "original_selected_image_point": [
+        321,
+        249
+      ],
+      "pose_compensation_status": "reprojected",
+      "pose_guard_frame": "post_selected_view_preturn",
+      "post_preturn_command_pending": true,
+      "post_preturn_pose": {
+        "x_m": 6.098688488790078,
+        "y_m": 0.05623701550593996,
+        "yaw_deg": 6.228971063095281
+      },
+      "post_preturn_pose_kind": "predicted_discrete_command",
+      "post_preturn_source_apply_stamp_ns": 1789303560193851721,
+      "queue_wait_ns": 0,
+      "queued_at_ns": 1789303560238901178,
+      "reason": "immediate_decision",
+      "reprojected_image_point": [
+        321,
+        249
+      ],
+      "reprojection_image_frame": "selected_observation",
+      "reprojection_image_stamp_ns": 1789303536733650035,
+      "reprojection_status": "projectable",
+      "scene_id": "local-odometry",
+      "selected_goal_calibration_fingerprint": "6eb3368edfe528d786a911e2e36f553e9b4d32621e7953fe9c7ab3afbbb51576",
+      "selected_goal_extrinsic_fingerprint": "660c6ddfef89aff0fe9384523915bcd54627ba791596e603bf141094aa98d68f",
+      "selected_goal_pose_stamp_ns": 1789303536733650035,
+      "selected_goal_xy": [
+        1.394082576262748,
+        -0.008074622798327866
+      ],
+      "selected_view_alignment_source": "selected_view_capture_pose",
+      "selected_view_already_rotated_yaw_deg": -0.14481023448131225,
+      "selected_view_commanded_preturn_yaw_deg": -120.0,
+      "selected_view_remaining_yaw_deg": -119.85518976551869,
+      "selected_view_requested_yaw_deg": -120.0,
+      "sync_action_budget_steps": 0,
+      "sync_predicted_pose": {
+        "x_m": 6.10220896986213,
+        "y_m": 0.03988742987496865,
+        "yaw_deg": 5.752303417936495
+      },
+      "sync_prediction_source": "executed_action_budget",
+      "sync_prediction_status": "residual_below_threshold",
+      "sync_residual_pose": {
+        "x_m": 0.001725733808896698,
+        "y_m": -0.016635040730457303,
+        "yaw_deg": -0.4766676451587861
+      },
+      "sync_residual_role": "tracking_error_not_navigation_target",
+      "sync_residual_translation_clamped": false,
+      "sync_residual_translation_gain": 1.0,
+      "sync_residual_yaw_clamped": false,
+      "sync_residual_yaw_gain": 1.0,
+      "sync_smoothed_residual_goal_xy": [
+        0.001725733808896698,
+        -0.016635040730457303
+      ],
+      "sync_smoothed_residual_yaw_deg": -0.4766676451587861,
+      "target_object": "pointgoal",
+      "task_type": "PointNav"
+    },
+    "outcome": null
+  }
+]
