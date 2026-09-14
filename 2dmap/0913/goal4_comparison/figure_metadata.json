@@ -1,0 +1,167 @@
+{
+  "ours_run": "full-goal-4-009",
+  "pixnav_run": "direct_goal-goal-4-004",
+  "goal_label": "4",
+  "goal_labels_displayed": [
+    "4"
+  ],
+  "goal_xy_m": [
+    10.613861243952254,
+    -3.886405544069355
+  ],
+  "map_sha256": "38348c5458ce632851c628f53a51f3fee40cf1678e5fb982361bd1f50fb16ad9",
+  "scale_bar_m": 1.0,
+  "scale_bar_map_pixels": 20,
+  "equal_axis_scale": true,
+  "limits_m": [
+    -2.0,
+    14.1,
+    -7.2,
+    4.5
+  ],
+  "frame": "episode_start / fixed_start; x forward and y left",
+  "map_overlay": "Identity overlay and pixel registration of the requested 0913 template; no new ICP registration.",
+  "geometry_modification": "None: all exported pre-stop odom XY samples plotted in order; no smoothing, warping, or wall edits.",
+  "goal_heading_controlled": false,
+  "independent_ground_truth": false,
+  "paper_spl": null,
+  "selection_reason": "Visible sustained leftward bend after initial forward travel, with a longer bent segment than 006; selected qualitatively from all five runs.",
+  "candidates": [
+    {
+      "run": "direct_goal-goal-4-002",
+      "selected": false,
+      "final_goal_distance_m": 7.46298360824585,
+      "duration_s": 35.39607037799988,
+      "path_length_10hz_m": 4.908258956244584,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-003",
+      "selected": false,
+      "final_goal_distance_m": 5.661212921142578,
+      "duration_s": 59.33990597799993,
+      "path_length_10hz_m": 7.058639332172709,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-004",
+      "selected": true,
+      "final_goal_distance_m": 9.3451509475708,
+      "duration_s": 70.53503043700039,
+      "path_length_10hz_m": 6.005540031470449,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-005",
+      "selected": false,
+      "final_goal_distance_m": 8.790611267089844,
+      "duration_s": 58.90026391399988,
+      "path_length_10hz_m": 3.730877812615774,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      }
+    },
+    {
+      "run": "direct_goal-goal-4-006",
+      "selected": false,
+      "final_goal_distance_m": 9.466014862060547,
+      "duration_s": 27.479006247999678,
+      "path_length_10hz_m": 3.7293541689550866,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      }
+    }
+  ],
+  "selected_metrics": {
+    "full-goal-4-009": {
+      "final_goal_distance_m": 0.9839638471603394,
+      "result_reason": "GOAL_DISTANCE_REACHED",
+      "duration_s": 302.3542648999992,
+      "path_length_10hz_m": 14.96849839810426,
+      "plotted_samples": 5359,
+      "plotted_endpoint_xy_m": [
+        10.13706277058066,
+        -3.040014573117579
+      ],
+      "field_report": {
+        "status": "awaiting_field_report",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": null
+      },
+      "navigation_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c"
+    },
+    "direct_goal-goal-4-004": {
+      "final_goal_distance_m": 9.3451509475708,
+      "result_reason": "PIXNAV_TERMINAL_BEFORE_GOAL",
+      "duration_s": 70.53503043700039,
+      "path_length_10hz_m": 6.005540031470449,
+      "plotted_samples": 1243,
+      "plotted_endpoint_xy_m": [
+        3.9782996924514324,
+        2.694080070122591
+      ],
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98"
+    }
+  },
+  "caveats": [
+    "Ours arrival is the logged 1 m odometry criterion; physical arrival is unverified in its field report.",
+    "The selected PixelNav run has unknown intervention/contact/obstruction status.",
+    "The two runs use different navigation-image revisions and are selected qualitative examples."
+  ]
+}

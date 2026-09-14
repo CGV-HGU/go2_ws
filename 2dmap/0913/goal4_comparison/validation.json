@@ -1,0 +1,29 @@
+{
+  "checked_at_local": "2026-09-14T19:07:58.764399",
+  "raw_event_comparison": {
+    "full-goal-4-009": {
+      "plotted_points": 5359,
+      "max_xy_difference_from_raw_events_m": 0.0,
+      "max_time_difference_s": 0.0,
+      "passed": true
+    },
+    "direct_goal-goal-4-004": {
+      "plotted_points": 1243,
+      "max_xy_difference_from_raw_events_m": 0.0,
+      "max_time_difference_s": 0.0,
+      "passed": true
+    }
+  },
+  "scale_bar_m": 1.0,
+  "equal_axis_scale": true,
+  "goal_labels_displayed": [
+    "4"
+  ],
+  "png_pixels": [
+    3019,
+    2443
+  ],
+  "all_input_files_unchanged": true,
+  "previous_manifest_hash_checks": 38,
+  "passed": true
+}
