@@ -1,0 +1,182 @@
+[
+  {
+    "file": "01_videos/direct_goal_pixnav/pixnav_goal4_005_rgb_1x.mp4",
+    "bytes": 18186860
+  },
+  {
+    "file": "01_videos/direct_goal_pixnav/pixnav_goal4_005_rgb_4x.mp4",
+    "bytes": 6195709
+  },
+  {
+    "file": "01_videos/escape_nav/escape_goal4_009_1x.mp4",
+    "bytes": 67204999
+  },
+  {
+    "file": "01_videos/escape_nav/escape_goal4_009_rgb_vlm_1x.mp4",
+    "bytes": 54623219
+  },
+  {
+    "file": "01_videos/escape_nav/escape_goal4_009_rgb_vlm_4x.mp4",
+    "bytes": 19678724
+  },
+  {
+    "file": "02_topview/README.md",
+    "bytes": 1299
+  },
+  {
+    "file": "02_topview/fig6_goal4_ours_vs_pixnav_run005.pdf",
+    "bytes": 467567
+  },
+  {
+    "file": "02_topview/fig6_goal4_ours_vs_pixnav_run005.png",
+    "bytes": 181761
+  },
+  {
+    "file": "02_topview/fig6_goal4_ours_vs_pixnav_run005.svg",
+    "bytes": 294772
+  },
+  {
+    "file": "02_topview/map_background.png",
+    "bytes": 6245
+  },
+  {
+    "file": "02_topview/map_coordinates.json",
+    "bytes": 134
+  },
+  {
+    "file": "03_trajectories/README.md",
+    "bytes": 1547
+  },
+  {
+    "file": "03_trajectories/ours_trajectory.csv",
+    "bytes": 1042979
+  },
+  {
+    "file": "03_trajectories/pixnav_frame_timeline.csv",
+    "bytes": 80038
+  },
+  {
+    "file": "03_trajectories/pixnav_trajectory.csv",
+    "bytes": 199555
+  },
+  {
+    "file": "04_vlm_decisions/README.md",
+    "bytes": 1008
+  },
+  {
+    "file": "04_vlm_decisions/decision-timeline.json",
+    "bytes": 19143
+  },
+  {
+    "file": "04_vlm_decisions/decision_01_request.jpg",
+    "bytes": 31172
+  },
+  {
+    "file": "04_vlm_decisions/decision_02_request.jpg",
+    "bytes": 28142
+  },
+  {
+    "file": "04_vlm_decisions/decision_03_request.jpg",
+    "bytes": 29574
+  },
+  {
+    "file": "04_vlm_decisions/decision_04_request.jpg",
+    "bytes": 30194
+  },
+  {
+    "file": "04_vlm_decisions/decision_05_request.jpg",
+    "bytes": 31050
+  },
+  {
+    "file": "04_vlm_decisions/decision_06_request.jpg",
+    "bytes": 28336
+  },
+  {
+    "file": "04_vlm_decisions/decision_07_request.jpg",
+    "bytes": 28623
+  },
+  {
+    "file": "04_vlm_decisions/decision_08_request.jpg",
+    "bytes": 28446
+  },
+  {
+    "file": "04_vlm_decisions/decision_09_request.jpg",
+    "bytes": 31698
+  },
+  {
+    "file": "04_vlm_decisions/decision_10_request.jpg",
+    "bytes": 28956
+  },
+  {
+    "file": "04_vlm_decisions/decision_11_request.jpg",
+    "bytes": 30152
+  },
+  {
+    "file": "04_vlm_decisions/decision_12_request.jpg",
+    "bytes": 29899
+  },
+  {
+    "file": "04_vlm_decisions/decision_13_request.jpg",
+    "bytes": 34252
+  },
+  {
+    "file": "04_vlm_decisions/decision_14_request.jpg",
+    "bytes": 33660
+  },
+  {
+    "file": "04_vlm_decisions/decision_15_request.jpg",
+    "bytes": 32595
+  },
+  {
+    "file": "04_vlm_decisions/decision_16_request.jpg",
+    "bytes": 25647
+  },
+  {
+    "file": "04_vlm_decisions/decision_17_request.jpg",
+    "bytes": 24134
+  },
+  {
+    "file": "04_vlm_decisions/decision_18_request.jpg",
+    "bytes": 25249
+  },
+  {
+    "file": "04_vlm_decisions/decision_19_request.jpg",
+    "bytes": 24651
+  },
+  {
+    "file": "04_vlm_decisions/decision_20_request.jpg",
+    "bytes": 29264
+  },
+  {
+    "file": "04_vlm_decisions/decision_21_request.jpg",
+    "bytes": 25289
+  },
+  {
+    "file": "05_metadata/escape_video_provenance.json",
+    "bytes": 2618
+  },
+  {
+    "file": "05_metadata/file-locations.json",
+    "bytes": 8746
+  },
+  {
+    "file": "05_metadata/metadata.json",
+    "bytes": 3401
+  },
+  {
+    "file": "05_metadata/pixnav_video_provenance.json",
+    "bytes": 1390
+  },
+  {
+    "file": "05_metadata/pixnav_video_validation.json",
+    "bytes": 898
+  },
+  {
+    "file": "05_metadata/verification.json",
+    "bytes": 1603
+  },
+  {
+    "file": "README.md",
+    "bytes": 5788
+  }
+]

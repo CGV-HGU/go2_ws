@@ -1,0 +1,32 @@
+{
+  "source_episode": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-005",
+  "source_topic": "/robot_nav/sensors/front_camera/image_raw",
+  "source_bag": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-recaptured5-20260914/episodes/direct_goal-goal-4-005/native-inputs",
+  "start_utc": "2026-09-13T15:47:49.777489+00:00",
+  "stop_utc": "2026-09-13T15:48:48.677735+00:00",
+  "source_first_receipt_unix_ns": 1789314468833309678,
+  "source_last_receipt_unix_ns": 1789314530127135013,
+  "video_zero": "Goal publication; matches pixnav_trajectory.csv t_s origin",
+  "source_frames_read": 877,
+  "unique_source_frames_in_output": 823,
+  "output_frames": 907,
+  "output_fps": 15,
+  "output_duration_s": 60.46666666666667,
+  "episode_duration_s": 58.90026391399988,
+  "stop_video_time_s": 58.900246272000004,
+  "maximum_source_receipt_gap_s": 0.12776082600000002,
+  "timing": "Original bag receipt timestamps, previous-frame hold at 15fps; no pauses removed and no motion interpolation",
+  "output_resolution": [
+    1280,
+    720
+  ],
+  "resize": false,
+  "crop": false,
+  "audio": false,
+  "external_robot_video": false,
+  "navigation_mode": "direct_goal",
+  "vlm_used": false,
+  "result": "PIXNAV_TERMINAL_BEFORE_GOAL",
+  "source_modified": false,
+  "new_hashes_computed": false
+}

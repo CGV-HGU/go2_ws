@@ -1,0 +1,54 @@
+{
+  "episode": "full-goal-4-009",
+  "goal_unix": 1789304368.406394,
+  "stop_unix": 1789304670.760638,
+  "frames_1x": 4558,
+  "frames_4x": 1140,
+  "fps": 15,
+  "navigation_responses": 21,
+  "rgb_shape": [
+    1280,
+    720
+  ],
+  "output_shape": [
+    1920,
+    1080
+  ],
+  "clock_mapping_offset_s": 1789292258.9379637,
+  "clock_anchor_count": 58,
+  "clock_anchor_range_s": 0.00042724609375,
+  "timing": "Video t=0 is goal_published UTC. RGB uses original bag receipt timing. Trace CLOCK_MONOTONIC mapped using median simultaneous now_ns anchors. Responses shown only after validation/discard event. 4x selects every fourth frame; no pauses removed.",
+  "annotation": "Exact logged VLM decision_reason, original selected request image and pixel; not model-thought reconstruction. Received, queued, admitted, discarded states separated. Commands show published intent/completion, not independent physical measurements.",
+  "source_files": [
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-009/full5m/policy-trace/vlm_calls.jsonl",
+      "bytes": 7270704,
+      "sha256": "455fd1ac897c6a4f655d7902802843892e83b5dc116ec6d4b676150b68de2852"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-009/full5m/policy-trace/async_decision_trace.jsonl",
+      "bytes": 153411,
+      "sha256": "c807d2ddf9262be453b13561ee87b525c5dade29dba7ed1e733a4303056343de"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-009/full5m/policy-trace/pixnav_apply_trace.jsonl",
+      "bytes": 100834,
+      "sha256": "8de11c76c50db5a9d2b206919d538378537c25baf69855056fb9f44949410e4e"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-009/full5m/policy-trace/pixnav_handoff_trace.jsonl",
+      "bytes": 117093,
+      "sha256": "61f3a27704484b10c664f52846176f7f629beb9729d5b0381f01f9e70f1bee85"
+    },
+    {
+      "path": "/home/unitree/s2e-vlm-async-framework-minimal/.local-data/recording-five-goals-20260913/episodes/full-goal-4-009/full5m/runtime/events.jsonl",
+      "bytes": 14608495,
+      "sha256": "7aaa23f65146956624f1fd8ff3caa28a7d53a24216b1ee9697ddea9d86996b87"
+    },
+    {
+      "path": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/escape_goal4_009_1x.mp4",
+      "bytes": 67204999,
+      "sha256": "456bfdc29d2cc917dfd4f1873fc002d078800039112638a4108c3a071959e835"
+    }
+  ]
+}

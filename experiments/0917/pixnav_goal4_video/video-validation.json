@@ -1,0 +1,44 @@
+{
+  "pixnav_goal4_005_rgb_1x.mp4": {
+    "probe": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "avg_frame_rate": "15/1",
+          "nb_frames": "907"
+        }
+      ],
+      "format": {
+        "duration": "60.467000",
+        "size": "18186860"
+      }
+    },
+    "full_decode_exit_code": 0,
+    "decode_error": "",
+    "decode_seconds": 3.51
+  },
+  "pixnav_goal4_005_rgb_4x.mp4": {
+    "probe": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "avg_frame_rate": "15/1",
+          "nb_frames": "229"
+        }
+      ],
+      "format": {
+        "duration": "15.267000",
+        "size": "6195709"
+      }
+    },
+    "full_decode_exit_code": 0,
+    "decode_error": "",
+    "decode_seconds": 1.09
+  }
+}
