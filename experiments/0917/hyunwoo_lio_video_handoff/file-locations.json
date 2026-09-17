@@ -1,0 +1,188 @@
+[
+  {
+    "file": "escape_goal4_009_rgb_vlm_4x.mp4",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/escape_goal4_009_rgb_vlm_4x.mp4",
+    "bytes": 19678724,
+    "shared_storage": true
+  },
+  {
+    "file": "escape_goal4_009_rgb_vlm_1x.mp4",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/escape_goal4_009_rgb_vlm_1x.mp4",
+    "bytes": 54623219,
+    "shared_storage": true
+  },
+  {
+    "file": "escape_goal4_009_1x.mp4",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/escape_goal4_009_1x.mp4",
+    "bytes": 67204999,
+    "shared_storage": false
+  },
+  {
+    "file": "decision-timeline.json",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision-timeline.json",
+    "bytes": 19143,
+    "shared_storage": true
+  },
+  {
+    "file": "fig6_goal4_ours_vs_pixnav_run005.png",
+    "source": "/home/unitree/go2_ws_antarctica/2dmap/0913/paper/fig6_goal4_ours_vs_pixnav_run005.png",
+    "bytes": 181761,
+    "shared_storage": true
+  },
+  {
+    "file": "fig6_goal4_ours_vs_pixnav_run005.svg",
+    "source": "/home/unitree/go2_ws_antarctica/2dmap/0913/paper/fig6_goal4_ours_vs_pixnav_run005.svg",
+    "bytes": 294772,
+    "shared_storage": true
+  },
+  {
+    "file": "fig6_goal4_ours_vs_pixnav_run005.pdf",
+    "source": "/home/unitree/go2_ws_antarctica/2dmap/0913/paper/fig6_goal4_ours_vs_pixnav_run005.pdf",
+    "bytes": 467567,
+    "shared_storage": true
+  },
+  {
+    "file": "ours_trajectory.csv",
+    "source": "/home/unitree/go2_ws_antarctica/2dmap/0913/paper/goal4_run005/ours_trajectory.csv",
+    "bytes": 1042979,
+    "shared_storage": true
+  },
+  {
+    "file": "pixnav_trajectory.csv",
+    "source": "/home/unitree/go2_ws_antarctica/2dmap/0913/paper/goal4_run005/pixnav_trajectory.csv",
+    "bytes": 199555,
+    "shared_storage": true
+  },
+  {
+    "file": "metadata.json",
+    "source": "/home/unitree/go2_ws_antarctica/2dmap/0913/paper/goal4_run005/metadata.json",
+    "bytes": 3401,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_01_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_01_request.jpg",
+    "bytes": 31172,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_02_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_02_request.jpg",
+    "bytes": 28142,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_03_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_03_request.jpg",
+    "bytes": 29574,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_04_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_04_request.jpg",
+    "bytes": 30194,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_05_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_05_request.jpg",
+    "bytes": 31050,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_06_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_06_request.jpg",
+    "bytes": 28336,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_07_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_07_request.jpg",
+    "bytes": 28623,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_08_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_08_request.jpg",
+    "bytes": 28446,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_09_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_09_request.jpg",
+    "bytes": 31698,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_10_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_10_request.jpg",
+    "bytes": 28956,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_11_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_11_request.jpg",
+    "bytes": 30152,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_12_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_12_request.jpg",
+    "bytes": 29899,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_13_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_13_request.jpg",
+    "bytes": 34252,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_14_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_14_request.jpg",
+    "bytes": 33660,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_15_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_15_request.jpg",
+    "bytes": 32595,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_16_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_16_request.jpg",
+    "bytes": 25647,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_17_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_17_request.jpg",
+    "bytes": 24134,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_18_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_18_request.jpg",
+    "bytes": 25249,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_19_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_19_request.jpg",
+    "bytes": 24651,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_20_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_20_request.jpg",
+    "bytes": 29264,
+    "shared_storage": true
+  },
+  {
+    "file": "decision_21_request.jpg",
+    "source": "/home/unitree/go2_ws_antarctica/experiments/0916/goal4_video/vlm_annotated/decision_21_request.jpg",
+    "bytes": 25289,
+    "shared_storage": true
+  }
+]

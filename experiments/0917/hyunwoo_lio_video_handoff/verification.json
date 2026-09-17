@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-09-17T18:03:43.979590+09:00",
+  "videos_full_decoded": {
+    "escape_goal4_009_1x.mp4": {
+      "exit_code": 0,
+      "decode_seconds": 16.61
+    },
+    "escape_goal4_009_rgb_vlm_1x.mp4": {
+      "exit_code": 0,
+      "decode_seconds": 22.03
+    },
+    "escape_goal4_009_rgb_vlm_4x.mp4": {
+      "exit_code": 0,
+      "decode_seconds": 5.8,
+      "width": 1920,
+      "height": 1080,
+      "duration_s": 76.0
+    }
+  },
+  "trajectory_rows": {
+    "ours": 5359,
+    "pixnav": 1028
+  },
+  "trajectory_nonfinite_values": 0,
+  "trajectory_backward_time_steps": 0,
+  "vlm_decisions": 21,
+  "vlm_request_images_present_and_readable": 21,
+  "svg_external_image_dependencies": 0,
+  "pixelnav_mp4_in_bundle": false,
+  "external_robot_video_in_bundle": false,
+  "new_hashes_computed": false
+}

@@ -1,0 +1,698 @@
+[
+  {
+    "number": 1,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:0",
+    "decision_id": "c4ace1094dde9065274c7756",
+    "available_t": 36.775418281555176,
+    "latency_s": 2.6853347300002497,
+    "observation_t": 9.546606063842773,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_01_request.jpg",
+    "image_sha256": "7a62b5f97db30f4d9256570eed55205bb292e0d48238a44f9f6ebc74aebc9fe0",
+    "pixel": [
+      320,
+      222
+    ],
+    "action": "go",
+    "candidate": "px_v00_r0_c0",
+    "reason": "Go to nearest aligned waypoint",
+    "events": [
+      {
+        "t": 36.775418281555176,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 36.835896730422974,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 2,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:1",
+    "decision_id": "fea1dcdae66d28d122bdabd4",
+    "available_t": 42.65994453430176,
+    "latency_s": 2.6133786650007096,
+    "observation_t": 38.534605979919434,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_02_request.jpg",
+    "image_sha256": "99cfb4d77051d0937666acabddfcb218a8b74efd527057ca03365f19e6be1b48",
+    "pixel": [
+      385,
+      193
+    ],
+    "action": "go",
+    "candidate": "px_v00_r1_c2",
+    "reason": "px_v00_r1_c2 is best aligned (7.3°) and executable",
+    "events": [
+      {
+        "t": 42.65994453430176,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 42.67718863487244,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 43.846882343292236,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 3,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:2",
+    "decision_id": "eedcd018d7afe77c01e1a5b1",
+    "available_t": 49.609484910964966,
+    "latency_s": 2.547112872998696,
+    "observation_t": 45.39960598945618,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_03_request.jpg",
+    "image_sha256": "afafcac1678bfa2ca240cbdec0c8f20644d5ff0b15566ea2df6238bc3b1aa2f0",
+    "pixel": [
+      322,
+      191
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c0",
+    "reason": "Go to verified waypoint px_v00_r2_c0",
+    "events": [
+      {
+        "t": 49.609484910964966,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 49.633785247802734,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 56.68984007835388,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 4,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:3",
+    "decision_id": "4f8d598dcacb875b3193760c",
+    "available_t": 64.18725633621216,
+    "latency_s": 2.614244360000157,
+    "observation_t": 59.81360602378845,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_04_request.jpg",
+    "image_sha256": "5f4ad3594df9d7064651260565add918a25a54302a1388655a3633563140ca90",
+    "pixel": [
+      381,
+      184
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "Go to px_v00_r2_c2 (rank 1, aligned, executable).",
+    "events": [
+      {
+        "t": 64.18725633621216,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 64.23159646987915,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      }
+    ]
+  },
+  {
+    "number": 5,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:4",
+    "decision_id": "4df55db7c80ae3e2a67373db",
+    "available_t": 90.0855975151062,
+    "latency_s": 2.8202358309990814,
+    "observation_t": 65.5646059513092,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_05_request.jpg",
+    "image_sha256": "b9da1341728f2aba90f94c3b6d554bbae9ebd6e560483cc11aefaba7751d7f5b",
+    "pixel": [
+      379,
+      183
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "px_v00_r2_c2 is safe, executable, and best aligned to goal (rank 1).",
+    "events": [
+      {
+        "t": 90.0855975151062,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 90.12042832374573,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 6,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:5",
+    "decision_id": "1a484741a742f063d8b9ee58",
+    "available_t": 95.86504077911377,
+    "latency_s": 2.9073153950012056,
+    "observation_t": 91.40160608291626,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_06_request.jpg",
+    "image_sha256": "8104745067f4d8e9972a6d6fe20f56c989840832155007327536655831e00fe6",
+    "pixel": [
+      382,
+      200
+    ],
+    "action": "go",
+    "candidate": "px_v00_r1_c2",
+    "reason": "Go to px_v00_r1_c2 (M06) as best aligned safe candidate (rank 2, 3.09° error, 4.02m).",
+    "events": [
+      {
+        "t": 95.86504077911377,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 95.8850622177124,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 96.58197212219238,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 7,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:6",
+    "decision_id": "407e3623e8a0ebf4452e0a5b",
+    "available_t": 101.93915748596191,
+    "latency_s": 2.5555996889997914,
+    "observation_t": 97.9156060218811,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_07_request.jpg",
+    "image_sha256": "f9741867c3a66f1b752c49619a55b8f2b6b5f53eb4c0f42107d338f12fdb0863",
+    "pixel": [
+      379,
+      186
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "Best executable candidate px_v00_r2_c2 is safe and aligned with goal.",
+    "events": [
+      {
+        "t": 101.93915748596191,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 101.9529390335083,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 103.24071311950684,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 8,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:7",
+    "decision_id": "a53d4046361a87ffb3c92230",
+    "available_t": 109.0066785812378,
+    "latency_s": 2.675057933000062,
+    "observation_t": 104.78260588645935,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_08_request.jpg",
+    "image_sha256": "fd7482f96a382c2611841e5e735495e1800db1628fc840bc59a3164a8c17e9ee",
+    "pixel": [
+      382,
+      187
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "Best candidate px_v00_r2_c2 is safe, executable, and closest to goal.",
+    "events": [
+      {
+        "t": 109.0066785812378,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 109.05693078041077,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      }
+    ]
+  },
+  {
+    "number": 9,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:8",
+    "decision_id": "685d0de94287ad01d1b20d29",
+    "available_t": 132.38749384880066,
+    "latency_s": 3.0162381600002846,
+    "observation_t": 127.5296061038971,
+    "view_id": 3,
+    "view_type": "front",
+    "image": "decision_09_request.jpg",
+    "image_sha256": "0ec2c3fcf39dfa4d662b2deeadd77d9cb1a135f0c63926be6008df301641d418",
+    "pixel": [
+      390,
+      242
+    ],
+    "action": "go",
+    "candidate": "px_v03_r0_c2",
+    "reason": "px_v03_r0_c2 is the best executable candidate with minimal angular error and shortest distance to goal.",
+    "events": [
+      {
+        "t": 132.38749384880066,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 132.4372706413269,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 10,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:9",
+    "decision_id": "e930c42582c435e68344b1d6",
+    "available_t": 138.17564272880554,
+    "latency_s": 2.566822664999563,
+    "observation_t": 133.86260604858398,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_10_request.jpg",
+    "image_sha256": "9f45f6dc5022108e6e750ff394c3bd9c4c161af259dd30ef3c48757212b70008",
+    "pixel": [
+      379,
+      182
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "Best candidate px_v00_r2_c2 is executable, safe, and closest to goal.",
+    "events": [
+      {
+        "t": 138.17564272880554,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 138.186621427536,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 139.0463423728943,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 11,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:10",
+    "decision_id": "c42edb4397c0ca2cbc5c6d0f",
+    "available_t": 145.41020584106445,
+    "latency_s": 3.2564042160011013,
+    "observation_t": 140.53360605239868,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_11_request.jpg",
+    "image_sha256": "ce67b0fb18eac83bd7a162799efbc0cf2d1931167cc224926b47826728906b2c",
+    "pixel": [
+      383,
+      194
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "px_v00_r2_c2 is safe executable with rank 1, aligns with goal bearing -35.912°, distance 5.497m < goal 5.367m, visible floor path",
+    "events": [
+      {
+        "t": 145.41020584106445,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 145.4310359954834,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 145.71047067642212,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 12,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:11",
+    "decision_id": "d47fa2068a765e746c96f7f4",
+    "available_t": 151.71127104759216,
+    "latency_s": 2.690794331001598,
+    "observation_t": 147.27460598945618,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_12_request.jpg",
+    "image_sha256": "60c0230a88915e52a53107c7d6bbec860c3abf985abc0aa2786c78c7b443d660",
+    "pixel": [
+      383,
+      201
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c2",
+    "reason": "Best executable candidate px_v00_r2_c2 (rank 1) is safe and aligns with goal.",
+    "events": [
+      {
+        "t": 151.71127104759216,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 151.76820755004883,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      }
+    ]
+  },
+  {
+    "number": 13,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:12",
+    "decision_id": "32e81709982b11651d08d145",
+    "available_t": 188.47919988632202,
+    "latency_s": 3.153688782000245,
+    "observation_t": 183.5516059398651,
+    "view_id": 3,
+    "view_type": "front",
+    "image": "decision_13_request.jpg",
+    "image_sha256": "08ec882a336054ff0ae02a7698a72cc164a44b616dbc0bcb8b7df5d7c60bf803",
+    "pixel": [
+      396,
+      283
+    ],
+    "action": "go",
+    "candidate": "px_v03_r0_c2",
+    "reason": "Front view shows clear, unobstructed floor path to candidate px_v03_r0_c2. This candidate is executable, avoids obstacles, and aligns with the goal direction (8",
+    "events": [
+      {
+        "t": 188.47919988632202,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 188.51409673690796,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 14,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:13",
+    "decision_id": "27831f70bec2252d9bc08546",
+    "available_t": 199.53144121170044,
+    "latency_s": 2.7144298599996546,
+    "observation_t": 195.2226059436798,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_14_request.jpg",
+    "image_sha256": "7ef0b4f3875a8ae4092bc2969cd90c48a6c393c158acf4074b7235b685039a8d",
+    "pixel": [
+      385,
+      217
+    ],
+    "action": "go",
+    "candidate": "px_v00_r1_c2",
+    "reason": "Go to nearest safe waypoint (px_v00_r1_c2) with minimal bearing error and distance.",
+    "events": [
+      {
+        "t": 199.53144121170044,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 199.57264494895935,
+        "kind": "hold",
+        "label": "바로 적용하지 않고 추가 관측"
+      }
+    ]
+  },
+  {
+    "number": 15,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:14",
+    "decision_id": null,
+    "available_t": 204.29347777366638,
+    "latency_s": 3.0034608250007295,
+    "observation_t": 199.4396059513092,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_15_request.jpg",
+    "image_sha256": "1cd76666a86c0a285aa4208d7324c8147339ab8eac534a3625d24bcb4a0997bf",
+    "pixel": [
+      386,
+      221
+    ],
+    "action": "go",
+    "candidate": "px_v00_r1_c2",
+    "reason": "Go to px_v00_r1_c2 (rank 1, 2.4m, 11° right, near_goal, avoid=false, visible floor).",
+    "events": [
+      {
+        "t": 204.29347777366638,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 204.29347777366638,
+        "kind": "discard",
+        "label": "현재 계획 변경으로 폐기됨"
+      }
+    ]
+  },
+  {
+    "number": 16,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:15",
+    "decision_id": "61ea0b69c09436baa371b48a",
+    "available_t": 247.16255497932434,
+    "latency_s": 3.0915360300004977,
+    "observation_t": 207.51760601997375,
+    "view_id": 4,
+    "view_type": "front",
+    "image": "decision_16_request.jpg",
+    "image_sha256": "0ea3bd498da304e16746c89fed609078c0d344764758d64419dbb004bdcbc92f",
+    "pixel": [
+      320,
+      265
+    ],
+    "action": "go",
+    "candidate": "px_v04_r0_c0",
+    "reason": "px_v04_r0_c0 is aligned with goal (8.753° error) and executable.",
+    "events": [
+      {
+        "t": 247.16255497932434,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 247.18813848495483,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 17,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:16",
+    "decision_id": "235ef1b2d55deebeff73b792",
+    "available_t": 261.633873462677,
+    "latency_s": 2.6751433899989934,
+    "observation_t": 257.31760597229004,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_17_request.jpg",
+    "image_sha256": "59b8efdb2b76b873abe41072811c4a90fcd0643219ef7362b65b81c54abe4752",
+    "pixel": [
+      319,
+      178
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c0",
+    "reason": "px_v00_r2_c0 is executable, safe, and best aligned to goal.",
+    "events": [
+      {
+        "t": 261.633873462677,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 261.64584493637085,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 262.7422778606415,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 18,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:17",
+    "decision_id": "6d2b2a57e013240cd0e1c325",
+    "available_t": 268.65836668014526,
+    "latency_s": 2.792603973999576,
+    "observation_t": 264.27660608291626,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_18_request.jpg",
+    "image_sha256": "97463d757edb16eb64b8db1410685927fa2908ff651bc2ba980d8389b91b9e99",
+    "pixel": [
+      322,
+      206
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c0",
+    "reason": "Safe executable candidate px_v00_r2_c0 with avoid=false and goal_preference_rank=1 is visible and navigable. No rotation needed.",
+    "events": [
+      {
+        "t": 268.65836668014526,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 268.6774673461914,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 269.46494340896606,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 19,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:18",
+    "decision_id": "878b7480529ae9e1c9770340",
+    "available_t": 275.0464994907379,
+    "latency_s": 2.639258590999816,
+    "observation_t": 270.74560594558716,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_19_request.jpg",
+    "image_sha256": "7c3d5bfc61dfabd089113f89956453fce2e5710d4e4e58710ffbe162039d03a6",
+    "pixel": [
+      320,
+      206
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c0",
+    "reason": "Best candidate px_v00_r2_c0 is safe, executable, and aligned with goal.",
+    "events": [
+      {
+        "t": 275.0464994907379,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 275.0620439052582,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      }
+    ]
+  },
+  {
+    "number": 20,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:19",
+    "decision_id": "cf24c2dc35a1836834657c50",
+    "available_t": 296.0204131603241,
+    "latency_s": 2.802379769000254,
+    "observation_t": 277.55260610580444,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_20_request.jpg",
+    "image_sha256": "1b41068fef33145acb29ed39bb0499c9a6e690a235a2c7590d17fd722a4dcda5",
+    "pixel": [
+      321,
+      233
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c0",
+    "reason": "Candidate px_v00_r2_c0 is executable, safe, and aligned with the PointGoal (rank 1).",
+    "events": [
+      {
+        "t": 296.0204131603241,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 296.0575304031372,
+        "kind": "admit",
+        "label": "PixelNav에 채택됨"
+      }
+    ]
+  },
+  {
+    "number": 21,
+    "request_id": "robot-pointnav-0e4f6c18c333-1:20",
+    "decision_id": "9d97d3477d2630eb81362c32",
+    "available_t": 301.97267413139343,
+    "latency_s": 2.610121484998672,
+    "observation_t": 297.788605928421,
+    "view_id": 0,
+    "view_type": "front",
+    "image": "decision_21_request.jpg",
+    "image_sha256": "ad9037d13084db0e4d31195a864b0eccb9448d7dc33f5da3bff679b709d40107",
+    "pixel": [
+      321,
+      233
+    ],
+    "action": "go",
+    "candidate": "px_v00_r2_c0",
+    "reason": "Best candidate px_v00_r2_c0 is safe, executable, and closest to goal.",
+    "events": [
+      {
+        "t": 301.97267413139343,
+        "kind": "received",
+        "label": "판단 수신"
+      },
+      {
+        "t": 301.99600625038147,
+        "kind": "queue",
+        "label": "다음 동작 경계까지 대기"
+      },
+      {
+        "t": 302.36261892318726,
+        "kind": "discard",
+        "label": "새 판단으로 대체됨"
+      }
+    ]
+  }
+]

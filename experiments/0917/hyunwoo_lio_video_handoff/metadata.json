@@ -1,0 +1,93 @@
+{
+  "ours_run": "full-goal-4-009",
+  "pixnav_run": "direct_goal-goal-4-005",
+  "goal_label": "4",
+  "goal_xy_m": [
+    10.613861243952254,
+    -3.886405544069355
+  ],
+  "selected_by": "User requested candidate run 005, not Goal 5.",
+  "selected_metrics": [
+    {
+      "run": "full-goal-4-009",
+      "campaign": "original5",
+      "reason": "GOAL_DISTANCE_REACHED",
+      "final_goal_distance_m": 0.9839638471603394,
+      "duration_s": 302.3542648999992,
+      "path_length_10hz_m": 14.96849839810426,
+      "samples": 5359,
+      "field_report": {
+        "status": "awaiting_field_report",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": null
+      },
+      "navigation_image": "sha256:21b6e54f2b21cc523229d1a1b8b6ccbc72e2c249b5fd6aed474b7c1ada1e388c"
+    },
+    {
+      "run": "direct_goal-goal-4-005",
+      "campaign": "recaptured5",
+      "reason": "PIXNAV_TERMINAL_BEFORE_GOAL",
+      "final_goal_distance_m": 8.790611267089844,
+      "duration_s": 58.90026391399988,
+      "path_length_10hz_m": 3.730877812615774,
+      "samples": 1028,
+      "field_report": {
+        "status": "received_partial",
+        "direct_intervention": null,
+        "contact": null,
+        "obstruction": null,
+        "physical_within_goal_radius_verified": null,
+        "physical_final_distance_m": null,
+        "measurement_method": null,
+        "operator_comment": "0"
+      },
+      "navigation_image": "sha256:8a36ebd1ee5a03f7b0a3446c138e0989f67536db9c11c70a1c27e116f32e0e98"
+    }
+  ],
+  "paper_style_reference_commit": "2ccd9e7761bb3e29384a8c4f3d02056e855cddd5",
+  "map_source": "2dmap/0913/2d_clean_publication.png",
+  "map_overlay": "Same contextual marked-start overlay as the original 0913 template; no new ICP registration.",
+  "map_processing": "Existing free mask unchanged, including all holes; no new morphology or hand-drawn geometry.",
+  "trajectory_processing": "All pre-stop exported odometry points in order, no reflection, smoothing, decimation or offset.",
+  "scale": {
+    "complete_footprint_with_margin_xy_m": [
+      11.909999999999995,
+      3.105428571428571,
+      13.089999999999998,
+      3.8888571428571437
+    ],
+    "inspected_map_cells": 442,
+    "overlapping_white_cells": 0,
+    "backing_rectangle": false,
+    "same_horizontal_vertical_scale": true,
+    "scale_length_m": 1.0,
+    "scale_length_original_map_pixels": 20.0
+  },
+  "default_paper_basename": "fig6_goal4_ours_vs_pixnav_paper",
+  "explicit_run_basename": "fig6_goal4_ours_vs_pixnav_run005",
+  "goal_admission": {
+    "goal_published": true,
+    "apply_status": "admit",
+    "reprojected_image_point": [
+      433,
+      175
+    ],
+    "navigation_target_xy": [
+      10.613589171365659,
+      -3.887238186051862
+    ],
+    "meaning": "Goal 4 coordinate and its pixel projection were admitted; this does not prove target visibility or camera calibration accuracy."
+  },
+  "independent_ground_truth": false,
+  "spl": null,
+  "limitations": [
+    "Selected qualitative example, not a cohort statistic.",
+    "Field intervention/contact/obstruction are unconfirmed for both selected runs.",
+    "Navigation image revisions differ; the overlay is start-aligned odometry, not independent ground truth."
+  ]
+}
