@@ -1,5 +1,13 @@
 [
   {
+    "file": "00_먼저읽기.md",
+    "bytes": 2167
+  },
+  {
+    "file": "01_videos/README.md",
+    "bytes": 1296
+  },
+  {
     "file": "01_videos/direct_goal_pixnav/pixnav_goal4_005_rgb_1x.mp4",
     "bytes": 18186860
   },
@@ -177,6 +185,6 @@
   },
   {
     "file": "README.md",
-    "bytes": 5788
+    "bytes": 6238
   }
 ]

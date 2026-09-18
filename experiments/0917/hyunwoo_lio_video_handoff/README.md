@@ -1,21 +1,26 @@
 # 현우님 전달용 — Goal 4 영상·지도·궤적
 
+**바로 사용할 파일은 [00_먼저읽기.md](00_먼저읽기.md)에 모았습니다.**
+
 ESCAPE-Nav 성공 회차 **009**와 Direct Goal PixelNav 비교 회차 **005**를 같은 Goal 4 기준으로 모았습니다. 기존 LIO/오도메트리 주행 자료입니다. VIO 실험 결과가 아닙니다.
 
-**외부에서 로봇을 촬영한 휴대폰 영상은 별도로 받아야 합니다.** 이 폴더의 영상은 로봇 전방 카메라 영상입니다. 이번 폴더 재정리와 PixelNav 영상 추가 작업은 외부 전송·Git push하지 않았습니다.
+**외부에서 로봇을 촬영한 휴대폰 영상은 별도로 받아야 합니다.** 이 폴더의 영상은 로봇 전방 카메라 영상입니다. Git으로 전달할 MP4 포함 ZIP 두 개를 [06_download](06_download/README.md)에 준비했습니다. 푸시는 사용자가 진행합니다.
 
 ## 폴더 구성
 
 ```text
 hyunwoo_lio_video_handoff/
-├── README.md                         ← 먼저 읽기
+├── 00_먼저읽기.md                    ← 바로 쓸 영상·그림 안내
+├── README.md                         ← 전체 설명과 결과
 ├── 01_videos/
+│   ├── README.md                     ← 영상별 용도·해상도·길이
 │   ├── escape_nav/                   ← ESCAPE 영상 3개
 │   └── direct_goal_pixnav/            ← 원본 bag에서 추출한 PixelNav 영상 2개
 ├── 02_topview/                       ← 비교 그림 PNG·SVG·PDF, 궤적 없는 지도
 ├── 03_trajectories/                  ← 두 방법의 궤적 CSV, PixelNav 영상 프레임 시각
 ├── 04_vlm_decisions/                 ← ESCAPE 판단 시각·원문, 실제 요청 이미지 21장
-└── 05_metadata/                      ← 회차 결과·출처·동기화·재생 확인 기록
+├── 05_metadata/                      ← 회차 결과·출처·동기화·재생 확인 기록
+└── 06_download/                      ← MP4 포함 전달용 ZIP 2개·압축 해제 안내
 ```
 
 ## 영상 제작에 바로 사용할 파일
@@ -54,4 +59,4 @@ ESCAPE는 약 302.35초, PixelNav는 약 58.90초에 제어가 종료됐습니�
 
 MP4 5개의 전체 디코딩 확인 기록, 궤적 행 수와 시각 검사, VLM 이미지 연결 확인은 [verification.json](05_metadata/verification.json)에 있습니다. 원본 위치는 [file-locations.json](05_metadata/file-locations.json)에 남겼습니다. 새로운 해시는 계산하지 않았습니다.
 
-이 폴더 전체를 전달하면 문서·영상·그림을 열 수 있습니다. **MP4는 저장소의 Git 제외 대상이므로 Git push만으로는 영상이 전달되지 않습니다.** 전체 자료가 들어 있는 `hyunwoo_lio_goal4_handoff_20260917.zip`을 별도로 전달하세요. Jetson의 Downloads 폴더에 준비했습니다. 원본 bag은 용량 때문에 포함하지 않았고 추출 경로를 기록했습니다. Jetson 내부에서는 일부 파일이 원본과 저장공간을 공유하므로, 수정할 때는 다른 이름으로 복사하여 편집하세요.
+**[06_download의 ZIP 두 개](06_download/README.md)를 함께 커밋·푸시하면 MP4 5개도 전달됩니다.** MP4 자체는 Git 제외 대상이지만 ZIP은 제외되지 않습니다. 각 ZIP은 독립적으로 열 수 있으며, 두 파일을 같은 위치에 풀면 전체 전달용 폴더가 완성됩니다. 기존 단일 ZIP은 Jetson Downloads에 보존했습니다. 원본 bag은 용량 때문에 포함하지 않았고 추출 경로를 기록했습니다. Jetson 내부에서는 일부 파일이 원본과 저장공간을 공유하므로, 수정할 때는 다른 이름으로 복사하여 편집하세요.
